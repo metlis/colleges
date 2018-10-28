@@ -2,5 +2,5 @@ from django.db import models
 
 
 class Religion(models.Model):
-    id = models.IntegerField(primary_key=True)
+    code_num = models.IntegerField(null=True)
     name = models.CharField(max_length=255)
