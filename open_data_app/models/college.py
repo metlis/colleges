@@ -20,6 +20,7 @@ class College(models.Model):
     name = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255, blank=True)
     zip = models.CharField(max_length=255, blank=True)
+    url = models.CharField(max_length=255, blank=True)
     state = models.ForeignKey(State, on_delete=models.PROTECT, null=True)
     region = models.ForeignKey(Region, on_delete=models.PROTECT, null=True)
     ownership = models.ForeignKey(Ownership, on_delete=models.PROTECT, null=True)
@@ -37,6 +38,7 @@ class College(models.Model):
     online_only = models.IntegerField(null=True)
     inst_level = models.ForeignKey(Level, on_delete=models.PROTECT, null=True)
     cur_operating = models.IntegerField(null=True)
+
 
     full_data = models.TextField()
 
@@ -71,9 +73,11 @@ class College(models.Model):
                         col_values = row.split(',')
 
 
-                    def check_val(val):
-                        if val == 'NULL':
+                    def check_val(val, str):
+                        if val == 'NULL' and not str:
                             return None
+                        elif val == 'NULL' and str:
+                            return ''
                         else:
                             return val
 
@@ -89,42 +93,43 @@ class College(models.Model):
                     college.city = col_values[4]
                     college.zip = col_values[6]
 
-                    state = get_instance(State.objects.filter(id=check_val(col_values[17])))
+                    state = get_instance(State.objects.filter(id=check_val(col_values[17], False)))
                     college.state = state
 
-                    region = get_instance(Region.objects.filter(id=check_val(col_values[18])))
+                    region = get_instance(Region.objects.filter(id=check_val(col_values[18], False)))
                     college.region = region
 
-                    ownership = get_instance(Ownership.objects.filter(id=check_val(col_values[16])))
+                    ownership = get_instance(Ownership.objects.filter(id=check_val(col_values[16], False)))
                     college.ownership = ownership
 
-                    locale = get_instance(Locale.objects.filter(id=check_val(col_values[19])))
+                    locale = get_instance(Locale.objects.filter(id=check_val(col_values[19], False)))
                     college.locale = locale
 
-                    college.latitude = check_val(col_values[21])
-                    college.longitude = check_val(col_values[22])
+                    college.latitude = check_val(col_values[21], False)
+                    college.longitude = check_val(col_values[22], False)
 
-                    degree = get_instance(Degree.objects.filter(id=check_val(col_values[15])))
+                    degree = get_instance(Degree.objects.filter(id=check_val(col_values[15], False)))
                     college.highest_grad_degree = degree
 
-                    carnegie_basic = get_instance(Carnegie.objects.filter(code_num=check_val(col_values[23])))
+                    carnegie_basic = get_instance(Carnegie.objects.filter(code_num=check_val(col_values[23], False)))
                     college.carnegie_basic = carnegie_basic
 
-                    college.hist_black = check_val(col_values[26])
-                    college.predom_black = check_val(col_values[27])
-                    college.hispanic = check_val(col_values[31])
-                    college.men_only = check_val(col_values[33])
-                    college.women_only = check_val(col_values[34])
+                    college.hist_black = check_val(col_values[26], False)
+                    college.predom_black = check_val(col_values[27], False)
+                    college.hispanic = check_val(col_values[31], False)
+                    college.men_only = check_val(col_values[33], False)
+                    college.women_only = check_val(col_values[34], False)
 
-                    religion = get_instance(Religion.objects.filter(code_num=check_val(col_values[35])))
+                    religion = get_instance(Religion.objects.filter(code_num=check_val(col_values[35], False)))
                     college.religous = religion
 
-                    college.online_only = check_val(col_values[289])
+                    college.online_only = check_val(col_values[289], False)
 
-                    level = get_instance(Level.objects.filter(id=check_val(col_values[1738])))
+                    level = get_instance(Level.objects.filter(id=check_val(col_values[1738], False)))
                     college.inst_level = level
 
-                    college.cur_operating = check_val(col_values[315])
+                    college.cur_operating = check_val(col_values[315], False)
+                    college.url = check_val(col_values[8], True)
                     college.full_data = ','.join(col_values)
 
                     colleges.append(college)
