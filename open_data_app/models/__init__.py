@@ -1,0 +1,1 @@
+from open_data_app.models.college import College
