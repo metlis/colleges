@@ -5,9 +5,16 @@
     <title>Main page</title>
 </head>
 <body>
-{% for college in colleges %}
-    {{ college.name }}
-    {{ college.url }}
+<select>
+{% for state in states %}
+    <option id="{{ state.id }}">{{ state.name }}</option>
 {% endfor %}
+</select>
+
+<select>
+{% for region in regions %}
+    <option id="{{ region.id }}">{{ region.name }}</option>
+{% endfor %}
+</select>
 </body>
 </html>
