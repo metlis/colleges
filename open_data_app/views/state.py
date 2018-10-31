@@ -31,4 +31,6 @@ def get_state_slug(request, state_id, state_slug):
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
-    return render(request, 'state_colleges.html', {'colleges': colleges, 'state': state, 'slug': state_slug})
+    return render(request, 'state_colleges.html', {'colleges': colleges,
+                                                   'state': state,
+                                                   'slug': state_slug})

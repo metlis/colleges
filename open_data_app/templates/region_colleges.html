@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Region {{ region_name }} colleges and universities</title>
+</head>
+<body>
+<h1>Colleges and universities of {{ region_name }}</h1>
+<h2>States: {{ region_states }}</h2>
+{% for college in colleges %}
+    <p>{{ college.name }}</p>
+{% endfor %}
+</body>
+</html>
