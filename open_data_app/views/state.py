@@ -7,6 +7,8 @@ from open_data_app.models import College
 from settings import *
 from django.utils.text import slugify
 import urllib.parse
+from open_data_app.modules.seo import Seo
+
 
 def get_state(request, state_id):
     state_exists = State.objects.filter(id=state_id).exists()
@@ -102,6 +104,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
     :return:
     """
     college_fields = College._meta.get_fields()
+    state_name = State.objects.get(id=state_id).name
 
     for field in college_fields:
         if param == field._verbose_name:
@@ -111,22 +114,37 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                 param = field.attname
 
             # for relational fields get related object
-            rel_obj_exists = field.related_model.objects.filter(pk=param_value).exists()
+            if field.related_model is not None:
+                rel_obj_exists = field.related_model.objects.filter(pk=param_value).exists()
 
-            if rel_obj_exists:
-                rel_obj = field.related_model.objects.get(pk=param_value)
+                if rel_obj_exists:
+                    rel_obj = field.related_model.objects.get(pk=param_value)
 
-                try:
-                    rel_obj_val = rel_obj.description
-                except:
-                    rel_obj_val = rel_obj.name
+                    try:
+                        query_val = rel_obj.description
+                    except:
+                        query_val = rel_obj.name
+
+            # for non-relational fields (city) get query value
+            else:
+                query_field = College.objects.filter(state__id=state_id).filter(**{param: param_value}).values(
+                    field._verbose_name).distinct()
+                if len(query_field) > 0:
+                    query_val = query_field[0][field._verbose_name]
+                else:
+                    return HttpResponseNotFound('<h1>Page not found</h1>')
 
             colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value})
 
+            seo_template = field._verbose_name
+            seo_title = Seo.generate_title(seo_template, query_val, state_name)
+
             if len(colleges) > 0:
                 return render(request, 'filtered_colleges.html', {'colleges': colleges,
-                                                              'rel_obj_val': rel_obj_val
-                                                              })
+                                                                  'seo_title': seo_title
+                                                                  })
 
             else:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
+    else:
+        return HttpResponseNotFound('<h1>Page not found</h1>')
