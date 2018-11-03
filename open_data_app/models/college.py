@@ -4,6 +4,7 @@ import os
 import sys
 import urllib.parse
 from settings import *
+from django.utils.text import slugify
 from open_data_app.models.state import State
 from open_data_app.models.region import Region
 from open_data_app.models.ownership import Ownership
@@ -18,7 +19,9 @@ class College(models.Model):
     # school section
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255, blank=True)
+    slug = models.SlugField(max_length=255, blank=True, verbose_name='college')
     city = models.CharField(max_length=255, blank=True)
+    city_slug = models.SlugField(max_length=255, blank=True, verbose_name='city')
     zip = models.CharField(max_length=255, blank=True)
     url = models.CharField(max_length=255, blank=True)
     state = models.ForeignKey(State, on_delete=models.PROTECT, null=True)
@@ -88,7 +91,9 @@ class College(models.Model):
                     college = cls()
                     college.id = col_values[0]
                     college.name = col_values[3]
+                    college.slug = slugify(col_values[3])
                     college.city = col_values[4]
+                    college.city_slug = slugify(col_values[4])
                     college.zip = col_values[6]
 
                     state = get_instance(State.objects.filter(id=check_val(col_values[17], False)))
@@ -134,3 +139,4 @@ class College(models.Model):
                 row_num += 1
 
             cls.objects.bulk_create(colleges)
+

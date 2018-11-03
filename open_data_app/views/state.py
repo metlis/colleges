@@ -1,5 +1,7 @@
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
+
 from open_data_app.models import State
 from open_data_app.models import College
 from settings import *
@@ -11,9 +13,28 @@ def get_state(request, state_id):
     state_exists = State.objects.filter(id=state_id).exists()
 
     if state_exists:
+        params = request.GET
         state = State.objects.get(id=state_id)
         state_slug = slugify(state.name)
-        return HttpResponseRedirect(urllib.parse.urljoin(str(state_id), state_slug))
+
+        if len(params) == 0:
+            return HttpResponseRedirect(urllib.parse.urljoin(str(state_id), state_slug))
+        # static address for url with one parameter
+        elif len(params) == 1:
+            key = next(iter(params.keys()))
+            value = next(iter(params.values()))
+
+            try:
+                verbose_name = College._meta.get_field(key).verbose_name
+                url = reverse('college_app:state_param', kwargs={'state_id': state_id,
+                                                                 'state_slug': state_slug,
+                                                                 'param': verbose_name,
+                                                                 'param_value': value,
+                                                                 })
+                return HttpResponseRedirect(url)
+            except:
+                return HttpResponseNotFound('<h1>Page not found</h1>')
+
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
@@ -30,24 +51,24 @@ def get_state_slug(request, state_id, state_slug):
             colleges = College.objects.filter(state__id=state_id)
             colleges_cities = College.objects.filter(state=state_id).values('city').distinct()
             colleges_ownership = College.objects.filter(state=state_id).values_list('ownership__id',
-                                                                                      'ownership__description').order_by(
+                                                                                    'ownership__description').order_by(
                 'ownership__id').distinct()
             colleges_locales = College.objects.filter(state=state_id).values_list('locale__id',
-                                                                                    'locale__description').order_by(
+                                                                                  'locale__description').order_by(
                 'locale__id').exclude(
                 locale__description=None).distinct()
             colleges_degrees = College.objects.filter(state=state_id).values_list('highest_grad_degree__id',
-                                                                                    'highest_grad_degree__description').order_by(
+                                                                                  'highest_grad_degree__description').order_by(
                 'highest_grad_degree__id').distinct()
             colleges_carnegie_basic = College.objects.filter(state=state_id).values_list('carnegie_basic__code_num',
-                                                                                           'carnegie_basic__description').order_by(
+                                                                                         'carnegie_basic__description').order_by(
                 'carnegie_basic__code_num').exclude(carnegie_basic__description=None).exclude(
                 carnegie_basic__description='Not applicable').distinct()
             colleges_religions = College.objects.filter(state=state_id).values_list('religous__id',
                                                                                     'religous__name').order_by(
                 'religous__name').exclude(religous__name=None).distinct()
             colleges_levels = College.objects.filter(state=state_id).values_list('inst_level__id',
-                                                                                    'inst_level__description').order_by(
+                                                                                 'inst_level__description').order_by(
                 'inst_level__id').distinct()
 
     else:
@@ -64,3 +85,7 @@ def get_state_slug(request, state_id, state_slug):
                                                    'religions': colleges_religions,
                                                    'levels': colleges_levels,
                                                    })
+
+
+def get_city_slug(request, state_id, state_slug, param, param_value):
+    pass
