@@ -43,8 +43,8 @@
     {% endfor %}
 </select>
 <select>
-    {% for city in cities|dictsort:"city" %}
-        <option>{{ city.city }}</option>
+    {% for city in cities %}
+        <option value="{{ city.1 }}">{{ city.0 }}</option>
     {% endfor %}
 </select>
 {% for college in colleges|dictsort:"name" %}

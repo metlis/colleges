@@ -49,7 +49,9 @@ def get_state_slug(request, state_id, state_slug):
             return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
             colleges = College.objects.filter(state__id=state_id)
-            colleges_cities = College.objects.filter(state=state_id).values('city').distinct()
+            colleges_cities = College.objects.filter(state=state_id).values_list('city',
+                                                                                 'city_slug').order_by(
+                'city').distinct()
             colleges_ownership = College.objects.filter(state=state_id).values_list('ownership__id',
                                                                                     'ownership__description').order_by(
                 'ownership__id').distinct()
@@ -87,5 +89,19 @@ def get_state_slug(request, state_id, state_slug):
                                                    })
 
 
-def get_city_slug(request, state_id, state_slug, param, param_value):
-    pass
+def get_state_param(request, state_id, state_slug, param, param_value):
+    """
+    Searches field by verbose name and takes its value. Works for any single-parameter filter page
+
+    :param request:
+    :param state_id:
+    :param state_slug:
+    :param param: verbose name of a field
+    :param param_value: value of a field
+    :return:
+    """
+    college_fields = College._meta.get_fields()
+    for field in college_fields:
+        if param == field._verbose_name:
+            colleges = College.objects.filter(state__id=state_id).filter(**{field.attname: param_value})
+            return render(request, 'filtered_colleges.html', {'colleges': colleges})

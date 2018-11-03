@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for college in colleges|dictsort:"name" %}
+    <p>
+        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+    </p>
+{% endfor %}
+</body>
+</html>

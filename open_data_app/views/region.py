@@ -34,7 +34,9 @@ def get_region_slug(request, region_id, region_slug):
             return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
             colleges = College.objects.filter(region__id=region_id)
-            colleges_cities = College.objects.filter(region=region_id).values('city').distinct()
+            colleges_cities = College.objects.filter(region=region_id).values_list('city',
+                                                                                   'city_slug').order_by(
+                'city').distinct()
             colleges_states = College.objects.filter(region=region_id).values_list('state__id',
                                                                                    'state__name').order_by(
                 'state__name').distinct()
