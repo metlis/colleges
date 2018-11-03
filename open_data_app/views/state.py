@@ -1,13 +1,12 @@
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.apps import apps
 from open_data_app.models import State
 from open_data_app.models import College
 from settings import *
 from django.utils.text import slugify
 import urllib.parse
-
 
 def get_state(request, state_id):
     state_exists = State.objects.filter(id=state_id).exists()
@@ -101,7 +100,23 @@ def get_state_param(request, state_id, state_slug, param, param_value):
     :return:
     """
     college_fields = College._meta.get_fields()
+
     for field in college_fields:
         if param == field._verbose_name:
-            colleges = College.objects.filter(state__id=state_id).filter(**{field.attname: param_value})
-            return render(request, 'filtered_colleges.html', {'colleges': colleges})
+
+            # instead of field with verbose name city, make query on field with name city
+            if not field.is_relation:
+                param = field.attname
+            # for relational fields get related object
+            else:
+                rel_obj = field.related_model.objects.get(pk=param_value)
+
+                try:
+                    rel_obj_val = rel_obj.description
+                except:
+                    rel_obj_val = rel_obj.name
+
+            colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value})
+            return render(request, 'filtered_colleges.html', {'colleges': colleges,
+                                                              'rel_obj_val': rel_obj_val
+                                                              })
