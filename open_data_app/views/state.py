@@ -1,4 +1,4 @@
-from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.apps import apps
@@ -33,6 +33,8 @@ def get_state(request, state_id):
                 return HttpResponseRedirect(url)
             except:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
+        else:
+            return HttpResponse('In development')
 
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
@@ -104,11 +106,14 @@ def get_state_param(request, state_id, state_slug, param, param_value):
     for field in college_fields:
         if param == field._verbose_name:
 
-            # instead of field with verbose name city, make query on field with name city
-            if not field.is_relation:
+            # if verbose name and name are different, change query param to name of the field
+            if param != field.attname:
                 param = field.attname
+
             # for relational fields get related object
-            else:
+            rel_obj_exists = field.related_model.objects.filter(pk=param_value).exists()
+
+            if rel_obj_exists:
                 rel_obj = field.related_model.objects.get(pk=param_value)
 
                 try:
@@ -117,6 +122,11 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                     rel_obj_val = rel_obj.name
 
             colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value})
-            return render(request, 'filtered_colleges.html', {'colleges': colleges,
+
+            if len(colleges) > 0:
+                return render(request, 'filtered_colleges.html', {'colleges': colleges,
                                                               'rel_obj_val': rel_obj_val
                                                               })
+
+            else:
+                return HttpResponseNotFound('<h1>Page not found</h1>')
