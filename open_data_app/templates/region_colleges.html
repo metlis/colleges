@@ -6,8 +6,55 @@
 </head>
 <body>
 <h1>Colleges and universities of {{ region_name }}</h1>
-<h2>States: {{ region_states }}</h2>
-{% for college in colleges %}
+<p>Colleges found: {{ colleges.count }}</p>
+
+<select>
+    {% for level in levels %}
+        <option value="{{ level.0 }}">{{ level.1 }}</option>
+    {% endfor %}
+</select>
+
+<select>
+    {% for religion in religions %}
+        <option value="{{ religion.0 }}">{{ religion.1 }}</option>
+    {% endfor %}
+</select>
+
+<select>
+    {% for basic in basics %}
+        <option value="{{ basic.0 }}">{{ basic.1 }}</option>
+    {% endfor %}
+</select>
+
+<select>
+    {% for degree in degrees %}
+        <option value="{{ degree.0 }}">{{ degree.1 }}</option>
+    {% endfor %}
+</select>
+
+<select>
+    {% for locale in locales %}
+        <option value="{{ locale.0 }}">{{ locale.1 }}</option>
+    {% endfor %}
+</select>
+
+<select>
+    {% for ownership in ownerships %}
+        <option value="{{ ownership.0 }}">{{ ownership.1 }}</option>
+    {% endfor %}
+</select>
+
+<select>
+    {% for state in states %}
+        <option value="{{ state.0 }}">{{ state.1 }}</option>
+    {% endfor %}
+</select>
+<select>
+    {% for city in cities|dictsort:"city" %}
+        <option>{{ city.city }}</option>
+    {% endfor %}
+</select>
+{% for college in colleges|dictsort:"name" %}
     <p>
         <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
     </p>

@@ -47,7 +47,6 @@ class College(models.Model):
         csv.field_size_limit(sys.maxsize)
         with open(os.path.abspath(os.path.join(BASE_DIR, 'open_data_app', 'static/data.csv')), 'r', newline='',
                   encoding='utf-8') as file:
-            # reader = csv.reader(file, delimiter=',', quotechar='|')
 
             colleges = []
             row_num = 1
@@ -56,7 +55,6 @@ class College(models.Model):
                     col_values = row.split(',')
 
                     if len(col_values) != 1847:
-                        # encoded = re.sub(r'(".*?")', r'\1', row)
 
                         links = []
                         i = row.index('"') + 1
