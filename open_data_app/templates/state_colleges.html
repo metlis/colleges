@@ -7,7 +7,9 @@
 <body>
 <h1>Colleges and universities of {{ state.name }}</h1>
 {% for college in colleges %}
-    <p>{{ college.name }}</p>
+    <p>
+        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+    </p>
 {% endfor %}
 </body>
 </html>

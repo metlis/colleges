@@ -8,9 +8,9 @@ import urllib.parse
 
 
 def get_state(request, state_id):
-    state_exist = State.objects.filter(id=state_id).exists()
+    state_exists = State.objects.filter(id=state_id).exists()
 
-    if state_exist:
+    if state_exists:
         state = State.objects.get(id=state_id)
         state_slug = slugify(state.name)
         return HttpResponseRedirect(urllib.parse.urljoin(str(state_id), state_slug))
@@ -19,9 +19,9 @@ def get_state(request, state_id):
 
 
 def get_state_slug(request, state_id, state_slug):
-    state_exist = State.objects.filter(id=state_id).exists()
+    state_exists = State.objects.filter(id=state_id).exists()
 
-    if state_exist:
+    if state_exists:
         state = State.objects.get(id=state_id)
 
         if state_slug != slugify(state.name):

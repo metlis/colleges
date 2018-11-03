@@ -8,9 +8,9 @@ from django.utils.text import slugify
 
 
 def get_region(request, region_id):
-    region_exist = Region.objects.filter(id=region_id).exists()
+    region_exists = Region.objects.filter(id=region_id).exists()
 
-    if region_exist:
+    if region_exists:
         region = Region.objects.get(id=region_id)
         region_re = re.search('(.*?)\s\((.*?)\)', region.name)
         region_name = region_re.group(1)
@@ -22,9 +22,9 @@ def get_region(request, region_id):
 
 
 def get_region_slug(request, region_id, region_slug):
-    region_exist = Region.objects.filter(id=region_id).exists()
+    region_exists = Region.objects.filter(id=region_id).exists()
 
-    if region_exist:
+    if region_exists:
         region = Region.objects.get(id=region_id)
         region_re = re.search('(.*?)\s\((.*?)\)', region.name)
         region_name = region_re.group(1)

@@ -8,7 +8,9 @@
 <h1>Colleges and universities of {{ region_name }}</h1>
 <h2>States: {{ region_states }}</h2>
 {% for college in colleges %}
-    <p>{{ college.name }}</p>
+    <p>
+        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+    </p>
 {% endfor %}
 </body>
 </html>
