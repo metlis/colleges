@@ -90,6 +90,13 @@ def get_region_slug(request, region_id, region_slug):
             colleges_levels = College.objects.filter(region=region_id).values_list('inst_level__id',
                                                                                    'inst_level__description').order_by(
                 'inst_level__id').distinct()
+            colleges_hist_black = College.objects.filter(region=region_id).values('hist_black').distinct()
+            colleges_predom_black = College.objects.filter(region=region_id).values('predom_black').distinct()
+            colleges_hispanic = College.objects.filter(region=region_id).values('hispanic').distinct()
+            colleges_men_only = College.objects.filter(region=region_id).values('men_only').distinct()
+            colleges_women_only = College.objects.filter(region=region_id).values('women_only').distinct()
+            colleges_online_only = College.objects.filter(region=region_id).values('online_only').distinct()
+            colleges_cur_operating = College.objects.filter(region=region_id).values('cur_operating').distinct()
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
@@ -106,6 +113,13 @@ def get_region_slug(request, region_id, region_slug):
                                                     'basics': colleges_carnegie_basic,
                                                     'religions': colleges_religions,
                                                     'levels': colleges_levels,
+                                                    'colleges_hist_black': colleges_hist_black,
+                                                    'colleges_predom_black': colleges_predom_black,
+                                                    'colleges_hispanic': colleges_hispanic,
+                                                    'colleges_men_only': colleges_men_only,
+                                                    'colleges_women_only': colleges_women_only,
+                                                    'colleges_online_only': colleges_online_only,
+                                                    'colleges_cur_operating': colleges_cur_operating,
                                                     })
 
 
@@ -151,13 +165,13 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                                                                                })
 
             # for non-relational fields (city) get query value
-            else:
+            elif param in ['city']:
                 query_field = College.objects.filter(region__id=region_id).filter(**{param: param_value}).values(
                     field._verbose_name).distinct()
                 if len(query_field) > 0:
                     query_val = query_field[0][field._verbose_name]
 
-                    # state view for cities should be canonical, so
+                    # for a city query the state view should be canonical, so
                     # get the first college to define the state
                     college = College.objects.filter(region__id=region_id).filter(**{param: param_value})[0]
                     state = State.objects.get(id=college.state.id)
@@ -170,6 +184,18 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                                                                            })
                 else:
                     return HttpResponseNotFound('<h1>Page not found</h1>')
+            # yes/no queries
+            else:
+                dict = {'hist_black': ['Historically not black', 'Historically black'],
+                        'predom_black': ['Predominantely not black', 'Predominantely black'],
+                        'hispanic': ['Predominantely not hispanic', 'Predominantely hispanic'],
+                        'men_only': ['Not men-only', 'Men-only'],
+                        'women_only': ['Not women-only', 'Women-only'],
+                        'online_only': ['Not online-only', 'Online-only'],
+                        'cur_operating': ['Currently closed', 'Currently operating'],
+                        }
+
+                query_val = dict[param][int(param_value)]
 
             colleges = College.objects.filter(region__id=region_id).filter(**{param: param_value})
 

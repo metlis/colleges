@@ -128,13 +128,25 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                         query_val = rel_obj.name
 
             # for non-relational fields (city) get query value
-            else:
+            elif param in ['city']:
                 query_field = College.objects.filter(state__id=state_id).filter(**{param: param_value}).values(
                     field._verbose_name).distinct()
                 if len(query_field) > 0:
                     query_val = query_field[0][field._verbose_name]
                 else:
                     return HttpResponseNotFound('<h1>Page not found</h1>')
+            # yes/no queries
+            else:
+                dict = {'hist_black': ['Historically not black', 'Historically black'],
+                        'predom_black': ['Predominantely not black', 'Predominantely black'],
+                        'hispanic': ['Predominantely not hispanic', 'Predominantely hispanic'],
+                        'men_only': ['Not men-only', 'Men-only'],
+                        'women_only': ['Not women-only', 'Women-only'],
+                        'online_only': ['Not online-only', 'Online-only'],
+                        'cur_operating': ['Currently closed', 'Currently operating'],
+                        }
+
+                query_val = dict[param][int(param_value)]
 
             colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value})
 
