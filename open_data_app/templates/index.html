@@ -9,16 +9,28 @@
 </head>
 <body>
 <div class="container-fluid">
-    <select>
-        {% for state in states %}
-            <option id="{{ state.id }}">{{ state.name }}</option>
-        {% endfor %}
-    </select>
-    <select>
-        {% for region in regions %}
-            <option id="{{ region.id }}">{{ region.name }}</option>
-        {% endfor %}
-    </select>
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            State
+        </button>
+        <div class="dropdown-menu">
+            {% for state in states %}
+                <a class="dropdown-item" href="{% url 'college_app:state' state.id %}">{{ state.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Region
+        </button>
+        <div class="dropdown-menu">
+            {% for region in regions %}
+                <a class="dropdown-item" href="{% url 'college_app:region' region.id %}">{{ region.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

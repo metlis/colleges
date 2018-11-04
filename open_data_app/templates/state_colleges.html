@@ -8,53 +8,97 @@
     <title>State {{ state.name }} colleges and universities</title>
 </head>
 <body>
+<div class="container-fluid">
 <h1>Colleges and universities of {{ state.name }}</h1>
 <p>Colleges found: {{ colleges.count }}</p>
 
-<select>
-    {% for level in levels %}
-        <option value="{{ level.0 }}">{{ level.1 }}</option>
-    {% endfor %}
-</select>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Level
+        </button>
+        <div class="dropdown-menu">
+            {% for level in levels %}
+                <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?inst_level={{ level.0 }}">{{ level.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
 
-<select>
-    {% for religion in religions %}
-        <option value="{{ religion.0 }}">{{ religion.1 }}</option>
-    {% endfor %}
-</select>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Religion
+        </button>
+        <div class="dropdown-menu">
+            {% for religion in religions %}
+                <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?religous={{ religion.0 }}">{{ religion.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
 
-<select>
-    {% for basic in basics %}
-        <option value="{{ basic.0 }}">{{ basic.1 }}</option>
-    {% endfor %}
-</select>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Carnegie Basic
+        </button>
+        <div class="dropdown-menu">
+            {% for basic in basics %}
+                <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?carnegie_basic={{ basic.0 }}">{{ basic.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
 
-<select>
-    {% for degree in degrees %}
-        <option value="{{ degree.0 }}">{{ degree.1 }}</option>
-    {% endfor %}
-</select>
-<select>
-    {% for locale in locales %}
-        <option value="{{ locale.0 }}">{{ locale.1 }}</option>
-    {% endfor %}
-</select>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Highest Degree
+        </button>
+        <div class="dropdown-menu">
+            {% for degree in degrees %}
+                <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?highest_grad_degree={{ degree.0 }}">{{ degree.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Locale
+        </button>
+        <div class="dropdown-menu">
+            {% for locale in locales %}
+                <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?locale={{ locale.0 }}">{{ locale.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
 
-<select>
-    {% for ownership in ownerships %}
-        <option value="{{ ownership.0 }}">{{ ownership.1 }}</option>
-    {% endfor %}
-</select>
-<select>
-    {% for city in cities %}
-        <option value="{{ city.1 }}">{{ city.0 }}</option>
-    {% endfor %}
-</select>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Ownership
+        </button>
+        <div class="dropdown-menu">
+            {% for ownership in ownerships %}
+                <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?ownership={{ ownership.0 }}">{{ ownership.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            City/town
+        </button>
+        <div class="dropdown-menu">
+            {% for city in cities %}
+                <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?city={{ city.1 }}">{{ city.0 }}</a>
+            {% endfor %}
+        </div>
+    </div>
 {% for college in colleges|dictsort:"name" %}
     <p>
         <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
     </p>
 {% endfor %}
+</div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

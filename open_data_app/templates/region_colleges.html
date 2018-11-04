@@ -3,67 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <link rel="canonical" href="{% url 'college_app:region_slug' region_id slug %}">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <title>Region {{ region_name }} colleges and universities</title>
 </head>
 <body>
-<h1>Colleges and universities of {{ region_name }}</h1>
-<p>Colleges found: {{ colleges.count }}</p>
+<div class="container-fluid">
+    <h1>Colleges and universities of {{ region_name }}</h1>
+    <p>Colleges found: {{ colleges.count }}</p>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Level
+        </button>
+        <div class="dropdown-menu">
+            {% for level in levels %}
+                <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?inst_level={{ level.0 }}">{{ level.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Religion
+        </button>
+        <div class="dropdown-menu">
+            {% for religion in religions %}
+                <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?religous={{ religion.0 }}">{{ religion.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Carnegie Basic
+        </button>
+        <div class="dropdown-menu">
+            {% for basic in basics %}
+                <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?carnegie_basic={{ basic.0 }}">{{ basic.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Highest Degree
+        </button>
+        <div class="dropdown-menu">
+            {% for degree in degrees %}
+                <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?highest_grad_degree={{ degree.0 }}">{{ degree.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Locale
+        </button>
+        <div class="dropdown-menu">
+            {% for locale in locales %}
+                <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?locale={{ locale.0 }}">{{ locale.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Ownership
+        </button>
+        <div class="dropdown-menu">
+            {% for ownership in ownerships %}
+                <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?ownership={{ ownership.0 }}">{{ ownership.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            State
+        </button>
+        <div class="dropdown-menu">
+            {% for state in states %}
+                <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?state={{ state.0 }}">{{ state.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            City/town
+        </button>
+        <div class="dropdown-menu">
+            {% for city in cities %}
+                <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?city={{ city.1 }}">{{ city.0 }}</a>
+            {% endfor %}
+        </div>
+    </div>
 
-<select>
-    {% for level in levels %}
-        <option value="{{ level.0 }}">{{ level.1 }}</option>
-    {% endfor %}
-</select>
 
-<select>
-    {% for religion in religions %}
-        <option value="{{ religion.0 }}">{{ religion.1 }}</option>
+    {% for college in colleges|dictsort:"name" %}
+        <p>
+            <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+        </p>
     {% endfor %}
-</select>
+</div>
 
-<select>
-    {% for basic in basics %}
-        <option value="{{ basic.0 }}">{{ basic.1 }}</option>
-    {% endfor %}
-</select>
-
-<select>
-    {% for degree in degrees %}
-        <option value="{{ degree.0 }}">{{ degree.1 }}</option>
-    {% endfor %}
-</select>
-
-<select>
-    {% for locale in locales %}
-        <option value="{{ locale.0 }}">{{ locale.1 }}</option>
-    {% endfor %}
-</select>
-
-<select>
-    {% for ownership in ownerships %}
-        <option value="{{ ownership.0 }}">{{ ownership.1 }}</option>
-    {% endfor %}
-</select>
-
-<select>
-    {% for state in states %}
-        <option value="{{ state.0 }}">{{ state.1 }}</option>
-    {% endfor %}
-</select>
-<select>
-    {% for city in cities %}
-        <option value="{{ city.1 }}">{{ city.0 }}</option>
-    {% endfor %}
-</select>
-{% for college in colleges|dictsort:"name" %}
-    <p>
-        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
-    </p>
-{% endfor %}
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 </body>
 </html>
