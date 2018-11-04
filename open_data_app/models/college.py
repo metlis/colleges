@@ -24,7 +24,7 @@ class College(models.Model):
     city_slug = models.SlugField(max_length=255, blank=True, verbose_name='city')
     zip = models.CharField(max_length=255, blank=True)
     url = models.CharField(max_length=255, blank=True)
-    state = models.ForeignKey(State, on_delete=models.PROTECT, null=True)
+    state = models.ForeignKey(State, on_delete=models.PROTECT, null=True, verbose_name='state')
     region = models.ForeignKey(Region, on_delete=models.PROTECT, null=True)
     ownership = models.ForeignKey(Ownership, on_delete=models.PROTECT, null=True, verbose_name='ownership')
     locale = models.ForeignKey(Locale, on_delete=models.PROTECT, null=True, verbose_name='locale')

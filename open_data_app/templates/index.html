@@ -27,7 +27,9 @@
         </button>
         <div class="dropdown-menu">
             {% for region in regions %}
-                <a class="dropdown-item" href="{% url 'college_app:region' region.id %}">{{ region.name }}</a>
+                {% if region.id > 0 %}
+                    <a class="dropdown-item" href="{% url 'college_app:region' region.id %}">{{ region.name }}</a>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

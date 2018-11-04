@@ -15,8 +15,11 @@ def get_region(request, region_id):
         params = request.GET
         region = Region.objects.get(id=region_id)
         region_re = re.search('(.*?)\s\((.*?)\)', region.name)
-        region_name = region_re.group(1)
-        region_slug = slugify(region_name)
+        try:
+            region_name = region_re.group(1)
+            region_slug = slugify(region_name)
+        except:
+            region_slug = ''
 
         if len(params) == 0:
             return HttpResponseRedirect(urllib.parse.urljoin(str(region_id), region_slug))
@@ -48,9 +51,14 @@ def get_region_slug(request, region_id, region_slug):
     if region_exists:
         region = Region.objects.get(id=region_id)
         region_re = re.search('(.*?)\s\((.*?)\)', region.name)
-        region_name = region_re.group(1)
-        region_slug_name = slugify(region_name)
-        region_states = region_re.group(2)
+        try:
+            region_name = region_re.group(1)
+            region_slug_name = slugify(region_name)
+            region_states = region_re.group(2)
+        except:
+            region_name = ''
+            region_slug_name = ''
+            region_states = ''
 
         if region_slug != slugify(region_slug_name):
             return HttpResponseNotFound('<h1>Page not found</h1>')
@@ -134,6 +142,13 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                         query_val = rel_obj.description
                     except:
                         query_val = rel_obj.name
+
+
+                    # assign canonical if the field is state
+                    if  field._verbose_name == 'state':
+                        canonical = reverse('college_app:state_slug', kwargs={'state_id': rel_obj.id,
+                                                                               'state_slug': slugify(rel_obj.name),
+                                                                               })
 
             # for non-relational fields (city) get query value
             else:

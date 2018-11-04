@@ -8,6 +8,7 @@ class Seo():
                      'religion': '{} colleges and universities in {}, USA',
                      'level': 'Colleges and universities of {} institutional level in {}, USA',
                      'carnegie': '{} in {}, USA',
+                     'state': 'Colleges and universities in {}, {}, USA',
                      }
         try:
             template = templates[key]
