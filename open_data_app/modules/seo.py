@@ -2,12 +2,15 @@ class Seo():
 
     @classmethod
     def generate_title(cls, key, value, geo):
-        templates = {'city': 'Colleges and universities in {}, {}',
-                     'ownership': '{} colleges and universities in {}',
-                     'degree': 'Colleges and universities with {} as the highest in {}',
-                     'religion': '{} colleges and universities in {}',
-                     'level': 'Colleges and universities of {} institutional level in {}',
+        templates = {'city': 'Colleges and universities in {}, {}, USA',
+                     'ownership': '{} colleges and universities in {}, USA',
+                     'degree': 'Colleges and universities with {} as the highest in {}, USA',
+                     'religion': '{} colleges and universities in {}, USA',
+                     'level': 'Colleges and universities of {} institutional level in {}, USA',
+                     'carnegie': '{} in {}, USA',
                      }
-
-        template = templates[key]
-        return template.format(value, geo)
+        try:
+            template = templates[key]
+            return template.format(value, geo)
+        except:
+            return 'Colleges'
