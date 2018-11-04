@@ -25,6 +25,9 @@ def get_college_slug(request, college_id, college_slug):
         if college_slug != slugify(college.name):
             return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
-            return render(request, 'college.html', {'college': college})
+            return render(request, 'college.html', {'college': college,
+                                                    'college_id': college_id,
+                                                    'college_slug': college_slug,
+                                                    })
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')

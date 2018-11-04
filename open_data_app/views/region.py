@@ -2,11 +2,10 @@ import urllib.parse
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-from open_data_app.models import Region, College
+from open_data_app.models import Region, College, State
 import re
 from django.utils.text import slugify
 from open_data_app.modules.seo import Seo
-
 
 
 def get_region(request, region_id):
@@ -29,10 +28,10 @@ def get_region(request, region_id):
             try:
                 verbose_name = College._meta.get_field(key).verbose_name
                 url = reverse('college_app:region_param', kwargs={'region_id': region_id,
-                                                                 'region_slug': region_slug,
-                                                                 'param': verbose_name,
-                                                                 'param_value': value,
-                                                                 })
+                                                                  'region_slug': region_slug,
+                                                                  'param': verbose_name,
+                                                                  'param_value': value,
+                                                                  })
                 return HttpResponseRedirect(url)
             except:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
@@ -78,10 +77,10 @@ def get_region_slug(request, region_id, region_slug):
                 'carnegie_basic__code_num').exclude(carnegie_basic__description=None).exclude(
                 carnegie_basic__description='Not applicable').distinct()
             colleges_religions = College.objects.filter(region=region_id).values_list('religous__id',
-                                                                                    'religous__name').order_by(
+                                                                                      'religous__name').order_by(
                 'religous__name').exclude(religous__name=None).distinct()
             colleges_levels = College.objects.filter(region=region_id).values_list('inst_level__id',
-                                                                                    'inst_level__description').order_by(
+                                                                                   'inst_level__description').order_by(
                 'inst_level__id').distinct()
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
@@ -89,6 +88,7 @@ def get_region_slug(request, region_id, region_slug):
     return render(request, 'region_colleges.html', {'colleges': colleges,
                                                     'region_name': region_name,
                                                     'region_states': region_states,
+                                                    'region_id': region_id,
                                                     'slug': region_slug,
                                                     'cities': colleges_cities,
                                                     'states': colleges_states,
@@ -99,7 +99,6 @@ def get_region_slug(request, region_id, region_slug):
                                                     'religions': colleges_religions,
                                                     'levels': colleges_levels,
                                                     })
-
 
 
 def get_region_param(request, region_id, region_slug, param, param_value):
@@ -130,27 +129,50 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                 if rel_obj_exists:
                     rel_obj = field.related_model.objects.get(pk=param_value)
 
+                    # get relational field text value
                     try:
                         query_val = rel_obj.description
                     except:
                         query_val = rel_obj.name
+
+            # for non-relational fields (city) get query value
             else:
                 query_field = College.objects.filter(region__id=region_id).filter(**{param: param_value}).values(
                     field._verbose_name).distinct()
                 if len(query_field) > 0:
                     query_val = query_field[0][field._verbose_name]
-                #     TODO add canonical
+
+                    # state view for cities should be canonical, so
+                    # get the first college to define the state
+                    college = College.objects.filter(region__id=region_id).filter(**{param: param_value})[0]
+                    state = State.objects.get(id=college.state.id)
+                    state_id = state.id
+                    state_slug = slugify(state.name)
+                    canonical = reverse('college_app:state_param', kwargs={'state_id': state_id,
+                                                                           'state_slug': state_slug,
+                                                                           'param': field._verbose_name,
+                                                                           'param_value': param_value,
+                                                                           })
                 else:
                     return HttpResponseNotFound('<h1>Page not found</h1>')
 
             colleges = College.objects.filter(region__id=region_id).filter(**{param: param_value})
 
-            seo_template = field._verbose_name
-            seo_title = Seo.generate_title(seo_template, query_val, region_name)
-
             if len(colleges) > 0:
+
+                # define seo data before rendering
+                seo_template = field._verbose_name
+                seo_title = Seo.generate_title(seo_template, query_val, region_name)
+                if not 'canonical' in locals():
+                    canonical = reverse('college_app:region_param', kwargs={'region_id': region_id,
+                                                                            'region_slug': region_slug,
+                                                                            'param': field._verbose_name,
+                                                                            'param_value': param_value,
+                                                                            })
+
                 return render(request, 'filtered_colleges.html', {'colleges': colleges,
-                                                                  'seo_title': seo_title
+                                                                  'seo_title': seo_title,
+                                                                  'canonical': canonical,
                                                                   })
             else:
                 return HttpResponseNotFound('<h1>Page not found</h1>')

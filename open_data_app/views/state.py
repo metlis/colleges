@@ -81,6 +81,7 @@ def get_state_slug(request, state_id, state_slug):
 
     return render(request, 'state_colleges.html', {'colleges': colleges,
                                                    'state': state,
+                                                   'state_id': state_id,
                                                    'slug': state_slug,
                                                    'cities': colleges_cities,
                                                    'ownerships': colleges_ownership,
@@ -120,6 +121,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                 if rel_obj_exists:
                     rel_obj = field.related_model.objects.get(pk=param_value)
 
+                    # get relational field text value
                     try:
                         query_val = rel_obj.description
                     except:
@@ -136,12 +138,20 @@ def get_state_param(request, state_id, state_slug, param, param_value):
 
             colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value})
 
-            seo_template = field._verbose_name
-            seo_title = Seo.generate_title(seo_template, query_val, state_name)
-
             if len(colleges) > 0:
+
+                # define seo data before rendering
+                seo_template = field._verbose_name
+                seo_title = Seo.generate_title(seo_template, query_val, state_name)
+                canonical = reverse('college_app:state_param', kwargs={'state_id': state_id,
+                                                                       'state_slug': state_slug,
+                                                                       'param': field._verbose_name,
+                                                                       'param_value': param_value,
+                                                                       })
+
                 return render(request, 'filtered_colleges.html', {'colleges': colleges,
-                                                                  'seo_title': seo_title
+                                                                  'seo_title': seo_title,
+                                                                  'canonical': canonical,
                                                                   })
 
             else:
