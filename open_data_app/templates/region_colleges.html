@@ -108,94 +108,120 @@
             {% endfor %}
         </div>
     </div>
-{% if colleges_hist_black.count > 1 %}
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Historically black
-        </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?hist_black=0">No</a>
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?hist_black=1">Yes</a>
-        </div>
-    </div>
-{% endif %}
-{% if colleges_hist_black.count > 1 %}
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Predominantely black
-        </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?predom_black=0">No</a>
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?predom_black=1">Yes</a>
-        </div>
-    </div>
-{% endif %}
-{% if colleges_hispanic %}
-    {% for val in colleges_hispanic %}
-        {% if val.hispanic == 1 %}
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Hispanic
-        </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?hispanic=0">No</a>
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?hispanic=1">Yes</a>
-        </div>
-    </div>
+
+    {% for val in colleges_hist_black %}
+        {% if val.hist_black == 1 %}
+            <div class="btn-group dropright">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Historically black
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?hist_black=0">No</a>
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?hist_black=1">Yes</a>
+                </div>
+            </div>
         {% endif %}
     {% endfor %}
-{% endif %}
-{% if colleges_men_only.count > 1 %}
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Men-only
-        </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?men_only=0">No</a>
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?men_only=1">Yes</a>
-        </div>
-    </div>
-{% endif %}
-{% if colleges_women_only.count > 1 %}
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Women-only
-        </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?women_only=0">No</a>
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?women_only=1">Yes</a>
-        </div>
-    </div>
-{% endif %}
-{% if colleges_online_only.count > 1 %}
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Online-only
-        </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?online_only=0">No</a>
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?online_only=1">Yes</a>
-        </div>
-    </div>
-{% endif %}
-{% if colleges_cur_operating.count > 1 %}
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Currently operating
-        </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?cur_operating=0">No</a>
-            <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?cur_operating=1">Yes</a>
-        </div>
-    </div>
-{% endif %}
+
+    {% for val in colleges_predom_black %}
+        {% if val.predom_black == 1 %}
+            <div class="btn-group dropright">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Predominantely black
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?predom_black=0">No</a>
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?predom_black=1">Yes</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {% for val in colleges_hispanic %}
+        {% if val.hispanic == 1 %}
+            <div class="btn-group dropright">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Hispanic
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?hispanic=0">No</a>
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?hispanic=1">Yes</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {% for val in colleges_men_only %}
+        {% if val.men_only == 1 %}
+            <div class="btn-group dropright">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Men-only
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?men_only=0">No</a>
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?men_only=1">Yes</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+
+    {% for val in colleges_women_only %}
+        {% if val.women_only == 1 %}
+            <div class="btn-group dropright">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Women-only
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?women_only=0">No</a>
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?women_only=1">Yes</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {% for val in colleges_online_only %}
+        {% if val.online_only == 1 %}
+            <div class="btn-group dropright">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Online-only
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?online_only=0">No</a>
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?online_only=1">Yes</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {% for val in colleges_cur_operating %}
+        {% if val.cur_operating == 1 %}
+            <div class="btn-group dropright">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Currently operating
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?cur_operating=0">No</a>
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?cur_operating=1">Yes</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
     {% for college in colleges|dictsort:"name" %}
         <p>
             <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>

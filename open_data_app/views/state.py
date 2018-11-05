@@ -75,6 +75,13 @@ def get_state_slug(request, state_id, state_slug):
             colleges_levels = College.objects.filter(state=state_id).values_list('inst_level__id',
                                                                                  'inst_level__description').order_by(
                 'inst_level__id').distinct()
+            colleges_hist_black = College.objects.filter(state=state_id).values('hist_black').distinct()
+            colleges_predom_black = College.objects.filter(state=state_id).values('predom_black').distinct()
+            colleges_hispanic = College.objects.filter(state=state_id).values('hispanic').distinct()
+            colleges_men_only = College.objects.filter(state=state_id).values('men_only').distinct()
+            colleges_women_only = College.objects.filter(state=state_id).values('women_only').distinct()
+            colleges_online_only = College.objects.filter(state=state_id).values('online_only').distinct()
+            colleges_cur_operating = College.objects.filter(state=state_id).values('cur_operating').distinct()
 
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
@@ -90,6 +97,13 @@ def get_state_slug(request, state_id, state_slug):
                                                    'basics': colleges_carnegie_basic,
                                                    'religions': colleges_religions,
                                                    'levels': colleges_levels,
+                                                   'colleges_hist_black': colleges_hist_black,
+                                                   'colleges_predom_black': colleges_predom_black,
+                                                   'colleges_hispanic': colleges_hispanic,
+                                                   'colleges_men_only': colleges_men_only,
+                                                   'colleges_women_only': colleges_women_only,
+                                                   'colleges_online_only': colleges_online_only,
+                                                   'colleges_cur_operating': colleges_cur_operating,
                                                    })
 
 
@@ -128,7 +142,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                         query_val = rel_obj.name
 
             # for non-relational fields (city) get query value
-            elif param in ['city']:
+            elif param in ['city_slug']:
                 query_field = College.objects.filter(state__id=state_id).filter(**{param: param_value}).values(
                     field._verbose_name).distinct()
                 if len(query_field) > 0:

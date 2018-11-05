@@ -165,7 +165,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                                                                                })
 
             # for non-relational fields (city) get query value
-            elif param in ['city']:
+            elif param in ['city_slug']:
                 query_field = College.objects.filter(region__id=region_id).filter(**{param: param_value}).values(
                     field._verbose_name).distinct()
                 if len(query_field) > 0:
