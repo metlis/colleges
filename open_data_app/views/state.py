@@ -65,9 +65,9 @@ def get_state_slug(request, state_id, state_slug):
             colleges_degrees = College.objects.filter(state=state_id).values_list('highest_grad_degree__id',
                                                                                   'highest_grad_degree__description').order_by(
                 'highest_grad_degree__id').distinct()
-            colleges_carnegie_basic = College.objects.filter(state=state_id).values_list('carnegie_basic__code_num',
+            colleges_carnegie_basic = College.objects.filter(state=state_id).values_list('carnegie_basic__id',
                                                                                          'carnegie_basic__description').order_by(
-                'carnegie_basic__code_num').exclude(carnegie_basic__description=None).exclude(
+                'carnegie_basic__description').exclude(carnegie_basic__description=None).exclude(
                 carnegie_basic__description='Not applicable').distinct()
             colleges_religions = College.objects.filter(state=state_id).values_list('religous__id',
                                                                                     'religous__name').order_by(
