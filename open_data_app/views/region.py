@@ -64,40 +64,9 @@ def get_region_slug(request, region_id, region_slug):
         if region_slug != slugify(region_slug_name):
             return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
-            colleges = College.objects.filter(region__id=region_id).order_by('name')
-            colleges_cities = College.objects.filter(region=region_id).values_list('city',
-                                                                                   'city_slug').order_by(
-                'city').distinct()
-            colleges_states = College.objects.filter(region=region_id).values_list('state__id',
-                                                                                   'state__name').order_by(
-                'state__name').distinct()
-            colleges_ownership = College.objects.filter(region=region_id).values_list('ownership__id',
-                                                                                      'ownership__description').order_by(
-                'ownership__id').distinct()
-            colleges_locales = College.objects.filter(region=region_id).values_list('locale__id',
-                                                                                    'locale__description').order_by(
-                'locale__id').exclude(
-                locale__description=None).distinct()
-            colleges_degrees = College.objects.filter(region=region_id).values_list('highest_grad_degree__id',
-                                                                                    'highest_grad_degree__description').order_by(
-                'highest_grad_degree__id').distinct()
-            colleges_carnegie_basic = College.objects.filter(region=region_id).values_list('carnegie_basic__id',
-                                                                                           'carnegie_basic__description').order_by(
-                'carnegie_basic__description').exclude(carnegie_basic__description=None).exclude(
-                carnegie_basic__description='Not applicable').distinct()
-            colleges_religions = College.objects.filter(region=region_id).values_list('religous__id',
-                                                                                      'religous__name').order_by(
-                'religous__name').exclude(religous__name=None).distinct()
-            colleges_levels = College.objects.filter(region=region_id).values_list('inst_level__id',
-                                                                                   'inst_level__description').order_by(
-                'inst_level__id').distinct()
-            colleges_hist_black = College.objects.filter(region=region_id).values('hist_black').distinct()
-            colleges_predom_black = College.objects.filter(region=region_id).values('predom_black').distinct()
-            colleges_hispanic = College.objects.filter(region=region_id).values('hispanic').distinct()
-            colleges_men_only = College.objects.filter(region=region_id).values('men_only').distinct()
-            colleges_women_only = College.objects.filter(region=region_id).values('women_only').distinct()
-            colleges_online_only = College.objects.filter(region=region_id).values('online_only').distinct()
-            colleges_cur_operating = College.objects.filter(region=region_id).values('cur_operating').distinct()
+            colleges = College.objects.filter(region=region_id).order_by('name')
+
+            filters = College.get_filters('region', region_id)
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
@@ -112,32 +81,21 @@ def get_region_slug(request, region_id, region_slug):
         colleges = paginator.get_page(page)
 
     canonical = reverse('college_app:region_slug', kwargs={'region_id': region_id,
-                                                          'region_slug': region_slug,
-                                                          })
+                                                           'region_slug': region_slug,
+                                                           })
 
-    return render(request, 'region_colleges.html', {'colleges': colleges,
-                                                    'region_name': region_name,
-                                                    'region_states': region_states,
-                                                    'region_id': region_id,
-                                                    'slug': region_slug,
-                                                    'cities': colleges_cities,
-                                                    'states': colleges_states,
-                                                    'ownerships': colleges_ownership,
-                                                    'locales': colleges_locales,
-                                                    'degrees': colleges_degrees,
-                                                    'basics': colleges_carnegie_basic,
-                                                    'religions': colleges_religions,
-                                                    'levels': colleges_levels,
-                                                    'colleges_hist_black': colleges_hist_black,
-                                                    'colleges_predom_black': colleges_predom_black,
-                                                    'colleges_hispanic': colleges_hispanic,
-                                                    'colleges_men_only': colleges_men_only,
-                                                    'colleges_women_only': colleges_women_only,
-                                                    'colleges_online_only': colleges_online_only,
-                                                    'colleges_cur_operating': colleges_cur_operating,
-                                                    'base_url': canonical,
-                                                    'canonical': canonical,
-                                                    })
+    context = {'colleges': colleges,
+               'region_name': region_name,
+               'region_states': region_states,
+               'region_id': region_id,
+               'slug': region_slug,
+               'base_url': canonical,
+               'canonical': canonical,
+               }
+
+    context.update(filters)
+
+    return render(request, 'region_colleges.html', context)
 
 
 def get_region_param(request, region_id, region_slug, param, param_value):
@@ -215,6 +173,17 @@ def get_region_param(request, region_id, region_slug, param, param_value):
 
             colleges = College.objects.filter(region__id=region_id).filter(**{param: param_value}).order_by('name')
 
+            # handle filter requests
+            params = request.GET
+            if len(params) == 1:
+                key = next(iter(params.keys()))
+                value = next(iter(params.values()))
+                # filter_vals = College.get_filters('region', region_id, get_filter=key)
+                # for val in filter_vals:
+                #     if val[0] == int(value):
+                #         filter_val = val[1]
+                colleges = colleges.filter(**{key: value})
+
             if len(colleges) > 0:
 
                 # define seo data before rendering
@@ -230,7 +199,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                 if request.GET.get('page'):
                     page = request.GET.get('page')
                 else:
-                    page=1
+                    page = 1
                 # if parameter page does not have value all, show pagination
                 if request.GET.get('page') != 'all':
                     paginator = Paginator(colleges, 50)
@@ -242,11 +211,18 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                                                                        'param_value': param_value,
                                                                        })
 
-                return render(request, 'filtered_colleges.html', {'colleges': colleges,
-                                                                  'seo_title': seo_title,
-                                                                  'canonical': canonical,
-                                                                  'base_url': base_url,
-                                                                  })
+                # get filters
+                filters = College.get_filters('region', region_id, init_filter=param, init_filter_val=param_value)
+                context = {'colleges': colleges,
+                           'seo_title': seo_title,
+                           'canonical': canonical,
+                           'base_url': base_url,
+                           'init_filter_val': query_val,
+                           # 'second_filter_val': filter_val,
+                           }
+                context.update(filters)
+
+                return render(request, 'filtered_colleges.html', context)
             else:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
     else:

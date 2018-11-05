@@ -52,38 +52,9 @@ def get_state_slug(request, state_id, state_slug):
         if state_slug != slugify(state.name):
             return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
-            colleges = College.objects.filter(state__id=state_id).order_by('name')
-            colleges_cities = College.objects.filter(state=state_id).values_list('city',
-                                                                                 'city_slug').order_by(
-                'city').distinct()
-            colleges_ownership = College.objects.filter(state=state_id).values_list('ownership__id',
-                                                                                    'ownership__description').order_by(
-                'ownership__id').distinct()
-            colleges_locales = College.objects.filter(state=state_id).values_list('locale__id',
-                                                                                  'locale__description').order_by(
-                'locale__id').exclude(
-                locale__description=None).distinct()
-            colleges_degrees = College.objects.filter(state=state_id).values_list('highest_grad_degree__id',
-                                                                                  'highest_grad_degree__description').order_by(
-                'highest_grad_degree__id').distinct()
-            colleges_carnegie_basic = College.objects.filter(state=state_id).values_list('carnegie_basic__id',
-                                                                                         'carnegie_basic__description').order_by(
-                'carnegie_basic__description').exclude(carnegie_basic__description=None).exclude(
-                carnegie_basic__description='Not applicable').distinct()
-            colleges_religions = College.objects.filter(state=state_id).values_list('religous__id',
-                                                                                    'religous__name').order_by(
-                'religous__name').exclude(religous__name=None).distinct()
-            colleges_levels = College.objects.filter(state=state_id).values_list('inst_level__id',
-                                                                                 'inst_level__description').order_by(
-                'inst_level__id').distinct()
-            colleges_hist_black = College.objects.filter(state=state_id).values('hist_black').distinct()
-            colleges_predom_black = College.objects.filter(state=state_id).values('predom_black').distinct()
-            colleges_hispanic = College.objects.filter(state=state_id).values('hispanic').distinct()
-            colleges_men_only = College.objects.filter(state=state_id).values('men_only').distinct()
-            colleges_women_only = College.objects.filter(state=state_id).values('women_only').distinct()
-            colleges_online_only = College.objects.filter(state=state_id).values('online_only').distinct()
-            colleges_cur_operating = College.objects.filter(state=state_id).values('cur_operating').distinct()
+            colleges = College.objects.filter(state=state_id).order_by('name')
 
+            filters = College.get_filters('state', state_id, 'states')
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
@@ -101,27 +72,18 @@ def get_state_slug(request, state_id, state_slug):
                                                           'state_slug': state_slug,
                                                           })
 
-    return render(request, 'state_colleges.html', {'colleges': colleges,
-                                                   'state': state,
-                                                   'state_id': state_id,
-                                                   'slug': state_slug,
-                                                   'cities': colleges_cities,
-                                                   'ownerships': colleges_ownership,
-                                                   'locales': colleges_locales,
-                                                   'degrees': colleges_degrees,
-                                                   'basics': colleges_carnegie_basic,
-                                                   'religions': colleges_religions,
-                                                   'levels': colleges_levels,
-                                                   'colleges_hist_black': colleges_hist_black,
-                                                   'colleges_predom_black': colleges_predom_black,
-                                                   'colleges_hispanic': colleges_hispanic,
-                                                   'colleges_men_only': colleges_men_only,
-                                                   'colleges_women_only': colleges_women_only,
-                                                   'colleges_online_only': colleges_online_only,
-                                                   'colleges_cur_operating': colleges_cur_operating,
-                                                   'base_url': canonical,
-                                                   'canonical': canonical,
-                                                   })
+    context = {'colleges': colleges,
+               'state': state,
+               'state_id': state_id,
+               'name': state.name,
+               'slug': state_slug,
+               'base_url': canonical,
+               'canonical': canonical,
+               }
+
+    context.update(filters)
+
+    return render(request, 'state_colleges.html', context)
 
 
 def get_state_param(request, state_id, state_slug, param, param_value):
@@ -181,6 +143,13 @@ def get_state_param(request, state_id, state_slug, param, param_value):
 
             colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value}).order_by('name')
 
+            # handle filter requests
+            params = request.GET
+            if len(params) == 1:
+                key = next(iter(params.keys()))
+                value = next(iter(params.values()))
+                colleges = colleges.filter(**{key: value})
+
             if len(colleges) > 0:
 
                 # define seo data before rendering
@@ -202,11 +171,17 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                     paginator = Paginator(colleges, 50)
                     colleges = paginator.get_page(page)
 
-                return render(request, 'filtered_colleges.html', {'colleges': colleges,
-                                                                  'seo_title': seo_title,
-                                                                  'canonical': canonical,
-                                                                  'base_url': canonical,
-                                                                  })
+                # get filters
+                filters = College.get_filters('state', state_id, 'states', init_filter=param, init_filter_val=param_value)
+                context = {'colleges': colleges,
+                           'seo_title': seo_title,
+                           'canonical': canonical,
+                           'base_url': canonical,
+                           'state_view': True
+                           }
+                context.update(filters)
+
+                return render(request, 'filtered_colleges.html', context)
 
             else:
                 return HttpResponseNotFound('<h1>Page not found</h1>')

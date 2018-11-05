@@ -23,11 +23,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <title>State {{ state.name }} colleges and universities</title>
+    <title>State {{ name }} colleges and universities</title>
 </head>
 <body>
 <div class="container-fluid">
-    <h1>Colleges and universities of {{ state.name }}</h1>
+    <h1>Colleges and universities of {{ name }}</h1>
     <p>Colleges found: {{ colleges.paginator.count }}</p>
 
     <div class="btn-group dropright">
@@ -36,9 +36,9 @@
             Level
         </button>
         <div class="dropdown-menu">
-            {% for level in levels %}
+            {% for l in inst_level %}
                 <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?inst_level={{ level.0 }}">{{ level.1 }}</a>
+                   href="{% url 'college_app:state' state_id %}?inst_level={{ l.0 }}">{{ l.1 }}</a>
             {% endfor %}
         </div>
     </div>
@@ -49,9 +49,9 @@
             Religion
         </button>
         <div class="dropdown-menu">
-            {% for religion in religions %}
+            {% for r in religous %}
                 <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?religous={{ religion.0 }}">{{ religion.1 }}</a>
+                   href="{% url 'college_app:state' state_id %}?religous={{ r.0 }}">{{ r.1 }}</a>
             {% endfor %}
         </div>
     </div>
@@ -62,9 +62,9 @@
             Carnegie Basic
         </button>
         <div class="dropdown-menu">
-            {% for basic in basics %}
+            {% for b in carnegie_basic %}
                 <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?carnegie_basic={{ basic.0 }}">{{ basic.1 }}</a>
+                   href="{% url 'college_app:state' state_id %}?carnegie_basic={{ b.0 }}">{{ b.1 }}</a>
             {% endfor %}
         </div>
     </div>
@@ -75,9 +75,9 @@
             Highest Degree
         </button>
         <div class="dropdown-menu">
-            {% for degree in degrees %}
+            {% for d in highest_grad_degree %}
                 <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?highest_grad_degree={{ degree.0 }}">{{ degree.1 }}</a>
+                   href="{% url 'college_app:state' state_id %}?highest_grad_degree={{ d.0 }}">{{ d.1 }}</a>
             {% endfor %}
         </div>
     </div>
@@ -87,9 +87,9 @@
             Locale
         </button>
         <div class="dropdown-menu">
-            {% for locale in locales %}
+            {% for l in locale %}
                 <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?locale={{ locale.0 }}">{{ locale.1 }}</a>
+                   href="{% url 'college_app:state' state_id %}?locale={{ l.0 }}">{{ l.1 }}</a>
             {% endfor %}
         </div>
     </div>
@@ -100,9 +100,9 @@
             Ownership
         </button>
         <div class="dropdown-menu">
-            {% for ownership in ownerships %}
+            {% for o in ownership %}
                 <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?ownership={{ ownership.0 }}">{{ ownership.1 }}</a>
+                   href="{% url 'college_app:state' state_id %}?ownership={{ o.0 }}">{{ o.1 }}</a>
             {% endfor %}
         </div>
     </div>
@@ -112,14 +112,14 @@
             City/town
         </button>
         <div class="dropdown-menu">
-            {% for city in cities %}
+            {% for c in city %}
                 <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?city={{ city.1 }}">{{ city.0 }}</a>
+                   href="{% url 'college_app:state' state_id %}?city={{ c.1 }}">{{ c.0 }}</a>
             {% endfor %}
         </div>
     </div>
 
-    {% for val in colleges_hist_black %}
+    {% for val in hist_black %}
         {% if val.hist_black == 1 %}
             <div class="btn-group dropright">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
@@ -135,7 +135,7 @@
         {% endif %}
     {% endfor %}
 
-    {% for val in colleges_predom_black %}
+    {% for val in predom_black %}
         {% if val.predom_black == 1 %}
             <div class="btn-group dropright">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
@@ -151,7 +151,7 @@
         {% endif %}
     {% endfor %}
 
-    {% for val in colleges_hispanic %}
+    {% for val in hispanic %}
         {% if val.hispanic == 1 %}
             <div class="btn-group dropright">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
@@ -167,7 +167,7 @@
         {% endif %}
     {% endfor %}
 
-    {% for val in colleges_men_only %}
+    {% for val in men_only %}
         {% if val.men_only == 1 %}
             <div class="btn-group dropright">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
@@ -184,7 +184,7 @@
     {% endfor %}
 
 
-    {% for val in colleges_women_only %}
+    {% for val in women_only %}
         {% if val.women_only == 1 %}
             <div class="btn-group dropright">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
@@ -200,7 +200,7 @@
         {% endif %}
     {% endfor %}
 
-    {% for val in colleges_online_only %}
+    {% for val in online_only %}
         {% if val.online_only == 1 %}
             <div class="btn-group dropright">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
@@ -216,7 +216,7 @@
         {% endif %}
     {% endfor %}
 
-    {% for val in colleges_cur_operating %}
+    {% for val in cur_operating %}
         {% if val.cur_operating == 1 %}
             <div class="btn-group dropright">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"

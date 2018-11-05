@@ -42,7 +42,6 @@ class College(models.Model):
     inst_level = models.ForeignKey(Level, on_delete=models.PROTECT, null=True, verbose_name='level')
     cur_operating = models.IntegerField(null=True, verbose_name='cur_operating')
 
-
     full_data = models.TextField()
 
     @classmethod
@@ -72,7 +71,6 @@ class College(models.Model):
 
                         row = ''.join(row)
                         col_values = row.split(',')
-
 
                     def check_val(val, str):
                         if val == 'NULL' and not str:
@@ -140,3 +138,75 @@ class College(models.Model):
 
             cls.objects.bulk_create(colleges)
 
+
+    @classmethod
+    def get_filters(cls, entity, entity_id, excluded_filters=[], get_filter='', init_filter='', init_filter_val=''):
+        # items for the second level of filtration
+        if init_filter:
+            colleges = cls.objects.filter(**{entity: entity_id,
+                                             init_filter: init_filter_val,
+                                             })
+        # items for initial level of filtration
+        else:
+            colleges = cls.objects.filter(**{entity: entity_id})
+
+
+        colleges_cities = colleges.values_list('city',
+                                               'city_slug').order_by('city').distinct()
+        colleges_states = colleges.values_list('state__id',
+                                               'state__name').order_by('state__name').distinct()
+        colleges_ownership = colleges.values_list('ownership__id',
+                                                  'ownership__description').order_by('ownership__id').distinct()
+        colleges_locales = colleges.values_list('locale__id',
+                                                'locale__description').order_by('locale__id').exclude(
+            locale__description=None).distinct()
+        colleges_degrees = colleges.values_list('highest_grad_degree__id',
+                                                'highest_grad_degree__description').order_by(
+            'highest_grad_degree__id').distinct()
+        colleges_carnegie_basic = colleges.values_list('carnegie_basic__id',
+                                                       'carnegie_basic__description').order_by(
+            'carnegie_basic__description').exclude(carnegie_basic__description=None).exclude(
+            carnegie_basic__description='Not applicable').distinct()
+        colleges_religions = colleges.values_list('religous__id',
+                                                  'religous__name').order_by(
+            'religous__name').exclude(religous__name=None).distinct()
+        colleges_levels = colleges.values_list('inst_level__id',
+                                               'inst_level__description').order_by('inst_level__id').distinct()
+        colleges_hist_black = colleges.values('hist_black').distinct()
+        colleges_predom_black = colleges.values('predom_black').distinct()
+        colleges_hispanic = colleges.values('hispanic').distinct()
+        colleges_men_only = colleges.values('men_only').distinct()
+        colleges_women_only = colleges.values('women_only').distinct()
+        colleges_online_only = colleges.values('online_only').distinct()
+        colleges_cur_operating = colleges.values('cur_operating').distinct()
+
+        filters = {'city': colleges_cities,
+                   'state': colleges_states,
+                   'ownership': colleges_ownership,
+                   'locale': colleges_locales,
+                   'highest_grad_degree': colleges_degrees,
+                   'carnegie_basic': colleges_carnegie_basic,
+                   'religous': colleges_religions,
+                   'inst_level': colleges_levels,
+                   'hist_black': colleges_hist_black,
+                   'predom_black': colleges_predom_black,
+                   'hispanic': colleges_hispanic,
+                   'men_only': colleges_men_only,
+                   'women_only': colleges_women_only,
+                   'online_only': colleges_online_only,
+                   'cur_operating': colleges_cur_operating, }
+
+        if len(excluded_filters) > 0:
+            for i in excluded_filters:
+                try:
+                    del filters[i]
+                except:
+                    pass
+
+
+        if len(get_filter) > 0:
+            for i in filters:
+                if i == get_filter:
+                    return filters[i]
+
+        return filters
