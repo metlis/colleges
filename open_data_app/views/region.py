@@ -64,7 +64,7 @@ def get_region_slug(request, region_id, region_slug):
         if region_slug != slugify(region_slug_name):
             return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
-            colleges = College.objects.filter(region__id=region_id)
+            colleges = College.objects.filter(region__id=region_id).order_by('name')
             colleges_cities = College.objects.filter(region=region_id).values_list('city',
                                                                                    'city_slug').order_by(
                 'city').distinct()
@@ -213,7 +213,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
 
                 query_val = dict[param][int(param_value)]
 
-            colleges = College.objects.filter(region__id=region_id).filter(**{param: param_value})
+            colleges = College.objects.filter(region__id=region_id).filter(**{param: param_value}).order_by('name')
 
             if len(colleges) > 0:
 

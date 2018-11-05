@@ -52,7 +52,7 @@ def get_state_slug(request, state_id, state_slug):
         if state_slug != slugify(state.name):
             return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
-            colleges = College.objects.filter(state__id=state_id)
+            colleges = College.objects.filter(state__id=state_id).order_by('name')
             colleges_cities = College.objects.filter(state=state_id).values_list('city',
                                                                                  'city_slug').order_by(
                 'city').distinct()
@@ -179,7 +179,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
 
                 query_val = dict[param][int(param_value)]
 
-            colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value})
+            colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value}).order_by('name')
 
             if len(colleges) > 0:
 
