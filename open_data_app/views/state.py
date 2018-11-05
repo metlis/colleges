@@ -8,6 +8,7 @@ from settings import *
 from django.utils.text import slugify
 import urllib.parse
 from open_data_app.modules.seo import Seo
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
 def get_state(request, state_id):
@@ -86,6 +87,20 @@ def get_state_slug(request, state_id, state_slug):
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
+    # pagination
+    if request.GET.get('page'):
+        page = request.GET.get('page')
+    else:
+        page = 1
+    # if parameter page does not have value all, show pagination
+    if request.GET.get('page') != 'all':
+        paginator = Paginator(colleges, 50)
+        colleges = paginator.get_page(page)
+
+    canonical = reverse('college_app:state_slug', kwargs={'state_id': state_id,
+                                                          'state_slug': state_slug,
+                                                          })
+
     return render(request, 'state_colleges.html', {'colleges': colleges,
                                                    'state': state,
                                                    'state_id': state_id,
@@ -104,6 +119,8 @@ def get_state_slug(request, state_id, state_slug):
                                                    'colleges_women_only': colleges_women_only,
                                                    'colleges_online_only': colleges_online_only,
                                                    'colleges_cur_operating': colleges_cur_operating,
+                                                   'base_url': canonical,
+                                                   'canonical': canonical,
                                                    })
 
 
@@ -175,9 +192,20 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                                                                        'param_value': param_value,
                                                                        })
 
+                # pagination
+                if request.GET.get('page'):
+                    page = request.GET.get('page')
+                else:
+                    page = 1
+                # if parameter page does not have value all, show pagination
+                if request.GET.get('page') != 'all':
+                    paginator = Paginator(colleges, 50)
+                    colleges = paginator.get_page(page)
+
                 return render(request, 'filtered_colleges.html', {'colleges': colleges,
                                                                   'seo_title': seo_title,
                                                                   'canonical': canonical,
+                                                                  'base_url': canonical,
                                                                   })
 
             else:

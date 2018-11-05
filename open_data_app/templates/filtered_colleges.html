@@ -2,19 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="canonical" href="{{ canonical }}">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+    {# canonical page #}
+    {% if colleges.number > 1 %}
+        <link rel="canonical" href="{{ canonical }}?page={{ colleges.number }}">
+    {% else %}
+        <link rel="canonical" href="{{ canonical }}">
+    {% endif %}
+    {# next page #}
+    {% if colleges.has_next %}
+        <link rel="next" href="{{ canonical }}?page={{ colleges.next_page_number }}">
+    {% endif %}
+    {# prev page #}
+    {% if colleges.has_previous %}
+        {% if colleges.previous_page_number == 1 %}
+            <link rel="prev" href="{{ canonical }}">
+        {% else %}
+            <link rel="prev" href="{{ canonical }}?page={{ colleges.previous_page_number }}">
+        {% endif %}
+    {% endif %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>{{ seo_title }}</title>
 </head>
 <body>
-{% for college in colleges|dictsort:"name" %}
-    <p>
-        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
-    </p>
-{% endfor %}
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<div class="container-fluid">
+    {% for college in colleges|dictsort:"name" %}
+        <p>
+            <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+        </p>
+    {% endfor %}
+
+    {% if colleges.paginator.num_pages > 1 %}
+        <div>
+            {% if colleges.has_previous %}
+                <a href="{{ base_url }}">&laquo; first</a>
+                {% if colleges.previous_page_number == 1 %}
+                    <a href="{{ base_url }}">previous</a>
+                {% else %}
+                    <a href="?page={{ colleges.previous_page_number }}">previous</a>
+                {% endif %}
+            {% endif %}
+
+            <span>
+            Page {{ colleges.number }} of {{ colleges.paginator.num_pages }}.
+        </span>
+
+            {% if colleges.has_next %}
+                <a href="?page={{ colleges.next_page_number }}">next</a>
+                <a href="?page={{ colleges.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 </body>
 </html>

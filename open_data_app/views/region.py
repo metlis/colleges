@@ -6,6 +6,7 @@ from open_data_app.models import Region, College, State
 import re
 from django.utils.text import slugify
 from open_data_app.modules.seo import Seo
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
 def get_region(request, region_id):
@@ -100,6 +101,20 @@ def get_region_slug(request, region_id, region_slug):
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
+    # pagination
+    if request.GET.get('page'):
+        page = request.GET.get('page')
+    else:
+        page = 1
+    # if parameter page does not have value all, show pagination
+    if request.GET.get('page') != 'all':
+        paginator = Paginator(colleges, 50)
+        colleges = paginator.get_page(page)
+
+    canonical = reverse('college_app:region_slug', kwargs={'region_id': region_id,
+                                                          'region_slug': region_slug,
+                                                          })
+
     return render(request, 'region_colleges.html', {'colleges': colleges,
                                                     'region_name': region_name,
                                                     'region_states': region_states,
@@ -120,6 +135,8 @@ def get_region_slug(request, region_id, region_slug):
                                                     'colleges_women_only': colleges_women_only,
                                                     'colleges_online_only': colleges_online_only,
                                                     'colleges_cur_operating': colleges_cur_operating,
+                                                    'base_url': canonical,
+                                                    'canonical': canonical,
                                                     })
 
 
@@ -157,12 +174,11 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                     except:
                         query_val = rel_obj.name
 
-
                     # assign canonical if the field is state
-                    if  field._verbose_name == 'state':
+                    if field._verbose_name == 'state':
                         canonical = reverse('college_app:state_slug', kwargs={'state_id': rel_obj.id,
-                                                                               'state_slug': slugify(rel_obj.name),
-                                                                               })
+                                                                              'state_slug': slugify(rel_obj.name),
+                                                                              })
 
             # for non-relational fields (city) get query value
             elif param in ['city_slug']:
@@ -210,10 +226,26 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                                                                             'param': field._verbose_name,
                                                                             'param_value': param_value,
                                                                             })
+                # pagination
+                if request.GET.get('page'):
+                    page = request.GET.get('page')
+                else:
+                    page=1
+                # if parameter page does not have value all, show pagination
+                if request.GET.get('page') != 'all':
+                    paginator = Paginator(colleges, 50)
+                    colleges = paginator.get_page(page)
+                # a url for pagination first page
+                base_url = reverse('college_app:region_param', kwargs={'region_id': region_id,
+                                                                       'region_slug': region_slug,
+                                                                       'param': field._verbose_name,
+                                                                       'param_value': param_value,
+                                                                       })
 
                 return render(request, 'filtered_colleges.html', {'colleges': colleges,
                                                                   'seo_title': seo_title,
                                                                   'canonical': canonical,
+                                                                  'base_url': base_url,
                                                                   })
             else:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
