@@ -16,8 +16,7 @@ def get_state(request, state_id):
 
     if state_exists:
         params = request.GET
-        state = State.objects.get(id=state_id)
-        state_slug = slugify(state.name)
+        state, state_slug = State.get_state_data(state_id)
 
         if len(params) == 0:
             return HttpResponseRedirect(urllib.parse.urljoin(str(state_id), state_slug))
@@ -47,9 +46,9 @@ def get_state_slug(request, state_id, state_slug):
     state_exists = State.objects.filter(id=state_id).exists()
 
     if state_exists:
-        state = State.objects.get(id=state_id)
+        state, slug = State.get_state_data(state_id)
 
-        if state_slug != slugify(state.name):
+        if state_slug != slug:
             return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
             colleges = College.objects.filter(state=state_id).order_by('name')
@@ -177,7 +176,8 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                            'seo_title': seo_title,
                            'canonical': canonical,
                            'base_url': canonical,
-                           'state_view': True
+                           'state_view': True,
+                           'geo': state_name,
                            }
                 context.update(filters)
 

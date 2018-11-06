@@ -14,13 +14,7 @@ def get_region(request, region_id):
 
     if region_exists:
         params = request.GET
-        region = Region.objects.get(id=region_id)
-        region_re = re.search('(.*?)\s\((.*?)\)', region.name)
-        try:
-            region_name = region_re.group(1)
-            region_slug = slugify(region_name)
-        except:
-            region_slug = ''
+        region_name, region_slug, region_states = Region.get_region_data(region_id)
 
         if len(params) == 0:
             return HttpResponseRedirect(urllib.parse.urljoin(str(region_id), region_slug))
@@ -50,18 +44,9 @@ def get_region_slug(request, region_id, region_slug):
     region_exists = Region.objects.filter(id=region_id).exists()
 
     if region_exists:
-        region = Region.objects.get(id=region_id)
-        region_re = re.search('(.*?)\s\((.*?)\)', region.name)
-        try:
-            region_name = region_re.group(1)
-            region_slug_name = slugify(region_name)
-            region_states = region_re.group(2)
-        except:
-            region_name = ''
-            region_slug_name = ''
-            region_states = ''
+        region_name, slug, region_states = Region.get_region_data(region_id)
 
-        if region_slug != slugify(region_slug_name):
+        if region_slug != slug:
             return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
             colleges = College.objects.filter(region=region_id).order_by('name')
@@ -110,7 +95,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
     :return:
     """
     college_fields = College._meta.get_fields()
-    region_name = Region.objects.get(id=region_id).name
+    region_name, region_slug, region_states = Region.get_region_data(region_id)
 
     for field in college_fields:
         if param == field._verbose_name:
@@ -218,7 +203,8 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                            'canonical': canonical,
                            'base_url': base_url,
                            'init_filter_val': query_val,
-                           # 'second_filter_val': filter_val,
+                           'geo': region_name,
+                           'second_filter_val': param_value,
                            }
                 context.update(filters)
 
