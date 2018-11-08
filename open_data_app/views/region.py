@@ -3,7 +3,6 @@ from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from open_data_app.models import Region, College, State
-import re
 from django.utils.text import slugify
 from open_data_app.modules.seo import Seo
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -204,7 +203,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                            'base_url': base_url,
                            'init_filter_val': query_val,
                            'geo': region_name,
-                           'second_filter_val': param_value,
+                           'second_filter': query_val,
                            }
                 context.update(filters)
 

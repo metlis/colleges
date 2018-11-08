@@ -12,6 +12,7 @@ class Seo():
                      'state': 'Colleges and universities in {}, {}, USA',
                      'hist_black': '{} colleges and universities in {}, USA',
                      'predom_black': '{} colleges and universities in {}, USA',
+                     'hispanic': '{} colleges and universities in {}, USA',
                      'men_only': '{} colleges and universities in {}, USA',
                      'women_only': '{} colleges and universities in {}, USA',
                      'online_only': '{} colleges and universities in {}, USA',

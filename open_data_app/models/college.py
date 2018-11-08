@@ -209,4 +209,5 @@ class College(models.Model):
                 if i == get_filter:
                     return filters[i]
 
+
         return filters

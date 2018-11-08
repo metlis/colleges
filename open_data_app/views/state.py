@@ -5,7 +5,6 @@ from django.apps import apps
 from open_data_app.models import State
 from open_data_app.models import College
 from settings import *
-from django.utils.text import slugify
 import urllib.parse
 from open_data_app.modules.seo import Seo
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -178,6 +177,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                            'base_url': canonical,
                            'state_view': True,
                            'geo': state_name,
+                           'second_filter': query_val,
                            }
                 context.update(filters)
 
