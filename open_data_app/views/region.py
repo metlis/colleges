@@ -201,6 +201,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                            'seo_title': seo_title,
                            'canonical': canonical,
                            'base_url': base_url,
+                           'region_id': region_id,
                            'init_filter_val': query_val,
                            'geo': region_name,
                            'second_filter': query_val,

@@ -28,6 +28,15 @@
 <div class="container-fluid">
     <h1>Colleges of {{ geo }}: {{ second_filter }}</h1>
     <p>Colleges found: {{ colleges.paginator.count }}</p>
+    <div>
+        <a href="{% url 'college_app:index' %}">Home</a>
+        {% if state_view %}
+            <a href="{% url 'college_app:state' state_id %}">{{ geo }}</a>
+        {% else %}
+            <a href="{% url 'college_app:region' region_id %}">{{ geo }}</a>
+        {% endif %}
+        <a href="{{ base_url }}">{{ second_filter }}</a>
+    </div>
     {% if inst_level %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"

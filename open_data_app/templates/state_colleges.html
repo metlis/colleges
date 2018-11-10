@@ -29,7 +29,10 @@
 <div class="container-fluid">
     <h1>Colleges and universities of {{ name }}</h1>
     <p>Colleges found: {{ colleges.paginator.count }}</p>
-
+    <div>
+        <a href="{% url 'college_app:index' %}">Home</a>
+        <a href="{% url 'college_app:state' state_id %}">{{ name }}</a>
+    </div>
     <div class="btn-group dropright">
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">

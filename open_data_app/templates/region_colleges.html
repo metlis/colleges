@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-        {# canonical page #}
+    {# canonical page #}
     {% if colleges.number > 1 %}
         <link rel="canonical" href="{{ canonical }}?page={{ colleges.number }}">
     {% else %}
@@ -29,6 +29,10 @@
 <div class="container-fluid">
     <h1>Colleges and universities of {{ region_name }}</h1>
     <p>Colleges found: {{ colleges.paginator.count }}</p>
+    <div>
+        <a href="{% url 'college_app:index' %}">Home</a>
+        <a href="{% url 'college_app:region' region_id %}">{{ region_name }}</a>
+    </div>
     <div class="btn-group dropright">
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
