@@ -138,14 +138,19 @@ class College(models.Model):
 
             cls.objects.bulk_create(colleges)
 
-
     @classmethod
-    def get_filters(cls, entity, entity_id, excluded_filters='', get_filter='', init_filter='', init_filter_val=''):
+    def get_filters(cls, entity, entity_id, excluded_filters='', get_filter='', init_filter='', init_filter_val='',
+                    filters_set=''):
         # items for the second level of filtration
         if init_filter:
-            colleges = cls.objects.filter(**{entity: entity_id,
-                                             init_filter: init_filter_val,
-                                             })
+            filters = {entity: entity_id,
+                       init_filter: init_filter_val,
+                       }
+
+            colleges = cls.objects.filter(**filters)
+
+            if filters_set:
+                colleges = colleges.filter(**filters_set)
         # items for initial level of filtration
         else:
             colleges = cls.objects.filter(**{entity: entity_id})
@@ -203,11 +208,9 @@ class College(models.Model):
                 except:
                     pass
 
-
         if len(get_filter) > 0:
             for i in filters:
                 if i == get_filter:
                     return filters[i]
-
 
         return filters

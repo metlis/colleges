@@ -147,6 +147,8 @@ def get_state_param(request, state_id, state_slug, param, param_value):
 
             # handle filter requests
             params = request.GET
+            req_str = ''
+            params_dict = {}
             if len(params) == 1 and not 'page' in params:
                 key = next(iter(params.keys()))
                 value = next(iter(params.values()))
@@ -160,16 +162,32 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                 del req['page']
                 req_str = ''
                 for key in req:
+                    params_dict[key] = req[key]
                     if len(req_str) > 0:
                         req_str += '&{}={}'.format(key, req[key])
                     else:
                         req_str += '{}={}'.format(key, req[key])
-                    try:
-                        colleges = colleges.filter(**{key: req[key]})
-                    except:
-                        return HttpResponseNotFound('<h1>Page not found</h1>')
+                try:
+                    colleges = colleges.filter(**params_dict)
+                except:
+                    return HttpResponseNotFound('<h1>Page not found</h1>')
+            elif len(params) > 1:
+                for key in params:
+                    params_dict[key] = params[key]
+                try:
+                    colleges = colleges.filter(**params_dict)
+                except:
+                    return HttpResponseNotFound('<h1>Page not found</h1>')
+
+
+            if len(req_str) > 0:
+                if req_str[:1] == '&':
+                    filter_req_str = '{}&'.format(req_str[1:])
+                else:
+                    filter_req_str = '{}&'.format(req_str)
             else:
-                req_str = ''
+                filter_req_str = ''
+
 
 
             if len(colleges) > 0:
@@ -193,7 +211,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                     paginator = Paginator(colleges, 50)
                     colleges = paginator.get_page(page)
                 # get filters
-                filters = College.get_filters('state', state_id, excluded_filters=[init_param, 'state'], init_filter=param, init_filter_val=param_value)
+                filters = College.get_filters('state', state_id, excluded_filters=[init_param, 'state'], init_filter=param, init_filter_val=param_value, filters_set=params_dict)
                 context = {'colleges': colleges,
                            'seo_title': seo_title,
                            'canonical': canonical,
@@ -203,6 +221,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                            'geo': state_name,
                            'second_filter': query_val,
                            'params': req_str,
+                           'filter_req_str': filter_req_str,
                            }
                 context.update(filters)
 

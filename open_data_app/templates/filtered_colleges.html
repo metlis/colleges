@@ -22,6 +22,7 @@
     {% endif %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    {% load static %}
     <title>{{ seo_title }}</title>
 </head>
 <body>
@@ -46,7 +47,7 @@
             <div class="dropdown-menu">
                 {% for l in inst_level %}
                     <a class="dropdown-item"
-                       href="{{ base_url }}?inst_level={{ l.0 }}">{{ l.1 }}</a>
+                       onclick="addParam('inst_level={{ l.0 }}')">{{ l.1 }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -60,7 +61,7 @@
             <div class="dropdown-menu">
                 {% for r in religous %}
                     <a class="dropdown-item"
-                       href="{{ base_url }}?religous={{ r.0 }}">{{ r.1 }}</a>
+                       onclick="addParam('religous={{ r.0 }}')">{{ r.1 }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -74,7 +75,7 @@
             <div class="dropdown-menu">
                 {% for b in carnegie_basic %}
                     <a class="dropdown-item"
-                       href="{{ base_url }}?carnegie_basic={{ b.0 }}">{{ b.1 }}</a>
+                       onclick="addParam('carnegie_basic={{ b.0 }}')">{{ b.1 }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -88,7 +89,7 @@
             <div class="dropdown-menu">
                 {% for d in highest_grad_degree %}
                     <a class="dropdown-item"
-                       href="{{ base_url }}?highest_grad_degree={{ d.0 }}">{{ d.1 }}</a>
+                       onclick="addParam('highest_grad_degree={{ d.0 }}')">{{ d.1 }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -102,7 +103,7 @@
             <div class="dropdown-menu">
                 {% for l in locale %}
                     <a class="dropdown-item"
-                       href="{{ base_url }}?locale={{ l.0 }}">{{ l.1 }}</a>
+                       onclick="addParam('locale={{ l.0 }}')">{{ l.1 }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -116,7 +117,7 @@
             <div class="dropdown-menu">
                 {% for o in ownership %}
                     <a class="dropdown-item"
-                       href="{{ base_url }}?ownership={{ o.0 }}">{{ o.1 }}</a>
+                       onclick="addParam('ownership={{ o.0 }}')">{{ o.1 }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -130,7 +131,7 @@
             <div class="dropdown-menu">
                 {% for s in state %}
                     <a class="dropdown-item"
-                       href="{{ base_url }}?state={{ s.0 }}">{{ s.1 }}</a>
+                       onclick="addParam('state={{ s.0 }}')">{{ s.1 }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -144,7 +145,7 @@
             <div class="dropdown-menu">
                 {% for c in city %}
                     <a class="dropdown-item"
-                       href="{{ base_url }}?city_slug={{ c.1 }}">{{ c.0 }}</a>
+                       onclick="addParam('city_slug={{ c.1 }}')">{{ c.0 }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -158,8 +159,8 @@
                     Historically black
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ base_url }}?hist_black=0">No</a>
-                    <a class="dropdown-item" href="{{ base_url }}?hist_black=1">Yes</a>
+                    <a class="dropdown-item" onclick="addParam('hist_black=0')">No</a>
+                    <a class="dropdown-item" onclick="addParam('hist_black=1')">Yes</a>
                 </div>
             </div>
         {% endif %}
@@ -174,8 +175,8 @@
                     Predominantely black
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ base_url }}?predom_black=0">No</a>
-                    <a class="dropdown-item" href="{{ base_url }}?predom_black=1">Yes</a>
+                    <a class="dropdown-item" onclick="addParam('predom_black=0')">No</a>
+                    <a class="dropdown-item" onclick="addParam('predom_black=1')">Yes</a>
                 </div>
             </div>
         {% endif %}
@@ -190,8 +191,8 @@
                     Hispanic
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ base_url }}?hispanic=0">No</a>
-                    <a class="dropdown-item" href="{{ base_url }}?hispanic=1">Yes</a>
+                    <a class="dropdown-item" onclick="addParam('hispanic=0')">No</a>
+                    <a class="dropdown-item" onclick="addParam('hispanic=1')">Yes</a>
                 </div>
             </div>
         {% endif %}
@@ -206,8 +207,8 @@
                     Men-only
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ base_url }}?men_only=0">No</a>
-                    <a class="dropdown-item" href="{{ base_url }}?men_only=1">Yes</a>
+                    <a class="dropdown-item" onclick="addParam('men_only=0')">No</a>
+                    <a class="dropdown-item" onclick="addParam('men_only=1')">Yes</a>
                 </div>
             </div>
         {% endif %}
@@ -223,8 +224,8 @@
                     Women-only
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ base_url }}?women_only=0">No</a>
-                    <a class="dropdown-item" href="{{ base_url }}?women_only=1">Yes</a>
+                    <a class="dropdown-item" onclick="addParam('women_only=0')">No</a>
+                    <a class="dropdown-item" onclick="addParam('women_only=1')">Yes</a>
                 </div>
             </div>
         {% endif %}
@@ -239,8 +240,8 @@
                     Online-only
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ base_url }}?online_only=0">No</a>
-                    <a class="dropdown-item" href="{{ base_url }}?online_only=1">Yes</a>
+                    <a class="dropdown-item" onclick="addParam('online_only=0')">No</a>
+                    <a class="dropdown-item" onclick="addParam('online_only=1')">Yes</a>
                 </div>
             </div>
         {% endif %}
@@ -255,8 +256,8 @@
                     Currently operating
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ base_url }}?cur_operating=0">No</a>
-                    <a class="dropdown-item" href="{{ base_url }}?cur_operating=1">Yes</a>
+                    <a class="dropdown-item" onclick="addParam('cur_operating=0')">No</a>
+                    <a class="dropdown-item" onclick="addParam('cur_operating=1')">Yes</a>
                 </div>
             </div>
         {% endif %}
@@ -326,5 +327,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+<script src="{% static 'open_data_app/js/scripts.js' %}"></script>
 </body>
 </html>

@@ -159,6 +159,8 @@ def get_region_param(request, region_id, region_slug, param, param_value):
 
             # handle filter requests
             params = request.GET
+            req_str = ''
+            params_dict = {}
             if len(params) == 1 and not 'page' in params:
                 key = next(iter(params.keys()))
                 value = next(iter(params.values()))
@@ -172,16 +174,22 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                 del req['page']
                 req_str = ''
                 for key in req:
+                    params_dict[key] = req[key]
                     if len(req_str) > 0:
                         req_str += '&{}={}'.format(key, req[key])
                     else:
                         req_str += '{}={}'.format(key, req[key])
-                    try:
-                        colleges = colleges.filter(**{key: req[key]})
-                    except:
-                        return HttpResponseNotFound('<h1>Page not found</h1>')
-            else:
-                req_str = ''
+                try:
+                    colleges = colleges.filter(**params_dict)
+                except:
+                    return HttpResponseNotFound('<h1>Page not found</h1>')
+            elif len(params) > 1:
+                for key in params:
+                    params_dict[key] = params[key]
+                try:
+                    colleges = colleges.filter(**params_dict)
+                except:
+                    return HttpResponseNotFound('<h1>Page not found</h1>')
 
             if len(colleges) > 0:
 
@@ -211,7 +219,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                                                                        })
 
                 # get filters
-                filters = College.get_filters('region', region_id, init_filter=param, init_filter_val=param_value)
+                filters = College.get_filters('region', region_id, init_filter=param, init_filter_val=param_value, filters_set=params_dict)
                 context = {'colleges': colleges,
                            'seo_title': seo_title,
                            'canonical': canonical,
