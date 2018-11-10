@@ -159,14 +159,29 @@ def get_region_param(request, region_id, region_slug, param, param_value):
 
             # handle filter requests
             params = request.GET
-            if len(params) == 1:
+            if len(params) == 1 and not 'page' in params:
                 key = next(iter(params.keys()))
                 value = next(iter(params.values()))
-                # filter_vals = College.get_filters('region', region_id, get_filter=key)
-                # for val in filter_vals:
-                #     if val[0] == int(value):
-                #         filter_val = val[1]
-                colleges = colleges.filter(**{key: value})
+                req_str = '{}={}'.format(key, value)
+                try:
+                    colleges = colleges.filter(**{key: value})
+                except:
+                    return HttpResponseNotFound('<h1>Page not found</h1>')
+            elif len(params) > 1 and 'page' in params:
+                req = params.copy()
+                del req['page']
+                req_str = ''
+                for key in req:
+                    if len(req_str) > 0:
+                        req_str += '&{}={}'.format(key, req[key])
+                    else:
+                        req_str += '{}={}'.format(key, req[key])
+                    try:
+                        colleges = colleges.filter(**{key: req[key]})
+                    except:
+                        return HttpResponseNotFound('<h1>Page not found</h1>')
+            else:
+                req_str = ''
 
             if len(colleges) > 0:
 
@@ -205,6 +220,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                            'init_filter_val': query_val,
                            'geo': region_name,
                            'second_filter': query_val,
+                           'params': req_str,
                            }
                 context.update(filters)
 

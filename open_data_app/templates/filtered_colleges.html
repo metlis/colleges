@@ -268,26 +268,53 @@
         </p>
     {% endfor %}
 
-    {% if colleges.paginator.num_pages > 1 %}
-        <div>
-            {% if colleges.has_previous %}
-                <a href="{{ base_url }}">&laquo; first</a>
-                {% if colleges.previous_page_number == 1 %}
-                    <a href="{{ base_url }}">previous</a>
-                {% else %}
-                    <a href="?page={{ colleges.previous_page_number }}">previous</a>
+    {# pagination #}
+    {% if params %}
+        {% if colleges.paginator.num_pages > 1 %}
+            <div>
+                {% if colleges.has_previous %}
+                    <a href="{{ base_url }}?{{ params }}">&laquo; first</a>
+                    {% if colleges.previous_page_number == 1 %}
+                        <a href="{{ base_url }}?{{ params }}">previous</a>
+                    {% else %}
+                        <a href="?page={{ colleges.previous_page_number }}{{ params }}">previous</a>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
 
-            <span>
+                <span>
             Page {{ colleges.number }} of {{ colleges.paginator.num_pages }}.
         </span>
 
-            {% if colleges.has_next %}
-                <a href="?page={{ colleges.next_page_number }}">next</a>
-                <a href="?page={{ colleges.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </div>
+                {% if colleges.has_next %}
+                    <a href="?page={{ colleges.next_page_number }}&{{ params }}">next</a>
+                    <a href="?page={{ colleges.paginator.num_pages }}&{{ params }}">last
+                        &raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        {% if colleges.paginator.num_pages > 1 %}
+            <div>
+                {% if colleges.has_previous %}
+                    <a href="{{ base_url }}">&laquo; first</a>
+                    {% if colleges.previous_page_number == 1 %}
+                        <a href="{{ base_url }}">previous</a>
+                    {% else %}
+                        <a href="?page={{ colleges.previous_page_number }}">previous</a>
+                    {% endif %}
+                {% endif %}
+
+                <span>
+            Page {{ colleges.number }} of {{ colleges.paginator.num_pages }}.
+        </span>
+
+                {% if colleges.has_next %}
+                    <a href="?page={{ colleges.next_page_number }}">next</a>
+                    <a href="?page={{ colleges.paginator.num_pages }}">last
+                        &raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
     {% endif %}
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

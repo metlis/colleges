@@ -147,10 +147,30 @@ def get_state_param(request, state_id, state_slug, param, param_value):
 
             # handle filter requests
             params = request.GET
-            if len(params) == 1:
+            if len(params) == 1 and not 'page' in params:
                 key = next(iter(params.keys()))
                 value = next(iter(params.values()))
-                colleges = colleges.filter(**{key: value})
+                req_str = '{}={}'.format(key, value)
+                try:
+                    colleges = colleges.filter(**{key: value})
+                except:
+                    return HttpResponseNotFound('<h1>Page not found</h1>')
+            elif len(params) > 1 and 'page' in params:
+                req = params.copy()
+                del req['page']
+                req_str = ''
+                for key in req:
+                    if len(req_str) > 0:
+                        req_str += '&{}={}'.format(key, req[key])
+                    else:
+                        req_str += '{}={}'.format(key, req[key])
+                    try:
+                        colleges = colleges.filter(**{key: req[key]})
+                    except:
+                        return HttpResponseNotFound('<h1>Page not found</h1>')
+            else:
+                req_str = ''
+
 
             if len(colleges) > 0:
 
@@ -182,6 +202,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                            'state_id': state_id,
                            'geo': state_name,
                            'second_filter': query_val,
+                           'params': req_str,
                            }
                 context.update(filters)
 
