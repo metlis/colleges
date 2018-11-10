@@ -97,9 +97,13 @@ def get_state_param(request, state_id, state_slug, param, param_value):
     """
     college_fields = College._meta.get_fields()
     state_name = State.objects.get(id=state_id).name
+    # save initital parameter name to exclude it from filters before rendering
+    init_param = param
 
     for field in college_fields:
         if param == field._verbose_name:
+            # save initital parameter name to exclude it from filters before rendering
+            init_param = field.name
 
             # if verbose name and name are different, change query param to name of the field
             if param != field.attname:
@@ -168,9 +172,8 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                 if request.GET.get('page') != 'all':
                     paginator = Paginator(colleges, 50)
                     colleges = paginator.get_page(page)
-
                 # get filters
-                filters = College.get_filters('state', state_id, 'states', init_filter=param, init_filter_val=param_value)
+                filters = College.get_filters('state', state_id, excluded_filters=[init_param, 'state'], init_filter=param, init_filter_val=param_value)
                 context = {'colleges': colleges,
                            'seo_title': seo_title,
                            'canonical': canonical,

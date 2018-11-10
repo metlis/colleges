@@ -140,7 +140,7 @@ class College(models.Model):
 
 
     @classmethod
-    def get_filters(cls, entity, entity_id, excluded_filters=[], get_filter='', init_filter='', init_filter_val=''):
+    def get_filters(cls, entity, entity_id, excluded_filters='', get_filter='', init_filter='', init_filter_val=''):
         # items for the second level of filtration
         if init_filter:
             colleges = cls.objects.filter(**{entity: entity_id,
@@ -199,7 +199,7 @@ class College(models.Model):
         if len(excluded_filters) > 0:
             for i in excluded_filters:
                 try:
-                    del filters[i]
+                    filters[i] = []
                 except:
                     pass
 

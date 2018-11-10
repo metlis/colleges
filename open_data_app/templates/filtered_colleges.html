@@ -28,79 +28,91 @@
 <div class="container-fluid">
     <h1>Colleges of {{ geo }}: {{ second_filter }}</h1>
     <p>Colleges found: {{ colleges.paginator.count }}</p>
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Level
-        </button>
-        <div class="dropdown-menu">
-            {% for l in inst_level %}
-                <a class="dropdown-item"
-                   href="{{ base_url }}?inst_level={{ l.0 }}">{{ l.1 }}</a>
-            {% endfor %}
+    {% if inst_level %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                Level
+            </button>
+            <div class="dropdown-menu">
+                {% for l in inst_level %}
+                    <a class="dropdown-item"
+                       href="{{ base_url }}?inst_level={{ l.0 }}">{{ l.1 }}</a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Religion
-        </button>
-        <div class="dropdown-menu">
-            {% for r in religous %}
-                <a class="dropdown-item"
-                   href="{{ base_url }}?religous={{ r.0 }}">{{ r.1 }}</a>
-            {% endfor %}
+    {% endif %}
+    {% if religous %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                Religion
+            </button>
+            <div class="dropdown-menu">
+                {% for r in religous %}
+                    <a class="dropdown-item"
+                       href="{{ base_url }}?religous={{ r.0 }}">{{ r.1 }}</a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Carnegie Basic
-        </button>
-        <div class="dropdown-menu">
-            {% for b in carnegie_basic %}
-                <a class="dropdown-item"
-                   href="{{ base_url }}?carnegie_basic={{ b.0 }}">{{ b.1 }}</a>
-            {% endfor %}
+    {% endif %}
+    {% if carnegie_basic %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                Carnegie Basic
+            </button>
+            <div class="dropdown-menu">
+                {% for b in carnegie_basic %}
+                    <a class="dropdown-item"
+                       href="{{ base_url }}?carnegie_basic={{ b.0 }}">{{ b.1 }}</a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Highest Degree
-        </button>
-        <div class="dropdown-menu">
-            {% for d in highest_grad_degree %}
-                <a class="dropdown-item"
-                   href="{{ base_url }}?highest_grad_degree={{ d.0 }}">{{ d.1 }}</a>
-            {% endfor %}
+    {% endif %}
+    {% if highest_grad_degree %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                Highest Degree
+            </button>
+            <div class="dropdown-menu">
+                {% for d in highest_grad_degree %}
+                    <a class="dropdown-item"
+                       href="{{ base_url }}?highest_grad_degree={{ d.0 }}">{{ d.1 }}</a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Locale
-        </button>
-        <div class="dropdown-menu">
-            {% for l in locale %}
-                <a class="dropdown-item"
-                   href="{{ base_url }}?locale={{ l.0 }}">{{ l.1 }}</a>
-            {% endfor %}
+    {% endif %}
+    {% if locale %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                Locale
+            </button>
+            <div class="dropdown-menu">
+                {% for l in locale %}
+                    <a class="dropdown-item"
+                       href="{{ base_url }}?locale={{ l.0 }}">{{ l.1 }}</a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Ownership
-        </button>
-        <div class="dropdown-menu">
-            {% for o in ownership %}
-                <a class="dropdown-item"
-                   href="{{ base_url }}?ownership={{ o.0 }}">{{ o.1 }}</a>
-            {% endfor %}
+    {% endif %}
+    {% if ownership %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                Ownership
+            </button>
+            <div class="dropdown-menu">
+                {% for o in ownership %}
+                    <a class="dropdown-item"
+                       href="{{ base_url }}?ownership={{ o.0 }}">{{ o.1 }}</a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-    {% if not state_view %}
+    {% endif %}
+    {% if state_view and state %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -114,19 +126,20 @@
             </div>
         </div>
     {% endif %}
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            City/town
-        </button>
-        <div class="dropdown-menu">
-            {% for c in city %}
-                <a class="dropdown-item"
-                   href="{{ base_url }}?city_slug={{ c.1 }}">{{ c.0 }}</a>
-            {% endfor %}
+    {% if city %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                City/town
+            </button>
+            <div class="dropdown-menu">
+                {% for c in city %}
+                    <a class="dropdown-item"
+                       href="{{ base_url }}?city_slug={{ c.1 }}">{{ c.0 }}</a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-
+    {% endif %}
     {% for val in hist_black %}
         {% if val.hist_black == 1 %}
             <div class="btn-group dropright">
