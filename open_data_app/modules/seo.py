@@ -20,6 +20,9 @@ class Seo():
                      }
         try:
             template = templates[key]
-            return template.format(value, geo)
+            if geo:
+                return template.format(value, geo)
+            else:
+                return template.format(value, geo).replace(', USA', ' USA')
         except:
             return 'Colleges'

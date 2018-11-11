@@ -167,8 +167,8 @@ class College(models.Model):
         :param filters_set: third level filtration value
         :return:
         """
-        # items for the second level of filtration
-        if init_filter:
+        # items for the second level of filtration + region or state
+        if init_filter and entity:
             filters = {entity: entity_id,
                        init_filter: init_filter_val,
                        }
@@ -177,9 +177,11 @@ class College(models.Model):
             # third level filters
             if filters_set:
                 colleges = colleges.filter(**filters_set)
-        # items for initial level of filtration
-        else:
+        # items for initial level of filtration + region or state
+        elif entity:
             colleges = cls.objects.filter(**{entity: entity_id})
+        else:
+            colleges = cls.objects.all()
 
         colleges_cities = colleges.values_list('city',
                                                'city_slug').order_by('city').exclude(city=None).distinct()
@@ -283,9 +285,11 @@ class College(models.Model):
                     if entity == 'state':
                         query_field = cls.objects.filter(state__id=entity_id).filter(**{param: param_value}).values(
                         field._verbose_name).distinct()
-                    else:
+                    elif entity == 'region':
                         query_field = cls.objects.filter(region__id=entity_id).filter(**{param: param_value}).values(
                             field._verbose_name).distinct()
+                    else:
+                        query_field = cls.objects.filter(**{param: param_value}).values(field._verbose_name).distinct()
                     if len(query_field) > 0:
                         query_val = query_field[0][field._verbose_name]
                     else:

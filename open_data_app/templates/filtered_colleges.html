@@ -57,14 +57,21 @@
 </head>
 <body>
 <div class="container-fluid">
-    <h1>Colleges of {{ geo }}: {{ second_filter }}</h1>
+    {% if geo %}
+        <h1>Colleges of {{ geo }}: {{ second_filter }}</h1>
+    {% else %}
+        <h1>Colleges: {{ second_filter }}</h1>
+    {% endif %}
     <p>Colleges found: {{ colleges.paginator.count }}</p>
+
     <div>
         <a href="{% url 'college_app:index' %}">Home</a>
         {% if state_view %}
             <a href="{% url 'college_app:state' state_id %}">{{ geo }}</a>
-        {% else %}
+        {% elif geo %}
             <a href="{% url 'college_app:region' region_id %}">{{ geo }}</a>
+        {% else %}
+            <a href="{% url 'college_app:filter_values' init_param init_param_value %}">{{ query_val }}</a>
         {% endif %}
         <a href="{{ base_url }}">{{ second_filter }}</a>
     </div>
@@ -72,8 +79,10 @@
     <div>
         {% if state_view %}
             <a href="{% url 'college_app:state' state_id %}">Reset</a>
-        {% else %}
+        {% elif geo %}
             <a href="{% url 'college_app:region' region_id %}">Reset</a>
+        {% else %}
+            <a href="{% url 'college_app:filter_values' init_param init_param_value %}">Reset</a>
         {% endif %}
     </div>
 

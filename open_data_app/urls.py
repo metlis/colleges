@@ -1,6 +1,7 @@
 from django.urls import path
 
 from open_data_app.views.college import get_college, get_college_slug
+from open_data_app.views.parameter import filter_values
 from open_data_app.views.region import get_region, get_region_slug, get_region_param
 from open_data_app.views.state import get_state, get_state_slug, get_state_param
 from open_data_app.views.index import index
@@ -18,6 +19,8 @@ urlpatterns = [
 
     path(r'college/<int:college_id>/', get_college, name='college'),
     path(r'college/<int:college_id>/<slug:college_slug>/', get_college_slug, name='college_slug'),
+
+    path(r'param/<param>/<param_value>/', filter_values, name='filter_values'),
 
     path(r'', index, name='index'),
 ]
