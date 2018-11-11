@@ -1,5 +1,5 @@
-// TODO убирать из урла пагинацию при добавлении параметра, убирать фильтры с одним вариантом ответа
 function addParam(param) {
+    debugger
     if (window.location.href.indexOf(param) > -1) return;
     if (window.location.href.indexOf('?') > 0) {
         var parsedData = /(.*)\=(.*)/.exec(param);
@@ -28,5 +28,6 @@ function updateURLParameter(url, param, paramVal) {
     }
 
     var rows_txt = temp + "" + param + "=" + paramVal;
-    window.location.href = baseURL + "?" + newAdditionalURL + rows_txt;
+    url = baseURL + "?" + newAdditionalURL + rows_txt;
+    window.location.href = url.replace(/(.*)(page\=\d+&)(.*)/, '$1$3');
 }
