@@ -247,6 +247,15 @@ class College(models.Model):
 
     @classmethod
     def get_filter_val(cls, entity, entity_id, param, param_value):
+        """
+        Searches field by verbose name and takes its value. Works for any filter page
+
+        :param entity: state or region
+        :param entity_id:
+        :param param: verbose name of a field
+        :param param_value: value of a field
+        :return:
+        """
         college_fields = cls._meta.get_fields()
 
         for field in college_fields:
@@ -287,4 +296,6 @@ class College(models.Model):
 
                     query_val = dict[param][int(param_value)]
 
-                return param, query_val
+                return param, query_val, field._verbose_name
+        else:
+            return HttpResponseNotFound('<h1>Page not found</h1>')
