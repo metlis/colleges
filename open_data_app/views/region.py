@@ -163,10 +163,13 @@ def get_region_param(request, region_id, region_slug, param, param_value):
             req_str = ''
             # additional params used when retrieving filters
             params_dict = {}
+            # robots directive for filter pages
+            noindex = ''
             if len(params) == 1 and not 'page' in params:
                 key = next(iter(params.keys()))
                 value = next(iter(params.values()))
                 params_dict[key] = value
+                noindex = True
                 req_str = '{}={}'.format(key, value)
                 try:
                     colleges = colleges.filter(**{key: value})
@@ -176,6 +179,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                 req = params.copy()
                 del req['page']
                 req_str = ''
+                noindex = True
                 for key in req:
                     params_dict[key] = req[key]
                     if len(req_str) > 0:
@@ -187,6 +191,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                 except:
                     return HttpResponseNotFound('<h1>Page not found</h1>')
             elif len(params) > 1:
+                noindex = True
                 for key in params:
                     params_dict[key] = params[key]
                 try:
@@ -232,6 +237,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                            'geo': region_name,
                            'second_filter': query_val,
                            'params': req_str,
+                           'noindex': noindex,
                            }
                 context.update(filters)
 

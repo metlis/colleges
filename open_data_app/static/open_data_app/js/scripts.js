@@ -1,5 +1,4 @@
 function addParam(param) {
-    debugger
     if (window.location.href.indexOf(param) > -1) return;
     if (window.location.href.indexOf('?') > 0) {
         var parsedData = /(.*)\=(.*)/.exec(param);

@@ -2,24 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {# canonical page #}
-    {% if colleges.number > 1 %}
-        <link rel="canonical" href="{{ canonical }}?page={{ colleges.number }}">
+    {# noindex for dynamic filter pages #}
+    {% if noindex %}
+        <meta name="robots" content="noindex, follow">
     {% else %}
-        <link rel="canonical" href="{{ canonical }}">
+        <meta name="robots" content="index, follow">
     {% endif %}
-    {# next page #}
-    {% if colleges.has_next %}
-        <link rel="next" href="{{ canonical }}?page={{ colleges.next_page_number }}">
-    {% endif %}
-    {# prev page #}
-    {% if colleges.has_previous %}
-        {% if colleges.previous_page_number == 1 %}
-            <link rel="prev" href="{{ canonical }}">
+
+    {# pagination #}
+    {% if params %}
+        {# canonical page #}
+        {% if colleges.number > 1 %}
+            <link rel="canonical" href="{{ canonical }}?page={{ colleges.number }}&{{ params }}">
         {% else %}
-            <link rel="prev" href="{{ canonical }}?page={{ colleges.previous_page_number }}">
+            <link rel="canonical" href="{{ canonical }}&{{ params }}">
+        {% endif %}
+        {# next page #}
+        {% if colleges.has_next %}
+            <link rel="next" href="{{ canonical }}?page={{ colleges.next_page_number }}&{{ params }}">
+        {% endif %}
+        {# prev page #}
+        {% if colleges.has_previous %}
+            {% if colleges.previous_page_number == 1 %}
+                <link rel="prev" href="{{ canonical }}?{{ params }}">
+            {% else %}
+                <link rel="prev" href="{{ canonical }}?page={{ colleges.previous_page_number }}&{{ params }}">
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {# canonical page #}
+        {% if colleges.number > 1 %}
+            <link rel="canonical" href="{{ canonical }}?page={{ colleges.number }}">
+        {% else %}
+            <link rel="canonical" href="{{ canonical }}">
+        {% endif %}
+        {# next page #}
+        {% if colleges.has_next %}
+            <link rel="next" href="{{ canonical }}?page={{ colleges.next_page_number }}">
+        {% endif %}
+        {# prev page #}
+        {% if colleges.has_previous %}
+            {% if colleges.previous_page_number == 1 %}
+                <link rel="prev" href="{{ canonical }}">
+            {% else %}
+                <link rel="prev" href="{{ canonical }}?page={{ colleges.previous_page_number }}">
+            {% endif %}
         {% endif %}
     {% endif %}
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     {% load static %}
@@ -38,6 +68,15 @@
         {% endif %}
         <a href="{{ base_url }}">{{ second_filter }}</a>
     </div>
+
+    <div>
+        {% if state_view %}
+            <a href="{% url 'college_app:state' state_id %}">Reset</a>
+        {% else %}
+            <a href="{% url 'college_app:region' region_id %}">Reset</a>
+        {% endif %}
+    </div>
+
     {% if inst_level|length > 1 %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
