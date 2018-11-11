@@ -128,14 +128,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                     return HttpResponseNotFound('<h1>Page not found</h1>')
             # yes/no queries
             else:
-                dict = {'hist_black': ['Historically not black', 'Historically black'],
-                        'predom_black': ['Predominantely not black', 'Predominantely black'],
-                        'hispanic': ['Predominantely not hispanic', 'Predominantely hispanic'],
-                        'men_only': ['Not men-only', 'Men-only'],
-                        'women_only': ['Not women-only', 'Women-only'],
-                        'online_only': ['Not online-only', 'Online-only'],
-                        'cur_operating': ['Currently closed', 'Currently operating'],
-                        }
+                dict = College.get_dict()
 
                 query_val = dict[param][int(param_value)]
 
@@ -205,7 +198,8 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                     paginator = Paginator(colleges, 50)
                     colleges = paginator.get_page(page)
                 # get filters
-                filters = College.get_filters('state', state_id, excluded_filters=['state'], init_filter=param, init_filter_val=param_value, filters_set=params_dict)
+                filters = College.get_filters('state', state_id, excluded_filters=['state'], init_filter=param,
+                                              init_filter_val=param_value, filters_set=params_dict)
                 context = {'colleges': colleges,
                            'seo_title': seo_title,
                            'canonical': canonical,

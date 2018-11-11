@@ -87,8 +87,8 @@ def get_region_param(request, region_id, region_slug, param, param_value):
     Searches field by verbose name and takes its value. Works for any filter page
 
     :param request:
-    :param state_id:
-    :param state_slug:
+    :param region_id:
+    :param region_slug:
     :param param: verbose name of a field
     :param param_value: value of a field
     :return:
@@ -144,14 +144,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                     return HttpResponseNotFound('<h1>Page not found</h1>')
             # yes/no queries
             else:
-                dict = {'hist_black': ['Historically not black', 'Historically black'],
-                        'predom_black': ['Predominantely not black', 'Predominantely black'],
-                        'hispanic': ['Predominantely not hispanic', 'Predominantely hispanic'],
-                        'men_only': ['Not men-only', 'Men-only'],
-                        'women_only': ['Not women-only', 'Women-only'],
-                        'online_only': ['Not online-only', 'Online-only'],
-                        'cur_operating': ['Currently closed', 'Currently operating'],
-                        }
+                dict = College.get_dict()
 
                 query_val = dict[param][int(param_value)]
 

@@ -139,8 +139,31 @@ class College(models.Model):
             cls.objects.bulk_create(colleges)
 
     @classmethod
+    def get_dict(cls):
+        dict = {'hist_black': ['Historically not black', 'Historically black'],
+                'predom_black': ['Predominantely not black', 'Predominantely black'],
+                'hispanic': ['Predominantely not hispanic', 'Predominantely hispanic'],
+                'men_only': ['Not men-only', 'Men-only'],
+                'women_only': ['Not women-only', 'Women-only'],
+                'online_only': ['Not online-only', 'Online-only'],
+                'cur_operating': ['Currently closed', 'Currently operating'],
+                }
+        return dict
+
+    @classmethod
     def get_filters(cls, entity, entity_id, excluded_filters='', get_filter='', init_filter='', init_filter_val='',
                     filters_set=''):
+        """
+
+        :param entity: state or region for initial level of filtration
+        :param entity_id: state_id or region_id
+        :param excluded_filters: filters that should not be returned
+        :param get_filter: specific filter's name to return
+        :param init_filter: second level filtration
+        :param init_filter_val: second level filtration value
+        :param filters_set: third level filtration value
+        :return:
+        """
         # items for the second level of filtration
         if init_filter:
             filters = {entity: entity_id,
