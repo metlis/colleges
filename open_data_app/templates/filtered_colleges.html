@@ -77,6 +77,10 @@
         {% endif %}
     </div>
 
+    {% for val in filters_vals %}
+        <p>{{ val }}</p>
+    {% endfor %}
+
     {% if inst_level|length > 1 %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"

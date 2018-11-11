@@ -176,6 +176,15 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                 except:
                     return HttpResponseNotFound('<h1>Page not found</h1>')
 
+            # get applied filters values to display on results page
+            filters_vals = []
+            for p in params_dict:
+                try:
+                    p, val = College.get_filter_val('state', state_id, p, params_dict[p])
+                    filters_vals.append(val)
+                except:
+                    pass
+
 
             if len(colleges) > 0:
 
@@ -210,6 +219,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                            'second_filter': query_val,
                            'params': req_str,
                            'noindex': noindex,
+                           'filters_vals': filters_vals,
                            }
                 context.update(filters)
 

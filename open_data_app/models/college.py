@@ -3,6 +3,9 @@ import csv
 import os
 import sys
 import urllib.parse
+
+from django.http import HttpResponseNotFound
+
 from settings import *
 from django.utils.text import slugify
 from open_data_app.models.state import State
@@ -241,3 +244,47 @@ class College(models.Model):
                     return filters[i]
 
         return filters
+
+    @classmethod
+    def get_filter_val(cls, entity, entity_id, param, param_value):
+        college_fields = cls._meta.get_fields()
+
+        for field in college_fields:
+            if param == field._verbose_name or param == field.name:
+
+                # if verbose name and name are different, change query param to name of the field
+                if param != field.attname:
+                    param = field.attname
+
+                # for relational fields get related object
+                if field.related_model is not None:
+                    rel_obj_exists = field.related_model.objects.filter(pk=param_value).exists()
+
+                    if rel_obj_exists:
+                        rel_obj = field.related_model.objects.get(pk=param_value)
+
+                        # get relational field text value
+                        try:
+                            query_val = rel_obj.description
+                        except:
+                            query_val = rel_obj.name
+
+                # for non-relational fields (city) get query value
+                elif param in ['city_slug']:
+                    if entity == 'state':
+                        query_field = cls.objects.filter(state__id=entity_id).filter(**{param: param_value}).values(
+                        field._verbose_name).distinct()
+                    else:
+                        query_field = cls.objects.filter(region__id=entity_id).filter(**{param: param_value}).values(
+                            field._verbose_name).distinct()
+                    if len(query_field) > 0:
+                        query_val = query_field[0][field._verbose_name]
+                    else:
+                        return HttpResponseNotFound('<h1>Page not found</h1>')
+                # yes/no queries
+                else:
+                    dict = cls.get_dict()
+
+                    query_val = dict[param][int(param_value)]
+
+                return param, query_val
