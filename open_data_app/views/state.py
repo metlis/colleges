@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.apps import apps
 from open_data_app.models import State
 from open_data_app.models import College
+from open_data_app.modules.pagination_handler import handle_pagination
+from open_data_app.modules.params_handler import handle_params
 from settings import *
 import urllib.parse
 from open_data_app.modules.seo import Seo
@@ -84,9 +86,10 @@ def get_state_slug(request, state_id, state_slug):
     return render(request, 'state_colleges.html', context)
 
 
+
 def get_state_param(request, state_id, state_slug, param, param_value):
     """
-    Takes filters and filter values to show on filter page
+    Takes filters, filter values, and colleges to show on filter page
 
     :param request:
     :param state_id:
@@ -96,61 +99,16 @@ def get_state_param(request, state_id, state_slug, param, param_value):
     :return:
     """
     state_name = State.objects.get(id=state_id).name
-    # initial filter data for static url
+
+    # initial filter, its value and verbose name
     param, query_val, verbose_name = College.get_filter_val('state', state_id, param, param_value)
 
+    # colleges filtered by the initial filter + by state
     colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value}).order_by('name')
 
-    # handle filter requests
-    params = request.GET
-    # string used in pagination links
-    req_str = ''
-    # additional params used when retrieving filters
-    params_dict = {}
-    # robots directive for filter pages
-    noindex = ''
-    if len(params) == 1 and not 'page' in params:
-        key = next(iter(params.keys()))
-        value = next(iter(params.values()))
-        params_dict[key] = value
-        noindex = True
-        req_str = '{}={}'.format(key, value)
-        try:
-            colleges = colleges.filter(**{key: value})
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
-    elif len(params) > 1 and 'page' in params:
-        req = params.copy()
-        del req['page']
-        req_str = ''
-        noindex = True
-        for key in req:
-            params_dict[key] = req[key]
-            if len(req_str) > 0:
-                req_str += '&{}={}'.format(key, req[key])
-            else:
-                req_str += '{}={}'.format(key, req[key])
-        try:
-            colleges = colleges.filter(**params_dict)
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
-    elif len(params) > 1:
-        noindex = True
-        for key in params:
-            params_dict[key] = params[key]
-        try:
-            colleges = colleges.filter(**params_dict)
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
-
-    # get applied filters values to display on results page
-    filters_vals = []
-    for p in params_dict:
-        try:
-            p, val, verbose = College.get_filter_val('state', state_id, p, params_dict[p])
-            filters_vals.append(val)
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+    # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
+    # dictionary of applied filters and their values
+    colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, 'state', state_id)
 
 
     if len(colleges) > 0:
@@ -165,14 +123,8 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                                                                })
 
         # pagination
-        if request.GET.get('page'):
-            page = request.GET.get('page')
-        else:
-            page = 1
-        # if parameter page does not have value all, show pagination
-        if request.GET.get('page') != 'all':
-            paginator = Paginator(colleges, 50)
-            colleges = paginator.get_page(page)
+        colleges = handle_pagination(request, colleges)
+
         # get filters
         filters = College.get_filters('state', state_id, excluded_filters=['state'], init_filter=param,
                                       init_filter_val=param_value, filters_set=params_dict)

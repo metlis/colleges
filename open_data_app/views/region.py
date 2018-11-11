@@ -4,6 +4,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from open_data_app.models import Region, College, State
 from django.utils.text import slugify
+
+from open_data_app.modules.pagination_handler import handle_pagination
+from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.seo import Seo
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
@@ -94,62 +97,16 @@ def get_region_param(request, region_id, region_slug, param, param_value):
     :return:
     """
     region_name, region_slug, region_states = Region.get_region_data(region_id)
-    # initial filter data for static url
+
+    # initial filter, its value and verbose name
     param, query_val, verbose_name = College.get_filter_val('region', region_id, param, param_value)
 
+    # colleges filtered by the initial filter + by region
     colleges = College.objects.filter(region__id=region_id).filter(**{param: param_value}).order_by('name')
 
-    # handle filter requests
-    params = request.GET
-    # string used in pagination links
-    req_str = ''
-    # additional params used when retrieving filters
-    params_dict = {}
-    # robots directive for filter pages
-    noindex = ''
-    if len(params) == 1 and not 'page' in params:
-        key = next(iter(params.keys()))
-        value = next(iter(params.values()))
-        params_dict[key] = value
-        noindex = True
-        req_str = '{}={}'.format(key, value)
-        try:
-            colleges = colleges.filter(**{key: value})
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
-    elif len(params) > 1 and 'page' in params:
-        req = params.copy()
-        del req['page']
-        req_str = ''
-        noindex = True
-        for key in req:
-            params_dict[key] = req[key]
-            if len(req_str) > 0:
-                req_str += '&{}={}'.format(key, req[key])
-            else:
-                req_str += '{}={}'.format(key, req[key])
-        try:
-            colleges = colleges.filter(**params_dict)
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
-    elif len(params) > 1:
-        noindex = True
-        for key in params:
-            params_dict[key] = params[key]
-        try:
-            colleges = colleges.filter(**params_dict)
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
-
-
-    # get applied filters values to display on results page
-    filters_vals = []
-    for p in params_dict:
-        try:
-            p, val, verbose = College.get_filter_val('region', region_id, p, params_dict[p])
-            filters_vals.append(val)
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+    # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
+    # dictionary of applied filters and their values
+    colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, 'region', region_id)
 
 
 
@@ -165,14 +122,8 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                                                                     'param_value': param_value,
                                                                     })
         # pagination
-        if request.GET.get('page'):
-            page = request.GET.get('page')
-        else:
-            page = 1
-        # if parameter page does not have value all, show pagination
-        if request.GET.get('page') != 'all':
-            paginator = Paginator(colleges, 50)
-            colleges = paginator.get_page(page)
+        colleges = handle_pagination(request, colleges)
+
         # a url for pagination first page
         base_url = reverse('college_app:region_param', kwargs={'region_id': region_id,
                                                                'region_slug': region_slug,
