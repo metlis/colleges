@@ -1,3 +1,4 @@
+// TODO убирать из урла пагинацию при добавлении параметра, убирать фильтры с одним вариантом ответа
 function addParam(param) {
     if (window.location.href.indexOf(param) > -1) return;
     if (window.location.href.indexOf('?') > 0) {

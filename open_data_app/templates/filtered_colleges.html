@@ -38,7 +38,7 @@
         {% endif %}
         <a href="{{ base_url }}">{{ second_filter }}</a>
     </div>
-    {% if inst_level %}
+    {% if inst_level|length > 1 %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -52,7 +52,7 @@
             </div>
         </div>
     {% endif %}
-    {% if religous %}
+    {% if religous|length > 1 %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -66,7 +66,7 @@
             </div>
         </div>
     {% endif %}
-    {% if carnegie_basic %}
+    {% if carnegie_basic|length > 1 %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -80,7 +80,7 @@
             </div>
         </div>
     {% endif %}
-    {% if highest_grad_degree %}
+    {% if highest_grad_degree|length > 1 %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -94,7 +94,7 @@
             </div>
         </div>
     {% endif %}
-    {% if locale %}
+    {% if locale|length > 1 %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -108,7 +108,7 @@
             </div>
         </div>
     {% endif %}
-    {% if ownership %}
+    {% if ownership|length > 1 %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -122,7 +122,7 @@
             </div>
         </div>
     {% endif %}
-    {% if state_view and state %}
+    {% if state_view and state|length > 1 %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -136,7 +136,7 @@
             </div>
         </div>
     {% endif %}
-    {% if city %}
+    {% if city|length > 1 %}
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -150,118 +150,104 @@
             </div>
         </div>
     {% endif %}
-    {% for val in hist_black %}
-        {% if val.hist_black == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Historically black
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" onclick="addParam('hist_black=0')">No</a>
-                    <a class="dropdown-item" onclick="addParam('hist_black=1')">Yes</a>
-                </div>
+    {% if hist_black|length > 1 %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Historically black
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" onclick="addParam('hist_black=0')">No</a>
+                <a class="dropdown-item" onclick="addParam('hist_black=1')">Yes</a>
             </div>
-        {% endif %}
-    {% endfor %}
+        </div>
+    {% endif %}
 
-    {% for val in predom_black %}
-        {% if val.predom_black == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Predominantely black
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" onclick="addParam('predom_black=0')">No</a>
-                    <a class="dropdown-item" onclick="addParam('predom_black=1')">Yes</a>
-                </div>
+    {% if predom_black|length > 1 %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Predominantely black
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" onclick="addParam('predom_black=0')">No</a>
+                <a class="dropdown-item" onclick="addParam('predom_black=1')">Yes</a>
             </div>
-        {% endif %}
-    {% endfor %}
+        </div>
+    {% endif %}
 
-    {% for val in hispanic %}
-        {% if val.hispanic == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Hispanic
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" onclick="addParam('hispanic=0')">No</a>
-                    <a class="dropdown-item" onclick="addParam('hispanic=1')">Yes</a>
-                </div>
+    {% if hispanic|length > 1 %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Hispanic
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" onclick="addParam('hispanic=0')">No</a>
+                <a class="dropdown-item" onclick="addParam('hispanic=1')">Yes</a>
             </div>
-        {% endif %}
-    {% endfor %}
+        </div>
+    {% endif %}
 
-    {% for val in men_only %}
-        {% if val.men_only == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Men-only
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" onclick="addParam('men_only=0')">No</a>
-                    <a class="dropdown-item" onclick="addParam('men_only=1')">Yes</a>
-                </div>
+    {% if men_only|length > 1 %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Men-only
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" onclick="addParam('men_only=0')">No</a>
+                <a class="dropdown-item" onclick="addParam('men_only=1')">Yes</a>
             </div>
-        {% endif %}
-    {% endfor %}
+        </div>
+    {% endif %}
 
 
-    {% for val in women_only %}
-        {% if val.women_only == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Women-only
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" onclick="addParam('women_only=0')">No</a>
-                    <a class="dropdown-item" onclick="addParam('women_only=1')">Yes</a>
-                </div>
+    {% if women_only|length > 1 %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Women-only
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" onclick="addParam('women_only=0')">No</a>
+                <a class="dropdown-item" onclick="addParam('women_only=1')">Yes</a>
             </div>
-        {% endif %}
-    {% endfor %}
+        </div>
+    {% endif %}
 
-    {% for val in online_only %}
-        {% if val.online_only == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Online-only
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" onclick="addParam('online_only=0')">No</a>
-                    <a class="dropdown-item" onclick="addParam('online_only=1')">Yes</a>
-                </div>
+    {% if online_only|length > 1 %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Online-only
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" onclick="addParam('online_only=0')">No</a>
+                <a class="dropdown-item" onclick="addParam('online_only=1')">Yes</a>
             </div>
-        {% endif %}
-    {% endfor %}
+        </div>
+    {% endif %}
 
-    {% for val in cur_operating %}
-        {% if val.cur_operating == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Currently operating
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" onclick="addParam('cur_operating=0')">No</a>
-                    <a class="dropdown-item" onclick="addParam('cur_operating=1')">Yes</a>
-                </div>
+    {% if cur_operating|length > 1 %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Currently operating
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" onclick="addParam('cur_operating=0')">No</a>
+                <a class="dropdown-item" onclick="addParam('cur_operating=1')">Yes</a>
             </div>
-        {% endif %}
-    {% endfor %}
+        </div>
+    {% endif %}
 
     {% for college in colleges %}
         <p>

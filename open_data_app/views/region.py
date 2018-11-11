@@ -84,7 +84,7 @@ def get_region_slug(request, region_id, region_slug):
 
 def get_region_param(request, region_id, region_slug, param, param_value):
     """
-    Searches field by verbose name and takes its value. Works for any single-parameter filter page
+    Searches field by verbose name and takes its value. Works for any filter page
 
     :param request:
     :param state_id:
@@ -159,11 +159,14 @@ def get_region_param(request, region_id, region_slug, param, param_value):
 
             # handle filter requests
             params = request.GET
+            # string used in pagination links
             req_str = ''
+            # additional params used when retrieving filters
             params_dict = {}
             if len(params) == 1 and not 'page' in params:
                 key = next(iter(params.keys()))
                 value = next(iter(params.values()))
+                params_dict[key] = value
                 req_str = '{}={}'.format(key, value)
                 try:
                     colleges = colleges.filter(**{key: value})

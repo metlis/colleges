@@ -86,7 +86,7 @@ def get_state_slug(request, state_id, state_slug):
 
 def get_state_param(request, state_id, state_slug, param, param_value):
     """
-    Searches field by verbose name and takes its value. Works for any single-parameter filter page
+    Searches field by verbose name and takes its value. Works for any filter page
 
     :param request:
     :param state_id:
@@ -97,13 +97,9 @@ def get_state_param(request, state_id, state_slug, param, param_value):
     """
     college_fields = College._meta.get_fields()
     state_name = State.objects.get(id=state_id).name
-    # save initital parameter name to exclude it from filters before rendering
-    init_param = param
 
     for field in college_fields:
         if param == field._verbose_name:
-            # save initital parameter name to exclude it from filters before rendering
-            init_param = field.name
 
             # if verbose name and name are different, change query param to name of the field
             if param != field.attname:
@@ -147,11 +143,14 @@ def get_state_param(request, state_id, state_slug, param, param_value):
 
             # handle filter requests
             params = request.GET
+            # string used in pagination links
             req_str = ''
+            # additional params used when retrieving filters
             params_dict = {}
             if len(params) == 1 and not 'page' in params:
                 key = next(iter(params.keys()))
                 value = next(iter(params.values()))
+                params_dict[key] = value
                 req_str = '{}={}'.format(key, value)
                 try:
                     colleges = colleges.filter(**{key: value})
@@ -180,16 +179,6 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                     return HttpResponseNotFound('<h1>Page not found</h1>')
 
 
-            if len(req_str) > 0:
-                if req_str[:1] == '&':
-                    filter_req_str = '{}&'.format(req_str[1:])
-                else:
-                    filter_req_str = '{}&'.format(req_str)
-            else:
-                filter_req_str = ''
-
-
-
             if len(colleges) > 0:
 
                 # define seo data before rendering
@@ -211,7 +200,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                     paginator = Paginator(colleges, 50)
                     colleges = paginator.get_page(page)
                 # get filters
-                filters = College.get_filters('state', state_id, excluded_filters=[init_param, 'state'], init_filter=param, init_filter_val=param_value, filters_set=params_dict)
+                filters = College.get_filters('state', state_id, excluded_filters=['state'], init_filter=param, init_filter_val=param_value, filters_set=params_dict)
                 context = {'colleges': colleges,
                            'seo_title': seo_title,
                            'canonical': canonical,
@@ -221,7 +210,6 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                            'geo': state_name,
                            'second_filter': query_val,
                            'params': req_str,
-                           'filter_req_str': filter_req_str,
                            }
                 context.update(filters)
 

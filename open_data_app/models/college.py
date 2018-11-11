@@ -148,26 +148,30 @@ class College(models.Model):
                        }
 
             colleges = cls.objects.filter(**filters)
-
+            # third level filters
             if filters_set:
                 colleges = colleges.filter(**filters_set)
         # items for initial level of filtration
         else:
             colleges = cls.objects.filter(**{entity: entity_id})
 
-
         colleges_cities = colleges.values_list('city',
-                                               'city_slug').order_by('city').distinct()
+                                               'city_slug').order_by('city').exclude(city=None).distinct()
         colleges_states = colleges.values_list('state__id',
-                                               'state__name').order_by('state__name').distinct()
+                                               'state__name').order_by('state__name').exclude(
+            state__name=None).distinct()
         colleges_ownership = colleges.values_list('ownership__id',
-                                                  'ownership__description').order_by('ownership__id').distinct()
+                                                  'ownership__description').order_by('ownership__id').exclude(
+            ownership__description=None).exclude(
+            ownership__description='Not applicable').distinct()
         colleges_locales = colleges.values_list('locale__id',
                                                 'locale__description').order_by('locale__id').exclude(
-            locale__description=None).distinct()
+            locale__description=None).exclude(
+            locale__description='Not applicable').distinct()
         colleges_degrees = colleges.values_list('highest_grad_degree__id',
                                                 'highest_grad_degree__description').order_by(
-            'highest_grad_degree__id').distinct()
+            'highest_grad_degree__id').exclude(highest_grad_degree__description=None).exclude(
+            highest_grad_degree__description='Not applicable').distinct()
         colleges_carnegie_basic = colleges.values_list('carnegie_basic__id',
                                                        'carnegie_basic__description').order_by(
             'carnegie_basic__description').exclude(carnegie_basic__description=None).exclude(
@@ -177,13 +181,13 @@ class College(models.Model):
             'religous__name').exclude(religous__name=None).distinct()
         colleges_levels = colleges.values_list('inst_level__id',
                                                'inst_level__description').order_by('inst_level__id').distinct()
-        colleges_hist_black = colleges.values('hist_black').distinct()
-        colleges_predom_black = colleges.values('predom_black').distinct()
-        colleges_hispanic = colleges.values('hispanic').distinct()
-        colleges_men_only = colleges.values('men_only').distinct()
-        colleges_women_only = colleges.values('women_only').distinct()
-        colleges_online_only = colleges.values('online_only').distinct()
-        colleges_cur_operating = colleges.values('cur_operating').distinct()
+        colleges_hist_black = colleges.values('hist_black').exclude(hist_black=None).distinct()
+        colleges_predom_black = colleges.values('predom_black').exclude(predom_black=None).distinct()
+        colleges_hispanic = colleges.values('hispanic').exclude(hispanic=None).distinct()
+        colleges_men_only = colleges.values('men_only').exclude(men_only=None).distinct()
+        colleges_women_only = colleges.values('women_only').exclude(women_only=None).distinct()
+        colleges_online_only = colleges.values('online_only').exclude(online_only=None).distinct()
+        colleges_cur_operating = colleges.values('cur_operating').exclude(cur_operating=None).distinct()
 
         filters = {'city': colleges_cities,
                    'state': colleges_states,
