@@ -5,6 +5,7 @@ from open_data_app.views.parameter import filter_values
 from open_data_app.views.region import get_region, get_region_slug, get_region_param
 from open_data_app.views.state import get_state, get_state_slug, get_state_param
 from open_data_app.views.index import index
+from open_data_app.views.main_filter import main_filter
 
 app_name = 'college_app'
 
@@ -21,6 +22,8 @@ urlpatterns = [
     path(r'college/<int:college_id>/<slug:college_slug>/', get_college_slug, name='college_slug'),
 
     path(r'param/<param>/<param_value>/', filter_values, name='filter_values'),
+
+    path(r'main/', main_filter, name='main_filter'),
 
     path(r'', index, name='index'),
 ]

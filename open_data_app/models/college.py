@@ -47,6 +47,9 @@ class College(models.Model):
 
     full_data = models.TextField()
 
+    def __str__(self):
+        return self.name
+
     @classmethod
     def parse_csv(cls):
         csv.field_size_limit(sys.maxsize)
@@ -281,17 +284,18 @@ class College(models.Model):
                             query_val = rel_obj.name
 
                 # for non-relational fields (city) get query value
-                elif param in ['city_slug']:
+                elif param in ['city']:
                     if entity == 'state':
-                        query_field = cls.objects.filter(state__id=entity_id).filter(**{param: param_value}).values(
-                        field._verbose_name).distinct()
+                        query_field = cls.objects.filter(state__id=entity_id).filter(**{'city_slug': param_value}).values(
+                            param).distinct()
                     elif entity == 'region':
-                        query_field = cls.objects.filter(region__id=entity_id).filter(**{param: param_value}).values(
-                            field._verbose_name).distinct()
+                        query_field = cls.objects.filter(region__id=entity_id).filter(**{'city_slug': param_value}).values(
+                            param).distinct()
                     else:
-                        query_field = cls.objects.filter(**{param: param_value}).values(field._verbose_name).distinct()
+                        query_field = cls.objects.filter(**{'city_slug': param_value}).values(param).distinct()
                     if len(query_field) > 0:
-                        query_val = query_field[0][field._verbose_name]
+                        query_val = query_field[0][param]
+                        return param, query_val, param
                     else:
                         return HttpResponseNotFound('<h1>Page not found</h1>')
                 # yes/no queries
