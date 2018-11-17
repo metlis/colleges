@@ -61,8 +61,10 @@
         <h1>Colleges of {{ geo }}: {{ second_filter }}</h1>
     {% elif second_filter %}
         <h1>Colleges: {{ second_filter }}</h1>
-    {% else %}
+    {% elif serach_query %}
         <h1>Search: {{ serach_query }}</h1>
+    {% else %}
+        <h1>Results</h1>
     {% endif %}
     <p>Colleges found: {{ colleges.paginator.count }}</p>
 

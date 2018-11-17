@@ -32,6 +32,7 @@ def main_filter(request):
             filters = College.get_filters('', '', filters_set=params_dict)
 
             context = {'colleges': colleges,
+                       'seo_title': 'Results',
                        'canonical': canonical,
                        'base_url': base_url,
                        'params': req_str,

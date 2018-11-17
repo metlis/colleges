@@ -10,8 +10,8 @@ from django.urls import reverse
 
 def filter_values(request, param, param_value):
     init_param = param
-    # initial filter, its value and verbose name
-    param, query_val, verbose_name = College.get_filter_val('', '', param, param_value)
+    # initial filter, its value, verbose name and param value
+    param, query_val, verbose_name, param_value = College.get_filter_val('', '', param, param_value)
 
     # colleges filtered by the initial filter + by state
     colleges = College.objects.filter(**{param: param_value}).order_by('name')

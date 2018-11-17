@@ -98,8 +98,8 @@ def get_region_param(request, region_id, region_slug, param, param_value):
     """
     region_name, region_slug, region_states = Region.get_region_data(region_id)
 
-    # initial filter, its value and verbose name
-    param, query_val, verbose_name = College.get_filter_val('region', region_id, param, param_value)
+    # initial filter, its value, verbose name and param value
+    param, query_val, verbose_name, param_value = College.get_filter_val('region', region_id, param, param_value)
 
     # colleges filtered by the initial filter + by region
     colleges = College.objects.filter(region__id=region_id).filter(**{param: param_value}).order_by('name')

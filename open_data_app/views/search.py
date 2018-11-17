@@ -30,6 +30,7 @@ def search(request):
 
             context = {'colleges': colleges,
                        'canonical': canonical,
+                       'seo_title': 'Search',
                        'base_url': base_url,
                        'params': 'text={}'.format(query),
                        'noindex': True,
