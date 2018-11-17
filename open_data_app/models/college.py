@@ -184,7 +184,7 @@ class College(models.Model):
         elif entity:
             colleges = cls.objects.filter(**{entity: entity_id})
         else:
-            colleges = cls.objects.all()
+            colleges = cls.objects.filter(**filters_set)
 
         colleges_cities = colleges.values_list('city',
                                                'city_slug').order_by('city').exclude(city=None).distinct()

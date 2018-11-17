@@ -59,8 +59,10 @@
 <div class="container-fluid">
     {% if geo %}
         <h1>Colleges of {{ geo }}: {{ second_filter }}</h1>
-    {% else %}
+    {% elif second_filter %}
         <h1>Colleges: {{ second_filter }}</h1>
+    {% else %}
+        <h1>Search: {{ serach_query }}</h1>
     {% endif %}
     <p>Colleges found: {{ colleges.paginator.count }}</p>
 
@@ -72,6 +74,8 @@
             <a href="{% url 'college_app:region' region_id %}">{{ geo }}</a>
         {% elif init_param %}
             <a href="{% url 'college_app:filter_values' init_param init_param_value %}">{{ query_val }}</a>
+        {% elif serach_query %}
+            <span>Search</span>
         {% endif %}
         <a href="{{ base_url }}">{{ second_filter }}</a>
     </div>
