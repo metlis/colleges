@@ -100,8 +100,8 @@ def get_state_param(request, state_id, state_slug, param, param_value):
     """
     state_name = State.objects.get(id=state_id).name
 
-    # initial filter, its value and verbose name
-    param, query_val, verbose_name = College.get_filter_val('state', state_id, param, param_value)
+    # initial filter, its value, verbose name and param value
+    param, query_val, verbose_name, param_value = College.get_filter_val('state', state_id, param, param_value)
 
     # colleges filtered by the initial filter + by state
     colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value}).order_by('name')

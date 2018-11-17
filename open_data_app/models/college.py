@@ -284,18 +284,18 @@ class College(models.Model):
                             query_val = rel_obj.name
 
                 # for non-relational fields (city) get query value
-                elif param in ['city']:
+                elif param in ['city', 'city_slug']:
                     if entity == 'state':
                         query_field = cls.objects.filter(state__id=entity_id).filter(**{'city_slug': param_value}).values(
-                            param).distinct()
+                            'city').distinct()
                     elif entity == 'region':
                         query_field = cls.objects.filter(region__id=entity_id).filter(**{'city_slug': param_value}).values(
-                            param).distinct()
+                            'city').distinct()
                     else:
-                        query_field = cls.objects.filter(**{'city_slug': param_value}).values(param).distinct()
+                        query_field = cls.objects.filter(**{'city_slug': param_value}).values('city').distinct()
                     if len(query_field) > 0:
-                        query_val = query_field[0][param]
-                        return param, query_val, param
+                        query_val = query_field[0]['city']
+                        return param, query_val, param, query_val
                     else:
                         return HttpResponseNotFound('<h1>Page not found</h1>')
                 # yes/no queries
@@ -304,6 +304,6 @@ class College(models.Model):
 
                     query_val = dict[param][int(param_value)]
 
-                return param, query_val, field._verbose_name
+                return param, query_val, field._verbose_name, param_value
         else:
             return HttpResponseNotFound('<h1>Page not found</h1>')

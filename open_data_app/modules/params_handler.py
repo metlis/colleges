@@ -50,7 +50,7 @@ def handle_params(request, colleges, entity, entity_id):
     filters_vals = []
     for p in params_dict:
         try:
-            p, val, verbose = College.get_filter_val(entity, entity_id, p, params_dict[p])
+            p, val, verbose, param_value = College.get_filter_val(entity, entity_id, p, params_dict[p])
             filters_vals.append(val)
         except:
             return HttpResponseNotFound('<h1>Page not found</h1>')
