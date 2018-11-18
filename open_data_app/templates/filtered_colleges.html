@@ -13,20 +13,20 @@
     {% if params %}
         {# canonical page #}
         {% if colleges.number > 1 %}
-            <link rel="canonical" href="{{ canonical }}?page={{ colleges.number }}&{{ params }}">
+            <link rel="canonical" href="{{ canonical }}?page={{ colleges.number }}&{{ params|safe }}">
         {% else %}
-            <link rel="canonical" href="{{ canonical }}&{{ params }}">
+            <link rel="canonical" href="{{ canonical }}?{{ params|safe }}">
         {% endif %}
         {# next page #}
         {% if colleges.has_next %}
-            <link rel="next" href="{{ canonical }}?page={{ colleges.next_page_number }}&{{ params }}">
+            <link rel="next" href="{{ canonical }}?page={{ colleges.next_page_number }}&{{ params|safe }}">
         {% endif %}
         {# prev page #}
         {% if colleges.has_previous %}
             {% if colleges.previous_page_number == 1 %}
-                <link rel="prev" href="{{ canonical }}?{{ params }}">
+                <link rel="prev" href="{{ canonical }}?{{ params|safe }}">
             {% else %}
-                <link rel="prev" href="{{ canonical }}?page={{ colleges.previous_page_number }}&{{ params }}">
+                <link rel="prev" href="{{ canonical }}?page={{ colleges.previous_page_number }}&{{ params|safe }}">
             {% endif %}
         {% endif %}
     {% else %}
@@ -88,7 +88,9 @@
         {% elif geo %}
             <a href="{% url 'college_app:region' region_id %}">Reset</a>
         {% elif init_param %}
-            <a href="{% url 'college_app:filter_values' init_param init_param_value %}">Reset</a>
+            <a href="{% url 'college_app:main_filter' %}">Reset</a>
+        {% elif main_filter %}
+            <a href="{% url 'college_app:main_filter' %}">Reset</a>
         {% endif %}
     </div>
 

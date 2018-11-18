@@ -180,11 +180,22 @@ class College(models.Model):
             # third level filters
             if filters_set:
                 colleges = colleges.filter(**filters_set)
-        # items for initial level of filtration + region or state
+        # items for the second level of filtration without region or state
+        elif init_filter:
+            filters = {init_filter: init_filter_val,}
+
+            colleges = cls.objects.filter(**filters)
+            # third level filters
+            if filters_set:
+                colleges = colleges.filter(**filters_set)
+        # region or state
         elif entity:
             colleges = cls.objects.filter(**{entity: entity_id})
-        else:
+        # third level filters
+        elif filters_set:
             colleges = cls.objects.filter(**filters_set)
+        else:
+            colleges = cls.objects.all()
 
         colleges_cities = colleges.values_list('city',
                                                'city_slug').order_by('city').exclude(city=None).distinct()
@@ -286,10 +297,12 @@ class College(models.Model):
                 # for non-relational fields (city) get query value
                 elif param in ['city', 'city_slug']:
                     if entity == 'state':
-                        query_field = cls.objects.filter(state__id=entity_id).filter(**{'city_slug': param_value}).values(
+                        query_field = cls.objects.filter(state__id=entity_id).filter(
+                            **{'city_slug': param_value}).values(
                             'city').distinct()
                     elif entity == 'region':
-                        query_field = cls.objects.filter(region__id=entity_id).filter(**{'city_slug': param_value}).values(
+                        query_field = cls.objects.filter(region__id=entity_id).filter(
+                            **{'city_slug': param_value}).values(
                             'city').distinct()
                     else:
                         query_field = cls.objects.filter(**{'city_slug': param_value}).values('city').distinct()

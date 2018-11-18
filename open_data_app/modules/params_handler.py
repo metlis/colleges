@@ -1,9 +1,9 @@
 from django.http import HttpResponseNotFound
-
 from open_data_app.models import College
+import re
 
 
-def handle_params(request, colleges, entity, entity_id):
+def handle_params(request, colleges, entity, entity_id, main_filter=False):
     # handle filter requests at dynamic urls
     params = request.GET
     # string used in pagination links
@@ -12,7 +12,7 @@ def handle_params(request, colleges, entity, entity_id):
     params_dict = {}
     # robots directive for filter pages
     noindex = ''
-    if len(params) == 1 and not 'page' in params:
+    if len(params) == 1 and not 'page' in params and not main_filter:
         key = next(iter(params.keys()))
         value = next(iter(params.values()))
         params_dict[key] = value
@@ -22,7 +22,7 @@ def handle_params(request, colleges, entity, entity_id):
             colleges = colleges.filter(**{key: value})
         except:
             return HttpResponseNotFound('<h1>Page not found</h1>')
-    elif len(params) > 1 and 'page' in params:
+    elif len(params) > 1 and 'page' in params and not main_filter:
         req = params.copy()
         del req['page']
         req_str = ''
@@ -37,7 +37,7 @@ def handle_params(request, colleges, entity, entity_id):
             colleges = colleges.filter(**params_dict)
         except:
             return HttpResponseNotFound('<h1>Page not found</h1>')
-    elif len(params) > 1:
+    elif len(params) > 1 and not main_filter:
         noindex = True
         for key in params:
             params_dict[key] = params[key]
@@ -45,14 +45,48 @@ def handle_params(request, colleges, entity, entity_id):
             colleges = colleges.filter(**params_dict)
         except:
             return HttpResponseNotFound('<h1>Page not found</h1>')
+    elif main_filter:
+        req_str = re.sub('page=(\d)+&?', '', request.META['QUERY_STRING'])
+        noindex = True
+
+        for key in params:
+            if key != 'page':
+                params_dict[key] = params.getlist(key)
+
+        # modify param name for the query if its value is a list
+        new_params_dict = params_dict.copy()
+        for p in new_params_dict:
+            if len(new_params_dict[p]) > 1:
+                if not '__in' in p:
+                    new_params_dict['{}__in'.format(p)] = new_params_dict.pop(p)
+            else:
+                new_params_dict[p] = new_params_dict[p][0]
+
+        try:
+            colleges = colleges.filter(**new_params_dict)
+        except:
+            return HttpResponseNotFound('<h1>Page not found</h1>')
+
+
 
     # get applied filters values to display on results page
     filters_vals = []
     for p in params_dict:
         try:
-            p, val, verbose, param_value = College.get_filter_val(entity, entity_id, p, params_dict[p])
-            filters_vals.append(val)
+            if isinstance(params_dict[p], list):
+                for dict_value in params_dict[p]:
+                    pr, val, verbose, param_value = College.get_filter_val(entity, entity_id, p, dict_value)
+                    filters_vals.append(val)
+            else:
+                p, val, verbose, param_value = College.get_filter_val(entity, entity_id, p, params_dict[p])
+                filters_vals.append(val)
+
         except:
             return HttpResponseNotFound('<h1>Page not found</h1>')
+
+    try:
+        params_dict = new_params_dict
+    except:
+        pass
 
     return colleges, req_str, noindex, filters_vals, params_dict
