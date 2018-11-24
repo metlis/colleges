@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link rel="canonical" href="{% url 'college_app:college_slug' college_id college_slug %}">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <title>{{ college.name }}</title>
     {% load mathfilters %}
@@ -13,10 +14,12 @@
 <a href="#">{{ college.url }}</a>
 <p>{{ college.zip }} {{ college.city }}, {{ college.state }}</p>
 <p>Ownership: {{ college.ownership }}</p>
-<p>Locale: {{ college.locale }}</p>
+<p>{{ college.locale }}</p>
 <p>Religion: {{ college.religous }}</p>
+
+<h2>Disciplines</h2>
 {% if college.agriculture %}
-    Agriculture, Agriculture Operations, and Related Sciences: {{ college.agriculture|mul:100 }}
+    Agriculture, Agriculture Operations, and Related Sciences
 {% endif %}
 {% if college.architecture %}
     <div class="discipline">
@@ -25,188 +28,389 @@
 {% endif %}
 {% if college.ethnic_cultural_gender %}
     <div class="discipline">
-    Area, Ethnic, Cultural, Gender, and Group Studies: {{ college.ethnic_cultural_gender|mul:100 }}
+        Area, Ethnic, Cultural, Gender, and Group Studies
     </div>
 {% endif %}
 {% if college.biological %}
     <div class="discipline">
-    Biological and Biomedical Sciences: {{ college.biological|mul:100 }}
+        Biological and Biomedical Sciences
     </div>
 {% endif %}
 {% if college.business_marketing %}
     <div class="discipline">
-    Business, Management, Marketing, and Related Support Services: {{ college.business_marketing|mul:100 }}
+        Business, Management, Marketing, and Related Support Services
     </div>
 {% endif %}
 {% if college.communication %}
     <div class="discipline">
-    Communication, Journalism, and Related Programs: {{ college.communication|mul:100 }}
+        Communication, Journalism, and Related Programs
     </div>
 {% endif %}
 {% if college.communications_technology %}
     <div class="discipline">
-    Communications Technologies/Technicians and Support Services: {{ college.communications_technology|mul:100 }}
+        Communications Technologies/Technicians and Support Services
     </div>
 {% endif %}
 {% if college.computer %}
     <div class="discipline">
-    Computer and Information Sciences and Support Services: {{ college.computer|mul:100 }}
+        Computer and Information Sciences and Support Services
     </div>
 {% endif %}
 {% if college.construction %}
     <div class="discipline">
-    Construction Trades: {{ college.construction|mul:100 }}
+        Construction Trades
     </div>
 {% endif %}
 {% if college.education %}
     <div class="discipline">
-    Education: {{ college.education|mul:100 }}
+        Education
     </div>
 {% endif %}
 {% if college.engineering %}
     <div class="discipline">
-    Engineering: {{ college.engineering|mul:100 }}
+        Engineering
     </div>
 {% endif %}
 {% if college.engineering_technology %}
     <div class="discipline">
-    Engineering Technologies and Engineering-Related Fields: {{ college.engineering_technology|mul:100 }}
+        Engineering Technologies and Engineering-Related Fields
     </div>
 {% endif %}
 {% if college.english %}
     <div class="discipline">
-    English Language and Literature/Letters: {{ college.english|mul:100 }}
+        English Language and Literature/Letters
     </div>
 {% endif %}
 {% if college.family_consumer_science %}
     <div class="discipline">
-    Family and Consumer Sciences/Human Sciences: {{ college.family_consumer_science|mul:100 }}
+        Family and Consumer Sciences/Human Sciences
     </div>
 {% endif %}
 {% if college.language %}
     <div class="discipline">
-    Foreign Languages, Literatures, and Linguistics: {{ college.language|mul:100 }}
+        Foreign Languages, Literatures, and Linguistics
     </div>
 {% endif %}
 {% if college.health %}
     <div class="discipline">
-    Health Professions and Related Programs: {{ college.health|mul:100 }}
+        Health Professions and Related Programs
     </div>
 {% endif %}
 {% if college.history %}
     <div class="discipline">
-    History: {{ college.history|mul:100 }}
+        History
     </div>
 {% endif %}
 {% if college.security_law_enforcement %}
     <div class="discipline">
-    Homeland Security, Law Enforcement, Firefighting and Related Protective Services: {{ college.security_law_enforcement|mul:100 }}
+        Homeland Security, Law Enforcement, Firefighting and Related Protective
+        Services
     </div>
 {% endif %}
 {% if college.legal %}
     <div class="discipline">
-    Legal Professions and Studies: {{ college.legal|mul:100 }}
+        Legal Professions and Studies
     </div>
 {% endif %}
 {% if college.humanities %}
     <div class="discipline">
-    Liberal Arts and Sciences, General Studies and Humanities: {{ college.humanities|mul:100 }}
+        Liberal Arts and Sciences, General Studies and Humanities
     </div>
 {% endif %}
 {% if college.library %}
     <div class="discipline">
-    Library Science: {{ college.library|mul:100 }}
+        Library Science
     </div>
 {% endif %}
 {% if college.mathematics %}
     <div class="discipline">
-    Mathematics and Statistics: {{ college.mathematics|mul:100 }}
+        Mathematics and Statistics
     </div>
 {% endif %}
 {% if college.mechanic_repair_technology %}
     <div class="discipline">
-    Mechanic and Repair Technologies/Technicians: {{ college.mechanic_repair_technology|mul:100 }}
+        Mechanic and Repair Technologies/Technicians
     </div>
 {% endif %}
 {% if college.military %}
     <div class="discipline">
-    Military Technologies and Applied Sciences: {{ college.military|mul:100 }}
+        Military Technologies and Applied Sciences
     </div>
 {% endif %}
 {% if college.multidiscipline %}
     <div class="discipline">
-    Multi/Interdisciplinary Studies: {{ college.multidiscipline|mul:100 }}
+        Multi/Interdisciplinary Studies
     </div>
 {% endif %}
 {% if college.resources %}
     <div class="discipline">
-    Natural Resources and Conservation: {{ college.resources|mul:100 }}
+        Natural Resources and Conservation
     </div>
 {% endif %}
 {% if college.parks_recreation_fitness %}
     <div class="discipline">
-    Parks, Recreation, Leisure, and Fitness Studies: {{ college.parks_recreation_fitness|mul:100 }}
+        Parks, Recreation, Leisure, and Fitness Studies
     </div>
 {% endif %}
 {% if college.personal_culinary %}
     <div class="discipline">
-    Personal and Culinary Services: {{ college.personal_culinary|mul:100 }}
+        Personal and Culinary Services
     </div>
 {% endif %}
 {% if college.philosophy_religious %}
     <div class="discipline">
-    Philosophy and Religious Studies: {{ college.philosophy_religious|mul:100 }}
+        Philosophy and Religious Studies
     </div>
 {% endif %}
 {% if college.physical_science %}
     <div class="discipline">
-    Physical Sciences: {{ college.physical_science|mul:100 }}
+        Physical Sciences
     </div>
 {% endif %}
 {% if college.precision_production %}
     <div class="discipline">
-    Precision Production: {{ college.precision_production|mul:100 }}
+        Precision Production
     </div>
 {% endif %}
 {% if college.psychology %}
     <div class="discipline">
-    Psychology: {{ college.psychology|mul:100 }}
+        Psychology
     </div>
 {% endif %}
 {% if college.public_administration_social_service %}
     <div class="discipline">
-    Public Administration and Social Service Professions: {{ college.public_administration_social_service|mul:100 }}
+        Public Administration and Social Service Professions
     </div>
 {% endif %}
 {% if college.science_technology %}
     <div class="discipline">
-    Science Technologies/Technicians: {{ college.science_technology|mul:100 }}
+        Science Technologies/Technicians
     </div>
 {% endif %}
 {% if college.social_science %}
     <div class="discipline">
-    Social Sciences: {{ college.social_science|mul:100 }}
+        Social Sciences
     </div>
 {% endif %}
 {% if college.theology_religious_vocation %}
     <div class="discipline">
-    Theology and Religious Vocations: {{ college.theology_religious_vocation|mul:100 }}
+        Theology and Religious Vocations
     </div>
 {% endif %}
 {% if college.transportation %}
     <div class="discipline">
-    Transportation and Materials Moving: {{ college.transportation|mul:100 }}
+        Transportation and Materials Moving
     </div>
 {% endif %}
 {% if college.visual_performing %}
     <div class="discipline">
-   Visual and Performing Arts: {{ college.visual_performing|mul:100 }}
+        Visual and Performing Arts
     </div>
 {% endif %}
+
+{% if top_disciplines %}
+    <h2>Top disciplines</h2>
+{% endif %}
+{% for discipline in top_disciplines %}
+    {% if discipline.0 == 'architecture' %}
+        <div class="discipline">
+            Architecture and Related Services: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'ethnic_cultural_gender' %}
+        <div class="discipline">
+            Area, Ethnic, Cultural, Gender, and Group Studies: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'biological' %}
+        <div class="discipline">
+            Biological and Biomedical Sciences: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'business_marketing' %}
+        <div class="discipline">
+            Business, Management, Marketing, and Related Support Services: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'communication' %}
+        <div class="discipline">
+            Communication, Journalism, and Related Programs: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'communications_technology' %}
+        <div class="discipline">
+            Communications Technologies/Technicians and Support
+            Services: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'computer' %}
+        <div class="discipline">
+            Computer and Information Sciences and Support Services: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'construction' %}
+        <div class="discipline">
+            Construction Trades: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'education' %}
+        <div class="discipline">
+            Education: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'engineering' %}
+        <div class="discipline">
+            Engineering: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'engineering_technology' %}
+        <div class="discipline">
+            Engineering Technologies and Engineering-Related Fields: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'english' %}
+        <div class="discipline">
+            English Language and Literature/Letters: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'family_consumer_science' %}
+        <div class="discipline">
+            Family and Consumer Sciences/Human Sciences: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'language' %}
+        <div class="discipline">
+            Foreign Languages, Literatures, and Linguistics: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'health' %}
+        <div class="discipline">
+            Health Professions and Related Programs: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'history' %}
+        <div class="discipline">
+            History: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'security_law_enforcement' %}
+        <div class="discipline">
+            Homeland Security, Law Enforcement, Firefighting and Related Protective
+            Services: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'legal' %}
+        <div class="discipline">
+            Legal Professions and Studies: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'humanities' %}
+        <div class="discipline">
+            Liberal Arts and Sciences, General Studies and Humanities: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'library' %}
+        <div class="discipline">
+            Library Science: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'mathematics' %}
+        <div class="discipline">
+            Mathematics and Statistics: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'mechanic_repair_technology' %}
+        <div class="discipline">
+            Mechanic and Repair Technologies/Technicians: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'military' %}
+        <div class="discipline">
+            Military Technologies and Applied Sciences: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'multidiscipline' %}
+        <div class="discipline">
+            Multi/Interdisciplinary Studies: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'resources' %}
+        <div class="discipline">
+            Natural Resources and Conservation: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'parks_recreation_fitness' %}
+        <div class="discipline">
+            Parks, Recreation, Leisure, and Fitness Studies: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'personal_culinary' %}
+        <div class="discipline">
+            Personal and Culinary Services: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'philosophy_religious' %}
+        <div class="discipline">
+            Philosophy and Religious Studies: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'physical_science' %}
+        <div class="discipline">
+            Physical Sciences: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'precision_production' %}
+        <div class="discipline">
+            Precision Production: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'psychology' %}
+        <div class="discipline">
+            Psychology: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'public_administration_social_service' %}
+        <div class="discipline">
+            Public Administration and Social Service
+            Professions: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'science_technology' %}
+        <div class="discipline">
+            Science Technologies/Technicians: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'social_science' %}
+        <div class="discipline">
+            Social Sciences: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'theology_religious_vocation' %}
+        <div class="discipline">
+            Theology and Religious Vocations: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'transportation' %}
+        <div class="discipline">
+            Transportation and Materials Moving: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+    {% if discipline.0 == 'visual_performing' %}
+        <div class="discipline">
+            Visual and Performing Arts: {{ discipline.1 }}%
+        </div>
+    {% endif %}
+{% endfor %}
 </body>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 </body>
 </html>
