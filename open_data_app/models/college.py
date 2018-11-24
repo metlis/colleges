@@ -45,6 +45,47 @@ class College(models.Model):
     inst_level = models.ForeignKey(Level, on_delete=models.PROTECT, null=True, verbose_name='level')
     cur_operating = models.IntegerField(null=True, verbose_name='cur_operating')
 
+    # academics section
+    agriculture = models.FloatField(null=True, verbose_name='agriculture')
+    architecture = models.FloatField(null=True, verbose_name='architecture')
+    ethnic_cultural_gender = models.FloatField(null=True, verbose_name='ethnic_cultural_gender')
+    biological = models.FloatField(null=True, verbose_name='biological')
+    business_marketing = models.FloatField(null=True, verbose_name='business_marketing')
+    communication = models.FloatField(null=True, verbose_name='communication')
+    communications_technology = models.FloatField(null=True, verbose_name='communications_technology')
+    computer = models.FloatField(null=True, verbose_name='computer')
+    construction = models.FloatField(null=True, verbose_name='construction')
+    education = models.FloatField(null=True, verbose_name='education')
+    engineering = models.FloatField(null=True, verbose_name='engineering')
+    engineering_technology = models.FloatField(null=True, verbose_name='engineering_technology')
+    english = models.FloatField(null=True, verbose_name='english')
+    family_consumer_science = models.FloatField(null=True, verbose_name='family_consumer_science')
+    language = models.FloatField(null=True, verbose_name='language')
+    health = models.FloatField(null=True, verbose_name='health')
+    history = models.FloatField(null=True, verbose_name='history')
+    security_law_enforcement = models.FloatField(null=True, verbose_name='security_law_enforcement')
+    legal = models.FloatField(null=True, verbose_name='legal')
+    humanities = models.FloatField(null=True, verbose_name='humanities')
+    library = models.FloatField(null=True, verbose_name='library')
+    mathematics = models.FloatField(null=True, verbose_name='mathematics')
+    mechanic_repair_technology = models.FloatField(null=True, verbose_name='mechanic_repair_technology')
+    military = models.FloatField(null=True, verbose_name='military')
+    multidiscipline = models.FloatField(null=True, verbose_name='multidiscipline')
+    resources = models.FloatField(null=True, verbose_name='resources')
+    parks_recreation_fitness = models.FloatField(null=True, verbose_name='parks_recreation_fitness')
+    personal_culinary = models.FloatField(null=True, verbose_name='personal_culinary')
+    philosophy_religious = models.FloatField(null=True, verbose_name='philosophy_religious')
+    physical_science = models.FloatField(null=True, verbose_name='physical_science')
+    precision_production = models.FloatField(null=True, verbose_name='precision_production')
+    psychology = models.FloatField(null=True, verbose_name='psychology')
+    public_administration_social_service = models.FloatField(null=True, verbose_name='public_administration_social_service')
+    science_technology = models.FloatField(null=True, verbose_name='science_technology')
+    social_science = models.FloatField(null=True, verbose_name='social_science')
+    theology_religious_vocation = models.FloatField(null=True, verbose_name='theology_religious_vocation')
+    transportation = models.FloatField(null=True, verbose_name='transportation')
+    visual_performing = models.FloatField(null=True, verbose_name='visual_performing')
+
+
     full_data = models.TextField()
 
     def __str__(self):
@@ -93,6 +134,8 @@ class College(models.Model):
                             pass
 
                     college = cls()
+
+                    # school section
                     college.id = col_values[0]
                     college.name = col_values[3]
                     college.slug = slugify(col_values[3])
@@ -138,6 +181,48 @@ class College(models.Model):
                     college.cur_operating = check_val(col_values[315], False)
                     college.url = check_val(col_values[8], True)
                     college.full_data = ','.join(col_values)
+
+
+                    # academics section
+                    college.agriculture = check_val(col_values[61], False)
+                    college.architecture = check_val(col_values[63], False)
+                    college.ethnic_cultural_gender = check_val(col_values[64], False)
+                    college.biological = check_val(col_values[78], False)
+                    college.business_marketing = check_val(col_values[97], False)
+                    college.communication = check_val(col_values[65], False)
+                    college.communications_technology = check_val(col_values[66], False)
+                    college.computer = check_val(col_values[67], False)
+                    college.construction = check_val(col_values[91], False)
+                    college.education = check_val(col_values[69], False)
+                    college.engineering = check_val(col_values[70], False)
+                    college.engineering_technology = check_val(col_values[71], False)
+                    college.english = check_val(col_values[75], False)
+                    college.family_consumer_science = check_val(col_values[73], False)
+                    college.language = check_val(col_values[72], False)
+                    college.health = check_val(col_values[96], False)
+                    college.history = check_val(col_values[98], False)
+                    college.security_law_enforcement = check_val(col_values[88], False)
+                    college.legal = check_val(col_values[74], False)
+                    college.humanities = check_val(col_values[76], False)
+                    college.library = check_val(col_values[77], False)
+                    college.mathematics = check_val(col_values[79], False)
+                    college.mechanic_repair_technology = check_val(col_values[92], False)
+                    college.military = check_val(col_values[80], False)
+                    college.multidiscipline = check_val(col_values[81], False)
+                    college.resources = check_val(col_values[62], False)
+                    college.parks_recreation_fitness = check_val(col_values[82], False)
+                    college.personal_culinary = check_val(col_values[68], False)
+                    college.philosophy_religious = check_val(col_values[83], False)
+                    college.physical_science = check_val(col_values[85], False)
+                    college.precision_production = check_val(col_values[93], False)
+                    college.psychology = check_val(col_values[87], False)
+                    college.public_administration_social_service = check_val(col_values[89], False)
+                    college.science_technology = check_val(col_values[86], False)
+                    college.social_science = check_val(col_values[90], False)
+                    college.theology_religious_vocation = check_val(col_values[84], False)
+                    college.transportation = check_val(col_values[94], False)
+                    college.visual_performing = check_val(col_values[95], False)
+
 
                     colleges.append(college)
                 row_num += 1
