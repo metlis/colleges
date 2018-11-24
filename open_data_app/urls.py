@@ -7,8 +7,11 @@ from open_data_app.views.state import get_state, get_state_slug, get_state_param
 from open_data_app.views.index import index
 from open_data_app.views.main_filter import main_filter
 from open_data_app.views.search import search
+from open_data_app.views.no_val_parameter import filter_no_values
 
 app_name = 'college_app'
+
+
 
 urlpatterns = [
     path(r'state/<int:state_id>/', get_state, name='state'),
@@ -22,6 +25,7 @@ urlpatterns = [
     path(r'college/<int:college_id>/', get_college, name='college'),
     path(r'college/<int:college_id>/<slug:college_slug>/', get_college_slug, name='college_slug'),
 
+    path(r'param/<param>/', filter_no_values, name='filter_no_values'),
     path(r'param/<param>/<param_value>/', filter_values, name='filter_values'),
 
     path(r'main/', main_filter, name='main_filter'),

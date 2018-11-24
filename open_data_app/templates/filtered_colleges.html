@@ -74,8 +74,10 @@
             <a href="{% url 'college_app:state' state_id %}">{{ geo }}</a>
         {% elif geo %}
             <a href="{% url 'college_app:region' region_id %}">{{ geo }}</a>
-        {% elif init_param %}
+        {% elif init_param and init_param_value %}
             <a href="{% url 'college_app:filter_values' init_param init_param_value %}">{{ query_val }}</a>
+        {% elif init_param %}
+            <a href="{% url 'college_app:filter_no_values' init_param %}">{{ query_val }}</a>
         {% elif serach_query %}
             <span>Search</span>
         {% endif %}

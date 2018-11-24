@@ -78,13 +78,13 @@ class College(models.Model):
     physical_science = models.FloatField(null=True, verbose_name='physical_science')
     precision_production = models.FloatField(null=True, verbose_name='precision_production')
     psychology = models.FloatField(null=True, verbose_name='psychology')
-    public_administration_social_service = models.FloatField(null=True, verbose_name='public_administration_social_service')
+    public_administration_social_service = models.FloatField(null=True,
+                                                             verbose_name='public_administration_social_service')
     science_technology = models.FloatField(null=True, verbose_name='science_technology')
     social_science = models.FloatField(null=True, verbose_name='social_science')
     theology_religious_vocation = models.FloatField(null=True, verbose_name='theology_religious_vocation')
     transportation = models.FloatField(null=True, verbose_name='transportation')
     visual_performing = models.FloatField(null=True, verbose_name='visual_performing')
-
 
     full_data = models.TextField()
 
@@ -182,7 +182,6 @@ class College(models.Model):
                     college.url = check_val(col_values[8], True)
                     college.full_data = ','.join(col_values)
 
-
                     # academics section
                     college.agriculture = check_val(col_values[61], False)
                     college.architecture = check_val(col_values[63], False)
@@ -223,7 +222,6 @@ class College(models.Model):
                     college.transportation = check_val(col_values[94], False)
                     college.visual_performing = check_val(col_values[95], False)
 
-
                     colleges.append(college)
                 row_num += 1
 
@@ -238,6 +236,44 @@ class College(models.Model):
                 'women_only': ['Not women-only', 'Women-only'],
                 'online_only': ['Not online-only', 'Online-only'],
                 'cur_operating': ['Currently closed', 'Currently operating'],
+                'agriculture': 'Agriculture, Agriculture Operations, and Related Sciences',
+                'architecture': 'Architecture and Related Services',
+                'ethnic_cultural_gender': 'Area, Ethnic, Cultural, Gender, and Group Studies',
+                'biological': 'Biological and Biomedical Sciences',
+                'business_marketing': 'Business, Management, Marketing, and Related Support Services',
+                'communication': 'Communication, Journalism, and Related Programs',
+                'communications_technology': 'Communications Technologies/Technicians and Support Services',
+                'computer': 'Computer and Information Sciences and Support Services',
+                'construction': 'Construction Trades',
+                'education': 'Education',
+                'engineering': 'Engineering',
+                'engineering_technology': 'Engineering Technologies and Engineering-Related Fields',
+                'english': 'English Language and Literature/Letters',
+                'family_consumer_science': 'Family and Consumer Sciences/Human Sciences',
+                'language': 'Foreign Languages, Literatures, and Linguistics',
+                'health': 'Health Professions and Related Programs',
+                'history': 'History',
+                'security_law_enforcement': 'Homeland Security, Law Enforcement, Firefighting and Related Protective Services',
+                'legal': 'Legal Professions and Studies',
+                'humanities': 'Liberal Arts and Sciences, General Studies and Humanities',
+                'library': 'Library Science',
+                'mathematics': 'Mathematics and Statistics',
+                'mechanic_repair_technology': 'Mechanic and Repair Technologies/Technicians',
+                'military': 'Military Technologies and Applied Sciences',
+                'multidiscipline': 'Multi/Interdisciplinary Studies',
+                'resources': 'Natural Resources and Conservation',
+                'parks_recreation_fitness': 'Parks, Recreation, Leisure, and Fitness Studies',
+                'personal_culinary': 'Personal and Culinary Services',
+                'philosophy_religious': 'Philosophy and Religious Studies',
+                'physical_science': 'Physical Sciences',
+                'precision_production': 'Precision Production',
+                'psychology': 'Psychology',
+                'public_administration_social_service': 'Public Administration and Social Service Professions',
+                'science_technology': 'Science Technologies/Technicians',
+                'social_science': 'Social Sciences',
+                'theology_religious_vocation': 'Theology and Religious Vocations',
+                'transportation': 'Transportation and Materials Moving',
+                'visual_performing': 'Visual and Performing Arts',
                 }
         return dict
 
@@ -267,7 +303,7 @@ class College(models.Model):
                 colleges = colleges.filter(**filters_set)
         # items for the second level of filtration without region or state
         elif init_filter:
-            filters = {init_filter: init_filter_val,}
+            filters = {init_filter: init_filter_val, }
 
             colleges = cls.objects.filter(**filters)
             # third level filters
@@ -396,10 +432,13 @@ class College(models.Model):
                         return param, query_val, param, query_val
                     else:
                         return HttpResponseNotFound('<h1>Page not found</h1>')
+                # params without value (academics)
+                elif not param_value:
+                    dict = cls.get_dict()
+                    query_val = dict[param]
                 # yes/no queries
                 else:
                     dict = cls.get_dict()
-
                     query_val = dict[param][int(param_value)]
 
                 return param, query_val, field._verbose_name, param_value

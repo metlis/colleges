@@ -36,8 +36,9 @@ def get_college_slug(request, college_id, college_slug):
 
         for disc in disciplines:
             val = getattr(college, disc)
-            val_formatted = float("{0:.2f}".format(val * 100))
-            disciplines_vals.append([disc, val_formatted])
+            if float(val) > 0:
+                val_formatted = float("{0:.2f}".format(val * 100))
+                disciplines_vals.append([disc, val_formatted])
 
         disciplines_vals_sorted = sorted(disciplines_vals, key=lambda x: x[1], reverse=True)
 

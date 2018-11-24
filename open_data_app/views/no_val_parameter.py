@@ -8,14 +8,16 @@ from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.seo import Seo
 
 
-
-def filter_values(request, param, param_value):
+def filter_no_values(request, param):
     init_param = param
+
     # initial filter, its value, verbose name and param value
-    param, query_val, verbose_name, param_value = College.get_filter_val('', '', param, param_value)
+    param, query_val, verbose_name, param_value = College.get_filter_val('', '', param, '')
+
+    query_param = '{}__gt'.format(param)
 
     # colleges filtered by the initial filter
-    colleges = College.objects.filter(**{param: param_value}).order_by('name')
+    colleges = College.objects.filter(**{query_param: 0}).order_by('name')
 
     # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
     # dictionary of applied filters and their values
@@ -24,22 +26,20 @@ def filter_values(request, param, param_value):
     if len(colleges) > 0:
 
         # define seo data before rendering
-        seo_template = verbose_name
+        seo_template = param
         seo_title = Seo.generate_title(seo_template, query_val, '')
         if not 'canonical' in locals():
-            canonical = reverse('college_app:filter_values', kwargs={'param': verbose_name,
-                                                                    'param_value': param_value,
-                                                                    })
+            canonical = reverse('college_app:filter_no_values', kwargs={'param': param,
+                                                                        })
         # pagination
         colleges = handle_pagination(request, colleges)
 
         # a url for pagination first page
-        base_url = reverse('college_app:filter_values', kwargs={'param': verbose_name,
-                                                               'param_value': param_value,
-                                                               })
+        base_url = reverse('college_app:filter_no_values', kwargs={'param': param,
+                                                                   })
 
         # get filters
-        filters = College.get_filters('', '', init_filter=param, init_filter_val=param_value, filters_set=params_dict)
+        filters = College.get_filters('', '', filters_set=params_dict)
         context = {'colleges': colleges,
                    'seo_title': seo_title,
                    'canonical': canonical,
@@ -50,7 +50,6 @@ def filter_values(request, param, param_value):
                    'noindex': noindex,
                    'filters_vals': filters_vals,
                    'init_param': init_param,
-                   'init_param_value': param_value,
                    }
         context.update(filters)
 
