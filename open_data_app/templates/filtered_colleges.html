@@ -311,6 +311,21 @@
         </div>
     {% endif %}
 
+    {% if academics %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Programs
+            </button>
+            <div class="dropdown-menu">
+                {% for program in academics %}
+                    <a class="dropdown-item" onclick="addParam('{{ program.0 }}=0')">{{ program.1 }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
     {% for college in colleges %}
         <p>
             <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>

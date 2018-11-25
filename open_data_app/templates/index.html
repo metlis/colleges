@@ -192,44 +192,9 @@
         Program
     </button>
     <div class="dropdown-menu">
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'agriculture' %}">Agriculture, Agriculture Operations, and Related Sciences</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'architecture' %}">Architecture and Related Services</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'ethnic_cultural_gender' %}">Area, Ethnic, Cultural, Gender, and Group Studies</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'biological' %}">Biological and Biomedical Sciences</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'business_marketing' %}">Business, Management, Marketing, and Related Support Services</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'communication' %}">Communication, Journalism, and Related Programs</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'communications_technology' %}">Communications Technologies/Technicians and Support Services</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'computer' %}">Computer and Information Sciences and Support Services</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'construction' %}">Construction Trades</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'education' %}">Education</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'engineering' %}">Engineering</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'engineering_technology' %}">Engineering Technologies and Engineering-Related Fields</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'english' %}">English Language and Literature/Letters</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'family_consumer_science' %}">Family and Consumer Sciences/Human Sciences</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'language' %}">Foreign Languages, Literatures, and Linguistics</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'health' %}">Health Professions and Related Programs</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'history' %}">History</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'security_law_enforcement' %}">Homeland Security, Law Enforcement, Firefighting and Related Protective Services</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'legal' %}">Legal Professions and Studies</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'humanities' %}">Liberal Arts and Sciences, General Studies and Humanities</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'library' %}">Library Science</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'mathematics' %}">Mathematics and Statistics</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'mechanic_repair_technology' %}">Mechanic and Repair Technologies/Technicians</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'military' %}">Military Technologies and Applied Sciences</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'multidiscipline' %}">Multi/Interdisciplinary Studies</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'resources' %}">Natural Resources and Conservation</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'parks_recreation_fitness' %}">Parks, Recreation, Leisure, and Fitness Studies</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'personal_culinary' %}">Personal and Culinary Services</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'philosophy_religious' %}">Philosophy and Religious Studies</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'physical_science' %}">Physical Sciences</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'precision_production' %}">Precision Production</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'psychology' %}">Psychology</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'public_administration_social_service' %}">Public Administration and Social Service Professions</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'science_technology' %}">Science Technologies/Technicians</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'social_science' %}">Social Sciences</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'theology_religious_vocation' %}">Theology and Religious Vocations</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'transportation' %}">Transportation and Materials Moving</a>
-        <a class="dropdown-item" href="{% url 'college_app:filter_no_values' 'visual_performing' %}">Visual and Performing Arts</a>
+        {% for discipline in disciplines %}
+            <a class="dropdown-item" href="{% url 'college_app:filter_no_values' discipline.0 %}">{{ discipline.1 }}</a>
+        {% endfor %}
     </div>
 </div>
 
@@ -352,6 +317,14 @@
                 Currently operating
                 <input name="cur_operating" value="1" type="checkbox">
             </label>
+        </div>
+        <div>
+            {% for discipline in disciplines %}
+                <label>
+                    {{ discipline.1 }}
+                    <input name="{{ discipline.0 }}" value="0" type="checkbox">
+                </label>
+            {% endfor %}
         </div>
         <button type="submit">Search</button>
     </form>

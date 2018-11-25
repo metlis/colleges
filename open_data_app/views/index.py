@@ -28,6 +28,16 @@ def index(request):
         'religous__name').exclude(religous__name=None).distinct()
     levels = College.objects.values_list('inst_level__id',
                                            'inst_level__description').order_by('inst_level__id').distinct()
+
+
+    dict = College.get_dict()
+    disciplines = College.get_disciplines()
+    academics = []
+
+    for discipline in disciplines:
+        academics.append([discipline, dict[discipline]])
+
+
     return render(request, 'index.html', {'states': states,
                                           'regions': regions,
                                           'ownership': ownership,
@@ -36,4 +46,5 @@ def index(request):
                                           'carnegie_basic': carnegie_basic,
                                           'religions': religions,
                                           'levels': levels,
+                                          'disciplines': academics,
                                           })

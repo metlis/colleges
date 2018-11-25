@@ -101,8 +101,15 @@ def get_region_param(request, region_id, region_slug, param, param_value):
     # initial filter, its value, verbose name and param value
     param, query_val, verbose_name, param_value = College.get_filter_val('region', region_id, param, param_value)
 
+    # modify filter if it is about disciplines
+    disciplines = College.get_disciplines()
+    if param in disciplines:
+        filter_param = '{}__gt'.format(param)
+    else:
+        filter_param = param
+
     # colleges filtered by the initial filter + by region
-    colleges = College.objects.filter(region__id=region_id).filter(**{param: param_value}).order_by('name')
+    colleges = College.objects.filter(region__id=region_id).filter(**{filter_param: param_value}).order_by('name')
 
     # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
     # dictionary of applied filters and their values

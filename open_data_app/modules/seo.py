@@ -18,7 +18,7 @@ class Seo():
                      'online_only': '{} colleges and universities in {}, USA',
                      'cur_operating': '{} colleges and universities in {}, USA',
                      'academics': 'American colleges and universities with programs in {}',
-
+                     'academics_geo': 'Colleges and universities in {} with programs in {}',
                      }
 
         disciplines = ['agriculture', 'architecture', 'ethnic_cultural_gender', 'biological', 'business_marketing',
@@ -32,8 +32,12 @@ class Seo():
                        'visual_performing']
         try:
             if key in disciplines:
-                template = templates['academics']
-                return template.format(value)
+                if not geo:
+                    template = templates['academics']
+                    return template.format(value)
+                else:
+                    template = templates['academics_geo']
+                    return template.format(geo, value)
             else:
                 template = templates[key]
                 if geo:

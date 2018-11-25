@@ -278,6 +278,31 @@ class College(models.Model):
         return dict
 
     @classmethod
+    def get_disciplines(cls):
+        disciplines = ['agriculture', 'architecture', 'ethnic_cultural_gender', 'biological', 'business_marketing',
+                       'communication', 'communications_technology', 'computer', 'construction', 'education',
+                       'engineering', 'engineering_technology', 'english', 'family_consumer_science', 'language',
+                       'health', 'history', 'security_law_enforcement', 'legal', 'humanities', 'library', 'mathematics',
+                       'mechanic_repair_technology', 'military', 'multidiscipline', 'resources',
+                       'parks_recreation_fitness', 'personal_culinary', 'philosophy_religious', 'physical_science',
+                       'precision_production', 'psychology', 'public_administration_social_service',
+                       'science_technology', 'social_science', 'theology_religious_vocation', 'transportation',
+                       'visual_performing']
+        return disciplines
+
+
+    @classmethod
+    def create_new_params_dict(cls, params_dict):
+        disciplines = cls.get_disciplines()
+        new_params_dict = params_dict.copy()
+        for key in new_params_dict:
+            if key in disciplines:
+                new_key = '{}__gt'.format(key)
+                new_params_dict[new_key] = new_params_dict[key]
+                new_params_dict.pop(key)
+        return new_params_dict
+
+    @classmethod
     def get_filters(cls, entity, entity_id, excluded_filters='', get_filter='', init_filter='', init_filter_val='',
                     filters_set=''):
         """
@@ -291,6 +316,17 @@ class College(models.Model):
         :param filters_set: third level filtration value
         :return:
         """
+        # transform filter param for academics
+        disciplines = cls.get_disciplines()
+        if init_filter in disciplines:
+            init_filter = '{}__gt'.format(init_filter)
+        if filters_set:
+            for key in filters_set:
+                if key in disciplines:
+                    new_key = '{}__gt'.format(key)
+                    filters_set[new_key] = filters_set[key]
+                    filters_set.pop(key)
+
         # items for the second level of filtration + region or state
         if init_filter and entity:
             filters = {entity: entity_id,
@@ -352,6 +388,7 @@ class College(models.Model):
         colleges_online_only = colleges.values('online_only').exclude(online_only=None).distinct()
         colleges_cur_operating = colleges.values('cur_operating').exclude(cur_operating=None).distinct()
 
+
         filters = {'city': colleges_cities,
                    'state': colleges_states,
                    'ownership': colleges_ownership,
@@ -367,6 +404,18 @@ class College(models.Model):
                    'women_only': colleges_women_only,
                    'online_only': colleges_online_only,
                    'cur_operating': colleges_cur_operating, }
+
+
+        dict = cls.get_dict()
+        # adding academics filters
+        for discipline in disciplines:
+            filter = '{}__gt'.format(discipline)
+            if len(colleges.filter(**{filter: 0})) > 0:
+                try:
+                    filters['academics'].append([discipline, dict[discipline]])
+                except:
+                    filters['academics'] = []
+                    filters['academics'].append([discipline, dict[discipline]])
 
         if len(excluded_filters) > 0:
             for i in excluded_filters:
@@ -433,7 +482,7 @@ class College(models.Model):
                     else:
                         return HttpResponseNotFound('<h1>Page not found</h1>')
                 # params without value (academics)
-                elif not param_value:
+                elif param in cls.get_disciplines():
                     dict = cls.get_dict()
                     query_val = dict[param]
                 # yes/no queries

@@ -54,7 +54,7 @@ def get_state_slug(request, state_id, state_slug):
         else:
             colleges = College.objects.filter(state=state_id).order_by('name')
 
-            filters = College.get_filters('state', state_id, 'states')
+            filters = College.get_filters('state', state_id, excluded_filters=['state'])
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
@@ -103,8 +103,15 @@ def get_state_param(request, state_id, state_slug, param, param_value):
     # initial filter, its value, verbose name and param value
     param, query_val, verbose_name, param_value = College.get_filter_val('state', state_id, param, param_value)
 
+    # modify filter if it is about disciplines
+    disciplines = College.get_disciplines()
+    if param in disciplines:
+        filter_param = '{}__gt'.format(param)
+    else:
+        filter_param = param
+
     # colleges filtered by the initial filter + by state
-    colleges = College.objects.filter(state__id=state_id).filter(**{param: param_value}).order_by('name')
+    colleges = College.objects.filter(state__id=state_id).filter(**{filter_param: param_value}).order_by('name')
 
     # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
     # dictionary of applied filters and their values

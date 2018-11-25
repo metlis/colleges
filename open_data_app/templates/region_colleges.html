@@ -25,6 +25,7 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <title>Region {{ region_name }} colleges and universities</title>
+{% load static %}
 </head>
 <body>
 <div class="container-fluid">
@@ -244,6 +245,22 @@
         {% endif %}
     {% endfor %}
 
+
+    {% if academics %}
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Programs
+            </button>
+            <div class="dropdown-menu">
+                {% for program in academics %}
+                    <a class="dropdown-item" href="{% url 'college_app:region' region_id %}?{{ program.0 }}=0">{{ program.1 }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
     {% for college in colleges %}
         <p>
             <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
@@ -281,5 +298,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+<script src="{% static 'open_data_app/js/scripts.js' %}"></script>
 </body>
 </html>
