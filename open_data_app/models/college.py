@@ -86,6 +86,64 @@ class College(models.Model):
     transportation = models.FloatField(null=True, verbose_name='transportation')
     visual_performing = models.FloatField(null=True, verbose_name='visual_performing')
 
+    # cost
+    average_net_price_public = models.FloatField(null=True, verbose_name='average_net_price_public')
+    average_net_price_private = models.FloatField(null=True, verbose_name='average_net_price_private')
+    average_cost_of_attendance_academic = models.FloatField(null=True, verbose_name='average_cost_of_attendance_academic')
+    average_cost_of_attendance_program = models.FloatField(null=True, verbose_name='average_cost_of_attendance_program')
+    in_state_tuition = models.FloatField(null=True, verbose_name='in_state_tuition')
+    out_state_tuition = models.FloatField(null=True, verbose_name='out_state_tuition')
+    average_net_price_pub_30 = models.FloatField(null=True, verbose_name='average_net_price_pub_30')
+    average_net_price_pub_48 = models.FloatField(null=True, verbose_name='average_net_price_pub_48')
+    average_net_price_pub_75 = models.FloatField(null=True, verbose_name='average_net_price_pub_75')
+    average_net_price_pub_110 = models.FloatField(null=True, verbose_name='average_net_price_pub_110')
+    average_net_price_pub_110_plus = models.FloatField(null=True, verbose_name='average_net_price_pub_110_plus')
+    average_net_price_priv_30 = models.FloatField(null=True, verbose_name='average_net_price_priv_30')
+    average_net_price_priv_48 = models.FloatField(null=True, verbose_name='average_net_price_priv_48')
+    average_net_price_priv_75 = models.FloatField(null=True, verbose_name='average_net_price_priv_75')
+    average_net_price_priv_110 = models.FloatField(null=True, verbose_name='average_net_price_priv_110')
+    average_net_price_priv_110_plus = models.FloatField(null=True, verbose_name='average_net_price_priv_110_plus')
+
+    # aid
+    pell_grand = models.FloatField(null=True, verbose_name='pell_grand')
+    federal_loan = models.FloatField(null=True, verbose_name='federal_loan')
+    debt_completed = models.FloatField(null=True, verbose_name='debt_completed')
+    debt_not_completed = models.FloatField(null=True, verbose_name='debt_not_completed')
+    monthly_payments = models.FloatField(null=True, verbose_name='monthly_payments')
+
+    # completion
+    completion_rate_four_year = models.FloatField(null=True, verbose_name='completion_rate_four_year')
+    completion_rate_less_four_year = models.FloatField(null=True, verbose_name='completion_rate_less_four_year')
+
+    # earnings
+    mean_earnings = models.FloatField(null=True, verbose_name='mean_earnings')
+
+    # student
+    undergrad_students = models.FloatField(null=True, verbose_name='undergrad_students')
+    students_white = models.FloatField(null=True, verbose_name='students_white')
+    students_black = models.FloatField(null=True, verbose_name='students_black')
+    students_hispanic = models.FloatField(null=True, verbose_name='students_hispanic')
+    students_asian = models.FloatField(null=True, verbose_name='students_asian')
+    students_native = models.FloatField(null=True, verbose_name='students_native')
+    students_pacific = models.FloatField(null=True, verbose_name='students_pacific')
+    students_multiple_races = models.FloatField(null=True, verbose_name='students_multiple_races')
+    students_non_resident = models.FloatField(null=True, verbose_name='students_non_resident')
+    students_unknown_race = models.FloatField(null=True, verbose_name='students_unknown_race')
+    students_part_time = models.FloatField(null=True, verbose_name='students_part_time')
+    students_female = models.FloatField(null=True, verbose_name='students_female')
+    students_family_income = models.FloatField(null=True, verbose_name='students_family_income')
+
+    # admission
+    admission_rate = models.FloatField(null=True, verbose_name='admission_rate')
+    sat_reading = models.FloatField(null=True, verbose_name='sat_reading')
+    sat_math = models.FloatField(null=True, verbose_name='sat_math')
+    sat_writing = models.FloatField(null=True, verbose_name='sat_writing')
+    sat_average = models.FloatField(null=True, verbose_name='sat_average')
+    act_cumulative = models.FloatField(null=True, verbose_name='act_cumulative')
+    act_english = models.FloatField(null=True, verbose_name='act_english')
+    act_math = models.FloatField(null=True, verbose_name='act_math')
+    act_writing = models.FloatField(null=True, verbose_name='act_writing')
+
     full_data = models.TextField()
 
     def __str__(self):
@@ -120,7 +178,7 @@ class College(models.Model):
                         col_values = row.split(',')
 
                     def check_val(val, str):
-                        if val == 'NULL' and not str:
+                        if (val == 'NULL' or val == 'PrivacySuppressed') and not str:
                             return None
                         elif val == 'NULL' and str:
                             return ''
@@ -221,6 +279,65 @@ class College(models.Model):
                     college.theology_religious_vocation = check_val(col_values[84], False)
                     college.transportation = check_val(col_values[94], False)
                     college.visual_performing = check_val(col_values[95], False)
+
+                    # cost
+                    college.average_net_price_public = check_val(col_values[316], False)
+                    college.average_net_price_private = check_val(col_values[317], False)
+                    college.average_cost_of_attendance_academic = check_val(col_values[376], False)
+                    college.average_cost_of_attendance_program = check_val(col_values[377], False)
+                    college.in_state_tuition = check_val(col_values[378], False)
+                    college.out_state_tuition = check_val(col_values[379], False)
+                    college.average_net_price_pub_30 = check_val(col_values[320], False)
+                    college.average_net_price_pub_48 = check_val(col_values[321], False)
+                    college.average_net_price_pub_75 = check_val(col_values[322], False)
+                    college.average_net_price_pub_110 = check_val(col_values[323], False)
+                    college.average_net_price_pub_110_plus = check_val(col_values[324], False)
+                    college.average_net_price_priv_30 = check_val(col_values[325], False)
+                    college.average_net_price_priv_48 = check_val(col_values[326], False)
+                    college.average_net_price_priv_75 = check_val(col_values[327], False)
+                    college.average_net_price_priv_110 = check_val(col_values[328], False)
+                    college.average_net_price_priv_110_plus = check_val(col_values[329], False)
+
+                    # aid
+                    college.pell_grand = check_val(col_values[385], False)
+                    college.federal_loan = check_val(col_values[437], False)
+                    college.debt_completed = check_val(col_values[1503], False)
+                    college.debt_not_completed = check_val(col_values[1505], False)
+                    college.monthly_payments = check_val(col_values[1531], False)
+
+                    # completion
+                    college.completion_rate_four_year = check_val(col_values[386], False)
+                    college.completion_rate_less_four_year = check_val(col_values[387], False)
+
+                    # earnings
+                    college.mean_earnings = check_val(col_values[1638], False)
+
+                    # student
+                    college.undergrad_students = check_val(col_values[290], False)
+                    college.students_white = check_val(col_values[292], False)
+                    college.students_black = check_val(col_values[293], False)
+                    college.students_hispanic = check_val(col_values[294], False)
+                    college.students_asian = check_val(col_values[295], False)
+                    college.students_native = check_val(col_values[296], False)
+                    college.students_pacific = check_val(col_values[297], False)
+                    college.students_multiple_races = check_val(col_values[298], False)
+                    college.students_non_resident = check_val(col_values[299], False)
+                    college.students_unknown_race = check_val(col_values[300], False)
+                    college.students_part_time = check_val(col_values[313], False)
+                    college.students_female = check_val(col_values[1609], False)
+                    college.students_family_income = check_val(col_values[1614], False)
+
+                    # admission
+                    college.admission_rate = check_val(col_values[36], False)
+                    college.sat_reading = check_val(col_values[44], False)
+                    college.sat_math = check_val(col_values[45], False)
+                    college.sat_writing = check_val(col_values[46], False)
+                    college.sat_average = check_val(col_values[59], False)
+                    college.act_cumulative = check_val(col_values[55], False)
+                    college.act_english = check_val(col_values[56], False)
+                    college.act_math = check_val(col_values[57], False)
+                    college.act_writing = check_val(col_values[58], False)
+
 
                     colleges.append(college)
                 row_num += 1
