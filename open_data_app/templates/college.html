@@ -17,7 +17,7 @@
 <p>Lat: {{ college.latitude }}</p>
 <p>Long: {{ college.longitude }}</p>
 <p>{{ college.locale }}</p>
-<p>Undergraduate: {{ college.undergrad_students|floatformat:"0" }}</p>
+<p>Undergraduate: {{ college.undergrad_students|floatformat:"0"|intcomma }}</p>
 <p>Religion: {{ college.religous }}</p>
 <p>Ownership: {{ college.ownership }}</p>
 
@@ -77,7 +77,7 @@
 <p>Unknown races: {{ college.students_unknown_race|mul:100|floatformat:"0" }}%</p>
 <p>Female: {{ college.students_female|mul:100|floatformat:"0" }}%</p>
 <p>Male: {{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}%</p>
-<p>Family income: {{ college.students_family_income|floatformat:"0" }}$</p>
+<p>Family income: {{ college.students_family_income|floatformat:"0"|intcomma }}$</p>
 
 <h3>Aid</h3>
 <p>Pell grand: {{ college.pell_grand|mul:100|floatformat:"0" }}%</p>
@@ -88,7 +88,7 @@
 
 <h3>Cost</h3>
 <p>Net price public: {{ college.average_net_price_public|floatformat:"0"|intcomma }}$</p>
-<p>Net price private: {{ college.average_net_price_private|floatformat:"0" }}$</p>
+<p>Net price private: {{ college.average_net_price_private|floatformat:"0"|intcomma }}$</p>
 <p>Average cost academic: {{ college.average_cost_of_attendance_academic|floatformat:"0"|intcomma }}$</p>
 <p>Average cost program: {{ college.average_cost_of_attendance_program|floatformat:"0"|intcomma }}$</p>
 <p>In state tuition: {{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>

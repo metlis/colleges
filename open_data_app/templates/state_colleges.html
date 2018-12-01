@@ -25,6 +25,8 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <title>State {{ name }} colleges and universities</title>
+    {% load mathfilters %}
+    {% load humanize %}
 {% load static %}
 </head>
 <body>
@@ -257,7 +259,11 @@
         <p>
             <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
         </p>
+        <p>Monthly payments: {{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
+        <p>Earnings: {{ college.mean_earnings|floatformat:"0"|intcomma }}$</p>
+        <p>In state tuition: {{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
     {% endfor %}
+
     {% if colleges.paginator.num_pages > 1 %}
         <div>
             {% if colleges.has_previous %}
