@@ -10,6 +10,7 @@ from settings import *
 import urllib.parse
 from open_data_app.modules.seo import Seo
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Avg, Max, Min
 
 
 def get_state(request, state_id):
@@ -58,6 +59,9 @@ def get_state_slug(request, state_id, state_slug):
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
+    # aggregate data
+    aggregate_data = College.get_aggregate_data(colleges)
+
     # pagination
     if request.GET.get('page'):
         page = request.GET.get('page')
@@ -82,6 +86,7 @@ def get_state_slug(request, state_id, state_slug):
                }
 
     context.update(filters)
+    context.update(aggregate_data)
 
     return render(request, 'state_colleges.html', context)
 
@@ -129,8 +134,14 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                                                                'param_value': param_value,
                                                                })
 
+        # aggregate data
+        aggregate_data = College.get_aggregate_data(colleges)
+
+
         # pagination
         colleges = handle_pagination(request, colleges)
+
+
 
         # get filters
         filters = College.get_filters('state', state_id, excluded_filters=['state'], init_filter=param,
@@ -148,6 +159,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                    'filters_vals': filters_vals,
                    }
         context.update(filters)
+        context.update(aggregate_data)
 
         return render(request, 'filtered_colleges.html', context)
 

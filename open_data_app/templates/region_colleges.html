@@ -33,6 +33,42 @@
 <div class="container-fluid">
     <h1>Colleges and universities of {{ region_name }}</h1>
     <p>Colleges found: {{ colleges.paginator.count }}</p>
+    <p>Average tuition: {{ average_tuition|floatformat:"0"|intcomma }}$</p>
+
+    <p>Max tuition: {{ max_tuition|floatformat:"0"|intcomma }}$</p>
+    {% for college in max_tuition_colleges %}
+        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
+    {% endfor %}
+
+    <p>Min tuition: {{ min_tuition|floatformat:"0"|intcomma }}$</p>
+    {% for college in min_tuition_colleges %}
+        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
+    {% endfor %}
+
+    <p>Average monthly payments: {{ average_payments|floatformat:"0"|intcomma }}$</p>
+
+    <p>Max monthly payments: {{ max_payments|floatformat:"0"|intcomma }}$</p>
+    {% for college in max_payments_colleges %}
+        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
+    {% endfor %}
+
+    <p>Min monthly payments: {{ min_payments|floatformat:"0"|intcomma }}$</p>
+    {% for college in min_payments_colleges %}
+        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
+    {% endfor %}
+
+
+    <p>Average earnings: {{ average_earnings|floatformat:"0"|intcomma }}$</p>
+
+    <p>Max earnings: {{ max_earnings|floatformat:"0"|intcomma }}$</p>
+    {% for college in max_earnings_colleges %}
+        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
+    {% endfor %}
+
+    <p>Min earnings: {{ min_earnings|floatformat:"0"|intcomma }}$</p>
+    {% for college in min_earnings_colleges %}
+        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
+    {% endfor %}
     <div>
         <a href="{% url 'college_app:index' %}">Home</a>
         <a href="{% url 'college_app:region' region_id %}">{{ region_name }}</a>

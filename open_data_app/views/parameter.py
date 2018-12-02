@@ -30,6 +30,10 @@ def filter_values(request, param, param_value):
             canonical = reverse('college_app:filter_values', kwargs={'param': verbose_name,
                                                                     'param_value': param_value,
                                                                     })
+
+        # aggregate data
+        aggregate_data = College.get_aggregate_data(colleges)
+
         # pagination
         colleges = handle_pagination(request, colleges)
 
@@ -53,6 +57,7 @@ def filter_values(request, param, param_value):
                    'init_param_value': param_value,
                    }
         context.update(filters)
+        context.update(aggregate_data)
 
         return render(request, 'filtered_colleges.html', context)
     else:

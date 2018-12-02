@@ -57,6 +57,9 @@ def get_region_slug(request, region_id, region_slug):
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
+    # aggregate data
+    aggregate_data = College.get_aggregate_data(colleges)
+
     # pagination
     if request.GET.get('page'):
         page = request.GET.get('page')
@@ -81,6 +84,7 @@ def get_region_slug(request, region_id, region_slug):
                }
 
     context.update(filters)
+    context.update(aggregate_data)
 
     return render(request, 'region_colleges.html', context)
 
@@ -128,6 +132,9 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                                                                     'param': verbose_name,
                                                                     'param_value': param_value,
                                                                     })
+        # aggregate data
+        aggregate_data = College.get_aggregate_data(colleges)
+
         # pagination
         colleges = handle_pagination(request, colleges)
 
@@ -153,6 +160,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                    'filters_vals': filters_vals,
                    }
         context.update(filters)
+        context.update(aggregate_data)
 
         return render(request, 'filtered_colleges.html', context)
     else:

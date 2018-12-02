@@ -16,6 +16,7 @@ from open_data_app.models.degree import Degree
 from open_data_app.models.carnegie import Carnegie
 from open_data_app.models.religion import Religion
 from open_data_app.models.level import Level
+from django.db.models import Avg, Max, Min
 
 
 class College(models.Model):
@@ -610,3 +611,47 @@ class College(models.Model):
                 return param, query_val, field._verbose_name, param_value
         else:
             return HttpResponseNotFound('<h1>Page not found</h1>')
+
+    @classmethod
+    def get_aggregate_data(cls, colleges):
+        average_tuition = colleges.aggregate(Avg('in_state_tuition'))
+
+        max_tuition = colleges.aggregate(Max('in_state_tuition'))
+        max_tuition_colleges = colleges.filter(in_state_tuition=max_tuition['in_state_tuition__max'])
+
+        min_tuition = colleges.aggregate(Min('in_state_tuition'))
+        min_tuition_colleges = colleges.filter(in_state_tuition=min_tuition['in_state_tuition__min'])
+
+        average_payments = colleges.aggregate(Avg('monthly_payments'))
+
+        max_payments = colleges.aggregate(Max('monthly_payments'))
+        max_payments_colleges = colleges.filter(monthly_payments=max_payments['monthly_payments__max'])
+
+        min_payments = colleges.aggregate(Min('monthly_payments'))
+        min_payments_colleges = colleges.filter(monthly_payments=min_payments['monthly_payments__min'])
+
+        average_earnings = colleges.aggregate(Avg('mean_earnings'))
+
+        max_earnings = colleges.aggregate(Max('mean_earnings'))
+        max_earnings_colleges = colleges.filter(mean_earnings=max_earnings['mean_earnings__max'])
+
+        min_earnings = colleges.aggregate(Min('mean_earnings'))
+        min_earnings_colleges = colleges.filter(mean_earnings=min_earnings['mean_earnings__min'])
+
+        return {
+            'average_tuition': average_tuition['in_state_tuition__avg'],
+            'max_tuition': max_tuition['in_state_tuition__max'],
+            'max_tuition_colleges': max_tuition_colleges,
+            'min_tuition': min_tuition['in_state_tuition__min'],
+            'min_tuition_colleges': min_tuition_colleges,
+            'average_payments': average_payments['monthly_payments__avg'],
+            'max_payments': max_payments['monthly_payments__max'],
+            'max_payments_colleges': max_payments_colleges,
+            'min_payments': min_payments['monthly_payments__min'],
+            'min_payments_colleges': min_payments_colleges,
+            'average_earnings': average_earnings['mean_earnings__avg'],
+            'max_earnings': max_earnings['mean_earnings__max'],
+            'max_earnings_colleges': max_earnings_colleges,
+            'min_earnings': min_earnings['mean_earnings__min'],
+            'min_earnings_colleges': min_earnings_colleges,
+        }

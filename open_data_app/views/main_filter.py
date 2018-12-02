@@ -24,6 +24,9 @@ def main_filter(request):
 
 
         if len(colleges) > 0:
+            # aggregate data
+            aggregate_data = College.get_aggregate_data(colleges)
+
             # pagination
             colleges = handle_pagination(request, colleges)
 
@@ -40,11 +43,15 @@ def main_filter(request):
                        'main_filter': True,
                        }
             context.update(filters)
+            context.update(aggregate_data)
 
             return render(request, 'filtered_colleges.html', context)
         else:
             return HttpResponseNotFound('<h1>Page not found</h1>')
     else:
+        # aggregate data
+        aggregate_data = College.get_aggregate_data(colleges)
+
         # pagination
         colleges = handle_pagination(request, colleges)
 
@@ -58,5 +65,6 @@ def main_filter(request):
                    'noindex': True,
                    }
         context.update(filters)
+        context.update(aggregate_data)
 
         return render(request, 'filtered_colleges.html', context)

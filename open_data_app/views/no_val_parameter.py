@@ -31,6 +31,9 @@ def filter_no_values(request, param):
         if not 'canonical' in locals():
             canonical = reverse('college_app:filter_no_values', kwargs={'param': param,
                                                                         })
+        # aggregate data
+        aggregate_data = College.get_aggregate_data(colleges)
+
         # pagination
         colleges = handle_pagination(request, colleges)
 
@@ -52,6 +55,7 @@ def filter_no_values(request, param):
                    'init_param': init_param,
                    }
         context.update(filters)
+        context.update(aggregate_data)
 
         return render(request, 'filtered_colleges.html', context)
     else:
