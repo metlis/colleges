@@ -6,8 +6,11 @@ import re
 def handle_params(request, colleges, entity, entity_id, main_filter=False):
     # handle filter requests at dynamic urls
     params = request.GET
-    # params copy to modify
-    req = params.copy()
+
+    # exclude sort parameter if any
+    params_temp = params.copy()
+    params_temp.pop('sort', None)
+    params = params_temp
 
     # string used in pagination links
     req_str = ''

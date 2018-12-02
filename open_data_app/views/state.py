@@ -10,7 +10,6 @@ from settings import *
 import urllib.parse
 from open_data_app.modules.seo import Seo
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import Avg, Max, Min
 
 
 def get_state(request, state_id):
@@ -61,6 +60,9 @@ def get_state_slug(request, state_id, state_slug):
 
     # aggregate data
     aggregate_data = College.get_aggregate_data(colleges)
+
+    # sorting colleges
+    colleges = College.sort_colleges(request, colleges)
 
     # pagination
     if request.GET.get('page'):
@@ -124,6 +126,9 @@ def get_state_param(request, state_id, state_slug, param, param_value):
 
 
     if len(colleges) > 0:
+
+        # sorting colleges
+        colleges = College.sort_colleges(request, colleges)
 
         # define seo data before rendering
         seo_template = verbose_name

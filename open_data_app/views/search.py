@@ -22,6 +22,9 @@ def search(request):
 
             canonical = reverse('college_app:search')
 
+            # sorting colleges
+            colleges = College.sort_colleges(request, colleges)
+
             # pagination
             colleges = handle_pagination(request, colleges)
 

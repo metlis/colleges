@@ -16,7 +16,8 @@ from open_data_app.models.degree import Degree
 from open_data_app.models.carnegie import Carnegie
 from open_data_app.models.religion import Religion
 from open_data_app.models.level import Level
-from django.db.models import Avg, Max, Min
+from django.db.models import Avg, Max, Min, F
+
 
 
 class College(models.Model):
@@ -655,3 +656,18 @@ class College(models.Model):
             'min_earnings': min_earnings['mean_earnings__min'],
             'min_earnings_colleges': min_earnings_colleges,
         }
+
+    @classmethod
+    def sort_colleges(cls, request, colleges):
+        try:
+            sort = request.GET['sort']
+            if sort:
+                is_desc = sort[0] == '-'
+                if is_desc:
+                    sort = sort[1:]
+                    colleges = colleges.order_by(F(sort).desc(nulls_last=True))
+                else:
+                    colleges = colleges.order_by(F(sort).asc(nulls_last=True))
+            return colleges
+        except:
+            return colleges

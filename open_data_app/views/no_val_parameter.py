@@ -34,6 +34,9 @@ def filter_no_values(request, param):
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
+        # sorting colleges
+        colleges = College.sort_colleges(request, colleges)
+
         # pagination
         colleges = handle_pagination(request, colleges)
 

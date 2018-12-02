@@ -60,6 +60,9 @@ def get_region_slug(request, region_id, region_slug):
     # aggregate data
     aggregate_data = College.get_aggregate_data(colleges)
 
+    # sorting colleges
+    colleges = College.sort_colleges(request, colleges)
+
     # pagination
     if request.GET.get('page'):
         page = request.GET.get('page')
@@ -122,6 +125,9 @@ def get_region_param(request, region_id, region_slug, param, param_value):
 
 
     if len(colleges) > 0:
+
+        # sorting colleges
+        colleges = College.sort_colleges(request, colleges)
 
         # define seo data before rendering
         seo_template = verbose_name

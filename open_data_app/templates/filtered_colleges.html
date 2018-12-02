@@ -364,6 +364,39 @@
         </div>
     {% endif %}
 
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Sort
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item"
+               onclick="addParam('sort=in_state_tuition')">Tuition</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=-in_state_tuition')">Tuition Desc</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=mean_earnings')">Earnings</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=-mean_earnings')">Earnings Desc</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=monthly_payments')">Monthly payments</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=-monthly_payments')">Monthly payments Desc</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=undergrad_students')">Undergraduates</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=-undergrad_students')">Undergraduates Desc</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=admission_rate')">Admission rate</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=-admission_rate')">Admission rate Desc</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=completion_rate_four_year')">Completion rate</a>
+            <a class="dropdown-item"
+               onclick="addParam('sort=-completion_rate_four_year')">Completion rate Desc</a>
+        </div>
+    </div>
+
     {% for college in colleges %}
         <p>
             <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>

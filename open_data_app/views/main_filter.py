@@ -27,6 +27,9 @@ def main_filter(request):
             # aggregate data
             aggregate_data = College.get_aggregate_data(colleges)
 
+            # sorting colleges
+            colleges = College.sort_colleges(request, colleges)
+
             # pagination
             colleges = handle_pagination(request, colleges)
 
@@ -51,6 +54,14 @@ def main_filter(request):
     else:
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
+
+        # sorting colleges
+        try:
+            sort = request.GET['sort']
+            if sort:
+                colleges = colleges.order_by(sort)
+        except:
+            pass
 
         # pagination
         colleges = handle_pagination(request, colleges)
