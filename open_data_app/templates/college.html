@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta property="og:type" content="website">
     <meta name="description" content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
+    <meta property="og:description" content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
+    <meta name="twitter:description" content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
     <link rel="canonical" href="{% url 'college_app:college_slug' college_id college_slug %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
     <title>{{ college.name }}: disciplines, costs, financial aid, admissions</title>
+    <meta property="og:title" content="{{ college.name }}: disciplines, costs, financial aid, admissions">
+    <meta name="twitter:title" content="{{ college.name }}: disciplines, costs, financial aid, admissions">
     {% load mathfilters %}
     {% load humanize %}
 </head>

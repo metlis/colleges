@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
     <meta name="description" content="This page provides details about colleges and universities in {{ region_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
+    <meta property="og:description" content="This page provides details about colleges and universities in {{ region_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
+    <meta name="twitter:description" content="This page provides details about colleges and universities in {{ region_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
     {# canonical page #}
     {% if colleges.number > 1 %}
         <link rel="canonical" href="{{ canonical }}?page={{ colleges.number }}">
@@ -26,6 +29,8 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <title>2019 colleges and universities in {{ region_name }}, USA</title>
+    <meta property="og:title" content="2019 colleges and universities in {{ region_name }}, USA">
+    <meta name="twitter:title" content="2019 colleges and universities in {{ region_name }}, USA">
     {% load static %}
     {% load mathfilters %}
     {% load humanize %}
