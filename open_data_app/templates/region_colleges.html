@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="robots" content="index, follow">
+    <meta name="description" content="This page provides details about colleges and universities in {{ region_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
     {# canonical page #}
     {% if colleges.number > 1 %}
         <link rel="canonical" href="{{ canonical }}?page={{ colleges.number }}">
@@ -24,7 +25,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <title>Region {{ region_name }} colleges and universities</title>
+    <title>2019 colleges and universities in {{ region_name }}, USA</title>
     {% load static %}
     {% load mathfilters %}
     {% load humanize %}

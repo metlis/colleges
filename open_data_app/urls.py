@@ -15,10 +15,10 @@ from django.contrib.sitemaps.views import sitemap
 app_name = 'college_app'
 
 sitemaps = {
-    'regions_params': RegionFilterParamsSitemap,
-    'states_params': StateFilterParamsSitemap,
     'regions': RegionsSitemap,
+    'regions_params': RegionFilterParamsSitemap,
     'states': StatesSitemap,
+    'states_params': StateFilterParamsSitemap,
     'disciplines': DisciplinesSitemap,
     'filters': FilterParamsSitemap,
     'colleges': CollegesSitemap,

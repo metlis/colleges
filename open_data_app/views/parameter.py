@@ -26,6 +26,7 @@ def filter_values(request, param, param_value):
         # define seo data before rendering
         seo_template = verbose_name
         seo_title = Seo.generate_title(seo_template, query_val, '')
+        seo_description = Seo.generate_description(seo_template, query_val, '')
         if not 'canonical' in locals():
             canonical = reverse('college_app:filter_values', kwargs={'param': verbose_name,
                                                                     'param_value': param_value,
@@ -49,6 +50,7 @@ def filter_values(request, param, param_value):
         filters = College.get_filters('', '', init_filter=param, init_filter_val=param_value, filters_set=params_dict)
         context = {'colleges': colleges,
                    'seo_title': seo_title,
+                   'seo_description': seo_description,
                    'canonical': canonical,
                    'base_url': base_url,
                    'init_filter_val': query_val,
