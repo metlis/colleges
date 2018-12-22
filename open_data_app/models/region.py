@@ -1,6 +1,7 @@
 from django.db import models
 import re
 from django.utils.text import slugify
+from django.urls import reverse
 
 
 class Region(models.Model):
@@ -24,3 +25,16 @@ class Region(models.Model):
             region_states = ''
 
         return region_name, region_slug, region_states
+
+    def get_absolute_path(self):
+        id = self.id
+        try:
+            region_re = re.search('(.*?)\s\((.*?)\)', self.name)
+            region_name = region_re.group(1)
+            slug = slugify(region_name)
+            url = reverse('college_app:region_slug', kwargs={'region_id': id,
+                                                          'region_slug': slug,
+                                                          })
+        except:
+            url = ''
+        return url

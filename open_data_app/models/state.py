@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.urls import reverse
 
 
 class State(models.Model):
@@ -15,3 +16,11 @@ class State(models.Model):
         state_slug = slugify(state.name)
 
         return state, state_slug
+
+    def get_absolute_path(self):
+        id = self.id
+        slug = slugify(self.name)
+        url = reverse('college_app:state_slug', kwargs={'state_id': id,
+                                                      'state_slug': slug,
+                                                      })
+        return url

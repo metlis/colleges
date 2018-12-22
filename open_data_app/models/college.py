@@ -17,7 +17,7 @@ from open_data_app.models.carnegie import Carnegie
 from open_data_app.models.religion import Religion
 from open_data_app.models.level import Level
 from django.db.models import Avg, Max, Min, F
-
+from django.urls import reverse
 
 
 class College(models.Model):
@@ -91,7 +91,8 @@ class College(models.Model):
     # cost
     average_net_price_public = models.FloatField(null=True, verbose_name='average_net_price_public')
     average_net_price_private = models.FloatField(null=True, verbose_name='average_net_price_private')
-    average_cost_of_attendance_academic = models.FloatField(null=True, verbose_name='average_cost_of_attendance_academic')
+    average_cost_of_attendance_academic = models.FloatField(null=True,
+                                                            verbose_name='average_cost_of_attendance_academic')
     average_cost_of_attendance_program = models.FloatField(null=True, verbose_name='average_cost_of_attendance_program')
     in_state_tuition = models.FloatField(null=True, verbose_name='in_state_tuition')
     out_state_tuition = models.FloatField(null=True, verbose_name='out_state_tuition')
@@ -340,7 +341,6 @@ class College(models.Model):
                     college.act_math = check_val(col_values[57], False)
                     college.act_writing = check_val(col_values[58], False)
 
-
                     colleges.append(college)
                 row_num += 1
 
@@ -408,7 +408,6 @@ class College(models.Model):
                        'science_technology', 'social_science', 'theology_religious_vocation', 'transportation',
                        'visual_performing']
         return disciplines
-
 
     @classmethod
     def create_new_params_dict(cls, params_dict):
@@ -507,7 +506,6 @@ class College(models.Model):
         colleges_online_only = colleges.values('online_only').exclude(online_only=None).distinct()
         colleges_cur_operating = colleges.values('cur_operating').exclude(cur_operating=None).distinct()
 
-
         filters = {'city': colleges_cities,
                    'state': colleges_states,
                    'ownership': colleges_ownership,
@@ -523,7 +521,6 @@ class College(models.Model):
                    'women_only': colleges_women_only,
                    'online_only': colleges_online_only,
                    'cur_operating': colleges_cur_operating, }
-
 
         dict = cls.get_dict()
         # adding academics filters
@@ -671,3 +668,12 @@ class College(models.Model):
             return colleges
         except:
             return colleges
+
+    def get_absolute_path(self):
+        id = self.id
+        slug = self.slug
+
+        url = reverse('college_app:college_slug', kwargs={'college_id': id,
+                                                      'college_slug': slug,
+                                                      })
+        return url
