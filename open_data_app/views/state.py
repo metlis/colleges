@@ -159,6 +159,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                    'base_url': canonical,
                    'state_view': True,
                    'state_id': state_id,
+                   'init_filter_val': query_val,
                    'geo': state_name,
                    'second_filter': query_val,
                    'params': req_str,

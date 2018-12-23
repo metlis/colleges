@@ -46,14 +46,13 @@ def filter_no_values(request, param):
                                                                    })
 
         # get filters
-        filters = College.get_filters('', '', filters_set=params_dict)
+        filters = College.get_filters('', '', init_filter=param, init_filter_val=0, filters_set=params_dict)
         context = {'colleges': colleges,
                    'seo_title': seo_title,
                    'seo_description': seo_description,
                    'canonical': canonical,
                    'base_url': base_url,
                    'init_filter_val': query_val,
-                   'query_val': query_val,
                    'params': req_str,
                    'noindex': noindex,
                    'filters_vals': filters_vals,

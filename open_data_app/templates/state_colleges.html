@@ -52,40 +52,50 @@
             </nav>
         </div>
     </div>
-    <p>Colleges found: {{ colleges.paginator.count }}</p>
-    <div class="row">
 
-    </div>
-    <div class="btn-group dropright">
-        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Sort
+    <div class="row">
+        <div class="col-12">
+            <div class="dropdown">
+                <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">
+                    Sort
+                </div>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=in_state_tuition')">Tuition ↑</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=-in_state_tuition')">Tuition ↓</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=mean_earnings')">Earnings ↑</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=-mean_earnings')">Earnings ↓</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=monthly_payments')">Monthly payments ↑</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=-monthly_payments')">Monthly payments ↓</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=undergrad_students')">Undergraduates ↑</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=-undergrad_students')">Undergraduates ↓</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=admission_rate')">Admission rate ↑</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=-admission_rate')">Admission rate ↓</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=completion_rate_four_year')">Completion rate ↑</a>
+                    <a class="dropdown-item"
+                       onclick="addParam('sort=-completion_rate_four_year')">Completion rate ↓</a>
+                </div>
+            </div>
         </div>
-        <div class="dropdown-menu">
-            <a class="dropdown-item"
-               onclick="addParam('sort=in_state_tuition')">Tuition</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=-in_state_tuition')">Tuition Desc</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=mean_earnings')">Earnings</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=-mean_earnings')">Earnings Desc</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=monthly_payments')">Monthly payments</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=-monthly_payments')">Monthly payments Desc</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=undergrad_students')">Undergraduates</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=-undergrad_students')">Undergraduates Desc</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=admission_rate')">Admission rate</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=-admission_rate')">Admission rate Desc</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=completion_rate_four_year')">Completion rate</a>
-            <a class="dropdown-item"
-               onclick="addParam('sort=-completion_rate_four_year')">Completion rate Desc</a>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <span>Filters applied:</span>
+            <span class="badge badge-light">{{ state_name }}</span>
+            <p><a href="{% url 'college_app:main_filter' %}">Reset filters</a></p>
+            <p>Colleges found: {{ colleges.paginator.count }}</p>
         </div>
     </div>
 
@@ -434,7 +444,7 @@
                     </div>
                 {% endif %}
                 {% for college in colleges %}
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="card">
                             <div class="card-header">
                                 <p>

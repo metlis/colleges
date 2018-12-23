@@ -54,7 +54,6 @@ def filter_values(request, param, param_value):
                    'canonical': canonical,
                    'base_url': base_url,
                    'init_filter_val': query_val,
-                   'query_val': query_val,
                    'params': req_str,
                    'noindex': noindex,
                    'filters_vals': filters_vals,
