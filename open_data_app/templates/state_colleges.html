@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="website">
-    <meta name="description" content="This page provides details about colleges and universities in {{ state_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
-    <meta property="og:description" content="This page provides details about colleges and universities in {{ state_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
-    <meta name="twitter:description" content="This page provides details about colleges and universities in {{ state_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
+    <meta name="description"
+          content="This page provides details about colleges and universities in {{ state_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
+    <meta property="og:description"
+          content="This page provides details about colleges and universities in {{ state_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
+    <meta name="twitter:description"
+          content="This page provides details about colleges and universities in {{ state_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
 
     {# canonical page #}
     {% if colleges.number > 1 %}
@@ -39,271 +42,25 @@
 <body>
 <div class="container-fluid">
     <h1>Colleges and universities of {{ state_name }}</h1>
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'college_app:index' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'college_app:state_slug' state_id slug %}">{{ state_name }}</a></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
     <p>Colleges found: {{ colleges.paginator.count }}</p>
-    <p>Average tuition: {{ average_tuition|floatformat:"0"|intcomma }}$</p>
+    <div class="row">
 
-    <p>Max tuition: {{ max_tuition|floatformat:"0"|intcomma }}$</p>
-    {% for college in max_tuition_colleges %}
-        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
-    {% endfor %}
-
-    <p>Min tuition: {{ min_tuition|floatformat:"0"|intcomma }}$</p>
-    {% for college in min_tuition_colleges %}
-        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
-    {% endfor %}
-
-    <p>Average monthly payments: {{ average_payments|floatformat:"0"|intcomma }}$</p>
-
-    <p>Max monthly payments: {{ max_payments|floatformat:"0"|intcomma }}$</p>
-    {% for college in max_payments_colleges %}
-        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
-    {% endfor %}
-
-    <p>Min monthly payments: {{ min_payments|floatformat:"0"|intcomma }}$</p>
-    {% for college in min_payments_colleges %}
-        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
-    {% endfor %}
-
-
-    <p>Average earnings: {{ average_earnings|floatformat:"0"|intcomma }}$</p>
-
-    <p>Max earnings: {{ max_earnings|floatformat:"0"|intcomma }}$</p>
-    {% for college in max_earnings_colleges %}
-        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
-    {% endfor %}
-
-    <p>Min earnings: {{ min_earnings|floatformat:"0"|intcomma }}$</p>
-    {% for college in min_earnings_colleges %}
-        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a></p>
-    {% endfor %}
-
-    <div>
-        <a href="{% url 'college_app:index' %}">Home</a>
-        <a href="{% url 'college_app:state' state_id %}">{{ name }}</a>
     </div>
     <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Level
-        </button>
-        <div class="dropdown-menu">
-            {% for l in inst_level %}
-                <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?inst_level={{ l.0 }}">{{ l.1 }}</a>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Religion
-        </button>
-        <div class="dropdown-menu">
-            {% for r in religous %}
-                <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?religous={{ r.0 }}">{{ r.1 }}</a>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Carnegie Basic
-        </button>
-        <div class="dropdown-menu">
-            {% for b in carnegie_basic %}
-                <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?carnegie_basic={{ b.0 }}">{{ b.1 }}</a>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Highest Degree
-        </button>
-        <div class="dropdown-menu">
-            {% for d in highest_grad_degree %}
-                <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?highest_grad_degree={{ d.0 }}">{{ d.1 }}</a>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Locale
-        </button>
-        <div class="dropdown-menu">
-            {% for l in locale %}
-                <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?locale={{ l.0 }}">{{ l.1 }}</a>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            Ownership
-        </button>
-        <div class="dropdown-menu">
-            {% for o in ownership %}
-                <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?ownership={{ o.0 }}">{{ o.1 }}</a>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            City/town
-        </button>
-        <div class="dropdown-menu">
-            {% for c in city %}
-                <a class="dropdown-item"
-                   href="{% url 'college_app:state' state_id %}?city={{ c.1 }}">{{ c.0 }}</a>
-            {% endfor %}
-        </div>
-    </div>
-
-    {% for val in hist_black %}
-        {% if val.hist_black == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Historically black
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?hist_black=0">No</a>
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?hist_black=1">Yes</a>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-
-    {% for val in predom_black %}
-        {% if val.predom_black == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Predominantely black
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?predom_black=0">No</a>
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?predom_black=1">Yes</a>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-
-    {% for val in hispanic %}
-        {% if val.hispanic == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Hispanic
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?hispanic=0">No</a>
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?hispanic=1">Yes</a>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-
-    {% for val in men_only %}
-        {% if val.men_only == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Men-only
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?men_only=0">No</a>
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?men_only=1">Yes</a>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-
-
-    {% for val in women_only %}
-        {% if val.women_only == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Women-only
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?women_only=0">No</a>
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?women_only=1">Yes</a>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-
-    {% for val in online_only %}
-        {% if val.online_only == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Online-only
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?online_only=0">No</a>
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?online_only=1">Yes</a>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-
-    {% for val in cur_operating %}
-        {% if val.cur_operating == 1 %}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Currently operating
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?cur_operating=0">No</a>
-                    <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?cur_operating=1">Yes</a>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-
-    {% if academics %}
-        <div class="btn-group dropright">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
-                Programs
-            </button>
-            <div class="dropdown-menu">
-                {% for program in academics %}
-                    <a class="dropdown-item"
-                       href="{% url 'college_app:state' state_id %}?{{ program.0 }}=0">{{ program.1 }}</a>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
             Sort
-        </button>
+        </div>
         <div class="dropdown-menu">
             <a class="dropdown-item"
                onclick="addParam('sort=in_state_tuition')">Tuition</a>
@@ -332,35 +89,393 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-2">
+            <div class="btn-group dropright">
+                <div class="dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Level
+                </div>
+                <div class="dropdown-menu">
+                    {% for l in inst_level %}
+                        <a class="dropdown-item"
+                           href="{% url 'college_app:state' state_id %}?inst_level={{ l.0 }}">{{ l.1 }}</a>
+                    {% endfor %}
+                </div>
+            </div>
 
-    {% for college in colleges %}
-        <p>
-            <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
-        </p>
-        <p>Monthly payments: {{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
-        <p>Earnings: {{ college.mean_earnings|floatformat:"0"|intcomma }}$</p>
-        <p>In state tuition: {{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
-    {% endfor %}
+            <div class="btn-group dropright">
+                <div class="dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Religion
+                </div>
+                <div class="dropdown-menu">
+                    {% for r in religous %}
+                        <a class="dropdown-item"
+                           href="{% url 'college_app:state' state_id %}?religous={{ r.0 }}">{{ r.1 }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="btn-group dropright">
+                <div class="dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Carnegie Basic
+                </div>
+                <div class="dropdown-menu">
+                    {% for b in carnegie_basic %}
+                        <a class="dropdown-item"
+                           href="{% url 'college_app:state' state_id %}?carnegie_basic={{ b.0 }}">{{ b.1 }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="btn-group dropright">
+                <div class="dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Highest Degree
+                </div>
+                <div class="dropdown-menu">
+                    {% for d in highest_grad_degree %}
+                        <a class="dropdown-item"
+                           href="{% url 'college_app:state' state_id %}?highest_grad_degree={{ d.0 }}">{{ d.1 }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="btn-group dropright">
+                <div class="dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Locale
+                </div>
+                <div class="dropdown-menu">
+                    {% for l in locale %}
+                        <a class="dropdown-item"
+                           href="{% url 'college_app:state' state_id %}?locale={{ l.0 }}">{{ l.1 }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="btn-group dropright">
+                <div class="dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Ownership
+                </div>
+                <div class="dropdown-menu">
+                    {% for o in ownership %}
+                        <a class="dropdown-item"
+                           href="{% url 'college_app:state' state_id %}?ownership={{ o.0 }}">{{ o.1 }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="btn-group dropright">
+                <div class="dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    City/town
+                </div>
+                <div class="dropdown-menu">
+                    {% for c in city %}
+                        <a class="dropdown-item"
+                           href="{% url 'college_app:state' state_id %}?city={{ c.1 }}">{{ c.0 }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% for val in hist_black %}
+                {% if val.hist_black == 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Historically black
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?hist_black=0">No</a>
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?hist_black=1">Yes</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% for val in predom_black %}
+                {% if val.predom_black == 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Predominantely black
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?predom_black=0">No</a>
+                            <a class="dropdown-item"
+                               href="{% url 'college_app:state' state_id %}?predom_black=1">Yes</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% for val in hispanic %}
+                {% if val.hispanic == 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Hispanic
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?hispanic=0">No</a>
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?hispanic=1">Yes</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% for val in men_only %}
+                {% if val.men_only == 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Men-only
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?men_only=0">No</a>
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?men_only=1">Yes</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+
+            {% for val in women_only %}
+                {% if val.women_only == 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Women-only
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?women_only=0">No</a>
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?women_only=1">Yes</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% for val in online_only %}
+                {% if val.online_only == 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Online-only
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?online_only=0">No</a>
+                            <a class="dropdown-item" href="{% url 'college_app:state' state_id %}?online_only=1">Yes</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% for val in cur_operating %}
+                {% if val.cur_operating == 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Currently operating
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item"
+                               href="{% url 'college_app:state' state_id %}?cur_operating=0">No</a>
+                            <a class="dropdown-item"
+                               href="{% url 'college_app:state' state_id %}?cur_operating=1">Yes</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% if academics %}
+                <div class="btn-group dropright">
+                    <div class="dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        Programs
+                    </div>
+                    <div class="dropdown-menu">
+                        {% for program in academics %}
+                            <a class="dropdown-item"
+                               href="{% url 'college_app:state' state_id %}?{{ program.0 }}=0">{{ program.1 }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+
+        <div class="col-10">
+            <div class="row">
+                {% if colleges|length > 1 %}
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-4">
+                                <div>
+                                    <p>Average tuition: {{ average_tuition|floatformat:"0"|intcomma }}$</p>
+                                </div>
+                                <div>
+                                    <p>Max tuition:
+                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                data-target="#maxTuition" aria-expanded="false"
+                                                aria-controls="maxTuition">
+                                            {{ max_tuition|floatformat:"0"|intcomma }}$
+                                        </button>
+                                    </p>
+                                </div>
+                                <div id="maxTuition" class="collapse">
+                                    {% for college in max_tuition_colleges %}
+                                        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                                <div>
+                                    <p>Min tuition:
+                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                data-target="#minTuition" aria-expanded="false"
+                                                aria-controls="minTuition">
+                                            {{ min_tuition|floatformat:"0"|intcomma }}$
+                                        </button>
+                                    </p>
+                                </div>
+                                <div id="minTuition" class="collapse">
+                                    {% for college in min_tuition_colleges %}
+                                        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div>
+                                    <p>Average monthly payments: {{ average_payments|floatformat:"0"|intcomma }}$</p>
+                                </div>
+                                <div>
+                                    <p>Max monthly payments:
+                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                data-target="#maxPayments" aria-expanded="false"
+                                                aria-controls="maxPayments">
+                                            {{ max_payments|floatformat:"0"|intcomma }}$
+                                        </button>
+                                    </p>
+                                </div>
+                                <div id="maxPayments" class="collapse">
+                                    {% for college in max_payments_colleges %}
+                                        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                                <div>
+                                    <p>Min monthly payments:
+                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                data-target="#minPayments" aria-expanded="false"
+                                                aria-controls="minPayments">
+                                            {{ min_payments|floatformat:"0"|intcomma }}$
+                                        </button>
+                                    </p>
+                                </div>
+                                <div id="minPayments" class="collapse">
+                                    {% for college in min_payments_colleges %}
+                                        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div>
+                                    <p>Average earnings: {{ average_earnings|floatformat:"0"|intcomma }}$</p>
+                                </div>
+                                <div>
+                                    <p>Max earnings:
+                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                data-target="#maxEarnings" aria-expanded="false"
+                                                aria-controls="maxEarnings">{{ max_earnings|floatformat:"0"|intcomma }}$
+                                        </button>
+                                    </p>
+                                </div>
+                                <div id="maxEarnings" class="collapse">
+                                    {% for college in max_earnings_colleges %}
+                                        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                                <div>
+                                    <p>Min earnings:
+                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                data-target="#minEarnings" aria-expanded="false"
+                                                aria-controls="minEarnings">
+                                            {{ min_earnings|floatformat:"0"|intcomma }}$
+                                        </button>
+                                    </p>
+                                </div>
+                                <div id="minEarnings" class="collapse">
+                                    {% for college in min_earnings_colleges %}
+                                        <p><a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% for college in colleges %}
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <p>
+                                    <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                </p>
+                            </div>
+                            <div class="card-body">
+                                <p>Monthly payments: {{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
+                                <p>Earnings: {{ college.mean_earnings|floatformat:"0"|intcomma }}$</p>
+                                <p>In state tuition: {{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
     {% if colleges.paginator.num_pages > 1 %}
-        <div>
-            {% if colleges.has_previous %}
-                <a href="{{ base_url }}">&laquo; first</a>
-                {% if colleges.previous_page_number == 1 %}
-                    <a href="{{ base_url }}">previous</a>
-                {% else %}
-                    <a href="?page={{ colleges.previous_page_number }}">previous</a>
-                {% endif %}
-            {% endif %}
-
-            <span>
-            Page {{ colleges.number }} of {{ colleges.paginator.num_pages }}.
-        </span>
-
-            {% if colleges.has_next %}
-                <a href="?page={{ colleges.next_page_number }}">next</a>
-                <a href="?page={{ colleges.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="pagination">
+                    <span>
+                        Page {{ colleges.number }} of {{ colleges.paginator.num_pages }}.
+                    </span>
+                    <ul class="pagination justify-content-center">
+                        {% if colleges.has_previous %}
+                            <li class="page-item"><a class="page-link" href="{{ base_url }}">&laquo; first</a></li>
+                            {% if colleges.previous_page_number == 1 %}
+                                <li class="page-item"><a class="page-link" href="{{ base_url }}">previous</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ colleges.previous_page_number }}">previous</a></li>
+                            {% endif %}
+                        {% endif %}
+                        {% if colleges.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ colleges.next_page_number }}">next</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ colleges.paginator.num_pages }}">last &raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
         </div>
     {% endif %}
 </div>

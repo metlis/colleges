@@ -53,7 +53,7 @@ def filter_no_values(request, param):
                    'canonical': canonical,
                    'base_url': base_url,
                    'init_filter_val': query_val,
-                   'second_filter': query_val,
+                   'query_val': query_val,
                    'params': req_str,
                    'noindex': noindex,
                    'filters_vals': filters_vals,

@@ -16,104 +16,146 @@
     {% load humanize %}
 </head>
 <body>
-<h1>{{ college.name }}</h1>
-<a href="#">{{ college.url }}</a>
-<p>{{ college.zip }} {{ college.city }}, {{ college.state }}</p>
-<p>Lat: {{ college.latitude }}</p>
-<p>Long: {{ college.longitude }}</p>
-<p>{{ college.locale }}</p>
-<p>Undergraduate: {{ college.undergrad_students|floatformat:"0"|intcomma }}</p>
-<p>Religion: {{ college.religous }}</p>
-<p>Ownership: {{ college.ownership }}</p>
-
-
-<h3>Academics</h3>
-<p>Degree: {{ college.highest_grad_degree }}</p>
-<p>Carnegie: {{ college.carnegie_basic }}</p>
-<p>Online-only: {{ college.online_only }}</p>
-<p>Level: {{ college.inst_level }}</p>
-
-<h3>Disciplines</h3>
-{% for discipline in college_disciplines %}
-    <div class="discipline">
-        {{ discipline.0 }}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1>{{ college.name }}</h1>
+        </div>
     </div>
-{% endfor %}
+        <div class="row">
+            <div class="col-12">
+                <a href="#">{{ college.url }}</a>
+                <p>{{ college.zip }} {{ college.city }}, {{ college.state }}</p>
+                <p>Lat: {{ college.latitude }}</p>
+                <p>Long: {{ college.longitude }}</p>
+                <p>{{ college.locale }}</p>
+                <p>Undergraduate: {{ college.undergrad_students|floatformat:"0"|intcomma }}</p>
+                <p>Religion: {{ college.religous }}</p>
+                <p>Ownership: {{ college.ownership }}</p>
+            </div>
+        </div>
 
-{% if top_disciplines %}
-    <h3>Top disciplines</h3>
-{% endif %}
-{% for discipline in top_disciplines %}
-    <div class="discipline">
-        {{ discipline.0 }}: {{ discipline.1 }}%
-    </div>
-{% endfor %}
+        <div class="row">
+            <div class="col-12">
+                <h3>Academics</h3>
+                <p>Degree: {{ college.highest_grad_degree }}</p>
+                <p>Carnegie: {{ college.carnegie_basic }}</p>
+                <p>Online-only: {{ college.online_only }}</p>
+                <p>Level: {{ college.inst_level }}</p>
+            </div>
+        </div>
 
+        <div class="row">
+            <div class="col-3">
+                <h3>Disciplines</h3>
+                {% for discipline in college_disciplines %}
+                    <div class="discipline">
+                        {{ discipline.0 }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-3">
+                {% if top_disciplines %}
+                    <h3>Top disciplines</h3>
+                {% endif %}
+                {% for discipline in top_disciplines %}
+                    <div class="discipline">
+                        {{ discipline.0 }}: {{ discipline.1 }}%
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
 
-<h3>Admissions</h3>
-<p>Admission rate: {{ college.admission_rate|mul:100|floatformat:"0" }}%</p>
-<p>SAT average: {{ college.sat_average|floatformat:"0" }}</p>
-<p>SAT reading: {{ college.sat_reading|floatformat:"0" }}</p>
-<p>SAT math: {{ college.sat_math|floatformat:"0" }}</p>
-<p>SAT writing: {{ college.sat_writing|floatformat:"0" }}</p>
+        <div class="row">
+            <div class="col-12">
+                <h3>Admissions</h3>
+                <p>Admission rate: {{ college.admission_rate|mul:100|floatformat:"0" }}%</p>
+            </div>
+            <div class="col-3">
+                <p>SAT average: {{ college.sat_average|floatformat:"0" }}</p>
+                <p>SAT reading: {{ college.sat_reading|floatformat:"0" }}</p>
+                <p>SAT math: {{ college.sat_math|floatformat:"0" }}</p>
+                <p>SAT writing: {{ college.sat_writing|floatformat:"0" }}</p>
+            </div>
+            <div class="col-3">
+                <p>ACT cumulative: {{ college.act_cumulative|floatformat:"0" }}</p>
+                <p>ACT English: {{ college.act_english|floatformat:"0" }}</p>
+                <p>ACT math: {{ college.act_math|floatformat:"0" }}</p>
+                <p>ACT writing: {{ college.act_writing|floatformat:"0" }}</p>
+            </div>
+        </div>
 
-<p>ACT cumulative: {{ college.act_cumulative|floatformat:"0" }}</p>
-<p>ACT English: {{ college.act_english|floatformat:"0" }}</p>
-<p>ACT math: {{ college.act_math|floatformat:"0" }}</p>
-<p>ACT writing: {{ college.act_writing|floatformat:"0" }}</p>
+        <div class="row">
+            <div class="col-12">
+                <h3>Completion</h3>
+                <p>Completion rate 4 year: {{ college.completion_rate_four_year|mul:100|floatformat:"0" }}%</p>
+                <p>Completion rate less 4 year: {{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}%</p>
+            </div>
+        </div>
 
-<h3>Completion</h3>
-<p>Completion rate 4 year: {{ college.completion_rate_four_year|mul:100|floatformat:"0" }}%</p>
-<p>Completion rate less 4 year: {{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}%</p>
+        <div class="row">
+            <div class="col-12">
+                <h3>Demography</h3>
+                <p>Historically black: {{ college.hist_black }}</p>
+                <p>Predominantly black: {{ college.predom_black }}</p>
+                <p>Hispanic: {{ college.hispanic }}</p>
+                <p>Men-only: {{ college.men_only }}</p>
+                <p>White: {{ college.students_white|mul:100|floatformat:"0" }}%</p>
+                <p>Black: {{ college.students_black|mul:100|floatformat:"0" }}%</p>
+                <p>Hispanic: {{ college.students_hispanic|mul:100|floatformat:"0" }}%</p>
+                <p>Asian: {{ college.students_asian|mul:100|floatformat:"0" }}%</p>
+                <p>Native: {{ college.students_native|mul:100|floatformat:"0" }}%</p>
+                <p>Pacific: {{ college.students_pacific|mul:100|floatformat:"0" }}%</p>
+                <p>Multiple races: {{ college.students_multiple_races|mul:100|floatformat:"0" }}%</p>
+                <p>Non-resident: {{ college.students_non_resident|mul:100|floatformat:"0" }}%</p>
+                <p>Unknown races: {{ college.students_unknown_race|mul:100|floatformat:"0" }}%</p>
+                <p>Female: {{ college.students_female|mul:100|floatformat:"0" }}%</p>
+                <p>Male: {{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}%</p>
+                <p>Family income: {{ college.students_family_income|floatformat:"0"|intcomma }}$</p>
+            </div>
+        </div>
 
-<h3>Demography</h3>
-<p>Historically black: {{ college.hist_black }}</p>
-<p>Predominantly black: {{ college.predom_black }}</p>
-<p>Hispanic: {{ college.hispanic }}</p>
-<p>Men-only: {{ college.men_only }}</p>
-<p>White: {{ college.students_white|mul:100|floatformat:"0" }}%</p>
-<p>Black: {{ college.students_black|mul:100|floatformat:"0" }}%</p>
-<p>Hispanic: {{ college.students_hispanic|mul:100|floatformat:"0" }}%</p>
-<p>Asian: {{ college.students_asian|mul:100|floatformat:"0" }}%</p>
-<p>Native: {{ college.students_native|mul:100|floatformat:"0" }}%</p>
-<p>Pacific: {{ college.students_pacific|mul:100|floatformat:"0" }}%</p>
-<p>Multiple races: {{ college.students_multiple_races|mul:100|floatformat:"0" }}%</p>
-<p>Non-resident: {{ college.students_non_resident|mul:100|floatformat:"0" }}%</p>
-<p>Unknown races: {{ college.students_unknown_race|mul:100|floatformat:"0" }}%</p>
-<p>Female: {{ college.students_female|mul:100|floatformat:"0" }}%</p>
-<p>Male: {{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}%</p>
-<p>Family income: {{ college.students_family_income|floatformat:"0"|intcomma }}$</p>
+        <div class="row">
+            <div class="col-12">
+                <h3>Aid</h3>
+                <p>Pell grand: {{ college.pell_grand|mul:100|floatformat:"0" }}%</p>
+                <p>Federal loan: {{ college.federal_loan|mul:100|floatformat:"0" }}%</p>
+                <p>Debt completed: {{ college.debt_completed|floatformat:"0"|intcomma }}$</p>
+                <p>Debt not completed: {{ college.debt_not_completed|floatformat:"0"|intcomma }}$</p>
+                <p>Monthly payments: {{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
+            </div>
+        </div>
 
-<h3>Aid</h3>
-<p>Pell grand: {{ college.pell_grand|mul:100|floatformat:"0" }}%</p>
-<p>Federal loan: {{ college.federal_loan|mul:100|floatformat:"0" }}%</p>
-<p>Debt completed: {{ college.debt_completed|floatformat:"0"|intcomma }}$</p>
-<p>Debt not completed: {{ college.debt_not_completed|floatformat:"0"|intcomma }}$</p>
-<p>Monthly payments: {{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
+        <div class="row">
+            <div class="col-12">
+                <h3>Cost</h3>
+                <p>Net price public: {{ college.average_net_price_public|floatformat:"0"|intcomma }}$</p>
+                <p>Net price private: {{ college.average_net_price_private|floatformat:"0"|intcomma }}$</p>
+                <p>Average cost academic: {{ college.average_cost_of_attendance_academic|floatformat:"0"|intcomma }}$</p>
+                <p>Average cost program: {{ college.average_cost_of_attendance_program|floatformat:"0"|intcomma }}$</p>
+                <p>In state tuition: {{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
+                <p>Out state tuition: {{ college.out_state_tuition|floatformat:"0"|intcomma }}$</p>
+                <p>Public 30: {{ college.average_net_price_pub_30|floatformat:"0"|intcomma }}$</p>
+                <p>Public 48: {{ college.average_net_price_pub_48|floatformat:"0"|intcomma }}$</p>
+                <p>Public 75: {{ college.average_net_price_pub_75|floatformat:"0"|intcomma }}$</p>
+                <p>Public 110: {{ college.average_net_price_pub_110|floatformat:"0"|intcomma }}$</p>
+                <p>Public >100: {{ college.average_net_price_pub_110_plus|floatformat:"0"|intcomma }}$</p>
+                <p>Private 30: {{ college.average_net_price_priv_30|floatformat:"0"|intcomma }}$</p>
+                <p>Private 48: {{ college.average_net_price_priv_48|floatformat:"0"|intcomma }}$</p>
+                <p>Private 75: {{ college.average_net_price_priv_75|floatformat:"0"|intcomma }}$</p>
+                <p>Private 110: {{ college.average_net_price_priv_110|floatformat:"0"|intcomma }}$</p>
+                <p>Private >110: {{ college.average_net_price_priv_110_plus|floatformat:"0"|intcomma }}$</p>
+            </div>
+        </div>
 
-<h3>Cost</h3>
-<p>Net price public: {{ college.average_net_price_public|floatformat:"0"|intcomma }}$</p>
-<p>Net price private: {{ college.average_net_price_private|floatformat:"0"|intcomma }}$</p>
-<p>Average cost academic: {{ college.average_cost_of_attendance_academic|floatformat:"0"|intcomma }}$</p>
-<p>Average cost program: {{ college.average_cost_of_attendance_program|floatformat:"0"|intcomma }}$</p>
-<p>In state tuition: {{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
-<p>Out state tuition: {{ college.out_state_tuition|floatformat:"0"|intcomma }}$</p>
-<p>Public 30: {{ college.average_net_price_pub_30|floatformat:"0"|intcomma }}$</p>
-<p>Public 48: {{ college.average_net_price_pub_48|floatformat:"0"|intcomma }}$</p>
-<p>Public 75: {{ college.average_net_price_pub_75|floatformat:"0"|intcomma }}$</p>
-<p>Public 110: {{ college.average_net_price_pub_110|floatformat:"0"|intcomma }}$</p>
-<p>Public >100: {{ college.average_net_price_pub_110_plus|floatformat:"0"|intcomma }}$</p>
-<p>Private 30: {{ college.average_net_price_priv_30|floatformat:"0"|intcomma }}$</p>
-<p>Private 48: {{ college.average_net_price_priv_48|floatformat:"0"|intcomma }}$</p>
-<p>Private 75: {{ college.average_net_price_priv_75|floatformat:"0"|intcomma }}$</p>
-<p>Private 110: {{ college.average_net_price_priv_110|floatformat:"0"|intcomma }}$</p>
-<p>Private >110: {{ college.average_net_price_priv_110_plus|floatformat:"0"|intcomma }}$</p>
+        <div class="row">
+            <div class="col-12">
+                <h3>Earnings</h3>
+                <p>{{ college.mean_earnings|floatformat:"0"|intcomma }}$</p>
+            </div>
+        </div>
 
-
-
-<h3>Earnings</h3>
-<p>{{ college.mean_earnings|floatformat:"0"|intcomma }}$</p>
-
+</div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
