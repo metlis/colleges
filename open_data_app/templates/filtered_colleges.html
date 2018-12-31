@@ -61,7 +61,7 @@
     {% load static %}
     {% load mathfilters %}
     {% load humanize %}
-    <title>{{ seo_title }}</title>
+    <title>{{ seo_title }}{% if colleges.number > 1 %} - Page {{ colleges.number }}{% endif %}</title>
     <meta property="og:title" content="{{ seo_title }}">
     <meta name="twitter:title" content="{{ seo_title }}">
 </head>
@@ -573,7 +573,7 @@
                     </div>
                 {% endif %}
                 {% for college in colleges %}
-                    <div class="col-4">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
@@ -582,6 +582,8 @@
                                 <p>Monthly payments: {{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
                                 <p>Earnings: {{ college.mean_earnings|floatformat:"0"|intcomma }}$</p>
                                 <p>In state tuition: {{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
+                                <p>Undergraduate: {{ college.undergrad_students|floatformat:"0"|intcomma }}</p>
+                                <p>Admission rate: {{ college.admission_rate|mul:100|floatformat:"0" }}%</p>
                             </div>
                         </div>
                     </div>

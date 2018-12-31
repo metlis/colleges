@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <title>2019 colleges and universities in {{ region_name }}, USA</title>
+    <title>2019 colleges and universities in {{ region_name }}, USA {% if colleges.number > 1 %} - Page {{ colleges.number }}{% endif %}</title>
     <meta property="og:title" content="2019 colleges and universities in {{ region_name }}, USA">
     <meta name="twitter:title" content="2019 colleges and universities in {{ region_name }}, USA">
     {% load static %}
@@ -528,6 +528,8 @@
                                 <p>Monthly payments: {{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
                                 <p>Earnings: {{ college.mean_earnings|floatformat:"0"|intcomma }}$</p>
                                 <p>In state tuition: {{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
+                                <p>Undergraduate: {{ college.undergrad_students|floatformat:"0"|intcomma }}</p>
+                                <p>Admission rate: {{ college.admission_rate|mul:100|floatformat:"0" }}%</p>
                             </div>
                         </div>
                     </div>
