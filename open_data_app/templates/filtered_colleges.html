@@ -584,6 +584,8 @@
                                 <p>In state tuition: {{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
                                 <p>Undergraduate: {{ college.undergrad_students|floatformat:"0"|intcomma }}</p>
                                 <p>Admission rate: {{ college.admission_rate|mul:100|floatformat:"0" }}%</p>
+                                <p>{{ max_undergrad.undergrad_students__max }}</p>
+                                <p>{{ max_admission_rate.admission_rate__max }}</p>
                             </div>
                         </div>
                     </div>

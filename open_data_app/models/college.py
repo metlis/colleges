@@ -636,6 +636,9 @@ class College(models.Model):
         min_earnings = colleges.aggregate(Min('mean_earnings'))
         min_earnings_colleges = colleges.filter(mean_earnings=min_earnings['mean_earnings__min'])
 
+        max_undergrad = colleges.aggregate(Max('undergrad_students'))
+        max_admission_rate = colleges.aggregate(Max('admission_rate'))
+
         return {
             'average_tuition': average_tuition['in_state_tuition__avg'],
             'max_tuition': max_tuition['in_state_tuition__max'],
@@ -652,6 +655,8 @@ class College(models.Model):
             'max_earnings_colleges': max_earnings_colleges,
             'min_earnings': min_earnings['mean_earnings__min'],
             'min_earnings_colleges': min_earnings_colleges,
+            'max_undergrad': max_undergrad,
+            'max_admission_rate': max_admission_rate,
         }
 
     @classmethod
