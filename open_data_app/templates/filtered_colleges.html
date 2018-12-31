@@ -61,6 +61,7 @@
     {% load static %}
     {% load mathfilters %}
     {% load humanize %}
+    {% load bar_parcent %}
     <title>{{ seo_title }}{% if colleges.number > 1 %} - Page {{ colleges.number }}{% endif %}</title>
     <meta property="og:title" content="{{ seo_title }}">
     <meta name="twitter:title" content="{{ seo_title }}">
@@ -577,15 +578,34 @@
                         <div class="card">
                             <div class="card-header">
                                 <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                <p>{{ college.city }}, {{ college.state }}</p>
                             </div>
                             <div class="card-body">
-                                <p>Monthly payments: {{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
-                                <p>Earnings: {{ college.mean_earnings|floatformat:"0"|intcomma }}$</p>
-                                <p>In state tuition: {{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
-                                <p>Undergraduate: {{ college.undergrad_students|floatformat:"0"|intcomma }}</p>
-                                <p>Admission rate: {{ college.admission_rate|mul:100|floatformat:"0" }}%</p>
-                                <p>{{ max_undergrad.undergrad_students__max }}</p>
-                                <p>{{ max_admission_rate.admission_rate__max }}</p>
+                                <span>Monthly payments: </span>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: {{ college.monthly_payments|bar_percent:max_payments }}%;" aria-valuenow="{{ college.monthly_payments|bar_percent:max_payments }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.monthly_payments %}{{ college.monthly_payments|floatformat:"0"|intcomma }}${% else %}<span class="bar-no-data">No data</span>{% endif %}</div>
+                                </div>
+                                <span>Earnings:</span>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ college.mean_earnings|bar_percent:max_earnings }}%;" aria-valuenow="{{ college.mean_earnings|bar_percent:max_earnings }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.mean_earnings %}{{ college.mean_earnings|floatformat:"0"|intcomma }}${% else %}<span class="bar-no-data">No data</span>{% endif %}</div>
+                                </div>
+                                <span>In state tuition:</span>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ college.in_state_tuition|bar_percent:max_tuition }}%;" aria-valuenow="{{ college.in_state_tuition|bar_percent:max_tuition }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.in_state_tuition %}{{ college.in_state_tuition|floatformat:"0"|intcomma }}${% else %}<span class="bar-no-data">No data</span>{% endif %}</div>
+                                </div>
+                                <span>Undergraduates:</span>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{ college.undergrad_students|bar_percent:max_undergrad }}%;" aria-valuenow="{{ college.undergrad_students|bar_percent:max_undergrad }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.undergrad_students %}{{ college.undergrad_students|floatformat:"0"|intcomma }}{% else %}<span class="bar-no-data">No data</span>{% endif %}</div>
+                                </div>
+                                <span>Admission rate:</span>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ college.admission_rate|bar_percent:max_admission_rate }}%;" aria-valuenow="{{ college.admission_rate|bar_percent:max_admission_rate }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.admission_rate %}{{ college.admission_rate|mul:100|floatformat:"0" }}%{% else %}<span class="bar-no-data">No data</span>{% endif %}</div>
+                                </div>
                             </div>
                         </div>
                     </div>

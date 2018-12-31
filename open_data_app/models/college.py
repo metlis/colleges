@@ -655,8 +655,8 @@ class College(models.Model):
             'max_earnings_colleges': max_earnings_colleges,
             'min_earnings': min_earnings['mean_earnings__min'],
             'min_earnings_colleges': min_earnings_colleges,
-            'max_undergrad': max_undergrad,
-            'max_admission_rate': max_admission_rate,
+            'max_undergrad': max_undergrad['undergrad_students__max'],
+            'max_admission_rate': max_admission_rate['admission_rate__max'],
         }
 
     @classmethod
