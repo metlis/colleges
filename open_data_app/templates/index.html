@@ -149,133 +149,163 @@
             </form>
         </div>
     </nav>
+
+    <div class="row">
+        <div class="col-12">
+            <form action="{% url 'college_app:main_filter' %}">
+                <div class="card">
+                    <div class="card-header" data-toggle="collapse" data-target="#state"
+                         aria-expanded="true"
+                         aria-controls="state">
+                        <h3>State</h3>
+                    </div>
+                    <div class="card-body collapse" id="state">
+                        <ul>
+                            {% for state in states %}
+                                <li><input name="state" value="{{ state.id }}" type="checkbox">{{ state.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" data-toggle="collapse" data-target="#region"
+                         aria-expanded="true"
+                         aria-controls="region">
+                        <h3>Region</h3>
+                    </div>
+                    <div class="card-body collapse" id="region">
+                        <ul>
+                            {% for region in regions %}
+                                {% if region.id > 0 %}
+                                    <li><input name="region" value="{{ region.id }}" type="checkbox">{{ region.name }}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" data-toggle="collapse" data-target="#ownership"
+                         aria-expanded="true"
+                         aria-controls="ownership">
+                        <h3>Ownership</h3>
+                    </div>
+                    <div class="card-body collapse" id="ownership">
+                        <ul>
+                            {% for o in ownership %}
+                                <li><input name="ownership" value="{{ o.0 }}" type="checkbox">{{ o.1 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" data-toggle="collapse" data-target="#locale"
+                         aria-expanded="true"
+                         aria-controls="locale">
+                        <h3>Locale</h3>
+                    </div>
+                    <div class="card-body collapse" id="locale">
+                        <ul>
+                            {% for l in locales %}
+                                <li><input name="locale" value="{{ l.0 }}" type="checkbox">{{ l.1 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" data-toggle="collapse" data-target="#degree"
+                         aria-expanded="true"
+                         aria-controls="degree">
+                        <h3>Degree</h3>
+                    </div>
+                    <div class="card-body collapse" id="degree">
+                        <ul>
+                            {% for d in degrees %}
+                                <li><input name="highest_grad_degree" value="{{ d.0 }}" type="checkbox">{{ d.1 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" data-toggle="collapse" data-target="#carnegie_basic"
+                         aria-expanded="true"
+                         aria-controls="carnegie_basic">
+                        <h3>Carnegie basic</h3>
+                    </div>
+                    <div class="card-body collapse" id="carnegie_basic">
+                        <ul>
+                            {% for c in carnegie_basic %}
+                                <li><input name="carnegie_basic" value="{{ c.0 }}" type="checkbox">{{ c.1 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" data-toggle="collapse" data-target="#religion"
+                         aria-expanded="true"
+                         aria-controls="religion">
+                        <h3>Church</h3>
+                    </div>
+                    <div class="card-body collapse" id="religion">
+                        <ul>
+                            {% for r in religions %}
+                                <li><input name="religous" value="{{ r.0 }}" type="checkbox">{{ r.1 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" data-toggle="collapse" data-target="#level"
+                         aria-expanded="true"
+                         aria-controls="level">
+                        <h3>Level</h3>
+                    </div>
+                    <div class="card-body collapse" id="level">
+                        <ul>
+                            {% for l in levels %}
+                                <li><input name="inst_level" value="{{ l.0 }}" type="checkbox">{{ l.1 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" data-toggle="collapse" data-target="#discipline"
+                         aria-expanded="true"
+                         aria-controls="level">
+                        <h3>Discipline</h3>
+                    </div>
+                    <div class="card-body collapse" id="discipline">
+                        <ul>
+                            {% for discipline in disciplines %}
+                                <li><input name="{{ discipline.0 }}" value="0" type="checkbox">{{ discipline.1 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" data-toggle="collapse" data-target="#other"
+                         aria-expanded="true"
+                         aria-controls="other">
+                        <h3>Other</h3>
+                    </div>
+                    <div class="card-body collapse" id="other">
+                        <ul>
+                            <li><input name="hist_black" value="1" type="checkbox">Historically black</li>
+                            <li><input name="predom_black" value="1" type="checkbox">Predominantely black</li>
+                            <li><input name="hispanic" value="1" type="checkbox">Hispanic</li>
+                            <li><input name="men_only" value="1" type="checkbox">Men-only</li>
+                            <li><input name="women_only" value="1" type="checkbox">Women-only</li>
+                            <li><input name="online_only" value="1" type="checkbox">Online-only</li>
+                            <li><input name="cur_operating" value="1" type="checkbox">Currently operating</li>
+                            <li><input name="cur_operating" value="0" type="checkbox">Currently closed</li>
+                        </ul>
+                    </div>
+                </div>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
 </div>
-
-
-<div>
-    <form action="{% url 'college_app:main_filter' %}">
-        <div>
-            <label>
-                State
-            </label>
-            {% for state in states %}
-                <input name="state" value="{{ state.id }}" type="checkbox">{{ state.name }}
-            {% endfor %}
-        </div>
-        <div>
-            <label>
-                Region
-            </label>
-            {% for region in regions %}
-                {% if region.id > 0 %}
-                    <input name="region" value="{{ region.id }}" type="checkbox">{{ region.name }}
-                {% endif %}
-            {% endfor %}
-        </div>
-        <div>
-            <div>
-                <label>
-                    Ownership
-                </label>
-                {% for o in ownership %}
-                    <input name="ownership" value="{{ o.0 }}" type="checkbox">{{ o.1 }}
-                {% endfor %}
-            </div>
-        </div>
-        <div>
-            <label>
-                Locale
-            </label>
-            {% for l in locales %}
-                <input name="locale" value="{{ l.0 }}" type="checkbox">{{ l.1 }}
-            {% endfor %}
-        </div>
-        <div>
-            <label>
-                Degrees
-            </label>
-            {% for d in degrees %}
-                <input name="highest_grad_degree" value="{{ d.0 }}" type="checkbox">{{ d.1 }}
-            {% endfor %}
-        </div>
-        <div>
-            <label>
-                Carnegie basic
-            </label>
-            {% for c in carnegie_basic %}
-                <input name="carnegie_basic" value="{{ c.0 }}" type="checkbox">{{ c.1 }}
-            {% endfor %}
-        </div>
-        <div>
-            <label>
-                Religion
-            </label>
-            {% for r in religions %}
-                <input name="religous" value="{{ r.0 }}" type="checkbox">{{ r.1 }}
-            {% endfor %}
-        </div>
-        <div>
-            <label>
-                Level
-            </label>
-            {% for l in levels %}
-                <input name="inst_level" value="{{ l.0 }}" type="checkbox">{{ l.1 }}
-            {% endfor %}
-        </div>
-        <div>
-            <label>
-                Historically black
-                <input name="hist_black" value="1" type="checkbox">
-            </label>
-        </div>
-        <div>
-            <label>
-                Predominantely black
-                <input name="predom_black" value="1" type="checkbox">
-            </label>
-        </div>
-        <div>
-            <label>
-                Hispanic
-                <input name="hispanic" value="1" type="checkbox">
-            </label>
-        </div>
-        <div>
-            <label>
-                Men-only
-                <input name="men_only" value="1" type="checkbox">
-            </label>
-        </div>
-        <div>
-            <label>
-                Women-only
-                <input name="women_only" value="1" type="checkbox">
-            </label>
-        </div>
-        <div>
-            <label>
-                Online-only
-                <input name="online_only" value="1" type="checkbox">
-            </label>
-        </div>
-        <div>
-            <label>
-                Currently operating
-                <input name="cur_operating" value="1" type="checkbox">
-            </label>
-        </div>
-        <div>
-            {% for discipline in disciplines %}
-                <label>
-                    {{ discipline.1 }}
-                    <input name="{{ discipline.0 }}" value="0" type="checkbox">
-                </label>
-            {% endfor %}
-        </div>
-        <button type="submit">Search</button>
-    </form>
-</div>
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
