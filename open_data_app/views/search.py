@@ -6,6 +6,7 @@ from django.contrib.postgres.search import SearchVector
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse
+from settings import *
 
 
 def search(request):
@@ -41,6 +42,7 @@ def search(request):
                        'params': 'text={}'.format(query),
                        'noindex': True,
                        'serach_query': query,
+                       'maps_key': GOOGLE_MAPS_API,
                        }
 
             context.update(aggregate_data)

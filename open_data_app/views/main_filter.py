@@ -5,6 +5,7 @@ from django.urls import reverse
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
+from settings import *
 
 
 def main_filter(request):
@@ -44,6 +45,7 @@ def main_filter(request):
                        'noindex': noindex,
                        'filters_vals': filters_vals,
                        'main_filter': True,
+                       'maps_key': GOOGLE_MAPS_API,
                        }
             context.update(filters)
             context.update(aggregate_data)
@@ -74,6 +76,7 @@ def main_filter(request):
                    'canonical': canonical,
                    'base_url': base_url,
                    'noindex': True,
+                   'maps_key': GOOGLE_MAPS_API,
                    }
         context.update(filters)
         context.update(aggregate_data)

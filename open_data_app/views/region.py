@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from open_data_app.models import Region, College, State
 from django.utils.text import slugify
+from settings import *
 
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
@@ -84,6 +85,7 @@ def get_region_slug(request, region_id, region_slug):
                'slug': region_slug,
                'base_url': canonical,
                'canonical': canonical,
+               'maps_key': GOOGLE_MAPS_API,
                }
 
     context.update(filters)
@@ -166,6 +168,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                    'params': req_str,
                    'noindex': noindex,
                    'filters_vals': filters_vals,
+                   'maps_key': GOOGLE_MAPS_API,
                    }
         context.update(filters)
         context.update(aggregate_data)

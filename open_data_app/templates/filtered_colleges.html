@@ -422,6 +422,37 @@
         <div class="col-10">
             <div class="row">
                 {% if colleges|length > 1 %}
+                    <div class="col-12">
+                        <div id="map" style="width:100%; height:300px"></div>
+                        <script>
+                            var map;
+                            var locations = [
+                                {% for college in colleges %}
+                                    [{{ college.latitude }}, {{ college.longitude }}, '{{ college.name }}', '{{ college.city }}', '{{ college.state }}'],
+                                {% endfor %}
+                            ]
+
+                            function initMap() {
+                                map = new google.maps.Map(document.getElementById('map'), {
+                                    center: {
+                                        lat: 46.589931,
+                                        lng: -95.009003
+                                    },
+                                    zoom: 3
+                                });
+                                for (var i = 0; i < locations.length; i++) {
+                                    var maker = new google.maps.Marker({
+                                        position: {
+                                            lat: locations[i][0],
+                                            lng: locations[i][1]
+                                        },
+                                        map: map,
+                                        title: locations[i][2] + '\n' + locations[i][3] + ', ' + locations[i][4]
+                                    });
+                                }
+                            }
+                        </script>
+                    </div>
                     <div class="jumbotron col-12">
                         <div class="row">
                             <div class="col-4">
@@ -601,28 +632,48 @@
                             <div class="card-body">
                                 <span>Monthly payments: </span>
                                 <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: {{ college.monthly_payments|bar_percent:max_payments }}%;" aria-valuenow="{{ college.monthly_payments|bar_percent:max_payments }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.monthly_payments %}{{ college.monthly_payments|floatformat:"0"|intcomma }}${% else %}<span class="bar-no-data">No data</span>{% endif %}</div>
+                                    <div class="progress-bar" role="progressbar"
+                                         style="width: {{ college.monthly_payments|bar_percent:max_payments }}%;"
+                                         aria-valuenow="{{ college.monthly_payments|bar_percent:max_payments }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.monthly_payments %}
+                                        {{ college.monthly_payments|floatformat:"0"|intcomma }}${% else %}
+                                        <span class="bar-no-data">No data</span>{% endif %}</div>
                                 </div>
                                 <span>Earnings:</span>
                                 <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ college.mean_earnings|bar_percent:max_earnings }}%;" aria-valuenow="{{ college.mean_earnings|bar_percent:max_earnings }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.mean_earnings %}{{ college.mean_earnings|floatformat:"0"|intcomma }}${% else %}<span class="bar-no-data">No data</span>{% endif %}</div>
+                                    <div class="progress-bar bg-success" role="progressbar"
+                                         style="width: {{ college.mean_earnings|bar_percent:max_earnings }}%;"
+                                         aria-valuenow="{{ college.mean_earnings|bar_percent:max_earnings }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.mean_earnings %}
+                                        {{ college.mean_earnings|floatformat:"0"|intcomma }}${% else %}
+                                        <span class="bar-no-data">No data</span>{% endif %}</div>
                                 </div>
                                 <span>In state tuition:</span>
                                 <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ college.in_state_tuition|bar_percent:max_tuition }}%;" aria-valuenow="{{ college.in_state_tuition|bar_percent:max_tuition }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.in_state_tuition %}{{ college.in_state_tuition|floatformat:"0"|intcomma }}${% else %}<span class="bar-no-data">No data</span>{% endif %}</div>
+                                    <div class="progress-bar bg-info" role="progressbar"
+                                         style="width: {{ college.in_state_tuition|bar_percent:max_tuition }}%;"
+                                         aria-valuenow="{{ college.in_state_tuition|bar_percent:max_tuition }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.in_state_tuition %}
+                                        {{ college.in_state_tuition|floatformat:"0"|intcomma }}${% else %}
+                                        <span class="bar-no-data">No data</span>{% endif %}</div>
                                 </div>
                                 <span>Undergraduates:</span>
                                 <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{ college.undergrad_students|bar_percent:max_undergrad }}%;" aria-valuenow="{{ college.undergrad_students|bar_percent:max_undergrad }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.undergrad_students %}{{ college.undergrad_students|floatformat:"0"|intcomma }}{% else %}<span class="bar-no-data">No data</span>{% endif %}</div>
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                         style="width: {{ college.undergrad_students|bar_percent:max_undergrad }}%;"
+                                         aria-valuenow="{{ college.undergrad_students|bar_percent:max_undergrad }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.undergrad_students %}
+                                        {{ college.undergrad_students|floatformat:"0"|intcomma }}{% else %}
+                                        <span class="bar-no-data">No data</span>{% endif %}</div>
                                 </div>
                                 <span>Admission rate:</span>
                                 <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ college.admission_rate|bar_percent:max_admission_rate }}%;" aria-valuenow="{{ college.admission_rate|bar_percent:max_admission_rate }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.admission_rate %}{{ college.admission_rate|mul:100|floatformat:"0" }}%{% else %}<span class="bar-no-data">No data</span>{% endif %}</div>
+                                    <div class="progress-bar bg-danger" role="progressbar"
+                                         style="width: {{ college.admission_rate|bar_percent:max_admission_rate }}%;"
+                                         aria-valuenow="{{ college.admission_rate|bar_percent:max_admission_rate }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.admission_rate %}
+                                        {{ college.admission_rate|mul:100|floatformat:"0" }}%{% else %}
+                                        <span class="bar-no-data">No data</span>{% endif %}</div>
                                 </div>
                             </div>
                         </div>
@@ -705,6 +756,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap"
+        async defer></script>
 <script src="{% static 'open_data_app/js/scripts.js' %}"></script>
 </body>
 </html>

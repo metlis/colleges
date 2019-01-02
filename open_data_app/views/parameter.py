@@ -6,6 +6,7 @@ from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.seo import Seo
+from settings import *
 
 
 
@@ -59,6 +60,7 @@ def filter_values(request, param, param_value):
                    'filters_vals': filters_vals,
                    'init_param': init_param,
                    'init_param_value': param_value,
+                   'maps_key': GOOGLE_MAPS_API,
                    }
         context.update(filters)
         context.update(aggregate_data)

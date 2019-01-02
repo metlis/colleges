@@ -85,6 +85,7 @@ def get_state_slug(request, state_id, state_slug):
                'slug': state_slug,
                'base_url': canonical,
                'canonical': canonical,
+               'maps_key': GOOGLE_MAPS_API,
                }
 
     context.update(filters)
@@ -165,6 +166,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                    'params': req_str,
                    'noindex': noindex,
                    'filters_vals': filters_vals,
+                   'maps_key': GOOGLE_MAPS_API,
                    }
         context.update(filters)
         context.update(aggregate_data)
