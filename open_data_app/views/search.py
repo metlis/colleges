@@ -25,6 +25,9 @@ def search(request):
             # sorting colleges
             colleges = College.sort_colleges(request, colleges)
 
+            # aggregate data
+            aggregate_data = College.get_aggregate_data(colleges)
+
             # pagination
             colleges = handle_pagination(request, colleges)
 
@@ -39,6 +42,8 @@ def search(request):
                        'noindex': True,
                        'serach_query': query,
                        }
+
+            context.update(aggregate_data)
 
             return render(request, 'filtered_colleges.html', context)
         else:
