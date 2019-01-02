@@ -3,6 +3,7 @@ from open_data_app.models import College
 from django.utils.text import slugify
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 import urllib.parse
+from settings import *
 
 
 def get_college(request, college_id):
@@ -47,6 +48,7 @@ def get_college_slug(request, college_id, college_slug):
                                                     'college_slug': college_slug,
                                                     'top_disciplines': top_disciplines[:5],
                                                     'college_disciplines': disciplines_vals,
+                                                    'maps_key': GOOGLE_MAPS_API,
                                                     })
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
