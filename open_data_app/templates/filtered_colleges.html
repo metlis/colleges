@@ -428,7 +428,9 @@
                             var map;
                             var locations = [
                                 {% for college in colleges %}
-                                    [{{ college.latitude }}, {{ college.longitude }}, '{{ college.name }}', '{{ college.city }}', '{{ college.state }}'],
+                                    {% if college.latitude and college.longitude %}
+                                        [{{ college.latitude }}, {{ college.longitude }}, '{{ college.name }}', '{{ college.city }}', '{{ college.state }}'],
+                                    {% endif %}
                                 {% endfor %}
                             ]
 
