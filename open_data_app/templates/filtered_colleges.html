@@ -645,9 +645,9 @@
                                 <div class="progress" style="height: 20px;">
                                     <div class="progress-bar bg-success" role="progressbar"
                                          style="width: {{ college.mean_earnings|bar_percent:max_earnings }}%;"
-                                         aria-valuenow="{{ college.mean_earnings|bar_percent:max_earnings }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.mean_earnings %}
-                                        {{ college.mean_earnings|floatformat:"0"|intcomma }}${% else %}
+                                         aria-valuenow="{{ college.median_earnings|bar_percent:max_earnings }}"
+                                         aria-valuemin="0" aria-valuemax="100">{% if college.median_earnings %}
+                                        {{ college.median_earnings|floatformat:"0"|intcomma }}${% else %}
                                         <span class="bar-no-data">No data</span>{% endif %}</div>
                                 </div>
                                 <span>In state tuition:</span>

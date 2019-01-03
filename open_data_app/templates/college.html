@@ -171,7 +171,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="c100 p{{ college.admission_rate|mul:100|floatformat:"0" }}">
-                                    <span>{{ college.admission_rate|mul:100|floatformat:"0" }}%</span>
+                                    <span>{{ college.admission_rate|mul:100|floatformat:"2" }}%</span>
                                     <div class="slice">
                                         <div class="bar"></div>
                                         <div class="fill"></div>
@@ -279,14 +279,14 @@
                     <h3>Completion</h3>
                 </div>
                 <div class="col-12 card-body collapse show" id="completion">
-                    {% if college.completion_rate_four_year %}
+                    {% if college.completion_rate_four_year_pooled %}
                         <div class="row">
                             <div class="col-12">
                                 <p>Completion rate 4 year</p>
                             </div>
                             <div class="col-12">
-                                <div class="c100 p{{ college.completion_rate_four_year|mul:100|floatformat:"0" }}">
-                                    <span>{{ college.completion_rate_four_year|mul:100|floatformat:"0" }}%</span>
+                                <div class="c100 p{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}">
+                                    <span>{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"2" }}%</span>
                                     <div class="slice">
                                         <div class="bar"></div>
                                         <div class="fill"></div>
@@ -302,7 +302,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="c100 p{{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}">
-                                    <span>{{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}%</span>
+                                    <span>{{ college.completion_rate_less_four_year|mul:100|floatformat:"2" }}%</span>
                                     <div class="slice">
                                         <div class="bar"></div>
                                         <div class="fill"></div>
@@ -433,7 +433,7 @@
                                 <div class="col-6">
                                     <p>Female</p>
                                     <div class="c100 p{{ college.students_female|mul:100|floatformat:"0" }}">
-                                        <span>{{ college.students_female|mul:100|floatformat:"0" }}%</span>
+                                        <span>{{ college.students_female|mul:100|floatformat:"2" }}%</span>
                                         <div class="slice">
                                             <div class="bar"></div>
                                             <div class="fill"></div>
@@ -443,7 +443,7 @@
                                 <div class="col-6">
                                     <p>Male</p>
                                     <div class="c100 p{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}">
-                                        <span>{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}%</span>
+                                        <span>{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"2" }}%</span>
                                         <div class="slice">
                                             <div class="bar"></div>
                                             <div class="fill"></div>
@@ -455,7 +455,24 @@
                                     <p>Women-only: {{ college.women_only }}</p>
                                 </div>
                                 <div class="col-12">
-                                    <p>Family income: {{ college.students_family_income|floatformat:"0"|intcomma }}$</p>
+                                    <p>Family income $</p>
+                                    <div class="c100 p100">
+                                        <span>{{ college.students_family_income|floatformat:"0"|intcomma }}</span>
+                                        <div class="slice">
+                                            <div class="bar"></div>
+                                            <div class="fill"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="col-12">
+                                    <p>Full-time students</p>
+                                    <div class="c100 p100">
+                                        <span>{{ college.students_part_time|sub:100|mul:-1|floatformat:"2"|intcomma }}%</span>
+                                        <div class="slice">
+                                            <div class="bar"></div>
+                                            <div class="fill"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -479,7 +496,7 @@
                                 <div class="col-6">
                                     <p>Pell grand</p>
                                     <div class="c100 p{{ college.pell_grand|mul:100|floatformat:"0" }}">
-                                        <span>{{ college.pell_grand|mul:100|floatformat:"0" }}%</span>
+                                        <span>{{ college.pell_grand|mul:100|floatformat:"2" }}%</span>
                                         <div class="slice">
                                             <div class="bar"></div>
                                             <div class="fill"></div>
@@ -489,7 +506,7 @@
                                 <div class="col-6">
                                     <p>Federal loan</p>
                                     <div class="c100 p{{ college.federal_loan|mul:100|floatformat:"0" }}">
-                                        <span>{{ college.federal_loan|mul:100|floatformat:"0" }}%</span>
+                                        <span>{{ college.federal_loan|mul:100|floatformat:"2" }}%</span>
                                         <div class="slice">
                                             <div class="bar"></div>
                                             <div class="fill"></div>
@@ -499,7 +516,7 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <p>Debt completed: {{ college.debt_completed|floatformat:"0"|intcomma }}$</p>
+                            <p>Debt completed: {{ college.debt_completed_median|floatformat:"0"|intcomma }}$</p>
                             <p>Monthly payments: {{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
                         </div>
                     </div>
@@ -685,7 +702,7 @@
                 </div>
                 <div class="col-12 card-body collapse show" id="earnings">
                     <div class="c100 p100">
-                        <span>{{ college.mean_earnings|floatformat:"0"|intcomma }}</span>
+                        <span>{{ college.median_earnings|floatformat:"0"|intcomma }}</span>
                         <div class="slice">
                             <div class="bar"></div>
                             <div class="fill"></div>

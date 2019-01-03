@@ -112,14 +112,17 @@ class College(models.Model):
     federal_loan = models.FloatField(null=True, verbose_name='federal_loan')
     debt_completed = models.FloatField(null=True, verbose_name='debt_completed')
     debt_not_completed = models.FloatField(null=True, verbose_name='debt_not_completed')
+    debt_completed_median = models.FloatField(null=True, verbose_name='debt_completed_median')
     monthly_payments = models.FloatField(null=True, verbose_name='monthly_payments')
 
     # completion
     completion_rate_four_year = models.FloatField(null=True, verbose_name='completion_rate_four_year')
     completion_rate_less_four_year = models.FloatField(null=True, verbose_name='completion_rate_less_four_year')
+    completion_rate_four_year_pooled = models.FloatField(null=True, verbose_name='completion_rate_four_year_pooled')
 
     # earnings
     mean_earnings = models.FloatField(null=True, verbose_name='mean_earnings')
+    median_earnings = models.FloatField(null=True, verbose_name='median_earnings')
 
     # student
     undergrad_students = models.FloatField(null=True, verbose_name='undergrad_students')
@@ -161,6 +164,12 @@ class College(models.Model):
             colleges = []
             row_num = 1
             for row in file:
+
+                # for checking column name:
+                # col_values = row.split(',')
+                # print(col_values[1364])
+                # return
+
                 if row_num > 1:
                     col_values = row.split(',')
 
@@ -305,15 +314,18 @@ class College(models.Model):
                     college.pell_grand = check_val(col_values[385], False)
                     college.federal_loan = check_val(col_values[437], False)
                     college.debt_completed = check_val(col_values[1503], False)
+                    college.debt_completed_median = check_val(col_values[1504], False)
                     college.debt_not_completed = check_val(col_values[1505], False)
                     college.monthly_payments = check_val(col_values[1531], False)
 
                     # completion
                     college.completion_rate_four_year = check_val(col_values[386], False)
                     college.completion_rate_less_four_year = check_val(col_values[387], False)
+                    college.completion_rate_four_year_pooled = check_val(col_values[388], False)
 
                     # earnings
                     college.mean_earnings = check_val(col_values[1638], False)
+                    college.median_earnings = check_val(col_values[1639], False)
 
                     # student
                     college.undergrad_students = check_val(col_values[290], False)
@@ -628,13 +640,13 @@ class College(models.Model):
         min_payments = colleges.aggregate(Min('monthly_payments'))
         min_payments_colleges = colleges.filter(monthly_payments=min_payments['monthly_payments__min'])
 
-        average_earnings = colleges.aggregate(Avg('mean_earnings'))
+        average_earnings = colleges.aggregate(Avg('median_earnings'))
 
-        max_earnings = colleges.aggregate(Max('mean_earnings'))
-        max_earnings_colleges = colleges.filter(mean_earnings=max_earnings['mean_earnings__max'])
+        max_earnings = colleges.aggregate(Max('median_earnings'))
+        max_earnings_colleges = colleges.filter(median_earnings=max_earnings['median_earnings__max'])
 
-        min_earnings = colleges.aggregate(Min('mean_earnings'))
-        min_earnings_colleges = colleges.filter(mean_earnings=min_earnings['mean_earnings__min'])
+        min_earnings = colleges.aggregate(Min('median_earnings'))
+        min_earnings_colleges = colleges.filter(median_earnings=min_earnings['median_earnings__min'])
 
         max_undergrad = colleges.aggregate(Max('undergrad_students'))
         max_admission_rate = colleges.aggregate(Max('admission_rate'))
@@ -650,10 +662,10 @@ class College(models.Model):
             'max_payments_colleges': max_payments_colleges,
             'min_payments': min_payments['monthly_payments__min'],
             'min_payments_colleges': min_payments_colleges,
-            'average_earnings': average_earnings['mean_earnings__avg'],
-            'max_earnings': max_earnings['mean_earnings__max'],
+            'average_earnings': average_earnings['median_earnings__avg'],
+            'max_earnings': max_earnings['median_earnings__max'],
             'max_earnings_colleges': max_earnings_colleges,
-            'min_earnings': min_earnings['mean_earnings__min'],
+            'min_earnings': min_earnings['median_earnings__min'],
             'min_earnings_colleges': min_earnings_colleges,
             'max_undergrad': max_undergrad['undergrad_students__max'],
             'max_admission_rate': max_admission_rate['admission_rate__max'],
