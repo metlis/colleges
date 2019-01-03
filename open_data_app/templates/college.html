@@ -20,702 +20,724 @@
     {% load static %}
     {% load bar_parcent %}
     <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}">
+    <link rel="stylesheet" href="{% static 'open_data_app/css/college.css' %}">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">USA COLLEGES</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        </ul>
+        <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}">
+            <input class="form-control mr-sm-2" type="search" name="text" placeholder="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
 <div class="container-fluid">
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">USA COLLEGES</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            </ul>
-            <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}">
-                <input class="form-control mr-sm-2" type="search" name="text" placeholder="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
-
     <div class="row">
-        <div class="col-12">
-            <h1>{{ college.name }}</h1>
+        <div class="col-2">
+            <div id="list-menu" class="list-group">
+                <a class="list-group-item list-group-item-action" href="#overview-anchor">Overview</a>
+                <a class="list-group-item list-group-item-action" href="#academics-anchor">Academics</a>
+                <a class="list-group-item list-group-item-action" href="#disciplines-anchor">Disciplines</a>
+                <a class="list-group-item list-group-item-action" href="#admissions-anchor">Acceptance</a>
+                <a class="list-group-item list-group-item-action" href="#completion-anchor">Completion</a>
+                <a class="list-group-item list-group-item-action" href="#demography-anchor">Student body</a>
+                <a class="list-group-item list-group-item-action" href="#aid-anchor">Aid</a>
+                <a class="list-group-item list-group-item-action" href="#cost-anchor">Cost</a>
+                <a class="list-group-item list-group-item-action" href="#earnings-anchor">Earnings</a>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <p><i class="fab fa-internet-explorer"></i> <a href="#">{{ college.url }}</a></p>
-                            <p>
-                                <i class="fas fa-map-marker-alt"></i> {{ college.zip }} {{ college.city }}, {{ college.state }}
-                            </p>
-                            <p><i class="fas fa-city"></i> {{ college.locale }}</p>
-                            <p>
-                                <i class="fas fa-user-graduate"></i> {{ college.undergrad_students|floatformat:"0"|intcomma }}
-                            </p>
-                            {% if college.religous %}
-                                <p><i class="fas fa-church"></i> {{ college.religous }}</p>
-                            {% endif %}
-                            <p><i class="fas fa-home"></i> {{ college.ownership }}</p>
+        <div class="col-10" data-spy="scroll" data-target="#list-menu" data-offset="0" class="scrollspy">
+            <div class="row">
+                <div class="col-12">
+                    <h1>{{ college.name }}</h1>
+                </div>
+            </div>
+            <div class="row" id="overview-anchor">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><i class="fab fa-internet-explorer"></i> <a href="#">{{ college.url }}</a></p>
+                                    <p>
+                                        <i class="fas fa-map-marker-alt"></i> {{ college.zip }} {{ college.city }}, {{ college.state }}
+                                    </p>
+                                    <p><i class="fas fa-city"></i> {{ college.locale }}</p>
+                                    <p>
+                                        <i class="fas fa-user-graduate"></i> {{ college.undergrad_students|floatformat:"0"|intcomma }}
+                                    </p>
+                                    {% if college.religous %}
+                                        <p><i class="fas fa-church"></i> {{ college.religous }}</p>
+                                    {% endif %}
+                                    <p><i class="fas fa-home"></i> {{ college.ownership }}</p>
+                                </div>
+                                <div class="col-6">
+                                    {% if college.latitude and college.longitude %}
+                                        <div id="map" style="width:100%; height:100%"></div>
+                                        <script>
+                                            var map, maker;
+
+                                            function initMap() {
+                                                map = new google.maps.Map(document.getElementById('map'), {
+                                                    center: {
+                                                        lat: {{ college.latitude }},
+                                                        lng: {{ college.longitude }}
+                                                    },
+                                                    zoom: 7
+                                                });
+                                                maker = new google.maps.Marker({
+                                                    position: {
+                                                        lat: {{ college.latitude }},
+                                                        lng: {{ college.longitude }}
+                                                    },
+                                                    map: map,
+                                                    title: '{{ college.city }}, {{ college.state }}'
+                                                });
+                                            }
+                                        </script>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-6">
-                            {% if college.latitude and college.longitude %}
-                                <div id="map" style="width:100%; height:100%"></div>
-                                <script>
-                                    var map, maker;
+                    </div>
+                </div>
+            </div>
 
-                                    function initMap() {
-                                        map = new google.maps.Map(document.getElementById('map'), {
-                                            center: {
-                                                lat: {{ college.latitude }},
-                                                lng: {{ college.longitude }}
-                                            },
-                                            zoom: 7
-                                        });
-                                        maker = new google.maps.Marker({
-                                            position: {
-                                                lat: {{ college.latitude }},
-                                                lng: {{ college.longitude }}
-                                            },
-                                            map: map,
-                                            title: '{{ college.city }}, {{ college.state }}'
-                                        });
-                                    }
-                                </script>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="col-12 card-header" data-toggle="collapse" data-target="#academics"
+                             aria-expanded="false"
+                             aria-controls="academics">
+                            <h2 id="academics-anchor">Academics</h2><i class="fas fa-plus"></i>
+                        </div>
+                        <div class="col-12 card-body collapse show" id="academics">
+                            <p>
+                                <i class="fas fa-university"></i> {{ college.highest_grad_degree }}, {{ college.inst_level }}
+                            </p>
+                            <p><i class="fas fa-flask"></i> {{ college.carnegie_basic }}</p>
+                            {% if college.online_only %}
+                                <p><i class="fas fa-globe"></i> Online-only</p>
                             {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="col-12 card-header" data-toggle="collapse" data-target="#academics" aria-expanded="false"
-                     aria-controls="academics">
-                    <h3>Academics</h3>
-                </div>
-                <div class="col-12 card-body collapse show" id="academics">
-                    <p><i class="fas fa-university"></i> {{ college.highest_grad_degree }}, {{ college.inst_level }}</p>
-                    <p><i class="fas fa-flask"></i> {{ college.carnegie_basic }}</p>
-                    {% if college.online_only %}
-                        <p><i class="fas fa-globe"></i> Online-only</p>
-                    {% endif %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="col-12 card-header" data-toggle="collapse" data-target="#disciplines"
+                             aria-expanded="true"
+                             aria-controls="disciplines">
+                            <h2 id="disciplines-anchor">Disciplines</h2><i class="fas fa-plus"></i>
+                        </div>
+                        <div class="col-12 card-body collapse show" id="disciplines">
+                            <div class="row">
+                                {% if top_disciplines %}
+                                    <div class="col-6 top-disciplines">
+                                        <h3>Top</h3>
+                                        <div class="disciplines-container">
+                                            {% for discipline in top_disciplines %}
+                                                <div class="discipline">
+                                                    <span>{{ discipline.0 }}</span>
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar"
+                                                             style="width: {{ discipline.1 }}%;"
+                                                             aria-valuenow="{{ discipline.1 }}"
+                                                             aria-valuemin="0" aria-valuemax="100">
+                                                            {{ discipline.1 }}%
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="col-6 all-disciplines">
+                                    <h3>All</h3>
+                                    <div class="disciplines-container">
+                                        {% for discipline in college_disciplines %}
+                                            <div class="discipline">
+                                                <p>{{ forloop.counter }}. {{ discipline.0 }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="col-12 card-header" data-toggle="collapse" data-target="#disciplines" aria-expanded="true"
-                     aria-controls="disciplines">
-                    <h3>Disciplines</h3>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="col-12 card-header" data-toggle="collapse" data-target="#admissions"
+                             aria-expanded="true"
+                             aria-controls="admissios">
+                            <h2 id="admissions-anchor">Acceptance</h2><i class="fas fa-plus"></i>
+                        </div>
+                        <div class="col-12 card-body collapse show" id="admissions">
+                            {% if college.admission_rate %}
+                                <div class="row">
+                                    <div class="col-12 admission-header">
+                                        <h3>Admission rates</h3>
+                                    </div>
+                                    <div class="col-12 admission-circle">
+                                        <div class="c100 green big p{{ college.admission_rate|mul:100|floatformat:"0" }}">
+                                            <span>{{ college.admission_rate|mul:100|floatformat:"0" }}%</span>
+                                            <div class="slice">
+                                                <div class="bar"></div>
+                                                <div class="fill"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="row admissions">
+                                <div class="col-6 sat">
+                                    <h4>SAT</h4>
+                                    <span>Average</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.sat_average|floatformat:"0"|bar_percent:'1600' }}%;"
+                                             aria-valuenow="{{ college.sat_average|floatformat:"0"|bar_percent:'1600' }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {% if college.sat_average %}
+                                                {{ college.sat_average|floatformat:"0" }}{% else %}
+                                                <span class="no-data">No
+                                                data</span>{% endif %}
+                                        </div>
+                                    </div>
+                                    <span>Math</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.sat_math|floatformat:"0"|bar_percent:'800' }}%;"
+                                             aria-valuenow="{{ college.sat_math|floatformat:"0"|bar_percent:'800' }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {% if college.sat_math %}{{ college.sat_math|floatformat:"0" }}{% else %}
+                                                <span class="no-data">No
+                                                data</span>{% endif %}
+                                        </div>
+                                    </div>
+                                    <span>Reading</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.sat_reading|floatformat:"0"|bar_percent:'800' }}%;"
+                                             aria-valuenow="{{ college.sat_reading|floatformat:"0"|bar_percent:'800' }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {% if college.sat_reading %}
+                                                {{ college.sat_reading|floatformat:"0" }}{% else %}
+                                                <span class="no-data">No
+                                                data</span>{% endif %}
+                                        </div>
+                                    </div>
+                                    <span>Writing</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.sat_writing|floatformat:"0"|bar_percent:'800' }}%;"
+                                             aria-valuenow="{{ college.sat_writing|floatformat:"0"|bar_percent:'800' }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {% if college.sat_writing %}
+                                                {{ college.sat_writing|floatformat:"0" }}{% else %}
+                                                <span class="no-data">No
+                                                data</span>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <h4>ACT</h4>
+                                    <span>Cumulative</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.act_cumulative|floatformat:"0"|bar_percent:'36' }}%;"
+                                             aria-valuenow="{{ college.act_cumulative|floatformat:"0"|bar_percent:'36' }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {% if college.act_cumulative %}
+                                                {{ college.act_cumulative|floatformat:"0" }}{% else %}
+                                                <span class="no-data">No
+                                                data</span>{% endif %}
+                                        </div>
+                                    </div>
+                                    <span>Math</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.act_math|floatformat:"0"|bar_percent:'36' }}%;"
+                                             aria-valuenow="{{ college.act_math|floatformat:"0"|bar_percent:'36' }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {% if college.act_math %}{{ college.act_math|floatformat:"0" }}{% else %}
+                                                <span class="no-data">No
+                                                data</span>{% endif %}
+                                        </div>
+                                    </div>
+                                    <span>English</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.act_english|floatformat:"0"|bar_percent:'36' }}%;"
+                                             aria-valuenow="{{ college.act_english|floatformat:"0"|bar_percent:'36' }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {% if college.act_english %}
+                                                {{ college.act_english|floatformat:"0" }}{% else %}
+                                                <span class="no-data">No
+                                                data</span>{% endif %}
+                                        </div>
+                                    </div>
+                                    <span>Writing</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.act_writing|floatformat:"0"|bar_percent:'36' }}%;"
+                                             aria-valuenow="{{ college.act_writing|floatformat:"0"|bar_percent:'36' }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {% if college.act_writing %}
+                                                {{ college.act_writing|floatformat:"0" }}{% else %}
+                                                <span class="no-data">No
+                                                data</span>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 card-body collapse show" id="disciplines">
-                    <div class="row">
-                        {% if top_disciplines %}
-                            <div class="col-6">
-                                <h3>Top</h3>
-                                {% for discipline in top_disciplines %}
-                                    <div class="discipline">
-                                        <p>{{ discipline.0 }}:</p>
-                                        <div class="progress" style="height: 20px;">
-                                            <div class="progress-bar bg-info" role="progressbar"
-                                                 style="width: {{ discipline.1 }}%;"
-                                                 aria-valuenow="{{ discipline.1 }}"
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="col-12 card-header" data-toggle="collapse" data-target="#completion"
+                             aria-expanded="true"
+                             aria-controls="completion">
+                            <h2 id="completion-anchor">Completion</h2><i class="fas fa-plus"></i>
+                        </div>
+                        <div class="col-12 card-body collapse show" id="completion">
+                            {% if college.completion_rate_four_year_pooled %}
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h3>Completion rate: 4-year programs</h3>
+                                    </div>
+                                    <div class="col-12 completion-circle">
+                                        <div class="c100 green big p{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}">
+                                            <span>{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}%</span>
+                                            <div class="slice">
+                                                <div class="bar"></div>
+                                                <div class="fill"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if college.completion_rate_less_four_year %}
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h3>Completion rate: less than 4-year programs</h3>
+                                    </div>
+                                    <div class="col-12 completion-circle">
+                                        <div class="c100 green big p{{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}">
+                                            <span>{{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}%</span>
+                                            <div class="slice">
+                                                <div class="bar"></div>
+                                                <div class="fill"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="col-12 card-header" data-toggle="collapse" data-target="#demography"
+                             aria-expanded="true"
+                             aria-controls="demography">
+                            <h2 id="demography-anchor">Student body</h2><i class="fas fa-plus"></i>
+                        </div>
+                        <div class="col-12 card-body collapse show" id="demography">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h3>Race</h3>
+                                    {% if college.students_white > 0 %}
+                                        <span>White</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: {{ college.students_white|mul:100|floatformat:"2" }}%;"
+                                                 aria-valuenow="{{ college.students_white|mul:100|floatformat:"2" }}"
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                {{ discipline.1 }}%
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                        <div class="col-6">
-                            <h3>All</h3>
-                            {% for discipline in college_disciplines %}
-                                <div class="discipline">
-                                    <p>{{ discipline.0 }}</p>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="col-12 card-header" data-toggle="collapse" data-target="#admissios" aria-expanded="true"
-                     aria-controls="admissios">
-                    <h3>Admissions</h3>
-                </div>
-                <div class="col-12 card-body collapse show" id="admissios">
-                    {% if college.admission_rate %}
-                        <div class="row">
-                            <div class="col-12">
-                                <p>Admission rate</p>
-                            </div>
-                            <div class="col-12">
-                                <div class="c100 p{{ college.admission_rate|mul:100|floatformat:"0" }}">
-                                    <span>{{ college.admission_rate|mul:100|floatformat:"2" }}%</span>
-                                    <div class="slice">
-                                        <div class="bar"></div>
-                                        <div class="fill"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div class="row">
-                        <div class="col-6">
-                            <p>SAT average</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar bg-info" role="progressbar"
-                                     style="width: {{ college.sat_average|floatformat:"0"|bar_percent:'1600' }}%;"
-                                     aria-valuenow="{{ college.sat_average|floatformat:"0"|bar_percent:'1600' }}"
-                                     aria-valuemin="0" aria-valuemax="100">
-                                    {% if college.sat_average %}{{ college.sat_average|floatformat:"0" }}{% else %}No
-                                        data{% endif %}
-                                </div>
-                            </div>
-                            <p>Reading</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar bg-info" role="progressbar"
-                                     style="width: {{ college.sat_reading|floatformat:"0"|bar_percent:'800' }}%;"
-                                     aria-valuenow="{{ college.sat_reading|floatformat:"0"|bar_percent:'800' }}"
-                                     aria-valuemin="0" aria-valuemax="100">
-                                    {% if college.sat_reading %}{{ college.sat_reading|floatformat:"0" }}{% else %}No
-                                        data{% endif %}
-                                </div>
-                            </div>
-                            <p>Math</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar bg-info" role="progressbar"
-                                     style="width: {{ college.sat_math|floatformat:"0"|bar_percent:'800' }}%;"
-                                     aria-valuenow="{{ college.sat_math|floatformat:"0"|bar_percent:'800' }}"
-                                     aria-valuemin="0" aria-valuemax="100">
-                                    {% if college.sat_math %}{{ college.sat_math|floatformat:"0" }}{% else %}No
-                                        data{% endif %}
-                                </div>
-                            </div>
-                            <p>Writing</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar bg-info" role="progressbar"
-                                     style="width: {{ college.sat_writing|floatformat:"0"|bar_percent:'800' }}%;"
-                                     aria-valuenow="{{ college.sat_writing|floatformat:"0"|bar_percent:'800' }}"
-                                     aria-valuemin="0" aria-valuemax="100">
-                                    {% if college.sat_writing %}{{ college.sat_writing|floatformat:"0" }}{% else %}No
-                                        data{% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <p>ACT cumulative</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar bg-info" role="progressbar"
-                                     style="width: {{ college.act_cumulative|floatformat:"0"|bar_percent:'36' }}%;"
-                                     aria-valuenow="{{ college.act_cumulative|floatformat:"0"|bar_percent:'36' }}"
-                                     aria-valuemin="0" aria-valuemax="100">
-                                    {% if college.act_cumulative %}
-                                        {{ college.act_cumulative|floatformat:"0" }}{% else %}No data{% endif %}
-                                </div>
-                            </div>
-                            <p>English</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar bg-info" role="progressbar"
-                                     style="width: {{ college.act_english|floatformat:"0"|bar_percent:'36' }}%;"
-                                     aria-valuenow="{{ college.act_english|floatformat:"0"|bar_percent:'36' }}"
-                                     aria-valuemin="0" aria-valuemax="100">
-                                    {% if college.act_english %}{{ college.act_english|floatformat:"0" }}{% else %}No
-                                        data{% endif %}
-                                </div>
-                            </div>
-                            <p>Math</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar bg-info" role="progressbar"
-                                     style="width: {{ college.act_math|floatformat:"0"|bar_percent:'36' }}%;"
-                                     aria-valuenow="{{ college.act_math|floatformat:"0"|bar_percent:'36' }}"
-                                     aria-valuemin="0" aria-valuemax="100">
-                                    {% if college.act_math %}{{ college.act_math|floatformat:"0" }}{% else %}No
-                                        data{% endif %}
-                                </div>
-                            </div>
-                            <p>Writing</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar bg-info" role="progressbar"
-                                     style="width: {{ college.act_writing|floatformat:"0"|bar_percent:'36' }}%;"
-                                     aria-valuenow="{{ college.act_writing|floatformat:"0"|bar_percent:'36' }}"
-                                     aria-valuemin="0" aria-valuemax="100">
-                                    {% if college.act_writing %}{{ college.act_writing|floatformat:"0" }}{% else %}No
-                                        data{% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="col-12 card-header" data-toggle="collapse" data-target="#completion" aria-expanded="true"
-                     aria-controls="completion">
-                    <h3>Completion</h3>
-                </div>
-                <div class="col-12 card-body collapse show" id="completion">
-                    {% if college.completion_rate_four_year_pooled %}
-                        <div class="row">
-                            <div class="col-12">
-                                <p>Completion rate 4 year</p>
-                            </div>
-                            <div class="col-12">
-                                <div class="c100 p{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}">
-                                    <span>{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"2" }}%</span>
-                                    <div class="slice">
-                                        <div class="bar"></div>
-                                        <div class="fill"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if college.completion_rate_less_four_year %}
-                        <div class="row">
-                            <div class="col-12">
-                                <p>Completion rate less 4 year</p>
-                            </div>
-                            <div class="col-12">
-                                <div class="c100 p{{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}">
-                                    <span>{{ college.completion_rate_less_four_year|mul:100|floatformat:"2" }}%</span>
-                                    <div class="slice">
-                                        <div class="bar"></div>
-                                        <div class="fill"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="col-12 card-header" data-toggle="collapse" data-target="#demography" aria-expanded="true"
-                     aria-controls="demography">
-                    <h3>Demography</h3>
-                </div>
-                <div class="col-12 card-body collapse show" id="demography">
-                    <div class="row">
-                        <div class="col-6">
-                            <p>Race:</p>
-                            {% if college.students_white > 0 %}
-                                <p>White</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: {{ college.students_white|mul:100|floatformat:"2" }}%;"
-                                         aria-valuenow="{{ college.students_white|mul:100|floatformat:"2" }}"
-                                         aria-valuemin="0" aria-valuemax="100">
-                                        {{ college.students_white|mul:100|floatformat:"2" }}%
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if college.students_black > 0 %}
-                                <p>Black</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: {{ college.students_black|mul:100|floatformat:"2" }}%;"
-                                         aria-valuenow="{{ college.students_black|mul:100|floatformat:"2" }}"
-                                         aria-valuemin="0" aria-valuemax="100">
-                                        {{ college.students_black|mul:100|floatformat:"2" }}%
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if college.students_hispanic > 0 %}
-                                <p>Hispanic</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: {{ college.students_hispanic|mul:100|floatformat:"2" }}%;"
-                                         aria-valuenow="{{ college.students_hispanic|mul:100|floatformat:"2" }}"
-                                         aria-valuemin="0" aria-valuemax="100">
-                                        {{ college.students_hispanic|mul:100|floatformat:"2" }}%
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if college.students_asian > 0 %}
-                                <p>Asian</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: {{ college.students_asian|mul:100|floatformat:"2" }}%;"
-                                         aria-valuenow="{{ college.students_asian|mul:100|floatformat:"2" }}"
-                                         aria-valuemin="0" aria-valuemax="100">
-                                        {{ college.students_asian|mul:100|floatformat:"2" }}%
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if college.students_native > 0 %}
-                                <p>Native</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: {{ college.students_native|mul:100|floatformat:"2" }}%;"
-                                         aria-valuenow="{{ college.students_native|mul:100|floatformat:"2" }}"
-                                         aria-valuemin="0" aria-valuemax="100">
-                                        {{ college.students_native|mul:100|floatformat:"2" }}%
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if college.students_pacific > 0 %}
-                                <p>Pacific</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: {{ college.students_pacific|mul:100|floatformat:"2" }}%;"
-                                         aria-valuenow="{{ college.students_pacific|mul:100|floatformat:"2" }}"
-                                         aria-valuemin="0" aria-valuemax="100">
-                                        {{ college.students_pacific|mul:100|floatformat:"2" }}%
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if college.students_multiple_races > 0 %}
-                                <p>Multiple races</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: {{ college.students_multiple_races|mul:100|floatformat:"2" }}%;"
-                                         aria-valuenow="{{ college.students_multiple_races|mul:100|floatformat:"2" }}"
-                                         aria-valuemin="0" aria-valuemax="100">
-                                        {{ college.students_multiple_races|mul:100|floatformat:"2" }}%
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if college.students_non_resident > 0 %}
-                                <p>Non-resident</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: {{ college.students_non_resident|mul:100|floatformat:"2" }}%;"
-                                         aria-valuenow="{{ college.students_non_resident|mul:100|floatformat:"2" }}"
-                                         aria-valuemin="0" aria-valuemax="100">
-                                        {{ college.students_non_resident|mul:100|floatformat:"2" }}%
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if college.students_unknown_race > 0 %}
-                                <p>Unknown races</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: {{ college.students_unknown_race|mul:100|floatformat:"2" }}%;"
-                                         aria-valuenow="{{ college.students_unknown_race|mul:100|floatformat:"2" }}"
-                                         aria-valuemin="0" aria-valuemax="100">
-                                        {{ college.students_unknown_race|mul:100|floatformat:"2" }}%
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-6">
-                            <p>Gender:</p>
-                            <div class="row">
-                                <div class="col-6">
-                                    <p>Female</p>
-                                    <div class="c100 p{{ college.students_female|mul:100|floatformat:"0" }}">
-                                        <span>{{ college.students_female|mul:100|floatformat:"2" }}%</span>
-                                        <div class="slice">
-                                            <div class="bar"></div>
-                                            <div class="fill"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <p>Male</p>
-                                    <div class="c100 p{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}">
-                                        <span>{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"2" }}%</span>
-                                        <div class="slice">
-                                            <div class="bar"></div>
-                                            <div class="fill"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <p>Men-only: {{ college.men_only }}</p>
-                                    <p>Women-only: {{ college.women_only }}</p>
-                                </div>
-                                <div class="col-12">
-                                    <p>Family income $</p>
-                                    <div class="c100 p100">
-                                        <span>{{ college.students_family_income|floatformat:"0"|intcomma }}</span>
-                                        <div class="slice">
-                                            <div class="bar"></div>
-                                            <div class="fill"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                 <div class="col-12">
-                                    <p>Full-time students</p>
-                                    <div class="c100 p100">
-                                        <span>{{ college.students_part_time|sub:100|mul:-1|floatformat:"2"|intcomma }}%</span>
-                                        <div class="slice">
-                                            <div class="bar"></div>
-                                            <div class="fill"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="col-12 card-header" data-toggle="collapse" data-target="#aid" aria-expanded="true"
-                     aria-controls="aid">
-                    <h3>Aid and Debt</h3>
-                </div>
-                <div class="col-12 card-body collapse show" id="aid">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-6">
-                                    <p>Pell grand</p>
-                                    <div class="c100 p{{ college.pell_grand|mul:100|floatformat:"0" }}">
-                                        <span>{{ college.pell_grand|mul:100|floatformat:"2" }}%</span>
-                                        <div class="slice">
-                                            <div class="bar"></div>
-                                            <div class="fill"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <p>Federal loan</p>
-                                    <div class="c100 p{{ college.federal_loan|mul:100|floatformat:"0" }}">
-                                        <span>{{ college.federal_loan|mul:100|floatformat:"2" }}%</span>
-                                        <div class="slice">
-                                            <div class="bar"></div>
-                                            <div class="fill"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <p>Debt completed: {{ college.debt_completed_median|floatformat:"0"|intcomma }}$</p>
-                            <p>Monthly payments: {{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="col-12 card-header" data-toggle="collapse" data-target="#cost" aria-expanded="true"
-                     aria-controls="cost">
-                    <h3>Cost</h3>
-                </div>
-                <div class="col-12 card-body collapse show" id="cost">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-12">
-                                    {% if college.average_net_price_public %}
-                                        <p>Net price public $</p>
-                                        <div class="c100 p100">
-                                            <span>{{ college.average_net_price_public|floatformat:"0"|intcomma }}</span>
-                                            <div class="slice">
-                                                <div class="bar"></div>
-                                                <div class="fill"></div>
+                                                {{ college.students_white|mul:100|floatformat:"2" }}%
                                             </div>
                                         </div>
                                     {% endif %}
-                                    {% if college.average_net_price_private %}
-                                        <p>Net price private $</p>
-                                        <div class="c100 p100">
-                                            <span>{{ college.average_net_price_private|floatformat:"0"|intcomma }}</span>
-                                            <div class="slice">
-                                                <div class="bar"></div>
-                                                <div class="fill"></div>
+                                    {% if college.students_black > 0 %}
+                                        <span>Black</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: {{ college.students_black|mul:100|floatformat:"2" }}%;"
+                                                 aria-valuenow="{{ college.students_black|mul:100|floatformat:"2" }}"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                {{ college.students_black|mul:100|floatformat:"2" }}%
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if college.students_hispanic > 0 %}
+                                        <span>Hispanic</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: {{ college.students_hispanic|mul:100|floatformat:"2" }}%;"
+                                                 aria-valuenow="{{ college.students_hispanic|mul:100|floatformat:"2" }}"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                {{ college.students_hispanic|mul:100|floatformat:"2" }}%
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if college.students_asian > 0 %}
+                                        <span>Asian</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: {{ college.students_asian|mul:100|floatformat:"2" }}%;"
+                                                 aria-valuenow="{{ college.students_asian|mul:100|floatformat:"2" }}"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                {{ college.students_asian|mul:100|floatformat:"2" }}%
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if college.students_native > 0 %}
+                                        <span>Native</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: {{ college.students_native|mul:100|floatformat:"2" }}%;"
+                                                 aria-valuenow="{{ college.students_native|mul:100|floatformat:"2" }}"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                {{ college.students_native|mul:100|floatformat:"2" }}%
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if college.students_pacific > 0 %}
+                                        <span>Pacific</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: {{ college.students_pacific|mul:100|floatformat:"2" }}%;"
+                                                 aria-valuenow="{{ college.students_pacific|mul:100|floatformat:"2" }}"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                {{ college.students_pacific|mul:100|floatformat:"2" }}%
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if college.students_multiple_races > 0 %}
+                                        <span>Multiple races</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: {{ college.students_multiple_races|mul:100|floatformat:"2" }}%;"
+                                                 aria-valuenow="{{ college.students_multiple_races|mul:100|floatformat:"2" }}"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                {{ college.students_multiple_races|mul:100|floatformat:"2" }}%
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if college.students_non_resident > 0 %}
+                                        <span>Non-resident</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: {{ college.students_non_resident|mul:100|floatformat:"2" }}%;"
+                                                 aria-valuenow="{{ college.students_non_resident|mul:100|floatformat:"2" }}"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                {{ college.students_non_resident|mul:100|floatformat:"2" }}%
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if college.students_unknown_race > 0 %}
+                                        <span>Unknown races</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: {{ college.students_unknown_race|mul:100|floatformat:"2" }}%;"
+                                                 aria-valuenow="{{ college.students_unknown_race|mul:100|floatformat:"2" }}"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                {{ college.students_unknown_race|mul:100|floatformat:"2" }}%
                                             </div>
                                         </div>
                                     {% endif %}
                                 </div>
                                 <div class="col-6">
-                                    <p>In state tuition $</p>
-                                    <div class="c100 p100">
-                                        <span>{{ college.in_state_tuition|floatformat:"0"|intcomma }}</span>
-                                        <div class="slice">
-                                            <div class="bar"></div>
-                                            <div class="fill"></div>
+                                    <h3>Gender</h3>
+                                    <div class="row">
+                                        <div class="col-6 female">
+                                            <h4>Female</h4>
+                                            <div class="c100 orange p{{ college.students_female|mul:100|floatformat:"0" }}">
+                                                <span>{{ college.students_female|mul:100|floatformat:"0" }}%</span>
+                                                <div class="slice">
+                                                    <div class="bar"></div>
+                                                    <div class="fill"></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <p>Out state tuition $</p>
-                                    <div class="c100 p100">
-                                        <span>{{ college.out_state_tuition|floatformat:"0"|intcomma }}</span>
-                                        <div class="slice">
-                                            <div class="bar"></div>
-                                            <div class="fill"></div>
+                                        <div class="col-6 male">
+                                            <h4>Male</h4>
+                                            <div class="c100 green p{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}">
+                                                <span>{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}%</span>
+                                                <div class="slice">
+                                                    <div class="bar"></div>
+                                                    <div class="fill"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            {% if college.men_only %}
+                                                <p>This institution is men-only.</p>
+                                            {% endif %}
+                                            {% if college.women_only %}
+                                            <p>This institution is women-only.</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-12 full-time">
+                                            <h3>Full-time students</h3>
+                                            <div class="c100 p{{ college.students_part_time|sub:100|mul:-1|floatformat:"0" }}">
+                                                <span>{{ college.students_part_time|sub:100|mul:-1|floatformat:"2"|intcomma }}%</span>
+                                                <div class="slice">
+                                                    <div class="bar"></div>
+                                                    <div class="fill"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 family-income">
+                                            <h3>Family income</h3>
+                                            <p class="single-value">{{ college.students_family_income|floatformat:"0"|intcomma }}$</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6">
-                            {% if college.ownership|slugify == 'Private nonprofit'|slugify or college.ownership|slugify == 'Private for-profit'|slugify %}
-                                <table class="table table-sm">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">Family income</th>
-                                        <th scope="col">Average cost</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>$0-$30,000</td>
-                                        {% if college.average_net_price_priv_30 %}
-                                            <td>{{ college.average_net_price_priv_30|floatformat:"0"|intcomma }}$</td>
-                                        {% else %}
-                                            <td>No data</td>
-                                        {% endif %}
-                                    </tr>
-                                    <tr>
-                                        <td>$30,001-$48,000</td>
-                                        {% if college.average_net_price_priv_48 %}
-                                            <td>{{ college.average_net_price_priv_48|floatformat:"0"|intcomma }}$</td>
-                                        {% else %}
-                                            <td>No data</td>
-                                        {% endif %}
-                                    </tr>
-                                    <tr>
-                                        <td>$48,001-$75,000</td>
-                                        {% if college.average_net_price_priv_75 %}
-                                            <td>{{ college.average_net_price_priv_75|floatformat:"0"|intcomma }}$</td>
-                                        {% else %}
-                                            <td>No data</td>
-                                        {% endif %}
-                                    </tr>
-                                    <tr>
-                                        <td>$75,001-$110,000</td>
-                                        {% if college.average_net_price_priv_110 %}
-                                            <td>{{ college.average_net_price_priv_110|floatformat:"0"|intcomma }}$</td>
-                                        {% else %}
-                                            <td>No data</td>
-                                        {% endif %}
-                                    </tr>
-                                    <tr>
-                                        <td>$110,001+</td>
-                                        {% if college.average_net_price_priv_110_plus %}
-                                            <td>{{ college.average_net_price_priv_110_plus|floatformat:"0"|intcomma }}$</td>
-                                        {% else %}
-                                            <td>No data</td>
-                                        {% endif %}
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            {% endif %}
-                            {% if college.ownership|slugify == 'Public'|slugify %}
-                                <table class="table table-sm">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">Family income</th>
-                                        <th scope="col">Average cost</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>$0-$30,000</td>
-                                        {% if college.average_net_price_pub_30 %}
-                                            <td>{{ college.average_net_price_pub_30|floatformat:"0"|intcomma }}$</td>
-                                        {% else %}
-                                            <td>No data</td>
-                                        {% endif %}
-                                    </tr>
-                                    <tr>
-                                        <td>$30,001-$48,000</td>
-                                        {% if college.average_net_price_pub_48 %}
-                                            <td>{{ college.average_net_price_pub_48|floatformat:"0"|intcomma }}$</td>
-                                        {% else %}
-                                            <td>No data</td>
-                                        {% endif %}
-                                    </tr>
-                                    <tr>
-                                        <td>$48,001-$75,000</td>
-                                        {% if college.average_net_price_pub_75 %}
-                                            <td>{{ college.average_net_price_pub_75|floatformat:"0"|intcomma }}$</td>
-                                        {% else %}
-                                            <td>No data</td>
-                                        {% endif %}
-                                    </tr>
-                                    <tr>
-                                        <td>$75,001-$110,000</td>
-                                        {% if college.average_net_price_pub_110 %}
-                                            <td>{{ college.average_net_price_pub_110|floatformat:"0"|intcomma }}$</td>
-                                        {% else %}
-                                            <td>No data</td>
-                                        {% endif %}
-                                    </tr>
-                                    <tr>
-                                        <td>$110,001+</td>
-                                        {% if college.average_net_price_pub_110_plus %}
-                                            <td>{{ college.average_net_price_pub_110_plus|floatformat:"0"|intcomma }}$</td>
-                                        {% else %}
-                                            <td>No data</td>
-                                        {% endif %}
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            {% endif %}
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="col-12 card-header" data-toggle="collapse" data-target="#earnings" aria-expanded="true"
-                     aria-controls="earnings">
-                    <h3>Earnings</h3>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="col-12 card-header" data-toggle="collapse" data-target="#aid" aria-expanded="true"
+                             aria-controls="aid">
+                            <h2 id="aid-anchor">Aid and Debt</h2><i class="fas fa-plus"></i>
+                        </div>
+                        <div class="col-12 card-body collapse show" id="aid">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6 grant">
+                                            <h3>Pell grand</h3>
+                                            <div class="c100 orange p{{ college.pell_grand|mul:100|floatformat:"0" }}">
+                                                <span>{{ college.pell_grand|mul:100|floatformat:"2" }}%</span>
+                                                <div class="slice">
+                                                    <div class="bar"></div>
+                                                    <div class="fill"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 loan">
+                                            <h3>Federal loan</h3>
+                                            <div class="c100 green p{{ college.federal_loan|mul:100|floatformat:"0" }}">
+                                                <span>{{ college.federal_loan|mul:100|floatformat:"2" }}%</span>
+                                                <div class="slice">
+                                                    <div class="bar"></div>
+                                                    <div class="fill"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <h3>Debt completed</h3>
+                                    <p class="single-value">{{ college.debt_completed_median|floatformat:"0"|intcomma }}$</p>
+                                    <h3>Monthly payments</h3>
+                                    <p class="single-value">{{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 card-body collapse show" id="earnings">
-                    <div class="c100 p100">
-                        <span>{{ college.median_earnings|floatformat:"0"|intcomma }}</span>
-                        <div class="slice">
-                            <div class="bar"></div>
-                            <div class="fill"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="col-12 card-header" data-toggle="collapse" data-target="#cost" aria-expanded="true"
+                             aria-controls="cost">
+                            <h2 id="cost-anchor">Cost</h2><i class="fas fa-plus"></i>
+                        </div>
+                        <div class="col-12 card-body collapse show" id="cost">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-12 net-price">
+                                            {% if college.average_net_price_public %}
+                                                <p>Net price public $</p>
+                                                <div class="c100 p100">
+                                                    <span>{{ college.average_net_price_public|floatformat:"0"|intcomma }}</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if college.average_net_price_private %}
+                                                <h3>Net price private</h3>
+                                                <p class="single-value">{{ college.average_net_price_private|floatformat:"0"|intcomma }}$</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-6 in-state">
+                                            <h3>In state tuition</h3>
+                                            <p class="single-value">{{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
+                                        </div>
+                                        <div class="col-6 out-state">
+                                            <h3>Out state tuition</h3>
+                                            <p class="single-value">{{ college.out_state_tuition|floatformat:"0"|intcomma }}$</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    {% if college.ownership|slugify == 'Private nonprofit'|slugify or college.ownership|slugify == 'Private for-profit'|slugify %}
+                                        <h3>Average cost</h3>
+                                        <table class="table table-sm">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Family income</th>
+                                                <th scope="col">Average cost</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>0$-30,000$</td>
+                                                {% if college.average_net_price_priv_30 %}
+                                                    <td>{{ college.average_net_price_priv_30|floatformat:"0"|intcomma }}$</td>
+                                                {% else %}
+                                                    <td>No data</td>
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
+                                                <td>30,001$-48,000$</td>
+                                                {% if college.average_net_price_priv_48 %}
+                                                    <td>{{ college.average_net_price_priv_48|floatformat:"0"|intcomma }}$</td>
+                                                {% else %}
+                                                    <td>No data</td>
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
+                                                <td>48,001$-75,000$</td>
+                                                {% if college.average_net_price_priv_75 %}
+                                                    <td>{{ college.average_net_price_priv_75|floatformat:"0"|intcomma }}$</td>
+                                                {% else %}
+                                                    <td>No data</td>
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
+                                                <td>75,001$-110,000$</td>
+                                                {% if college.average_net_price_priv_110 %}
+                                                    <td>{{ college.average_net_price_priv_110|floatformat:"0"|intcomma }}$</td>
+                                                {% else %}
+                                                    <td>No data</td>
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
+                                                <td>110,001$+</td>
+                                                {% if college.average_net_price_priv_110_plus %}
+                                                    <td>{{ college.average_net_price_priv_110_plus|floatformat:"0"|intcomma }}$</td>
+                                                {% else %}
+                                                    <td>No data</td>
+                                                {% endif %}
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
+                                    {% if college.ownership|slugify == 'Public'|slugify %}
+                                        <table class="table table-sm">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Family income</th>
+                                                <th scope="col">Average cost</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>$0-$30,000</td>
+                                                {% if college.average_net_price_pub_30 %}
+                                                    <td>{{ college.average_net_price_pub_30|floatformat:"0"|intcomma }}$</td>
+                                                {% else %}
+                                                    <td>No data</td>
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
+                                                <td>$30,001-$48,000</td>
+                                                {% if college.average_net_price_pub_48 %}
+                                                    <td>{{ college.average_net_price_pub_48|floatformat:"0"|intcomma }}$</td>
+                                                {% else %}
+                                                    <td>No data</td>
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
+                                                <td>$48,001-$75,000</td>
+                                                {% if college.average_net_price_pub_75 %}
+                                                    <td>{{ college.average_net_price_pub_75|floatformat:"0"|intcomma }}$</td>
+                                                {% else %}
+                                                    <td>No data</td>
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
+                                                <td>$75,001-$110,000</td>
+                                                {% if college.average_net_price_pub_110 %}
+                                                    <td>{{ college.average_net_price_pub_110|floatformat:"0"|intcomma }}$</td>
+                                                {% else %}
+                                                    <td>No data</td>
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
+                                                <td>$110,001+</td>
+                                                {% if college.average_net_price_pub_110_plus %}
+                                                    <td>{{ college.average_net_price_pub_110_plus|floatformat:"0"|intcomma }}$</td>
+                                                {% else %}
+                                                    <td>No data</td>
+                                                {% endif %}
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="col-12 card-header" data-toggle="collapse" data-target="#earnings"
+                             aria-expanded="true"
+                             aria-controls="earnings">
+                            <h2 id="earnings-anchor">Earnings</h2>
+                        </div>
+                        <div class="col-12 card-body collapse show" id="earnings">
+                            <h3>Earnings after 10 years</h3>
+                            <p class="single-value">{{ college.median_earnings|floatformat:"0"|intcomma }}$</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <footer class="footer">
-        <div class="container">@2019</div>
-    </footer>
 </div>
+<footer class="footer">
+    <div class="container">@2019</div>
+</footer>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

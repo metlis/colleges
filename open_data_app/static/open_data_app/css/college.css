@@ -1,0 +1,147 @@
+.container-fluid {
+  margin-top: 20px;
+}
+.scrollspy {
+  position: relative;
+}
+h2 {
+  font-size: 150%;
+}
+h3 {
+  font-size: 130%;
+}
+h4 {
+  font-size: 110%;
+}
+.card {
+  margin: 10px 0px 10px 0px;
+}
+.card-header {
+  cursor: pointer;
+}
+.card-header h2 {
+  display: inline;
+}
+.card-header i {
+  float: right;
+  margin-top: 6px;
+}
+.card-body .progress {
+  height: 30px;
+}
+.top-disciplines h3 {
+  text-align: center;
+}
+.top-disciplines .discipline {
+  margin-bottom: 10px;
+}
+.top-disciplines .progress-bar {
+  color: #000;
+  background-color: #00a5d9;
+}
+.all-disciplines h3 {
+  text-align: center;
+}
+.disciplines-container {
+  max-height: 500px;
+  overflow-y: auto;
+}
+.admission-header {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.admission-circle {
+  width: 100%;
+}
+.admission-circle .c100 {
+  float: none;
+  margin: 0px auto 25px auto;
+}
+.admissions .progress {
+  margin-bottom: 10px;
+}
+.admissions .progress-bar {
+  color: #000;
+  background-color: #00a5d9;
+}
+.admissions h4 {
+  text-align: center !important;
+}
+.no-data {
+  padding-left: 5px;
+}
+#completion h3 {
+  text-align: center;
+  margin-bottom: 23px;
+}
+.completion-circle {
+  width: 100%;
+}
+.completion-circle .c100 {
+  float: none;
+  margin: 0px auto 25px auto;
+}
+#demography h3 {
+  text-align: center;
+  margin-bottom: 23px;
+}
+#demography h4 {
+  text-align: center;
+}
+#demography .progress {
+  margin-bottom: 10px;
+}
+#demography .progress-bar {
+  color: #000;
+  background-color: #00a5d9;
+}
+.male,
+.female,
+.full-time,
+.family-income {
+  width: 100%;
+}
+.male .c100,
+.female .c100,
+.full-time .c100,
+.family-income .c100 {
+  float: none;
+  margin: 0px auto 25px auto;
+}
+.single-value {
+  font-weight: bold;
+  text-align: center;
+  font-size: 24px;
+}
+#earnings h3 {
+  text-align: center;
+  margin-bottom: 23px;
+}
+#aid h3 {
+  text-align: center;
+  margin-bottom: 23px;
+}
+.grant,
+.loan {
+  width: 100%;
+}
+.grant .c100,
+.loan .c100 {
+  float: none;
+  margin: 0px auto 25px auto;
+}
+#cost h3 {
+  text-align: center;
+  margin-bottom: 23px;
+}
+.in-state,
+.out-state,
+.net-price {
+  width: 100%;
+}
+.in-state .c100,
+.out-state .c100,
+.net-price .c100 {
+  float: none;
+  margin: 0px auto 25px auto;
+}
