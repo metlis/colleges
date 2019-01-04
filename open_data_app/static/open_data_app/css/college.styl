@@ -4,11 +4,11 @@ $red = #EC7556
 $brown = #EDA875
 $velvet = #CA829A
 
+body
+  position relative
+
 .container-fluid
   margin-top 20px
-
-.scrollspy
-  position relative
 
 h2
   font-size 150%
@@ -154,3 +154,13 @@ h4
 .affix
   top 20px
   z-index 9999 !important
+
+#list-menu
+  position sticky
+  position -webkit-sticky
+  top 20px
+
+.list-group
+  .active
+    background-color $blue
+    border-color $blue

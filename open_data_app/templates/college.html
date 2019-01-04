@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}">
     <link rel="stylesheet" href="{% static 'open_data_app/css/college.css' %}">
 </head>
-<body>
+<body data-spy="scroll" data-target="#list-menu" data-offset="0">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">USA COLLEGES</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
@@ -34,13 +34,13 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}">
+        <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}" autocomplete="off">
             <input class="form-control mr-sm-2" type="search" name="text" placeholder="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>
 </nav>
-<div class="container-fluid">
+<div class="container-fluid" itemscope itemtype="http://schema.org/CollegeOrUniversity">
     <div class="row">
         <div class="col-2">
             <div id="list-menu" class="list-group">
@@ -55,10 +55,10 @@
                 <a class="list-group-item list-group-item-action" href="#earnings-anchor">Earnings</a>
             </div>
         </div>
-        <div class="col-10" data-spy="scroll" data-target="#list-menu" data-offset="0" class="scrollspy">
+        <div class="col-10">
             <div class="row">
                 <div class="col-12">
-                    <h1>{{ college.name }}</h1>
+                    <h1 itemprop="name">{{ college.name }}</h1>
                 </div>
             </div>
             <div class="row" id="overview-anchor">
@@ -69,10 +69,10 @@
                                 <div class="col-6">
                                     <p>
                                         <span class="icon-container"><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top"
-                                          title="Web site"></i></span> <a href="//{{ college.url }}" rel="nofollow" target="_blank">{{ college.url }}</a></p>
+                                          title="Web site"></i></span> <a href="//{{ college.url }}" rel="nofollow" target="_blank"><span itemprop="url">{{ college.url }}</span></a></p>
                                     <p>
                                         <span class="icon-container"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top"
-                                           title="Zip code"></i></span> {{ college.city }}, {{ college.state }} {{ college.zip }}
+                                                                        title="Zip code"></i></span> <span itemprop="location">{{ college.city }}, {{ college.state }} {{ college.zip }}</span>
                                     </p>
                                     <p>
                                         <span class="icon-container"><i class="fas fa-city" data-toggle="tooltip" data-placement="top"
@@ -89,7 +89,7 @@
                                     {% endif %}
                                     <p>
                                         <span class="icon-container"><i class="fas fa-home" data-toggle="tooltip" data-placement="top"
-                                          title="Ownership"></i></span> {{ college.ownership }}</p>
+                                          title="Ownership"></i></span> <span itemprop="ownershipFundingInfo">{{ college.ownership }}</span></p>
                                 </div>
                                 <div class="col-6">
                                     {% if college.latitude and college.longitude %}
