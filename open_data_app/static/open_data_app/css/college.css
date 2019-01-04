@@ -37,13 +37,13 @@ h4 {
 }
 .top-disciplines .progress-bar {
   color: #000;
-  background-color: #00a5d9;
+  background-color: rgba(0,165,217,0.63);
 }
 .all-disciplines h3 {
   text-align: center;
 }
 .disciplines-container {
-  max-height: 500px;
+  max-height: 350px;
   overflow-y: auto;
 }
 .admission-header {
@@ -62,7 +62,7 @@ h4 {
 }
 .admissions .progress-bar {
   color: #000;
-  background-color: #00a5d9;
+  background-color: rgba(0,165,217,0.63);
 }
 .admissions h4 {
   text-align: center !important;
@@ -93,7 +93,7 @@ h4 {
 }
 #demography .progress-bar {
   color: #000;
-  background-color: #00a5d9;
+  background-color: rgba(0,165,217,0.63);
 }
 .male,
 .female,
@@ -172,8 +172,8 @@ h4 {
   top: 20px;
 }
 .list-group .active {
-  background-color: #00a5d9;
-  border-color: #00a5d9;
+  background-color: rgba(0,165,217,0.63);
+  border-color: rgba(0,165,217,0.63);
 }
 @media (max-width: 767.98px) {
   .gender-header {

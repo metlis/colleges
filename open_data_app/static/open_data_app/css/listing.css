@@ -1,0 +1,32 @@
+h3 {
+  font-size: 130%;
+}
+h4 {
+  font-size: 110%;
+}
+.college-container {
+  margin-bottom: 15px;
+}
+.admission,
+.completion {
+  text-align: center;
+}
+.admission .c100,
+.completion .c100 {
+  float: none;
+  margin: 0px auto 0px auto;
+}
+.fa-info-circle {
+  font-size: 13px;
+}
+.progress {
+  height: 30px;
+  margin-bottom: 10px;
+}
+.progress-bar {
+  color: #000;
+  background-color: rgba(0,165,217,0.63);
+}
+.card-header p {
+  margin-bottom: 0px;
+}

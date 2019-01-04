@@ -65,27 +65,27 @@
     <title>{{ seo_title }}{% if colleges.number > 1 %} - Page {{ colleges.number }}{% endif %}</title>
     <meta property="og:title" content="{{ seo_title }}">
     <meta name="twitter:title" content="{{ seo_title }}">
+    <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}">
+    <link rel="stylesheet" href="{% static 'open_data_app/css/listing.css' %}">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">USA COLLEGES</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        </ul>
+        <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}">
+            <input class="form-control mr-sm-2" type="search" name="text" placeholder="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
 <div class="container-fluid">
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">USA COLLEGES</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            </ul>
-            <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}">
-                <input class="form-control mr-sm-2" type="search" name="text" placeholder="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
-
     {% if geo %}
         <h1>Colleges of {{ geo }}: {{ second_filter }}</h1>
     {% elif second_filter %}
@@ -191,233 +191,234 @@
 
     <div class="row">
         <div class="col-2">
-            {% if inst_level|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                         aria-expanded="false">
-                        Level
+            <ul id="list-menu dropdown-menu" class="list-group">
+                {% if inst_level|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="false">
+                            Level
+                        </div>
+                        <div class="dropdown-menu">
+                            {% for l in inst_level %}
+                                <a class="dropdown-item"
+                                   onclick="addParam('inst_level={{ l.0 }}')">{{ l.1 }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        {% for l in inst_level %}
-                            <a class="dropdown-item"
-                               onclick="addParam('inst_level={{ l.0 }}')">{{ l.1 }}</a>
-                        {% endfor %}
+                {% endif %}
+                {% if religous|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="false">
+                            Religion
+                        </div>
+                        <div class="dropdown-menu">
+                            {% for r in religous %}
+                                <a class="dropdown-item"
+                                   onclick="addParam('religous={{ r.0 }}')">{{ r.1 }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-            {% if religous|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                         aria-expanded="false">
-                        Religion
+                {% endif %}
+                {% if carnegie_basic|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="false">
+                            Carnegie Basic
+                        </div>
+                        <div class="dropdown-menu">
+                            {% for b in carnegie_basic %}
+                                <a class="dropdown-item"
+                                   onclick="addParam('carnegie_basic={{ b.0 }}')">{{ b.1 }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        {% for r in religous %}
-                            <a class="dropdown-item"
-                               onclick="addParam('religous={{ r.0 }}')">{{ r.1 }}</a>
-                        {% endfor %}
+                {% endif %}
+                {% if highest_grad_degree|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="false">
+                            Highest Degree
+                        </div>
+                        <div class="dropdown-menu">
+                            {% for d in highest_grad_degree %}
+                                <a class="dropdown-item"
+                                   onclick="addParam('highest_grad_degree={{ d.0 }}')">{{ d.1 }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-            {% if carnegie_basic|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                         aria-expanded="false">
-                        Carnegie Basic
+                {% endif %}
+                {% if locale|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="false">
+                            Locale
+                        </div>
+                        <div class="dropdown-menu">
+                            {% for l in locale %}
+                                <a class="dropdown-item"
+                                   onclick="addParam('locale={{ l.0 }}')">{{ l.1 }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        {% for b in carnegie_basic %}
-                            <a class="dropdown-item"
-                               onclick="addParam('carnegie_basic={{ b.0 }}')">{{ b.1 }}</a>
-                        {% endfor %}
+                {% endif %}
+                {% if ownership|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="false">
+                            Ownership
+                        </div>
+                        <div class="dropdown-menu">
+                            {% for o in ownership %}
+                                <a class="dropdown-item"
+                                   onclick="addParam('ownership={{ o.0 }}')">{{ o.1 }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-            {% if highest_grad_degree|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                         aria-expanded="false">
-                        Highest Degree
+                {% endif %}
+                {% if state_view and state|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="false">
+                            State
+                        </div>
+                        <div class="dropdown-menu">
+                            {% for s in state %}
+                                <a class="dropdown-item"
+                                   onclick="addParam('state={{ s.0 }}')">{{ s.1 }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        {% for d in highest_grad_degree %}
-                            <a class="dropdown-item"
-                               onclick="addParam('highest_grad_degree={{ d.0 }}')">{{ d.1 }}</a>
-                        {% endfor %}
+                {% endif %}
+                {% if city|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="false">
+                            City/town
+                        </div>
+                        <div class="dropdown-menu">
+                            {% for c in city %}
+                                <a class="dropdown-item"
+                                   onclick="addParam('city_slug={{ c.1 }}')">{{ c.0 }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-            {% if locale|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                         aria-expanded="false">
-                        Locale
+                {% endif %}
+                {% if hist_black|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="false">
+                            Historically black
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="addParam('hist_black=0')">No</a>
+                            <a class="dropdown-item" onclick="addParam('hist_black=1')">Yes</a>
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        {% for l in locale %}
-                            <a class="dropdown-item"
-                               onclick="addParam('locale={{ l.0 }}')">{{ l.1 }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-            {% if ownership|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                         aria-expanded="false">
-                        Ownership
-                    </div>
-                    <div class="dropdown-menu">
-                        {% for o in ownership %}
-                            <a class="dropdown-item"
-                               onclick="addParam('ownership={{ o.0 }}')">{{ o.1 }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-            {% if state_view and state|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                         aria-expanded="false">
-                        State
-                    </div>
-                    <div class="dropdown-menu">
-                        {% for s in state %}
-                            <a class="dropdown-item"
-                               onclick="addParam('state={{ s.0 }}')">{{ s.1 }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-            {% if city|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                         aria-expanded="false">
-                        City/town
-                    </div>
-                    <div class="dropdown-menu">
-                        {% for c in city %}
-                            <a class="dropdown-item"
-                               onclick="addParam('city_slug={{ c.1 }}')">{{ c.0 }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-            {% if hist_black|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown"
-                         aria-haspopup="true"
-                         aria-expanded="false">
-                        Historically black
-                    </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" onclick="addParam('hist_black=0')">No</a>
-                        <a class="dropdown-item" onclick="addParam('hist_black=1')">Yes</a>
-                    </div>
-                </div>
-            {% endif %}
+                {% endif %}
 
-            {% if predom_black|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown"
-                         aria-haspopup="true"
-                         aria-expanded="false">
-                        Predominantely black
+                {% if predom_black|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="false">
+                            Predominantely black
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="addParam('predom_black=0')">No</a>
+                            <a class="dropdown-item" onclick="addParam('predom_black=1')">Yes</a>
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" onclick="addParam('predom_black=0')">No</a>
-                        <a class="dropdown-item" onclick="addParam('predom_black=1')">Yes</a>
-                    </div>
-                </div>
-            {% endif %}
+                {% endif %}
 
-            {% if hispanic|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown"
-                         aria-haspopup="true"
-                         aria-expanded="false">
-                        Hispanic
+                {% if hispanic|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="false">
+                            Hispanic
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="addParam('hispanic=0')">No</a>
+                            <a class="dropdown-item" onclick="addParam('hispanic=1')">Yes</a>
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" onclick="addParam('hispanic=0')">No</a>
-                        <a class="dropdown-item" onclick="addParam('hispanic=1')">Yes</a>
-                    </div>
-                </div>
-            {% endif %}
+                {% endif %}
 
-            {% if men_only|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown"
-                         aria-haspopup="true"
-                         aria-expanded="false">
-                        Men-only
+                {% if men_only|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="false">
+                            Men-only
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="addParam('men_only=0')">No</a>
+                            <a class="dropdown-item" onclick="addParam('men_only=1')">Yes</a>
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" onclick="addParam('men_only=0')">No</a>
-                        <a class="dropdown-item" onclick="addParam('men_only=1')">Yes</a>
-                    </div>
-                </div>
-            {% endif %}
+                {% endif %}
 
 
-            {% if women_only|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown"
-                         aria-haspopup="true"
-                         aria-expanded="false">
-                        Women-only
+                {% if women_only|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="false">
+                            Women-only
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="addParam('women_only=0')">No</a>
+                            <a class="dropdown-item" onclick="addParam('women_only=1')">Yes</a>
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" onclick="addParam('women_only=0')">No</a>
-                        <a class="dropdown-item" onclick="addParam('women_only=1')">Yes</a>
-                    </div>
-                </div>
-            {% endif %}
+                {% endif %}
 
-            {% if online_only|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown"
-                         aria-haspopup="true"
-                         aria-expanded="false">
-                        Online-only
+                {% if online_only|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="false">
+                            Online-only
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="addParam('online_only=0')">No</a>
+                            <a class="dropdown-item" onclick="addParam('online_only=1')">Yes</a>
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" onclick="addParam('online_only=0')">No</a>
-                        <a class="dropdown-item" onclick="addParam('online_only=1')">Yes</a>
-                    </div>
-                </div>
-            {% endif %}
+                {% endif %}
 
-            {% if cur_operating|length > 1 %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown"
-                         aria-haspopup="true"
-                         aria-expanded="false">
-                        Currently operating
+                {% if cur_operating|length > 1 %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="false">
+                            Currently operating
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="addParam('cur_operating=0')">No</a>
+                            <a class="dropdown-item" onclick="addParam('cur_operating=1')">Yes</a>
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" onclick="addParam('cur_operating=0')">No</a>
-                        <a class="dropdown-item" onclick="addParam('cur_operating=1')">Yes</a>
-                    </div>
-                </div>
-            {% endif %}
+                {% endif %}
 
-            {% if academics %}
-                <div class="btn-group dropright">
-                    <div class="dropdown-toggle" data-toggle="dropdown"
-                         aria-haspopup="true"
-                         aria-expanded="false">
-                        Programs
+                {% if academics %}
+                    <div class="btn-group dropright">
+                        <div class="dropdown-toggle" data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="false">
+                            Programs
+                        </div>
+                        <div class="dropdown-menu">
+                            {% for program in academics %}
+                                <a class="dropdown-item" onclick="addParam('{{ program.0 }}=0')">{{ program.1 }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
-                    <div class="dropdown-menu">
-                        {% for program in academics %}
-                            <a class="dropdown-item" onclick="addParam('{{ program.0 }}=0')">{{ program.1 }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            </ul>
         </div>
-
 
         <div class="col-10">
             <div class="row">
@@ -625,57 +626,116 @@
                     </div>
                 {% endif %}
                 {% for college in colleges %}
-                    <div class="col-12">
+                    <div class="col-12 college-container">
                         <div class="card">
                             <div class="card-header">
                                 <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
-                                <p>{{ college.city }}, {{ college.state }}</p>
+                                <p><i class="fas fa-map-marker-alt"></i> {{ college.city }}, {{ college.state }}</p>
                             </div>
-                            <div class="card-body">
-                                <span>Monthly payments: </span>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar"
-                                         style="width: {{ college.monthly_payments|bar_percent:max_payments }}%;"
-                                         aria-valuenow="{{ college.monthly_payments|bar_percent:max_payments }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.monthly_payments %}
-                                        {{ college.monthly_payments|floatformat:"0"|intcomma }}${% else %}
-                                        <span class="bar-no-data">No data</span>{% endif %}</div>
+                            <div class="row card-body">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6 admission">
+                                            <h3>Admission rate <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                                  data-placement="top"
+                                                                  title="The ratio of the number of students who are admitted to the number of total applicants"></i>
+                                            </h3>
+                                            {% if college.admission_rate %}
+                                                <div class="c100 orange p{{ college.admission_rate|mul:100|floatformat:"0" }}">
+                                                    <span>{{ college.admission_rate|mul:100|floatformat:"0" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <div class="c100 orange p0">
+                                                    <span>N/A</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-6 completion">
+                                            {% if college.completion_rate_four_year_pooled %}
+                                                <h3>Completion rate <i class="fas fa-info-circle"
+                                                                       data-toggle="tooltip"
+                                                                       data-placement="top"
+                                                                       title="Completion rate for first-time, full-time students at four-year institutions"></i>
+                                                </h3>
+                                                <div class="c100 green p{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}">
+                                                    <span>{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                            {% elif college.completion_rate_less_four_year_pooled %}
+                                                <h3>Completion rate<i
+                                                        class="fas fa-info-circle" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="Completion rate for first-time, full-time students at less-than-four-year institutions"></i>
+                                                </h3>
+                                                <div class="c100 green p{{ college.completion_rate_less_four_year_pooled|mul:100|floatformat:"0" }}">
+                                                    <span>{{ college.completion_rate_less_four_year_pooled|mul:100|floatformat:"0" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <h3>Completion rate <i
+                                                        class="fas fa-info-circle" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="Completion rate for first-time, full-time students"></i>
+                                                </h3>
+                                                <div class="c100 green p0">
+                                                    <span>N/A</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
-                                <span>Earnings:</span>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-success" role="progressbar"
-                                         style="width: {{ college.mean_earnings|bar_percent:max_earnings }}%;"
-                                         aria-valuenow="{{ college.median_earnings|bar_percent:max_earnings }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.median_earnings %}
-                                        {{ college.median_earnings|floatformat:"0"|intcomma }}${% else %}
-                                        <span class="bar-no-data">No data</span>{% endif %}</div>
-                                </div>
-                                <span>In state tuition:</span>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: {{ college.in_state_tuition|bar_percent:max_tuition }}%;"
-                                         aria-valuenow="{{ college.in_state_tuition|bar_percent:max_tuition }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.in_state_tuition %}
-                                        {{ college.in_state_tuition|floatformat:"0"|intcomma }}${% else %}
-                                        <span class="bar-no-data">No data</span>{% endif %}</div>
-                                </div>
-                                <span>Undergraduates:</span>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-warning" role="progressbar"
-                                         style="width: {{ college.undergrad_students|bar_percent:max_undergrad }}%;"
-                                         aria-valuenow="{{ college.undergrad_students|bar_percent:max_undergrad }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.undergrad_students %}
-                                        {{ college.undergrad_students|floatformat:"0"|intcomma }}{% else %}
-                                        <span class="bar-no-data">No data</span>{% endif %}</div>
-                                </div>
-                                <span>Admission rate:</span>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-danger" role="progressbar"
-                                         style="width: {{ college.admission_rate|bar_percent:max_admission_rate }}%;"
-                                         aria-valuenow="{{ college.admission_rate|bar_percent:max_admission_rate }}"
-                                         aria-valuemin="0" aria-valuemax="100">{% if college.admission_rate %}
-                                        {{ college.admission_rate|mul:100|floatformat:"0" }}%{% else %}
-                                        <span class="bar-no-data">No data</span>{% endif %}</div>
+                                <div class="col-6">
+                                    <span>In-state tuition <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="In-state tuition and fees"></i></span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.in_state_tuition|bar_percent:max_tuition }}%;"
+                                             aria-valuenow="{{ college.in_state_tuition|bar_percent:max_tuition }}"
+                                             aria-valuemin="0" aria-valuemax="100">{% if college.in_state_tuition %}
+                                            {{ college.in_state_tuition|floatformat:"0"|intcomma }}${% else %}
+                                            <span class="bar-no-data">No data</span>{% endif %}</div>
+                                    </div>
+                                    <span>Monthly payments <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="Median loan debt of completers in monthly payments"></i></span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.monthly_payments|bar_percent:max_payments }}%;"
+                                             aria-valuenow="{{ college.monthly_payments|bar_percent:max_payments }}"
+                                             aria-valuemin="0" aria-valuemax="100">{% if college.monthly_payments %}
+                                            {{ college.monthly_payments|floatformat:"0"|intcomma }}${% else %}
+                                            <span class="bar-no-data">No data</span>{% endif %}</div>
+                                    </div>
+                                    <span>Earnings <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                      data-placement="top"
+                                                      title="Median earnings of students working and not enrolled 10 years after entry"></i></span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ college.mean_earnings|bar_percent:max_earnings }}%;"
+                                             aria-valuenow="{{ college.median_earnings|bar_percent:max_earnings }}"
+                                             aria-valuemin="0" aria-valuemax="100">{% if college.median_earnings %}
+                                            {{ college.median_earnings|floatformat:"0"|intcomma }}${% else %}
+                                            <span class="bar-no-data">No data</span>{% endif %}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -761,5 +821,12 @@
 <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap"
         async defer></script>
 <script src="{% static 'open_data_app/js/scripts.js' %}"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
 </body>
 </html>
