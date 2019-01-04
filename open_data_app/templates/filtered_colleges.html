@@ -190,10 +190,10 @@
 
 
     <div class="row">
-        <div class="col-2">
-            <ul id="list-menu dropdown-menu" class="list-group">
+        <div class="col-sm-12 col-md-2">
+            <div id="list-menu" class="list-group">
                 {% if inst_level|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
                             Level
@@ -207,7 +207,7 @@
                     </div>
                 {% endif %}
                 {% if religous|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
                             Religion
@@ -221,7 +221,7 @@
                     </div>
                 {% endif %}
                 {% if carnegie_basic|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
                             Carnegie Basic
@@ -235,7 +235,7 @@
                     </div>
                 {% endif %}
                 {% if highest_grad_degree|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
                             Highest Degree
@@ -249,21 +249,22 @@
                     </div>
                 {% endif %}
                 {% if locale|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
                             Locale
                         </div>
                         <div class="dropdown-menu">
                             {% for l in locale %}
-                                <a class="dropdown-item"
+                                <div><a class="dropdown-item"
                                    onclick="addParam('locale={{ l.0 }}')">{{ l.1 }}</a>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
                 {% endif %}
                 {% if ownership|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
                             Ownership
@@ -276,8 +277,8 @@
                         </div>
                     </div>
                 {% endif %}
-                {% if state_view and state|length > 1 %}
-                    <div class="btn-group dropright">
+                {% if state_view or state_filter and state|length > 1 %}
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
                             State
@@ -291,7 +292,7 @@
                     </div>
                 {% endif %}
                 {% if city|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
                             City/town
@@ -305,7 +306,7 @@
                     </div>
                 {% endif %}
                 {% if hist_black|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
@@ -319,7 +320,7 @@
                 {% endif %}
 
                 {% if predom_black|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
@@ -333,7 +334,7 @@
                 {% endif %}
 
                 {% if hispanic|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
@@ -347,7 +348,7 @@
                 {% endif %}
 
                 {% if men_only|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
@@ -362,7 +363,7 @@
 
 
                 {% if women_only|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
@@ -376,7 +377,7 @@
                 {% endif %}
 
                 {% if online_only|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
@@ -390,7 +391,7 @@
                 {% endif %}
 
                 {% if cur_operating|length > 1 %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
@@ -404,7 +405,7 @@
                 {% endif %}
 
                 {% if academics %}
-                    <div class="btn-group dropright">
+                    <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
@@ -417,7 +418,7 @@
                         </div>
                     </div>
                 {% endif %}
-            </ul>
+            </div>
         </div>
 
         <div class="col-10">

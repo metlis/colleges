@@ -59,6 +59,7 @@ def filter_no_values(request, param):
                    'filters_vals': filters_vals,
                    'init_param': init_param,
                    'maps_key': GOOGLE_MAPS_API,
+                   'state_filter': True,
                    }
         context.update(filters)
         context.update(aggregate_data)

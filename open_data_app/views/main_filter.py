@@ -46,6 +46,7 @@ def main_filter(request):
                        'filters_vals': filters_vals,
                        'main_filter': True,
                        'maps_key': GOOGLE_MAPS_API,
+                       'state_filter': True,
                        }
             context.update(filters)
             context.update(aggregate_data)
@@ -77,6 +78,7 @@ def main_filter(request):
                    'base_url': base_url,
                    'noindex': True,
                    'maps_key': GOOGLE_MAPS_API,
+                   'state_filter': True,
                    }
         context.update(filters)
         context.update(aggregate_data)

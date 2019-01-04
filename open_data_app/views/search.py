@@ -43,6 +43,7 @@ def search(request):
                        'noindex': True,
                        'serach_query': query,
                        'maps_key': GOOGLE_MAPS_API,
+                       'state_filter': True,
                        }
 
             context.update(aggregate_data)

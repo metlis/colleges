@@ -86,6 +86,7 @@ def get_region_slug(request, region_id, region_slug):
                'base_url': canonical,
                'canonical': canonical,
                'maps_key': GOOGLE_MAPS_API,
+               'state_filter': True,
                }
 
     context.update(filters)
@@ -169,6 +170,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                    'noindex': noindex,
                    'filters_vals': filters_vals,
                    'maps_key': GOOGLE_MAPS_API,
+                   'state_filter': True,
                    }
         context.update(filters)
         context.update(aggregate_data)
