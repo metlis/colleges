@@ -42,7 +42,7 @@
 </nav>
 <div class="container-fluid" itemscope itemtype="http://schema.org/CollegeOrUniversity">
     <div class="row">
-        <div class="col-2">
+        <div class="col-sm-12 col-md-2">
             <div id="list-menu" class="list-group">
                 <a class="list-group-item list-group-item-action" href="#overview-anchor">Overview</a>
                 <a class="list-group-item list-group-item-action" href="#academics-anchor">Academics</a>
@@ -55,43 +55,60 @@
                 <a class="list-group-item list-group-item-action" href="#earnings-anchor">Earnings</a>
             </div>
         </div>
-        <div class="col-10">
+        <div class="col-sm-12 col-md-10">
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <h1 itemprop="name">{{ college.name }}</h1>
                 </div>
             </div>
             <div class="row" id="overview-anchor">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     <p>
-                                        <span class="icon-container"><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top"
-                                          title="Web site"></i></span> <a href="//{{ college.url }}" rel="nofollow" target="_blank"><span itemprop="url">{{ college.url }}</span></a></p>
+                                        <span class="icon-container"><i class="fab fa-internet-explorer"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Web site"></i></span> <a
+                                            href="//{{ college.url }}" rel="nofollow" target="_blank"><span
+                                            itemprop="url" class="icon-text">{{ college.url }}</span></a></p>
                                     <p>
-                                        <span class="icon-container"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top"
-                                                                        title="Zip code"></i></span> <span itemprop="location">{{ college.city }}, {{ college.state }} {{ college.zip }}</span>
+                                        <span class="icon-container"><i class="fas fa-map-marker-alt"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Zip code"></i></span> <span
+                                            itemprop="location"
+                                            class="icon-text">{{ college.city }}, {{ college.state }} {{ college.zip }}</span>
                                     </p>
                                     <p>
-                                        <span class="icon-container"><i class="fas fa-city" data-toggle="tooltip" data-placement="top"
-                                          title="Locale"></i></span> {{ college.locale }}</p>
+                                        <span class="icon-container"><i class="fas fa-city" data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Locale"></i></span><span
+                                            class="icon-text">{{ college.locale }}</span>
+                                    </p>
                                     <p>
-                                        <span class="icon-container"><i class="fas fa-user-graduate" data-toggle="tooltip" data-placement="top"
-                                           title="Undergraduate students"></i></span> {{ college.undergrad_students|floatformat:"0"|intcomma }}
+                                        <span class="icon-container"><i class="fas fa-user-graduate"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Undergraduate students"></i></span><span
+                                            class="icon-text">{{ college.undergrad_students|floatformat:"0"|intcomma }}</span>
                                     </p>
                                     {% if college.religous %}
                                         <p>
-                                            <span class="icon-container"><i class="fas fa-church" data-toggle="tooltip" data-placement="top"
-                                              title="Religous affiliation of the institution"></i></span> {{ college.religous }}
+                                            <span class="icon-container"><i class="fas fa-church" data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Religous affiliation of the institution"></i></span>
+                                            <span
+                                                    class="icon-text">{{ college.religous }}</span>
                                         </p>
                                     {% endif %}
                                     <p>
-                                        <span class="icon-container"><i class="fas fa-home" data-toggle="tooltip" data-placement="top"
-                                          title="Ownership"></i></span> <span itemprop="ownershipFundingInfo">{{ college.ownership }}</span></p>
+                                        <span class="icon-container"><i class="fas fa-home" data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Ownership"></i></span> <span
+                                            itemprop="ownershipFundingInfo"
+                                            class="icon-text">{{ college.ownership }}</span></p>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     {% if college.latitude and college.longitude %}
                                         <div id="map"></div>
                                         <script>
@@ -124,25 +141,33 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <div class="card">
-                        <div class="col-12 card-header" data-toggle="collapse" data-target="#academics"
+                        <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#academics"
                              aria-expanded="false"
                              aria-controls="academics">
                             <h2 id="academics-anchor">Academics</h2><i class="fas fa-plus"></i>
                         </div>
-                        <div class="col-12 card-body collapse show" id="academics">
+                        <div class="col-sm-12 card-body collapse show" id="academics">
                             <p>
-                                <span class="icon-container"><i class="fas fa-university" data-toggle="tooltip" data-placement="top"
-                                   title="Level of institution and highest degree awarded"></i></span> {{ college.inst_level }}, {{ college.highest_grad_degree }}
+                                <span class="icon-container"><i class="fas fa-university" data-toggle="tooltip"
+                                                                data-placement="top"
+                                                                title="Level of institution and highest degree awarded"></i></span>
+                                <span
+                                        class="icon-text">{{ college.inst_level }}, {{ college.highest_grad_degree }}</span>
                             </p>
                             <p>
-                                <span class="icon-container"><i class="fas fa-flask" data-toggle="tooltip" data-placement="top"
-                                  title="Carnegie Classification"></i></span> {{ college.carnegie_basic }}</p>
+                                <span class="icon-container"><i class="fas fa-flask" data-toggle="tooltip"
+                                                                data-placement="top"
+                                                                title="Carnegie Classification"></i></span> <span
+                                    class="icon-text">{{ college.carnegie_basic }}</span>
+                            </p>
                             {% if college.online_only %}
                                 <p>
-                                    <span class="icon-container"><i class="fas fa-globe" data-toggle="tooltip" data-placement="top"
-                                      title="Distance-education-only education"></i></span> Online-only</p>
+                                    <span class="icon-container"><i class="fas fa-globe" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="Distance-education-only education"></i></span>
+                                    Online-only</p>
                             {% endif %}
                         </div>
                     </div>
@@ -150,17 +175,17 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <div class="card">
-                        <div class="col-12 card-header" data-toggle="collapse" data-target="#disciplines"
+                        <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#disciplines"
                              aria-expanded="true"
                              aria-controls="disciplines">
                             <h2 id="disciplines-anchor">Disciplines</h2><i class="fas fa-plus"></i>
                         </div>
-                        <div class="col-12 card-body collapse show" id="disciplines">
+                        <div class="col-sm-12 card-body collapse show" id="disciplines">
                             <div class="row">
                                 {% if top_disciplines %}
-                                    <div class="col-6 top-disciplines">
+                                    <div class="col-sm-12 col-md-6 top-disciplines">
                                         <h3>Top programs <i class="fas fa-info-circle" data-toggle="tooltip"
                                                             data-placement="top"
                                                             title="Measured as the percentage of degrees awarded"></i>
@@ -182,7 +207,7 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                                <div class="col-6 all-disciplines">
+                                <div class="col-sm-12 col-md-6 all-disciplines">
                                     <h3>All areas of study <i class="fas fa-info-circle" data-toggle="tooltip"
                                                               data-placement="top"
                                                               title="All programs offered at the institution"></i></h3>
@@ -201,23 +226,23 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <div class="card">
-                        <div class="col-12 card-header" data-toggle="collapse" data-target="#admissions"
+                        <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#admissions"
                              aria-expanded="true"
                              aria-controls="admissios">
                             <h2 id="admissions-anchor">Acceptance</h2><i class="fas fa-plus"></i>
                         </div>
-                        <div class="col-12 card-body collapse show" id="admissions">
+                        <div class="col-sm-12 card-body collapse show" id="admissions">
                             {% if college.admission_rate %}
                                 <div class="row">
-                                    <div class="col-12 admission-header">
+                                    <div class="col-sm-12 admission-header">
                                         <h3>Admission rate <i class="fas fa-info-circle" data-toggle="tooltip"
                                                               data-placement="top"
                                                               title="The ratio of the number of students who are admitted to the number of total applicants"></i>
                                         </h3>
                                     </div>
-                                    <div class="col-12 admission-circle">
+                                    <div class="col-sm-12 admission-circle">
                                         <div class="c100 green big p{{ college.admission_rate|mul:100|floatformat:"0" }}">
                                             <span>{{ college.admission_rate|mul:100|floatformat:"0" }}%</span>
                                             <div class="slice">
@@ -229,7 +254,7 @@
                                 </div>
                             {% endif %}
                             <div class="row admissions">
-                                <div class="col-6 sat">
+                                <div class="col-sm-12 col-md-6 sat">
                                     <h4>SAT</h4>
                                     <span>Average <i class="fas fa-info-circle" data-toggle="tooltip"
                                                      data-placement="top"
@@ -286,7 +311,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     <h4>ACT</h4>
                                     <span>Cumulative <i class="fas fa-info-circle" data-toggle="tooltip"
                                                         data-placement="top"
@@ -348,26 +373,26 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <div class="card">
-                        <div class="col-12 card-header" data-toggle="collapse" data-target="#completion"
+                        <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#completion"
                              aria-expanded="true"
                              aria-controls="completion">
                             <h2 id="completion-anchor">Completion</h2><i class="fas fa-plus"></i>
                         </div>
-                        <div class="col-12 card-body collapse show" id="completion">
+                        <div class="col-sm-12 card-body collapse show" id="completion">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     {% if college.completion_rate_four_year_pooled %}
                                         <div class="row">
-                                            <div class="col-12">
+                                            <div class="col-sm-12">
                                                 <h3>Completion rate: 4-year programs <i class="fas fa-info-circle"
                                                                                         data-toggle="tooltip"
                                                                                         data-placement="top"
                                                                                         title="Completion rate for first-time, full-time students at four-year institutions"></i>
                                                 </h3>
                                             </div>
-                                            <div class="col-12 completion-circle">
+                                            <div class="col-sm-12 completion-circle">
                                                 <div class="c100 green big p{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}">
                                                     <span>{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}%</span>
                                                     <div class="slice">
@@ -379,14 +404,14 @@
                                         </div>
                                     {% elif college.completion_rate_less_four_year_pooled %}
                                         <div class="row">
-                                            <div class="col-12">
+                                            <div class="col-sm-12">
                                                 <h3>Completion rate: less-than-4-year programs <i
                                                         class="fas fa-info-circle" data-toggle="tooltip"
                                                         data-placement="top"
                                                         title="Completion rate for first-time, full-time students at less-than-four-year institutions"></i>
                                                 </h3>
                                             </div>
-                                            <div class="col-12 completion-circle">
+                                            <div class="col-sm-12 completion-circle">
                                                 <div class="c100 green big p{{ college.completion_rate_less_four_year_pooled|mul:100|floatformat:"0" }}">
                                                     <span>{{ college.completion_rate_less_four_year_pooled|mul:100|floatformat:"0" }}%</span>
                                                     <div class="slice">
@@ -398,17 +423,17 @@
                                         </div>
                                     {% endif %}
                                 </div>
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     {% if college.retention_rate_four_year_pooled %}
                                         <div class="row">
-                                            <div class="col-12">
+                                            <div class="col-sm-12">
                                                 <h3>Retention rate: 4-year programs <i class="fas fa-info-circle"
                                                                                        data-toggle="tooltip"
                                                                                        data-placement="top"
                                                                                        title="The proportion of full-time, first-time, degree/certificate-seeking undergraduates who were enrolled at the institution in the fall 1 year after starting at the institution"></i>
                                                 </h3>
                                             </div>
-                                            <div class="col-12 completion-circle">
+                                            <div class="col-sm-12 completion-circle">
                                                 <div class="c100 orange big p{{ college.retention_rate_four_year_pooled|mul:100|floatformat:"0" }}">
                                                     <span>{{ college.retention_rate_four_year_pooled|mul:100|floatformat:"0" }}%</span>
                                                     <div class="slice">
@@ -420,7 +445,7 @@
                                         </div>
                                     {% elif college.retention_rate_less_four_year_pooled %}
                                         <div class="row">
-                                            <div class="col-12">
+                                            <div class="col-sm-12">
                                                 <h3>Retention rate: less-than-4-year programs <i
                                                         class="fas fa-info-circle" data-toggle="tooltip"
                                                         data-placement="top"
@@ -442,13 +467,13 @@
                             </div>
                             {% if college.completion_rate_less_four_year %}
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-sm-12">
                                         <h3>Completion rate: less than 4-year programs <i
                                                 class="fas fa-info-circle" data-toggle="tooltip" data-placement="top"
                                                 title="Completion rate for first-time, full-time students at less-than-four-year institutions"></i>
                                         </h3>
                                     </div>
-                                    <div class="col-12 completion-circle">
+                                    <div class="col-sm-12 completion-circle">
                                         <div class="c100 green big p{{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}">
                                             <span>{{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}%</span>
                                             <div class="slice">
@@ -465,16 +490,16 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <div class="card">
-                        <div class="col-12 card-header" data-toggle="collapse" data-target="#demography"
+                        <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#demography"
                              aria-expanded="true"
                              aria-controls="demography">
                             <h2 id="demography-anchor">Student body</h2><i class="fas fa-plus"></i>
                         </div>
-                        <div class="col-12 card-body collapse show" id="demography">
+                        <div class="col-sm-12 card-body collapse show" id="demography">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     <h3>Race/ethnicity <i class="fas fa-info-circle" data-toggle="tooltip"
                                                           data-placement="top"
                                                           title="Total share of enrollment of undergraduate degree-seeking students of particular race/ethnicity"></i>
@@ -579,11 +604,13 @@
                                         </div>
                                     {% endif %}
                                 </div>
-                                <div class="col-6">
-                                    <h3>Gender <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top"
-                                                  title="Share of female and male students"></i></h3>
+                                <div class="col-sm-12 col-md-6">
+                                    <h3 class="gender-header">Gender <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Share of female and male students"></i>
+                                    </h3>
                                     <div class="row">
-                                        <div class="col-6 female">
+                                        <div class="col-sm-6 female">
                                             <h4>Female</h4>
                                             <div class="c100 orange p{{ college.students_female|mul:100|floatformat:"0" }}">
                                                 <span>{{ college.students_female|mul:100|floatformat:"0" }}%</span>
@@ -593,7 +620,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6 male">
+                                        <div class="col-sm-6 male">
                                             <h4>Male</h4>
                                             <div class="c100 green p{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}">
                                                 <span>{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}%</span>
@@ -603,7 +630,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-sm-12">
                                             {% if college.men_only %}
                                                 <p>This institution is men-only.</p>
                                             {% endif %}
@@ -611,7 +638,7 @@
                                                 <p>This institution is women-only.</p>
                                             {% endif %}
                                         </div>
-                                        <div class="col-12 full-time">
+                                        <div class="col-sm-12 full-time">
                                             <h3>Full-time students <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                       data-placement="top"
                                                                       title="Share of undergraduate, degree-/certificate-seeking students who are full-time"></i>
@@ -624,7 +651,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 family-income">
+                                        <div class="col-sm-12 family-income">
                                             <h3>Family income <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                  data-placement="top"
                                                                  title="Average family income of dependent students in real 2015 dollars"></i>
@@ -640,17 +667,18 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <div class="card">
-                        <div class="col-12 card-header" data-toggle="collapse" data-target="#aid" aria-expanded="true"
+                        <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#aid"
+                             aria-expanded="true"
                              aria-controls="aid">
                             <h2 id="aid-anchor">Aid and Debt</h2><i class="fas fa-plus"></i>
                         </div>
-                        <div class="col-12 card-body collapse show" id="aid">
+                        <div class="col-sm-12 card-body collapse show" id="aid">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     <div class="row">
-                                        <div class="col-6 grant">
+                                        <div class="col-sm-12 col-md-6 grant">
                                             <h3>Pell grand <i class="fas fa-info-circle" data-toggle="tooltip"
                                                               data-placement="top"
                                                               title="Percentage of undergraduates who receive a Pell Grant"></i>
@@ -663,7 +691,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6 loan">
+                                        <div class="col-sm-12 col-md-6 loan">
                                             <h3>Federal loan <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                 data-placement="top"
                                                                 title="Percent of all undergraduate students receiving a federal student loan"></i>
@@ -677,18 +705,23 @@
                                             </div>
                                         </div>
                                         {% if college.calc_url %}
-                                            <div class="col-12 calc">
-                                                <a href="//{{ college.calc_url }}" style="text-decoration: none" rel="nofollow" target="_blank">
-                                                    <button class="btn btn-outline-success" style="display: block; margin: auto;">Calculate your net price
+                                            <div class="col-sm-12 calc">
+                                                <a href="//{{ college.calc_url }}" style="text-decoration: none"
+                                                   rel="nofollow" target="_blank">
+                                                    <button class="btn btn-outline-success"
+                                                            style="display: block; margin: auto;">Calculate your net
+                                                        price
                                                     </button>
                                                 </a>
                                             </div>
                                         {% endif %}
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <h3>Debt <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top"
-                                                title="The median debt for students who have completed"></i></h3>
+                                <div class="col-sm-12 col-md-6">
+                                    <h3 class="debt-header">Debt <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="The median debt for students who have completed"></i>
+                                    </h3>
                                     <p class="single-value">{{ college.debt_completed_median|floatformat:"0"|intcomma }}$</p>
                                     <h3>Monthly payments <i class="fas fa-info-circle" data-toggle="tooltip"
                                                             data-placement="top"
@@ -704,17 +737,18 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <div class="card">
-                        <div class="col-12 card-header" data-toggle="collapse" data-target="#cost" aria-expanded="true"
+                        <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#cost"
+                             aria-expanded="true"
                              aria-controls="cost">
                             <h2 id="cost-anchor">Cost</h2><i class="fas fa-plus"></i>
                         </div>
-                        <div class="col-12 card-body collapse show" id="cost">
+                        <div class="col-sm-12 card-body collapse show" id="cost">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     <div class="row">
-                                        <div class="col-12 net-price">
+                                        <div class="col-sm-12 net-price">
                                             {% if college.average_net_price_public %}
                                                 <p>Average net price <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                         data-placement="top"
@@ -750,11 +784,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     {% if college.ownership|slugify == 'Private nonprofit'|slugify or college.ownership|slugify == 'Private for-profit'|slugify %}
-                                        <h3>Cost by family income <i class="fas fa-info-circle" data-toggle="tooltip"
-                                                              data-placement="top"
-                                                              title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid, by detailed income category"></i>
+                                        <h3 class="family-header">Cost by family income <i class="fas fa-info-circle"
+                                                                                           data-toggle="tooltip"
+                                                                                           data-placement="top"
+                                                                                           title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid, by detailed income category"></i>
                                         </h3>
                                         <table class="table table-sm">
                                             <thead>
@@ -765,7 +800,7 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td>0$-30,000$</td>
+                                                <td>0$ - 30,000$</td>
                                                 {% if college.average_net_price_priv_30 %}
                                                     <td>{{ college.average_net_price_priv_30|floatformat:"0"|intcomma }}$</td>
                                                 {% else %}
@@ -773,7 +808,7 @@
                                                 {% endif %}
                                             </tr>
                                             <tr>
-                                                <td>30,001$-48,000$</td>
+                                                <td>30,001$ - 48,000$</td>
                                                 {% if college.average_net_price_priv_48 %}
                                                     <td>{{ college.average_net_price_priv_48|floatformat:"0"|intcomma }}$</td>
                                                 {% else %}
@@ -781,7 +816,7 @@
                                                 {% endif %}
                                             </tr>
                                             <tr>
-                                                <td>48,001$-75,000$</td>
+                                                <td>48,001$ - 75,000$</td>
                                                 {% if college.average_net_price_priv_75 %}
                                                     <td>{{ college.average_net_price_priv_75|floatformat:"0"|intcomma }}$</td>
                                                 {% else %}
@@ -789,7 +824,7 @@
                                                 {% endif %}
                                             </tr>
                                             <tr>
-                                                <td>75,001$-110,000$</td>
+                                                <td>75,001$ - 110,000$</td>
                                                 {% if college.average_net_price_priv_110 %}
                                                     <td>{{ college.average_net_price_priv_110|floatformat:"0"|intcomma }}$</td>
                                                 {% else %}
@@ -817,7 +852,7 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td>$0-$30,000</td>
+                                                <td>$0 - $30,000</td>
                                                 {% if college.average_net_price_pub_30 %}
                                                     <td>{{ college.average_net_price_pub_30|floatformat:"0"|intcomma }}$</td>
                                                 {% else %}
@@ -825,7 +860,7 @@
                                                 {% endif %}
                                             </tr>
                                             <tr>
-                                                <td>$30,001-$48,000</td>
+                                                <td>$30,001 - $48,000</td>
                                                 {% if college.average_net_price_pub_48 %}
                                                     <td>{{ college.average_net_price_pub_48|floatformat:"0"|intcomma }}$</td>
                                                 {% else %}
@@ -833,7 +868,7 @@
                                                 {% endif %}
                                             </tr>
                                             <tr>
-                                                <td>$48,001-$75,000</td>
+                                                <td>$48,001 - $75,000</td>
                                                 {% if college.average_net_price_pub_75 %}
                                                     <td>{{ college.average_net_price_pub_75|floatformat:"0"|intcomma }}$</td>
                                                 {% else %}
@@ -841,7 +876,7 @@
                                                 {% endif %}
                                             </tr>
                                             <tr>
-                                                <td>$75,001-$110,000</td>
+                                                <td>$75,001 - $110,000</td>
                                                 {% if college.average_net_price_pub_110 %}
                                                     <td>{{ college.average_net_price_pub_110|floatformat:"0"|intcomma }}$</td>
                                                 {% else %}
@@ -867,14 +902,14 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <div class="card">
-                        <div class="col-12 card-header" data-toggle="collapse" data-target="#earnings"
+                        <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#earnings"
                              aria-expanded="true"
                              aria-controls="earnings">
                             <h2 id="earnings-anchor">Earnings</h2>
                         </div>
-                        <div class="col-12 card-body collapse show" id="earnings">
+                        <div class="col-sm-12 card-body collapse show" id="earnings">
                             <h3>Salary after attending <i class="fas fa-info-circle" data-toggle="tooltip"
                                                           data-placement="top"
                                                           title="Median earnings of students working and not enrolled 10 years after entry"></i>
