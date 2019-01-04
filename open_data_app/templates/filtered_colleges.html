@@ -196,7 +196,9 @@
                     <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
-                            Level
+                            <div class="item-name">
+                                Level
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             {% for l in inst_level %}
@@ -210,7 +212,9 @@
                     <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
-                            Religion
+                            <div class="item-name">
+                                Religion
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             {% for r in religous %}
@@ -224,7 +228,9 @@
                     <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
-                            Carnegie Basic
+                            <div class="item-name">
+                                Carnegie Basic
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             {% for b in carnegie_basic %}
@@ -238,7 +244,9 @@
                     <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
-                            Highest Degree
+                            <div class="item-name">
+                                Highest Degree
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             {% for d in highest_grad_degree %}
@@ -252,12 +260,14 @@
                     <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
-                            Locale
+                            <div class="item-name">
+                                Locale
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             {% for l in locale %}
                                 <div><a class="dropdown-item"
-                                   onclick="addParam('locale={{ l.0 }}')">{{ l.1 }}</a>
+                                        onclick="addParam('locale={{ l.0 }}')">{{ l.1 }}</a>
                                 </div>
                             {% endfor %}
                         </div>
@@ -267,7 +277,9 @@
                     <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
-                            Ownership
+                            <div class="item-name">
+                                Ownership
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             {% for o in ownership %}
@@ -281,7 +293,9 @@
                     <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
-                            State
+                            <div class="item-name">
+                                State
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             {% for s in state %}
@@ -295,7 +309,9 @@
                     <div class="list-group-item btn-group dropright">
                         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
-                            City/town
+                            <div class="item-name">
+                                City/town
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             {% for c in city %}
@@ -310,7 +326,9 @@
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
-                            Historically black
+                            <div class="item-name">
+                                Historically black
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" onclick="addParam('hist_black=0')">No</a>
@@ -324,7 +342,9 @@
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
-                            Predominantely black
+                            <div class="item-name">
+                                Predominantely black
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" onclick="addParam('predom_black=0')">No</a>
@@ -338,7 +358,9 @@
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
-                            Hispanic
+                            <div class="item-name">
+                                Hispanic
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" onclick="addParam('hispanic=0')">No</a>
@@ -352,7 +374,9 @@
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
-                            Men-only
+                            <div class="item-name">
+                                Men-only
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" onclick="addParam('men_only=0')">No</a>
@@ -367,7 +391,9 @@
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
-                            Women-only
+                            <div class="item-name">
+                                Women-only
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" onclick="addParam('women_only=0')">No</a>
@@ -381,7 +407,9 @@
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
-                            Online-only
+                            <div class="item-name">
+                                Online-only
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" onclick="addParam('online_only=0')">No</a>
@@ -395,7 +423,9 @@
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
-                            Currently operating
+                            <div class="item-name">
+                                Currently operating
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" onclick="addParam('cur_operating=0')">No</a>
@@ -409,7 +439,9 @@
                         <div class="dropdown-toggle" data-toggle="dropdown"
                              aria-haspopup="true"
                              aria-expanded="false">
-                            Programs
+                            <div class="item-name">
+                                Programs
+                            </div>
                         </div>
                         <div class="dropdown-menu">
                             {% for program in academics %}

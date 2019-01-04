@@ -33,14 +33,32 @@ h4 {
 .list-group-item {
   display: inline-block;
   cursor: pointer;
+  padding: 0px;
 }
 .dropright .dropdown-toggle::after {
   border: none;
 }
 .dropdown-menu {
   width: 300px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 .dropdown-menu a {
   white-space: normal;
   cursor: pointer;
+}
+.dropdown-toggle {
+  width: 100%;
+  height: 100%;
+}
+.item-name {
+  position: relative;
+  top: 12px;
+  text-align: center;
+}
+#list-menu {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 20px;
+  z-index: 9999;
 }
