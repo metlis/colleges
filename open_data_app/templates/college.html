@@ -67,31 +67,40 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
-                                    <p>
+                                    {% if college.url %}
+                                        <p>
                                         <span class="icon-container"><i class="fab fa-internet-explorer"
                                                                         data-toggle="tooltip" data-placement="top"
                                                                         title="Web site"></i></span> <a
-                                            href="//{{ college.url }}" rel="nofollow" target="_blank"><span
-                                            itemprop="url" class="icon-text">{{ college.url }}</span></a></p>
-                                    <p>
+                                                href="//{{ college.url }}" rel="nofollow" target="_blank"><span
+                                                itemprop="url" class="icon-text">{{ college.url }}</span></a>
+                                        </p>
+                                    {% endif %}
+                                    {% if college.city or college.state or college.zip %}
+                                        <p>
                                         <span class="icon-container"><i class="fas fa-map-marker-alt"
                                                                         data-toggle="tooltip" data-placement="top"
                                                                         title="Zip code"></i></span> <span
-                                            itemprop="location"
-                                            class="icon-text">{{ college.city }}, {{ college.state }} {{ college.zip }}</span>
-                                    </p>
-                                    <p>
+                                                itemprop="location"
+                                                class="icon-text">{{ college.city }}, {{ college.state }} {{ college.zip }}</span>
+                                        </p>
+                                    {% endif %}
+                                    {% if college.locale %}
+                                        <p>
                                         <span class="icon-container"><i class="fas fa-city" data-toggle="tooltip"
                                                                         data-placement="top"
                                                                         title="Locale"></i></span><span
-                                            class="icon-text">{{ college.locale }}</span>
-                                    </p>
-                                    <p>
+                                                class="icon-text">{{ college.locale }}</span>
+                                        </p>
+                                    {% endif %}
+                                    {% if college.undergrad_students %}
+                                        <p>
                                         <span class="icon-container"><i class="fas fa-user-graduate"
                                                                         data-toggle="tooltip" data-placement="top"
                                                                         title="Undergraduate students"></i></span><span
-                                            class="icon-text">{{ college.undergrad_students|floatformat:"0"|intcomma }}</span>
-                                    </p>
+                                                class="icon-text">{{ college.undergrad_students|floatformat:"0"|intcomma }}</span>
+                                        </p>
+                                    {% endif %}
                                     {% if college.religous %}
                                         <p>
                                             <span class="icon-container"><i class="fas fa-church" data-toggle="tooltip"
@@ -101,12 +110,15 @@
                                                     class="icon-text">{{ college.religous }}</span>
                                         </p>
                                     {% endif %}
-                                    <p>
+                                    {% if college.ownership %}
+                                        <p>
                                         <span class="icon-container"><i class="fas fa-home" data-toggle="tooltip"
                                                                         data-placement="top"
                                                                         title="Ownership"></i></span> <span
-                                            itemprop="ownershipFundingInfo"
-                                            class="icon-text">{{ college.ownership }}</span></p>
+                                                itemprop="ownershipFundingInfo"
+                                                class="icon-text">{{ college.ownership }}</span>
+                                        </p>
+                                    {% endif %}
                                 </div>
                                 <div class="col-sm-12 col-md-6">
                                     {% if college.latitude and college.longitude %}
@@ -128,7 +140,9 @@
                                                         lng: {{ college.longitude }}
                                                     },
                                                     map: map,
-                                                    title: '{{ college.city }}, {{ college.state }}'
+                                                    {% if college.city and college.state and college.zip %}
+                                                        title: '{{ college.city }}, {{ college.state }} {{ college.zip }}'
+                                                    {% endif %}
                                                 });
                                             }
                                         </script>
@@ -149,25 +163,32 @@
                             <h2 id="academics-anchor">Academics</h2><i class="fas fa-plus"></i>
                         </div>
                         <div class="col-sm-12 card-body collapse show" id="academics">
-                            <p>
+                            {% if college.highest_grad_degree or college.inst_level %}
+                                <p>
                                 <span class="icon-container"><i class="fas fa-university" data-toggle="tooltip"
                                                                 data-placement="top"
                                                                 title="Level of institution and highest degree awarded"></i></span>
-                                <span
-                                        class="icon-text">{{ college.inst_level }}, {{ college.highest_grad_degree }}</span>
-                            </p>
-                            <p>
+                                    <span
+                                            class="icon-text">{{ college.inst_level }}, {{ college.highest_grad_degree }}</span>
+                                </p>
+                            {% endif %}
+                            {% if college.carnegie_basic %}
+                                <p>
                                 <span class="icon-container"><i class="fas fa-flask" data-toggle="tooltip"
                                                                 data-placement="top"
                                                                 title="Carnegie Classification"></i></span> <span
-                                    class="icon-text">{{ college.carnegie_basic }}</span>
-                            </p>
+                                        class="icon-text">{{ college.carnegie_basic }}</span>
+                                </p>
+                            {% endif %}
                             {% if college.online_only %}
                                 <p>
                                     <span class="icon-container"><i class="fas fa-globe" data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title="Distance-education-only education"></i></span>
                                     Online-only</p>
+                            {% endif %}
+                            {% if not college.online_only and not college.carnegie_basic and not college.highest_grad_degree and not college.inst_level %}
+                                <p>No data available</p>
                             {% endif %}
                         </div>
                     </div>
@@ -207,18 +228,25 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                                <div class="col-sm-12 col-md-6 all-disciplines">
-                                    <h3>All areas of study <i class="fas fa-info-circle" data-toggle="tooltip"
-                                                              data-placement="top"
-                                                              title="All programs offered at the institution"></i></h3>
-                                    <div class="disciplines-container">
-                                        {% for discipline in college_disciplines %}
-                                            <div class="discipline">
-                                                <p>{{ forloop.counter }}. {{ discipline.0 }}</p>
-                                            </div>
-                                        {% endfor %}
+                                {% if college_disciplines %}
+                                    <div class="col-sm-12 col-md-6 all-disciplines">
+                                        <h3 class="all-areas-header">All areas of study <i class="fas fa-info-circle"
+                                                                                           data-toggle="tooltip"
+                                                                                           data-placement="top"
+                                                                                           title="All programs offered at the institution"></i>
+                                        </h3>
+                                        <div class="disciplines-container">
+                                            {% for discipline in college_disciplines %}
+                                                <div class="discipline">
+                                                    <p>{{ forloop.counter }}. {{ discipline.0 }}</p>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
+                                {% if not college_disciplines and not top_disciplines %}
+                                    <p>No data available</p>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -252,6 +280,8 @@
                                         </div>
                                     </div>
                                 </div>
+                            {% else %}
+                                <p>No data available</p>
                             {% endif %}
                             <div class="row admissions">
                                 <div class="col-sm-12 col-md-6 sat">
@@ -421,6 +451,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    {% else %}
+                                        <p>No data available</p>
                                     {% endif %}
                                 </div>
                                 <div class="col-sm-12 col-md-6">
@@ -462,28 +494,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    {% else %}
+                                        <p>No data available</p>
                                     {% endif %}
                                 </div>
+                                {% if not college.retention_rate_less_four_year_pooled and not college.retention_rate_four_year_pooled and not college.completion_rate_less_four_year_pooled and not college.completion_rate_four_year_pooled %}
+                                    <p>No data available</p>
+                                {% endif %}
                             </div>
-                            {% if college.completion_rate_less_four_year %}
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <h3>Completion rate: less than 4-year programs <i
-                                                class="fas fa-info-circle" data-toggle="tooltip" data-placement="top"
-                                                title="Completion rate for first-time, full-time students at less-than-four-year institutions"></i>
-                                        </h3>
-                                    </div>
-                                    <div class="col-sm-12 completion-circle">
-                                        <div class="c100 green big p{{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}">
-                                            <span>{{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}%</span>
-                                            <div class="slice">
-                                                <div class="bar"></div>
-                                                <div class="fill"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -603,6 +621,9 @@
                                             </div>
                                         </div>
                                     {% endif %}
+                                    {% if not college.students_unknown_race and not college.students_non_resident and not college.students_multiple_races and not college.students_pacific and not college.students_native and not college.students_asian and not college.students_hispanic and not college.students_black and not college.students_white %}
+                                        <p>No data available</p>
+                                    {% endif %}
                                 </div>
                                 <div class="col-sm-12 col-md-6">
                                     <h3 class="gender-header">Gender <i class="fas fa-info-circle" data-toggle="tooltip"
@@ -610,26 +631,32 @@
                                                                         title="Share of female and male students"></i>
                                     </h3>
                                     <div class="row">
-                                        <div class="col-sm-6 female">
-                                            <h4>Female</h4>
-                                            <div class="c100 orange p{{ college.students_female|mul:100|floatformat:"0" }}">
-                                                <span>{{ college.students_female|mul:100|floatformat:"0" }}%</span>
-                                                <div class="slice">
-                                                    <div class="bar"></div>
-                                                    <div class="fill"></div>
+                                        {% if college.students_female %}
+                                            <div class="col-sm-6 female">
+                                                <h4>Female</h4>
+                                                <div class="c100 orange p{{ college.students_female|mul:100|floatformat:"0" }}">
+                                                    <span>{{ college.students_female|mul:100|floatformat:"0" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-6 male">
-                                            <h4>Male</h4>
-                                            <div class="c100 green p{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}">
-                                                <span>{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}%</span>
-                                                <div class="slice">
-                                                    <div class="bar"></div>
-                                                    <div class="fill"></div>
+                                            <div class="col-sm-6 male">
+                                                <h4>Male</h4>
+                                                <div class="c100 green p{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}">
+                                                    <span>{{ college.students_female|mul:100|sub:100|mul:-1|floatformat:"0" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        {% else %}
+                                            <div class="col-sm-12">
+                                                <p>No data available</p>
+                                            </div>
+                                        {% endif %}
                                         <div class="col-sm-12">
                                             {% if college.men_only %}
                                                 <p>This institution is men-only.</p>
@@ -639,24 +666,33 @@
                                             {% endif %}
                                         </div>
                                         <div class="col-sm-12 full-time">
-                                            <h3>Full-time students <i class="fas fa-info-circle" data-toggle="tooltip"
-                                                                      data-placement="top"
-                                                                      title="Share of undergraduate, degree-/certificate-seeking students who are full-time"></i>
-                                            </h3>
-                                            <div class="c100 p{{ college.students_part_time|sub:100|mul:-1|floatformat:"0" }}">
-                                                <span>{{ college.students_part_time|sub:100|mul:-1|floatformat:"2"|intcomma }}%</span>
-                                                <div class="slice">
-                                                    <div class="bar"></div>
-                                                    <div class="fill"></div>
+                                            {% if college.students_part_time %}
+                                                <h3>Full-time students <i class="fas fa-info-circle"
+                                                                          data-toggle="tooltip"
+                                                                          data-placement="top"
+                                                                          title="Share of undergraduate, degree-/certificate-seeking students who are full-time"></i>
+                                                </h3>
+                                                <div class="c100 p{{ college.students_part_time|sub:100|mul:-1|floatformat:"0" }}">
+                                                    <span>{{ college.students_part_time|sub:100|mul:-1|floatformat:"2"|intcomma }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            {% else %}
+                                                <p>No data available</p>
+                                            {% endif %}
                                         </div>
                                         <div class="col-sm-12 family-income">
-                                            <h3>Family income <i class="fas fa-info-circle" data-toggle="tooltip"
-                                                                 data-placement="top"
-                                                                 title="Average family income of dependent students in real 2015 dollars"></i>
-                                            </h3>
-                                            <p class="single-value">{{ college.students_family_income|floatformat:"0"|intcomma }}$</p>
+                                            {% if college.students_family_income %}
+                                                <h3>Family income <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                                     data-placement="top"
+                                                                     title="Average family income of dependent students in real 2015 dollars"></i>
+                                                </h3>
+                                                <p class="single-value">{{ college.students_family_income|floatformat:"0"|intcomma }}$</p>
+                                            {% else %}
+                                                <p>No data available</p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -683,26 +719,34 @@
                                                               data-placement="top"
                                                               title="Percentage of undergraduates who receive a Pell Grant"></i>
                                             </h3>
-                                            <div class="c100 orange p{{ college.pell_grand|mul:100|floatformat:"0" }}">
-                                                <span>{{ college.pell_grand|mul:100|floatformat:"2" }}%</span>
-                                                <div class="slice">
-                                                    <div class="bar"></div>
-                                                    <div class="fill"></div>
+                                            {% if college.pell_grand %}
+                                                <div class="c100 orange p{{ college.pell_grand|mul:100|floatformat:"0" }}">
+                                                    <span>{{ college.pell_grand|mul:100|floatformat:"2" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            {% else %}
+                                                <p>No data available</p>
+                                            {% endif %}
                                         </div>
                                         <div class="col-sm-12 col-md-6 loan">
                                             <h3>Federal loan <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                 data-placement="top"
                                                                 title="Percent of all undergraduate students receiving a federal student loan"></i>
                                             </h3>
-                                            <div class="c100 green p{{ college.federal_loan|mul:100|floatformat:"0" }}">
-                                                <span>{{ college.federal_loan|mul:100|floatformat:"2" }}%</span>
-                                                <div class="slice">
-                                                    <div class="bar"></div>
-                                                    <div class="fill"></div>
+                                            {% if college.federal_loan %}
+                                                <div class="c100 green p{{ college.federal_loan|mul:100|floatformat:"0" }}">
+                                                    <span>{{ college.federal_loan|mul:100|floatformat:"2" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            {% else %}
+                                                <p>No data available</p>
+                                            {% endif %}
                                         </div>
                                         {% if college.calc_url %}
                                             <div class="col-sm-12 calc">
@@ -722,12 +766,20 @@
                                                                     data-placement="top"
                                                                     title="The median debt for students who have completed"></i>
                                     </h3>
-                                    <p class="single-value">{{ college.debt_completed_median|floatformat:"0"|intcomma }}$</p>
+                                    {% if college.debt_completed_median %}
+                                        <p class="single-value">{{ college.debt_completed_median|floatformat:"0"|intcomma }}$</p>
+                                    {% else %}
+                                        <p>No data available</p>
+                                    {% endif %}
                                     <h3>Monthly payments <i class="fas fa-info-circle" data-toggle="tooltip"
                                                             data-placement="top"
                                                             title="Median loan debt of completers in monthly payments"></i>
                                     </h3>
-                                    <p class="single-value">{{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
+                                    {% if college.monthly_payments %}
+                                        <p class="single-value">{{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
+                                    {% else %}
+                                        <p>No data available</p>
+                                    {% endif %}
                                 </div>
                             </div>
 
@@ -769,18 +821,29 @@
                                                 </h3>
                                                 <p class="single-value">{{ college.average_net_price_private|floatformat:"0"|intcomma }}$</p>
                                             {% endif %}
+                                            {% if not college.average_net_price_private and not college.average_net_price_public %}
+                                                <p>No data available</p>
+                                            {% endif %}
                                         </div>
                                         <div class="col-6 in-state">
                                             <h3>In state tuition <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title="In-state tuition and fees"></i></h3>
-                                            <p class="single-value">{{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
+                                            {% if college.in_state_tuition %}
+                                                <p class="single-value">{{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
+                                            {% else %}
+                                                <p>No data available</p>
+                                            {% endif %}
                                         </div>
                                         <div class="col-6 out-state">
                                             <h3>Out state tuition <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                      data-placement="top"
                                                                      title="Out-of-state tuition and fees"></i></h3>
-                                            <p class="single-value">{{ college.out_state_tuition|floatformat:"0"|intcomma }}$</p>
+                                            {% if college.out_state_tuition %}
+                                                <p class="single-value">{{ college.out_state_tuition|floatformat:"0"|intcomma }}$</p>
+                                            {% else %}
+                                                <p>No data available</p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -914,7 +977,11 @@
                                                           data-placement="top"
                                                           title="Median earnings of students working and not enrolled 10 years after entry"></i>
                             </h3>
-                            <p class="single-value">{{ college.median_earnings|floatformat:"0"|intcomma }}$</p>
+                            {% if college.median_earnings %}
+                                <p class="single-value">{{ college.median_earnings|floatformat:"0"|intcomma }}$</p>
+                            {% else %}
+                                <p>No data available</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
