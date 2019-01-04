@@ -29,6 +29,7 @@ class College(models.Model):
     city_slug = models.SlugField(max_length=255, blank=True, verbose_name='city')
     zip = models.CharField(max_length=255, blank=True)
     url = models.CharField(max_length=255, blank=True)
+    calc_url = models.CharField(max_length=255, blank=True)
     state = models.ForeignKey(State, on_delete=models.PROTECT, null=True, verbose_name='state')
     region = models.ForeignKey(Region, on_delete=models.PROTECT, null=True)
     ownership = models.ForeignKey(Ownership, on_delete=models.PROTECT, null=True, verbose_name='ownership')
@@ -119,6 +120,10 @@ class College(models.Model):
     completion_rate_four_year = models.FloatField(null=True, verbose_name='completion_rate_four_year')
     completion_rate_less_four_year = models.FloatField(null=True, verbose_name='completion_rate_less_four_year')
     completion_rate_four_year_pooled = models.FloatField(null=True, verbose_name='completion_rate_four_year_pooled')
+    completion_rate_less_four_year_pooled = models.FloatField(null=True, verbose_name='completion_rate_less_four_year_pooled')
+    retention_rate_four_year_pooled = models.FloatField(null=True, verbose_name='retention_rate_four_year_pooled')
+    retention_rate_less_four_year_pooled = models.FloatField(null=True,
+                                                              verbose_name='retention_rate_less_four_year_pooled')
 
     # earnings
     mean_earnings = models.FloatField(null=True, verbose_name='mean_earnings')
@@ -167,7 +172,7 @@ class College(models.Model):
 
                 # for checking column name:
                 # col_values = row.split(',')
-                # print(col_values[1364])
+                # print(col_values[314])
                 # return
 
                 if row_num > 1:
@@ -250,6 +255,7 @@ class College(models.Model):
 
                     college.cur_operating = check_val(col_values[315], False)
                     college.url = check_val(col_values[8], True)
+                    college.calc_url = check_val(col_values[9], True)
                     college.full_data = ','.join(col_values)
 
                     # academics section
@@ -322,6 +328,9 @@ class College(models.Model):
                     college.completion_rate_four_year = check_val(col_values[386], False)
                     college.completion_rate_less_four_year = check_val(col_values[387], False)
                     college.completion_rate_four_year_pooled = check_val(col_values[388], False)
+                    college.completion_rate_less_four_year_pooled = check_val(col_values[389], False)
+                    college.retention_rate_four_year_pooled = check_val(col_values[1815], False)
+                    college.retention_rate_less_four_year_pooled = check_val(col_values[1816], False)
 
                     # earnings
                     college.mean_earnings = check_val(col_values[1638], False)

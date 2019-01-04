@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="index, follow">
     <meta property="og:type" content="website">
     <meta name="description"
           content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
@@ -66,18 +67,25 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
-                                    <p><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top" title="Web site"></i> <a href="#">{{ college.url }}</a></p>
+                                    <p><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top"
+                                          title="Web site"></i> <a href="//{{ college.url }}" rel="nofollow" target="_blank">{{ college.url }}</a></p>
                                     <p>
-                                        <i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top" title="Zip code"></i> {{ college.city }}, {{ college.state }} {{ college.zip }}
+                                        <i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top"
+                                           title="Zip code"></i> {{ college.city }}, {{ college.state }} {{ college.zip }}
                                     </p>
-                                    <p><i class="fas fa-city" data-toggle="tooltip" data-placement="top" title="Locale"></i> {{ college.locale }}</p>
+                                    <p><i class="fas fa-city" data-toggle="tooltip" data-placement="top"
+                                          title="Locale"></i> {{ college.locale }}</p>
                                     <p>
-                                        <i class="fas fa-user-graduate" data-toggle="tooltip" data-placement="top" title="Undergraduate students"></i> {{ college.undergrad_students|floatformat:"0"|intcomma }}
+                                        <i class="fas fa-user-graduate" data-toggle="tooltip" data-placement="top"
+                                           title="Undergraduate students"></i> {{ college.undergrad_students|floatformat:"0"|intcomma }}
                                     </p>
                                     {% if college.religous %}
-                                        <p><i class="fas fa-church" data-toggle="tooltip" data-placement="top" title="Religous affiliation of the institution"></i> {{ college.religous }}</p>
+                                        <p><i class="fas fa-church" data-toggle="tooltip" data-placement="top"
+                                              title="Religous affiliation of the institution"></i> {{ college.religous }}
+                                        </p>
                                     {% endif %}
-                                    <p><i class="fas fa-home" data-toggle="tooltip" data-placement="top" title="Ownership"></i> {{ college.ownership }}</p>
+                                    <p><i class="fas fa-home" data-toggle="tooltip" data-placement="top"
+                                          title="Ownership"></i> {{ college.ownership }}</p>
                                 </div>
                                 <div class="col-6">
                                     {% if college.latitude and college.longitude %}
@@ -91,7 +99,7 @@
                                                         lat: {{ college.latitude }},
                                                         lng: {{ college.longitude }}
                                                     },
-                                                    zoom: 7
+                                                    zoom: 15
                                                 });
                                                 maker = new google.maps.Marker({
                                                     position: {
@@ -121,11 +129,14 @@
                         </div>
                         <div class="col-12 card-body collapse show" id="academics">
                             <p>
-                                <i class="fas fa-university" data-toggle="tooltip" data-placement="top" title="Level of institution and highest degree awarded"></i> {{ college.inst_level }}, {{ college.highest_grad_degree }}
+                                <i class="fas fa-university" data-toggle="tooltip" data-placement="top"
+                                   title="Level of institution and highest degree awarded"></i> {{ college.inst_level }}, {{ college.highest_grad_degree }}
                             </p>
-                            <p><i class="fas fa-flask" data-toggle="tooltip" data-placement="top" title="Carnegie Classification"></i> {{ college.carnegie_basic }}</p>
+                            <p><i class="fas fa-flask" data-toggle="tooltip" data-placement="top"
+                                  title="Carnegie Classification"></i> {{ college.carnegie_basic }}</p>
                             {% if college.online_only %}
-                                <p><i class="fas fa-globe" data-toggle="tooltip" data-placement="top" title="Distance-education-only education"></i> Online-only</p>
+                                <p><i class="fas fa-globe" data-toggle="tooltip" data-placement="top"
+                                      title="Distance-education-only education"></i> Online-only</p>
                             {% endif %}
                         </div>
                     </div>
@@ -144,7 +155,10 @@
                             <div class="row">
                                 {% if top_disciplines %}
                                     <div class="col-6 top-disciplines">
-                                        <h3>Top programs <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Measured as the percentage of degrees awarded"></i></h3>
+                                        <h3>Top programs <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="Measured as the percentage of degrees awarded"></i>
+                                        </h3>
                                         <div class="disciplines-container">
                                             {% for discipline in top_disciplines %}
                                                 <div class="discipline">
@@ -163,7 +177,9 @@
                                     </div>
                                 {% endif %}
                                 <div class="col-6 all-disciplines">
-                                    <h3>All areas of study <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="All programs offered at the institution"></i></h3>
+                                    <h3>All areas of study <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="All programs offered at the institution"></i></h3>
                                     <div class="disciplines-container">
                                         {% for discipline in college_disciplines %}
                                             <div class="discipline">
@@ -190,7 +206,10 @@
                             {% if college.admission_rate %}
                                 <div class="row">
                                     <div class="col-12 admission-header">
-                                        <h3>Admission rate <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="The ratio of the number of students who are admitted to the number of total applicants"></i></h3>
+                                        <h3>Admission rate <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="The ratio of the number of students who are admitted to the number of total applicants"></i>
+                                        </h3>
                                     </div>
                                     <div class="col-12 admission-circle">
                                         <div class="c100 green big p{{ college.admission_rate|mul:100|floatformat:"0" }}">
@@ -206,7 +225,9 @@
                             <div class="row admissions">
                                 <div class="col-6 sat">
                                     <h4>SAT</h4>
-                                    <span>Average <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Average SAT equivalent score of students admitted"></i></span>
+                                    <span>Average <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                     data-placement="top"
+                                                     title="Average SAT equivalent score of students admitted"></i></span>
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar"
                                              style="width: {{ college.sat_average|floatformat:"0"|bar_percent:'1600' }}%;"
@@ -218,7 +239,8 @@
                                                 data</span>{% endif %}
                                         </div>
                                     </div>
-                                    <span>Math <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Midpoint of SAT scores at the institution (math)"></i></span>
+                                    <span>Math <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="Midpoint of SAT scores at the institution (math)"></i></span>
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar"
                                              style="width: {{ college.sat_math|floatformat:"0"|bar_percent:'800' }}%;"
@@ -229,7 +251,9 @@
                                                 data</span>{% endif %}
                                         </div>
                                     </div>
-                                    <span>Crirical reading <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Midpoint of SAT scores at the institution (critical reading)"></i></span>
+                                    <span>Crirical reading <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="Midpoint of SAT scores at the institution (critical reading)"></i></span>
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar"
                                              style="width: {{ college.sat_reading|floatformat:"0"|bar_percent:'800' }}%;"
@@ -241,7 +265,9 @@
                                                 data</span>{% endif %}
                                         </div>
                                     </div>
-                                    <span>Writing <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Midpoint of SAT scores at the institution (writing)"></i></span>
+                                    <span>Writing <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                     data-placement="top"
+                                                     title="Midpoint of SAT scores at the institution (writing)"></i></span>
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar"
                                              style="width: {{ college.sat_writing|floatformat:"0"|bar_percent:'800' }}%;"
@@ -256,7 +282,9 @@
                                 </div>
                                 <div class="col-6">
                                     <h4>ACT</h4>
-                                    <span>Cumulative <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Midpoint of the ACT cumulative score"></i></span>
+                                    <span>Cumulative <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="Midpoint of the ACT cumulative score"></i></span>
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar"
                                              style="width: {{ college.act_cumulative|floatformat:"0"|bar_percent:'36' }}%;"
@@ -268,7 +296,8 @@
                                                 data</span>{% endif %}
                                         </div>
                                     </div>
-                                    <span>Math <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Midpoint of the ACT math score"></i></span>
+                                    <span>Math <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="Midpoint of the ACT math score"></i></span>
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar"
                                              style="width: {{ college.act_math|floatformat:"0"|bar_percent:'36' }}%;"
@@ -279,7 +308,8 @@
                                                 data</span>{% endif %}
                                         </div>
                                     </div>
-                                    <span>English <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Midpoint of the ACT English score"></i></span>
+                                    <span>English <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                     data-placement="top" title="Midpoint of the ACT English score"></i></span>
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar"
                                              style="width: {{ college.act_english|floatformat:"0"|bar_percent:'36' }}%;"
@@ -291,7 +321,8 @@
                                                 data</span>{% endif %}
                                         </div>
                                     </div>
-                                    <span>Writing <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Midpoint of the ACT writing score"></i></span>
+                                    <span>Writing <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                     data-placement="top" title="Midpoint of the ACT writing score"></i></span>
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar"
                                              style="width: {{ college.act_writing|floatformat:"0"|bar_percent:'36' }}%;"
@@ -319,27 +350,97 @@
                             <h2 id="completion-anchor">Completion</h2><i class="fas fa-plus"></i>
                         </div>
                         <div class="col-12 card-body collapse show" id="completion">
-                            {% if college.completion_rate_four_year_pooled %}
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h3>Completion rate: 4-year programs <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Completion rate for first-time, full-time students at four-year institutions"></i></h3>
-                                    </div>
-                                    <div class="col-12 completion-circle">
-                                        <div class="c100 green big p{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}">
-                                            <span>{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}%</span>
-                                            <div class="slice">
-                                                <div class="bar"></div>
-                                                <div class="fill"></div>
+                            <div class="row">
+                                <div class="col-6">
+                                    {% if college.completion_rate_four_year_pooled %}
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h3>Completion rate: 4-year programs <i class="fas fa-info-circle"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="top"
+                                                                                        title="Completion rate for first-time, full-time students at four-year institutions"></i>
+                                                </h3>
+                                            </div>
+                                            <div class="col-12 completion-circle">
+                                                <div class="c100 green big p{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}">
+                                                    <span>{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    {% elif college.completion_rate_less_four_year_pooled %}
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h3>Completion rate: less-than-4-year programs <i
+                                                        class="fas fa-info-circle" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="Completion rate for first-time, full-time students at less-than-four-year institutions"></i>
+                                                </h3>
+                                            </div>
+                                            <div class="col-12 completion-circle">
+                                                <div class="c100 green big p{{ college.completion_rate_less_four_year_pooled|mul:100|floatformat:"0" }}">
+                                                    <span>{{ college.completion_rate_less_four_year_pooled|mul:100|floatformat:"0" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
-                            {% endif %}
+                                <div class="col-6">
+                                    {% if college.retention_rate_four_year_pooled %}
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h3>Retention rate: 4-year programs <i class="fas fa-info-circle"
+                                                                                       data-toggle="tooltip"
+                                                                                       data-placement="top"
+                                                                                       title="The proportion of full-time, first-time, degree/certificate-seeking undergraduates who were enrolled at the institution in the fall 1 year after starting at the institution"></i>
+                                                </h3>
+                                            </div>
+                                            <div class="col-12 completion-circle">
+                                                <div class="c100 orange big p{{ college.retention_rate_four_year_pooled|mul:100|floatformat:"0" }}">
+                                                    <span>{{ college.retention_rate_four_year_pooled|mul:100|floatformat:"0" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% elif college.retention_rate_less_four_year_pooled %}
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h3>Retention rate: less-than-4-year programs <i
+                                                        class="fas fa-info-circle" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="The proportion of full-time, first-time, degree/certificate-seeking undergraduates who were enrolled at the institution in the fall 1 year after starting at the institution"></i>
+                                                </h3>
+                                            </div>
+                                            <div class="col-12 completion-circle">
+                                                <div class="c100 orange big p{{ college.retention_rate_less_four_year_pooled|mul:100|floatformat:"0" }}">
+                                                    <span>{{ college.retention_rate_less_four_year_pooled|mul:100|floatformat:"0" }}%</span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
                             {% if college.completion_rate_less_four_year %}
                                 <div class="row">
                                     <div class="col-12">
                                         <h3>Completion rate: less than 4-year programs <i
-                                                class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Completion rate for first-time, full-time students at less-than-four-year institutions"></i></h3>
+                                                class="fas fa-info-circle" data-toggle="tooltip" data-placement="top"
+                                                title="Completion rate for first-time, full-time students at less-than-four-year institutions"></i>
+                                        </h3>
                                     </div>
                                     <div class="col-12 completion-circle">
                                         <div class="c100 green big p{{ college.completion_rate_less_four_year|mul:100|floatformat:"0" }}">
@@ -368,7 +469,10 @@
                         <div class="col-12 card-body collapse show" id="demography">
                             <div class="row">
                                 <div class="col-6">
-                                    <h3>Race/ethnicity <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Total share of enrollment of undergraduate degree-seeking students of particular race/ethnicity"></i></h3>
+                                    <h3>Race/ethnicity <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                          data-placement="top"
+                                                          title="Total share of enrollment of undergraduate degree-seeking students of particular race/ethnicity"></i>
+                                    </h3>
                                     {% if college.students_white > 0 %}
                                         <span>White</span>
                                         <div class="progress">
@@ -470,7 +574,8 @@
                                     {% endif %}
                                 </div>
                                 <div class="col-6">
-                                    <h3>Gender <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Share of female and male students"></i></h3>
+                                    <h3>Gender <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="Share of female and male students"></i></h3>
                                     <div class="row">
                                         <div class="col-6 female">
                                             <h4>Female</h4>
@@ -501,7 +606,10 @@
                                             {% endif %}
                                         </div>
                                         <div class="col-12 full-time">
-                                            <h3>Full-time students <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Share of undergraduate, degree-/certificate-seeking students who are full-time"></i></h3>
+                                            <h3>Full-time students <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                                      data-placement="top"
+                                                                      title="Share of undergraduate, degree-/certificate-seeking students who are full-time"></i>
+                                            </h3>
                                             <div class="c100 p{{ college.students_part_time|sub:100|mul:-1|floatformat:"0" }}">
                                                 <span>{{ college.students_part_time|sub:100|mul:-1|floatformat:"2"|intcomma }}%</span>
                                                 <div class="slice">
@@ -511,7 +619,10 @@
                                             </div>
                                         </div>
                                         <div class="col-12 family-income">
-                                            <h3>Family income <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Average family income of dependent students in real 2015 dollars"></i></h3>
+                                            <h3>Family income <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                                 data-placement="top"
+                                                                 title="Average family income of dependent students in real 2015 dollars"></i>
+                                            </h3>
                                             <p class="single-value">{{ college.students_family_income|floatformat:"0"|intcomma }}$</p>
                                         </div>
                                     </div>
@@ -534,7 +645,10 @@
                                 <div class="col-6">
                                     <div class="row">
                                         <div class="col-6 grant">
-                                            <h3>Pell grand <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Percentage of undergraduates who receive a Pell Grant"></i></h3>
+                                            <h3>Pell grand <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="Percentage of undergraduates who receive a Pell Grant"></i>
+                                            </h3>
                                             <div class="c100 orange p{{ college.pell_grand|mul:100|floatformat:"0" }}">
                                                 <span>{{ college.pell_grand|mul:100|floatformat:"2" }}%</span>
                                                 <div class="slice">
@@ -544,7 +658,10 @@
                                             </div>
                                         </div>
                                         <div class="col-6 loan">
-                                            <h3>Federal loan <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Percent of all undergraduate students receiving a federal student loan"></i></h3>
+                                            <h3>Federal loan <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                                data-placement="top"
+                                                                title="Percent of all undergraduate students receiving a federal student loan"></i>
+                                            </h3>
                                             <div class="c100 green p{{ college.federal_loan|mul:100|floatformat:"0" }}">
                                                 <span>{{ college.federal_loan|mul:100|floatformat:"2" }}%</span>
                                                 <div class="slice">
@@ -553,12 +670,24 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        {% if college.calc_url %}
+                                            <div class="col-12 calc">
+                                                <a href="//{{ college.calc_url }}" style="text-decoration: none" rel="nofollow" target="_blank">
+                                                    <button class="btn btn-outline-success" style="display: block; margin: auto;">Calculate your net price
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <h3>Debt <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="The median debt for students who have completed"></i></h3>
+                                    <h3>Debt <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top"
+                                                title="The median debt for students who have completed"></i></h3>
                                     <p class="single-value">{{ college.debt_completed_median|floatformat:"0"|intcomma }}$</p>
-                                    <h3>Monthly payments <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Median loan debt of completers in monthly payments"></i></h3>
+                                    <h3>Monthly payments <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="Median loan debt of completers in monthly payments"></i>
+                                    </h3>
                                     <p class="single-value">{{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
                                 </div>
                             </div>
@@ -581,7 +710,10 @@
                                     <div class="row">
                                         <div class="col-12 net-price">
                                             {% if college.average_net_price_public %}
-                                                <p>Average net price <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid"></i></p>
+                                                <p>Average net price <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid"></i>
+                                                </p>
                                                 <div class="c100 p100">
                                                     <span>{{ college.average_net_price_public|floatformat:"0"|intcomma }}</span>
                                                     <div class="slice">
@@ -591,23 +723,33 @@
                                                 </div>
                                             {% endif %}
                                             {% if college.average_net_price_private %}
-                                                <h3>Average net price <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid"></i></h3>
+                                                <h3>Average net price <i class="fas fa-info-circle"
+                                                                         data-toggle="tooltip" data-placement="top"
+                                                                         title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid"></i>
+                                                </h3>
                                                 <p class="single-value">{{ college.average_net_price_private|floatformat:"0"|intcomma }}$</p>
                                             {% endif %}
                                         </div>
                                         <div class="col-6 in-state">
-                                            <h3>In state tuition <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="In-state tuition and fees"></i></h3>
+                                            <h3>In state tuition <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="In-state tuition and fees"></i></h3>
                                             <p class="single-value">{{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
                                         </div>
                                         <div class="col-6 out-state">
-                                            <h3>Out state tuition <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Out-of-state tuition and fees"></i></h3>
+                                            <h3>Out state tuition <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                                     data-placement="top"
+                                                                     title="Out-of-state tuition and fees"></i></h3>
                                             <p class="single-value">{{ college.out_state_tuition|floatformat:"0"|intcomma }}$</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     {% if college.ownership|slugify == 'Private nonprofit'|slugify or college.ownership|slugify == 'Private for-profit'|slugify %}
-                                        <h3>Cost by income <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid, by detailed income category"></i></h3>
+                                        <h3>Cost by family income <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid, by detailed income category"></i>
+                                        </h3>
                                         <table class="table table-sm">
                                             <thead>
                                             <tr>
@@ -727,7 +869,10 @@
                             <h2 id="earnings-anchor">Earnings</h2>
                         </div>
                         <div class="col-12 card-body collapse show" id="earnings">
-                            <h3>Salary after attending <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Median earnings of students working and not enrolled 10 years after entry"></i></h3>
+                            <h3>Salary after attending <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                          data-placement="top"
+                                                          title="Median earnings of students working and not enrolled 10 years after entry"></i>
+                            </h3>
                             <p class="single-value">{{ college.median_earnings|floatformat:"0"|intcomma }}$</p>
                         </div>
                     </div>
