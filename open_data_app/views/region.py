@@ -91,12 +91,13 @@ def get_region_slug(request, region_id, region_slug):
                'maps_key': GOOGLE_MAPS_API,
                'state_filter': True,
                'map_labels': map_labels,
+               'region_init': True,
                }
 
     context.update(filters)
     context.update(aggregate_data)
 
-    return render(request, 'region_colleges.html', context)
+    return render(request, 'filtered_colleges.html', context)
 
 
 def get_region_param(request, region_id, region_slug, param, param_value):
@@ -149,6 +150,9 @@ def get_region_param(request, region_id, region_slug, param, param_value):
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
+        # map labels
+        map_labels = College.get_map_labels(colleges)
+
         # pagination
         colleges = handle_pagination(request, colleges)
 
@@ -175,6 +179,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                    'filters_vals': filters_vals,
                    'maps_key': GOOGLE_MAPS_API,
                    'state_filter': True,
+                   'map_labels': map_labels,
                    }
         context.update(filters)
         context.update(aggregate_data)

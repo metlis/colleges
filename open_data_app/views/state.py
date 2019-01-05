@@ -90,12 +90,14 @@ def get_state_slug(request, state_id, state_slug):
                'canonical': canonical,
                'maps_key': GOOGLE_MAPS_API,
                'map_labels': map_labels,
+               'state_init': True,
+               'state_view': True,
                }
 
     context.update(filters)
     context.update(aggregate_data)
 
-    return render(request, 'state_colleges.html', context)
+    return render(request, 'filtered_colleges.html', context)
 
 
 
