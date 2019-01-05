@@ -41,7 +41,6 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False):
     elif len(params) > 1 and 'page' in params and not main_filter:
         req = params.copy()
         del req['page']
-        req_str = ''
         noindex = True
         for key in req:
             params_dict[key] = req[key]
@@ -58,6 +57,10 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False):
         noindex = True
         for key in params:
             params_dict[key] = params[key]
+            if len(req_str) > 0:
+                req_str += '&{}={}'.format(key, params[key])
+            else:
+                req_str += '{}={}'.format(key, params[key])
         try:
             new_params_dict = College.create_new_params_dict(params_dict)
             colleges = colleges.filter(**new_params_dict)
