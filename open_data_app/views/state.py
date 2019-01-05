@@ -64,6 +64,9 @@ def get_state_slug(request, state_id, state_slug):
     # sorting colleges
     colleges = College.sort_colleges(request, colleges)
 
+    # map labels
+    map_labels = College.get_map_labels(colleges)
+
     # pagination
     if request.GET.get('page'):
         page = request.GET.get('page')
@@ -86,6 +89,7 @@ def get_state_slug(request, state_id, state_slug):
                'base_url': canonical,
                'canonical': canonical,
                'maps_key': GOOGLE_MAPS_API,
+               'map_labels': map_labels,
                }
 
     context.update(filters)
@@ -144,11 +148,11 @@ def get_state_param(request, state_id, state_slug, param, param_value):
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
+        # map labels
+        map_labels = College.get_map_labels(colleges)
 
         # pagination
         colleges = handle_pagination(request, colleges)
-
-
 
         # get filters
         filters = College.get_filters('state', state_id, excluded_filters=['state'], init_filter=param,
@@ -167,6 +171,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                    'noindex': noindex,
                    'filters_vals': filters_vals,
                    'maps_key': GOOGLE_MAPS_API,
+                   'map_labels': map_labels,
                    }
         context.update(filters)
         context.update(aggregate_data)

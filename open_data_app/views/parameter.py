@@ -39,6 +39,9 @@ def filter_values(request, param, param_value):
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
 
+        # map labels
+        map_labels = College.get_map_labels(colleges)
+
         # pagination
         colleges = handle_pagination(request, colleges)
 
@@ -62,6 +65,7 @@ def filter_values(request, param, param_value):
                    'init_param_value': param_value,
                    'maps_key': GOOGLE_MAPS_API,
                    'state_filter': True,
+                   'map_labels': map_labels,
                    }
         context.update(filters)
         context.update(aggregate_data)

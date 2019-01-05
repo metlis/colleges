@@ -32,6 +32,9 @@ def search(request):
             # pagination
             colleges = handle_pagination(request, colleges)
 
+            # map labels
+            map_labels = College.get_map_labels(colleges)
+
             # a url for pagination first page
             base_url = reverse('college_app:search')
 
@@ -44,6 +47,7 @@ def search(request):
                        'serach_query': query,
                        'maps_key': GOOGLE_MAPS_API,
                        'state_filter': True,
+                       'map_labels': map_labels,
                        }
 
             context.update(aggregate_data)

@@ -64,6 +64,9 @@ def get_region_slug(request, region_id, region_slug):
     # sorting colleges
     colleges = College.sort_colleges(request, colleges)
 
+    # map labels
+    map_labels = College.get_map_labels(colleges)
+
     # pagination
     if request.GET.get('page'):
         page = request.GET.get('page')
@@ -87,6 +90,7 @@ def get_region_slug(request, region_id, region_slug):
                'canonical': canonical,
                'maps_key': GOOGLE_MAPS_API,
                'state_filter': True,
+               'map_labels': map_labels,
                }
 
     context.update(filters)
