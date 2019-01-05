@@ -79,7 +79,7 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}">
+        <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}" autocomplete="off">
             <input class="form-control mr-sm-2" type="search" name="text" placeholder="Search">
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
         </form>
@@ -450,7 +450,7 @@
         <div class="col-10">
             <div class="row">
                 {% if colleges|length > 1 %}
-                    <div class="col-12">
+                    <div class="col-12 college-container">
                         <div id="map" style="width:100%; height:300px"></div>
                         <script>
                             var map;
@@ -483,171 +483,181 @@
                             }
                         </script>
                     </div>
-                    <div class="jumbotron col-12">
-                        <div class="row">
-                            <div class="col-4">
-                                <div>
-                                    <p>Average tuition:
-                                        {% if average_tuition %}
-                                            {{ average_tuition|floatformat:"0"|intcomma }}$
-                                        {% else %}
-                                            No data
-                                        {% endif %}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p>Max tuition:
-                                        {% if max_tuition %}
-                                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                    data-target="#maxTuition" aria-expanded="false"
-                                                    aria-controls="maxTuition">
-                                                {{ max_tuition|floatformat:"0"|intcomma }}$
-                                            </button>
-                                        {% else %}
-                                            <span>No data</span>
-                                        {% endif %}
-                                    </p>
-                                </div>
-                                {% if max_tuition %}
-                                    <div id="maxTuition" class="collapse">
-                                        {% for college in max_tuition_colleges %}
-                                            <p>
-                                                <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
-                                            </p>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                                <div>
-                                    <p>Min tuition:
-                                        {% if min_tuition %}
-                                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                    data-target="#minTuition" aria-expanded="false"
-                                                    aria-controls="minTuition">
-                                                {{ min_tuition|floatformat:"0"|intcomma }}$
-                                            </button>
-                                        {% else %}
-                                            <span>No data</span>
-                                        {% endif %}
-                                    </p>
-                                </div>
-                                {% if min_tuition %}
-                                    <div id="minTuition" class="collapse">
-                                        {% for college in min_tuition_colleges %}
-                                            <p>
-                                                <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
-                                            </p>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                    <div class="col-12 college-container">
+                        <div class="card">
+                            <div class="row card-body aggregate">
+                            <div class="col-2">
+                                <p style="margin-top: 39px">Average</p>
+                                <p>Max</p>
+                                <p>Min</p>
                             </div>
-                            <div class="col-4">
-                                <div>
-                                    <p>Average monthly payments:
-                                        {% if average_payments %}
-                                            {{ average_payments|floatformat:"0"|intcomma }}$
-                                        {% else %}
-                                            No data
-                                        {% endif %}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p>Max monthly payments:
-                                        {% if max_payments %}
-                                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                    data-target="#maxPayments" aria-expanded="false"
-                                                    aria-controls="maxPayments">
-                                                {{ max_payments|floatformat:"0"|intcomma }}$
-                                            </button>
-                                        {% else %}
-                                            <span>No data</span>
-                                        {% endif %}
-                                    </p>
-                                </div>
-                                {% if max_payments %}
-                                    <div id="maxPayments" class="collapse">
-                                        {% for college in max_payments_colleges %}
-                                            <p>
-                                                <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
-                                            </p>
-                                        {% endfor %}
+                                <div class="col-3">
+                                    <h4>Tuition</h4>
+                                    <div>
+                                        <p>
+                                            {% if average_tuition %}
+                                                {{ average_tuition|floatformat:"0"|intcomma }}$
+                                            {% else %}
+                                                No data
+                                            {% endif %}
+                                        </p>
                                     </div>
-                                {% endif %}
-                                <div>
-                                    <p>Min monthly payments:
-                                        {% if min_payments %}
-                                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                    data-target="#minPayments" aria-expanded="false"
-                                                    aria-controls="minPayments">
-                                                {{ min_payments|floatformat:"0"|intcomma }}$
-                                            </button>
-                                        {% else %}
-                                            <span>No data</span>
-                                        {% endif %}
-                                    </p>
-                                </div>
-                                {% if min_payments %}
-                                    <div id="minPayments" class="collapse">
-                                        {% for college in min_payments_colleges %}
-                                            <p>
-                                                <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
-                                            </p>
-                                        {% endfor %}
+                                    <div>
+                                        <p>
+                                            {% if max_tuition %}
+                                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                        data-target="#maxTuition" aria-expanded="false"
+                                                        aria-controls="maxTuition">
+                                                    {{ max_tuition|floatformat:"0"|intcomma }}$
+                                                </button>
+                                            {% else %}
+                                                <span>No data</span>
+                                            {% endif %}
+                                        </p>
                                     </div>
-                                {% endif %}
-                            </div>
-                            <div class="col-4">
-                                <div>
-                                    <p>Average earnings:
-                                        {% if average_payments %}
-                                            {{ average_earnings|floatformat:"0"|intcomma }}$
-                                        {% else %}
-                                            No data
-                                        {% endif %}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p>Max earnings:
-                                        {% if max_earnings %}
-                                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                    data-target="#maxEarnings" aria-expanded="false"
-                                                    aria-controls="maxEarnings">{{ max_earnings|floatformat:"0"|intcomma }}$
-                                            </button>
-                                        {% else %}
-                                            <span>No data</span>
-                                        {% endif %}
-                                    </p>
-                                </div>
-                                {% if max_earnings %}
-                                    <div id="maxEarnings" class="collapse">
-                                        {% for college in max_earnings_colleges %}
-                                            <p>
-                                                <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
-                                            </p>
-                                        {% endfor %}
+                                    {% if max_tuition %}
+                                        <div id="maxTuition" class="collapse">
+                                            {% for college in max_tuition_colleges %}
+                                                <p>
+                                                    <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                </p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <p>
+                                            {% if min_tuition %}
+                                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                        data-target="#minTuition" aria-expanded="false"
+                                                        aria-controls="minTuition">
+                                                    {{ min_tuition|floatformat:"0"|intcomma }}$
+                                                </button>
+                                            {% else %}
+                                                <span>No data</span>
+                                            {% endif %}
+                                        </p>
                                     </div>
-                                {% endif %}
-                                <div>
-                                    <p>Min earnings:
-                                        {% if min_earnings %}
-                                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                    data-target="#minEarnings" aria-expanded="false"
-                                                    aria-controls="minEarnings">
-                                                {{ min_earnings|floatformat:"0"|intcomma }}$
-                                            </button>
-                                        {% else %}
-                                            <span>No data</span>
-                                        {% endif %}
-                                    </p>
+                                    {% if min_tuition %}
+                                        <div id="minTuition" class="collapse">
+                                            {% for college in min_tuition_colleges %}
+                                                <p>
+                                                    <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                </p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
                                 </div>
-                                {% if min_earnings %}
-                                    <div id="minEarnings" class="collapse">
-                                        {% for college in min_earnings_colleges %}
-                                            <p>
-                                                <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
-                                            </p>
-                                        {% endfor %}
+                                <div class="col-3">
+                                    <h4>Monthly payments</h4>
+                                    <div>
+                                        <p>
+                                            {% if average_payments %}
+                                                {{ average_payments|floatformat:"0"|intcomma }}$
+                                            {% else %}
+                                                No data
+                                            {% endif %}
+                                        </p>
                                     </div>
-                                {% endif %}
+                                    <div>
+                                        <p>
+                                            {% if max_payments %}
+                                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                        data-target="#maxPayments" aria-expanded="false"
+                                                        aria-controls="maxPayments">
+                                                    {{ max_payments|floatformat:"0"|intcomma }}$
+                                                </button>
+                                            {% else %}
+                                                <span>No data</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    {% if max_payments %}
+                                        <div id="maxPayments" class="collapse">
+                                            {% for college in max_payments_colleges %}
+                                                <p>
+                                                    <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                </p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <p>
+                                            {% if min_payments %}
+                                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                        data-target="#minPayments" aria-expanded="false"
+                                                        aria-controls="minPayments">
+                                                    {{ min_payments|floatformat:"0"|intcomma }}$
+                                                </button>
+                                            {% else %}
+                                                <span>No data</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    {% if min_payments %}
+                                        <div id="minPayments" class="collapse">
+                                            {% for college in min_payments_colleges %}
+                                                <p>
+                                                    <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                </p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-3">
+                                    <h4>Earnings</h4>
+                                    <div>
+                                        <p>
+                                            {% if average_payments %}
+                                                {{ average_earnings|floatformat:"0"|intcomma }}$
+                                            {% else %}
+                                                No data
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            {% if max_earnings %}
+                                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                        data-target="#maxEarnings" aria-expanded="false"
+                                                        aria-controls="maxEarnings">{{ max_earnings|floatformat:"0"|intcomma }}$
+                                                </button>
+                                            {% else %}
+                                                <span>No data</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    {% if max_earnings %}
+                                        <div id="maxEarnings" class="collapse">
+                                            {% for college in max_earnings_colleges %}
+                                                <p>
+                                                    <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                </p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <p>
+                                            {% if min_earnings %}
+                                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                        data-target="#minEarnings" aria-expanded="false"
+                                                        aria-controls="minEarnings">
+                                                    {{ min_earnings|floatformat:"0"|intcomma }}$
+                                                </button>
+                                            {% else %}
+                                                <span>No data</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    {% if min_earnings %}
+                                        <div id="minEarnings" class="collapse">
+                                            {% for college in min_earnings_colleges %}
+                                                <p>
+                                                    <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                </p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
