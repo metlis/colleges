@@ -100,26 +100,51 @@
     <div class="row">
         <div class="col-sm-12">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'college_app:index' %}">Home</a></li>
+                <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+                    <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                        itemtype="http://schema.org/ListItem"><a href="{% url 'college_app:index' %}"
+                                                                 itemprop="item"><span itemprop="name">Home</span></a>
+                    <meta itemprop="position" content="1" />
+                    </li>
                     {% if state_view %}
-                        <li class="breadcrumb-item"><a href="{% url 'college_app:state' state_id %}">{{ geo }}</a></li>
+                        <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                            itemtype="http://schema.org/ListItem"><a
+                                href="{% url 'college_app:state' state_id %}" itemprop="item"><span
+                                itemprop="name">{{ geo }}</span></a>
+                        <meta itemprop="position" content="2" />
+                        </li>
                     {% elif geo %}
-                        <li class="breadcrumb-item"><a href="{% url 'college_app:region' region_id %}">{{ geo }}</a>
+                        <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                            itemtype="http://schema.org/ListItem"><a
+                                href="{% url 'college_app:region' region_id %}" itemprop="item"><span
+                                itemprop="name">{{ geo }}</span></a>
+                        <meta itemprop="position" content="2" />
                         </li>
                     {% elif init_param and init_param_value %}
-                        <li class="breadcrumb-item"><a
-                                href="{% url 'college_app:filter_values' init_param init_param_value %}">{{ init_filter_val }}</a>
+                        <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                            itemtype="http://schema.org/ListItem"><a
+                                href="{% url 'college_app:filter_values' init_param init_param_value %}"
+                                itemprop="item"><span itemprop="name">{{ init_filter_val }}</span></a>
+                        <meta itemprop="position" content="2" />
                         </li>
                     {% elif init_param %}
-                        <li class="breadcrumb-item"><a
-                                href="{% url 'college_app:filter_no_values' init_param %}">{{ init_filter_val }}</a>
+                        <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                            itemtype="http://schema.org/ListItem"><a
+                                href="{% url 'college_app:filter_no_values' init_param %}" itemprop="item"><span
+                                itemprop="name">{{ init_filter_val }}</span></a>
+                        <meta itemprop="position" content="2" />
                         </li>
                     {% elif serach_query %}
-                        <li class="breadcrumb-item"><span>Search</span></li>
+                        <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                            itemtype="http://schema.org/ListItem" itemprop="item"><span itemprop="name">Search</span>
+                        <meta itemprop="position" content="2" />
+                        </li>
                     {% endif %}
                     {% if second_filter %}
-                        <li class="breadcrumb-item"><a href="{{ base_url }}">{{ second_filter }}</a></li>
+                        <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                            itemtype="http://schema.org/ListItem" itemprop="item"><a href="{{ base_url }}"><span
+                                itemprop="name">{{ second_filter }}</span></a></li>
+                        <meta itemprop="position" content="3" />
                     {% endif %}
                 </ol>
             </nav>
