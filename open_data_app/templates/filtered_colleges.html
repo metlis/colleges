@@ -126,46 +126,10 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="dropdown">
-                <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                     aria-expanded="false">
-                    Sort
-                </div>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=in_state_tuition')">Tuition ↑</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=-in_state_tuition')">Tuition ↓</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=mean_earnings')">Earnings ↑</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=-mean_earnings')">Earnings ↓</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=monthly_payments')">Monthly payments ↑</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=-monthly_payments')">Monthly payments ↓</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=undergrad_students')">Undergraduates ↑</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=-undergrad_students')">Undergraduates ↓</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=admission_rate')">Admission rate ↑</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=-admission_rate')">Admission rate ↓</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=completion_rate_four_year')">Completion rate ↑</a>
-                    <a class="dropdown-item"
-                       onclick="addParam('sort=-completion_rate_four_year')">Completion rate ↓</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {% if filters_vals|length > 0 or init_filter_val %}
         <div class="row">
-            <div class="col-12">
+            <div class="col-9 filters-applied">
+                <p class="colleges-count">Colleges found: <strong>{{ colleges.paginator.count }}</strong></p>
                 <span>Filters applied:</span>
                 {% if geo %}
                     <span class="badge badge-light">{{ geo }}</span>
@@ -182,277 +146,307 @@
                 {% for val in filters_vals %}
                     <span class="badge badge-light">{{ val }}</span>
                 {% endfor %}
-                <p><a href="{% url 'college_app:main_filter' %}">Reset filters</a></p>
-                <p>Colleges found: {{ colleges.paginator.count }}</p>
             </div>
+            {% if colleges|length > 1 %}
+                <div class="col-3">
+                    <div class="dropdown">
+                        <div class="dropdown-toggle sort" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="false">
+                            <span>Sort colleges</span>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=name')">Name (A-Z)</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-name')">Name (Z-A)</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=in_state_tuition')">Tuition ↑</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-in_state_tuition')">Tuition ↓</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=mean_earnings')">Earnings ↑</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-mean_earnings')">Earnings ↓</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=monthly_payments')">Monthly payments ↑</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-monthly_payments')">Monthly payments ↓</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=admission_rate')">Admission rate ↑</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-admission_rate')">Admission rate ↓</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=completion_rate_four_year')">Completion rate ↑</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-completion_rate_four_year')">Completion rate ↓</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     {% endif %}
 
 
     <div class="row">
         <div class="col-sm-12 col-md-2">
-            <div id="list-menu" class="list-group">
-                {% if inst_level|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Level
-                            </div>
-                        </div>
-                        <div class="dropdown-menu">
-                            {% for l in inst_level %}
-                                <a class="dropdown-item"
-                                   onclick="addParam('inst_level={{ l.0 }}')">{{ l.1 }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if religous|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Religion
-                            </div>
-                        </div>
-                        <div class="dropdown-menu">
-                            {% for r in religous %}
-                                <a class="dropdown-item"
-                                   onclick="addParam('religous={{ r.0 }}')">{{ r.1 }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if carnegie_basic|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Carnegie Basic
-                            </div>
-                        </div>
-                        <div class="dropdown-menu">
-                            {% for b in carnegie_basic %}
-                                <a class="dropdown-item"
-                                   onclick="addParam('carnegie_basic={{ b.0 }}')">{{ b.1 }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if highest_grad_degree|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Highest Degree
-                            </div>
-                        </div>
-                        <div class="dropdown-menu">
-                            {% for d in highest_grad_degree %}
-                                <a class="dropdown-item"
-                                   onclick="addParam('highest_grad_degree={{ d.0 }}')">{{ d.1 }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if locale|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Locale
-                            </div>
-                        </div>
-                        <div class="dropdown-menu">
-                            {% for l in locale %}
-                                <div><a class="dropdown-item"
-                                        onclick="addParam('locale={{ l.0 }}')">{{ l.1 }}</a>
+            <a href="{% url 'college_app:main_filter' %}">
+                <button class="btn btn-outline-info reset-button">Reset filters</button>
+            </a>
+            {% if colleges|length > 1 %}
+                <div id="list-menu" class="list-group">
+                    {% if state_view or state_filter and state|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    State
                                 </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if ownership|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Ownership
+                            </div>
+                            <div class="dropdown-menu">
+                                {% for s in state %}
+                                    <a class="dropdown-item"
+                                       onclick="addParam('state={{ s.0 }}')">{{ s.1 }}</a>
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            {% for o in ownership %}
-                                <a class="dropdown-item"
-                                   onclick="addParam('ownership={{ o.0 }}')">{{ o.1 }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if state_view or state_filter and state|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                State
+                    {% endif %}
+                    {% if city|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    City/town
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                {% for c in city %}
+                                    <a class="dropdown-item"
+                                       onclick="addParam('city_slug={{ c.1 }}')">{{ c.0 }}</a>
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            {% for s in state %}
-                                <a class="dropdown-item"
-                                   onclick="addParam('state={{ s.0 }}')">{{ s.1 }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if city|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                City/town
+                    {% endif %}
+                    {% if locale|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Locale
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                {% for l in locale %}
+                                    <div><a class="dropdown-item"
+                                            onclick="addParam('locale={{ l.0 }}')">{{ l.1 }}</a>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            {% for c in city %}
-                                <a class="dropdown-item"
-                                   onclick="addParam('city_slug={{ c.1 }}')">{{ c.0 }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if hist_black|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown"
-                             aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Historically black
+                    {% endif %}
+                    {% if inst_level|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Level
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                {% for l in inst_level %}
+                                    <a class="dropdown-item"
+                                       onclick="addParam('inst_level={{ l.0 }}')">{{ l.1 }}</a>
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" onclick="addParam('hist_black=0')">No</a>
-                            <a class="dropdown-item" onclick="addParam('hist_black=1')">Yes</a>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if predom_black|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown"
-                             aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Predominantely black
+                    {% endif %}
+                    {% if highest_grad_degree|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Highest Degree
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                {% for d in highest_grad_degree %}
+                                    <a class="dropdown-item"
+                                       onclick="addParam('highest_grad_degree={{ d.0 }}')">{{ d.1 }}</a>
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" onclick="addParam('predom_black=0')">No</a>
-                            <a class="dropdown-item" onclick="addParam('predom_black=1')">Yes</a>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if hispanic|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown"
-                             aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Hispanic
+                    {% endif %}
+                    {% if academics %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown"
+                                 aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Programs
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                {% for program in academics %}
+                                    <a class="dropdown-item" onclick="addParam('{{ program.0 }}=0')">{{ program.1 }}</a>
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" onclick="addParam('hispanic=0')">No</a>
-                            <a class="dropdown-item" onclick="addParam('hispanic=1')">Yes</a>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if men_only|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown"
-                             aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Men-only
+                    {% endif %}
+                    {% if carnegie_basic|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Carnegie Basic
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                {% for b in carnegie_basic %}
+                                    <a class="dropdown-item"
+                                       onclick="addParam('carnegie_basic={{ b.0 }}')">{{ b.1 }}</a>
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" onclick="addParam('men_only=0')">No</a>
-                            <a class="dropdown-item" onclick="addParam('men_only=1')">Yes</a>
-                        </div>
-                    </div>
-                {% endif %}
-
-
-                {% if women_only|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown"
-                             aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Women-only
+                    {% endif %}
+                    {% if ownership|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Ownership
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                {% for o in ownership %}
+                                    <a class="dropdown-item"
+                                       onclick="addParam('ownership={{ o.0 }}')">{{ o.1 }}</a>
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" onclick="addParam('women_only=0')">No</a>
-                            <a class="dropdown-item" onclick="addParam('women_only=1')">Yes</a>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if online_only|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown"
-                             aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Online-only
+                    {% endif %}
+                    {% if cur_operating|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown"
+                                 aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Currently operating
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" onclick="addParam('cur_operating=0')">No</a>
+                                <a class="dropdown-item" onclick="addParam('cur_operating=1')">Yes</a>
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" onclick="addParam('online_only=0')">No</a>
-                            <a class="dropdown-item" onclick="addParam('online_only=1')">Yes</a>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if cur_operating|length > 1 %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown"
-                             aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Currently operating
+                    {% endif %}
+                    {% if religous|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Religous affiliation
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                {% for r in religous %}
+                                    <a class="dropdown-item"
+                                       onclick="addParam('religous={{ r.0 }}')">{{ r.1 }}</a>
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" onclick="addParam('cur_operating=0')">No</a>
-                            <a class="dropdown-item" onclick="addParam('cur_operating=1')">Yes</a>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if academics %}
-                    <div class="list-group-item btn-group dropright">
-                        <div class="dropdown-toggle" data-toggle="dropdown"
-                             aria-haspopup="true"
-                             aria-expanded="false">
-                            <div class="item-name">
-                                Programs
+                    {% endif %}
+                    {% if online_only|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown"
+                                 aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Online-only
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" onclick="addParam('online_only=0')">No</a>
+                                <a class="dropdown-item" onclick="addParam('online_only=1')">Yes</a>
                             </div>
                         </div>
-                        <div class="dropdown-menu">
-                            {% for program in academics %}
-                                <a class="dropdown-item" onclick="addParam('{{ program.0 }}=0')">{{ program.1 }}</a>
-                            {% endfor %}
+                    {% endif %}
+                    {% if hist_black|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown"
+                                 aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Historically black
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" onclick="addParam('hist_black=0')">No</a>
+                                <a class="dropdown-item" onclick="addParam('hist_black=1')">Yes</a>
+                            </div>
                         </div>
-                    </div>
-                {% endif %}
-            </div>
+                    {% endif %}
+                    {% if predom_black|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown"
+                                 aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Predominantely black
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" onclick="addParam('predom_black=0')">No</a>
+                                <a class="dropdown-item" onclick="addParam('predom_black=1')">Yes</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if hispanic|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown"
+                                 aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Hispanic
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" onclick="addParam('hispanic=0')">No</a>
+                                <a class="dropdown-item" onclick="addParam('hispanic=1')">Yes</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if men_only|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown"
+                                 aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Men-only
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" onclick="addParam('men_only=0')">No</a>
+                                <a class="dropdown-item" onclick="addParam('men_only=1')">Yes</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if women_only|length > 1 %}
+                        <div class="list-group-item btn-group dropright">
+                            <div class="dropdown-toggle" data-toggle="dropdown"
+                                 aria-haspopup="true"
+                                 aria-expanded="false">
+                                <div class="item-name">
+                                    Women-only
+                                </div>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" onclick="addParam('women_only=0')">No</a>
+                                <a class="dropdown-item" onclick="addParam('women_only=1')">Yes</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
-
         <div class="col-10">
             <div class="row">
                 {% if colleges|length > 1 %}
