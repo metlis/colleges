@@ -98,7 +98,7 @@
         <h1>Results</h1>
     {% endif %}
     <div class="row">
-        <div class="col-12">
+        <div class="col-sm-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'college_app:index' %}">Home</a></li>
@@ -128,7 +128,7 @@
 
     {% if filters_vals|length > 0 or init_filter_val %}
         <div class="row">
-            <div class="col-9 filters-applied">
+            <div class="col-sm-12 col-md-9 filters-applied">
                 <p class="colleges-count">Colleges found: <strong>{{ colleges.paginator.count }}</strong></p>
                 <span>Filters applied:</span>
                 {% if geo %}
@@ -148,7 +148,7 @@
                 {% endfor %}
             </div>
             {% if colleges|length > 1 %}
-                <div class="col-3">
+                <div class="col-sm-12 col-md-3">
                     <div class="dropdown">
                         <div class="dropdown-toggle sort" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
@@ -190,7 +190,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-2">
             <a href="{% url 'college_app:main_filter' %}">
-                <button class="btn btn-outline-info reset-button">Reset filters</button>
+                <button class="btn btn-outline-info reset-button">Reset</button>
             </a>
             {% if colleges|length > 1 %}
                 <div id="list-menu" class="list-group">
@@ -447,11 +447,11 @@
                 </div>
             {% endif %}
         </div>
-        <div class="col-10">
+        <div class="col-sm-12 col-md-10">
             <div class="row">
                 {% if map_labels|length > 0 %}
-                    <div class="col-12 college-container">
-                        <div id="map" style="width:100%; height:300px"></div>
+                    <div class="col-sm-12 college-container">
+                        <div id="map"></div>
                         <script>
                             var map;
                             var locations = [
@@ -482,15 +482,15 @@
                         </script>
                     </div>
                     {% if colleges|length > 1 %}
-                        <div class="col-12 college-container">
+                        <div class="col-sm-12 college-container">
                             <div class="card">
                                 <div class="row card-body aggregate">
-                                    <div class="col-2">
-                                        <p style="margin-top: 39px">Average</p>
+                                    <div class="col-md-2 aggr-meta">
+                                        <p>Average</p>
                                         <p>Max</p>
                                         <p>Min</p>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-sm-12 col-md-3">
                                         <h4>Tuition</h4>
                                         <div>
                                             <p>
@@ -546,7 +546,7 @@
                                             </div>
                                         {% endif %}
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-md-3">
                                         <h4>Monthly payments</h4>
                                         <div>
                                             <p>
@@ -602,7 +602,7 @@
                                             </div>
                                         {% endif %}
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-md-3">
                                         <h4>Earnings</h4>
                                         <div>
                                             <p>
@@ -663,14 +663,14 @@
                     {% endif %}
                 {% endif %}
                 {% for college in colleges %}
-                    <div class="col-12 college-container">
+                    <div class="col-sm-12 college-container">
                         <div class="card">
                             <div class="card-header">
                                 <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
                                 <p><i class="fas fa-map-marker-alt"></i> {{ college.city }}, {{ college.state }}</p>
                             </div>
                             <div class="row card-body">
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     <div class="row">
                                         <div class="col-6 admission">
                                             <h3>Admission rate <i class="fas fa-info-circle" data-toggle="tooltip"
@@ -739,7 +739,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6 hor-bars-block">
                                     <span>In-state tuition <i class="fas fa-info-circle" data-toggle="tooltip"
                                                               data-placement="top"
                                                               title="In-state tuition and fees"></i></span>
