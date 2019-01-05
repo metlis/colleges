@@ -516,7 +516,9 @@
                                         <p>Min</p>
                                     </div>
                                     <div class="col-sm-12 col-md-3">
-                                        <h4>Tuition</h4>
+                                        <h4>Tuition <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="In-state tuition and fees"></i></h4>
                                         <div>
                                             <p>
                                                 {% if average_tuition %}
@@ -572,7 +574,9 @@
                                         {% endif %}
                                     </div>
                                     <div class="col-md-3">
-                                        <h4>Monthly payments</h4>
+                                        <h4>Monthly payments <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="Median loan debt of completers in monthly payments"></i></h4>
                                         <div>
                                             <p>
                                                 {% if average_payments %}
@@ -628,7 +632,9 @@
                                         {% endif %}
                                     </div>
                                     <div class="col-md-3">
-                                        <h4>Earnings</h4>
+                                        <h4>Earnings <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                      data-placement="top"
+                                                      title="Median earnings of students working and not enrolled 10 years after entry"></i></h4>
                                         <div>
                                             <p>
                                                 {% if average_payments %}
@@ -813,8 +819,8 @@
                 {# pagination #}
                 <nav aria-label="pagination">
                     {% if params %}
-                        <span>
-                            Page {{ colleges.number }} of {{ colleges.paginator.num_pages }}.
+                        <span class="pagination-phrase">
+                            Page {{ colleges.number }} of {{ colleges.paginator.num_pages }}
                         </span>
                         <ul class="pagination justify-content-center">
                             {% if colleges.has_previous %}
@@ -840,8 +846,8 @@
                             {% endif %}
                         </ul>
                     {% else %}
-                        <span>
-                            Page {{ colleges.number }} of {{ colleges.paginator.num_pages }}.
+                        <span class="pagination-phrase">
+                            Page {{ colleges.number }} of {{ colleges.paginator.num_pages }}
                         </span>
                         <ul class="pagination justify-content-center">
                             {% if colleges.has_previous %}
