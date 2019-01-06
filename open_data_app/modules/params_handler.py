@@ -83,10 +83,35 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False):
             else:
                 new_params_dict[p] = new_params_dict[p][0]
 
-        try:
-            colleges = colleges.filter(**new_params_dict)
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+
+        # logic for queries with region and state at the same time
+        region_query = ''
+        state_param = ''
+        for p in new_params_dict:
+            if 'region' in p:
+                region_param = p
+                region_query = {p: new_params_dict[p]}
+            if 'state' in p:
+                state_param = p
+                state_query = {p: new_params_dict[p]}
+
+        if region_query and state_query:
+            try:
+                state_colleges = colleges.filter(**state_query)
+                region_colleges = colleges.filter(**region_query)
+                colleges = (state_colleges | region_colleges).distinct()
+                param_dict_copy = new_params_dict.copy()
+                param_dict_copy.pop(region_param)
+                param_dict_copy.pop(state_param)
+                if len(param_dict_copy) > 0:
+                    colleges = colleges.filter(**param_dict_copy)
+            except:
+                pass
+        else:
+            try:
+                colleges = colleges.filter(**new_params_dict)
+            except:
+                return HttpResponseNotFound('<h1>Page not found</h1>')
 
 
 
