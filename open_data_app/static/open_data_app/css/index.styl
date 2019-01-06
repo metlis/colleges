@@ -1,0 +1,110 @@
+$green = #41B3A3
+$blue = rgba(0, 165, 217, 0.63)
+$red = #EC7556
+$brown = #EDA875
+$velvet = #CA829A
+
+h3
+  font-size 130%
+
+h4
+  font-size 110%
+
+.dropdown-toggle::after
+  border 0px
+
+.navbar-nav
+  margin-right 0px
+
+
+.dropdown-submenu
+  .dropdown-menu
+    max-height 200px
+    overflow-y auto
+    a
+      white-space normal
+
+.dropdown-menu .dropdown-toggle:active
+  background-color $blue !important
+
+
+.dropdown-menu .dropdown-submenu .dropdown-menu li a:active
+  background-color $blue !important
+
+.form-container
+  display block
+  margin 15px 0px 15px 0px
+  ul
+    list-style-type none
+
+.card-header
+  height 50px
+  cursor pointer
+  h3
+    display inline-block
+  i
+    display inline-block
+    float right
+    margin-top 6px
+
+.sub-container
+  max-height 250px
+  width 100%
+  overflow-y auto
+  margin 15px 0px 15px 0px
+  ul
+    padding-left 0px
+
+.card-body
+  padding 10px
+
+.submit-button-container
+  width 100%
+  margin-top 15px
+  text-align center
+
+.submit-button
+  width 100px
+
+
+//  custom checkbox
+.checkbox label:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.checkbox .cr {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #a9a9a9;
+  border-radius: .25em;
+  width: 1.3em;
+  height: 1.3em;
+  float: left;
+  margin-right: .5em;
+}
+
+.checkbox .cr .cr-icon {
+  position: absolute;
+  font-size: .8em;
+  line-height: 0;
+  top: 50%;
+  left: 15%;
+}
+
+.checkbox label input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox label input[type="checkbox"]+.cr>.cr-icon {
+  opacity: 0;
+}
+
+.checkbox label input[type="checkbox"]:checked+.cr>.cr-icon {
+  opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled+.cr {
+  opacity: .5;
+}
