@@ -19,9 +19,13 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'open_data_app/css/dropdown.css' %}">
     <link rel="stylesheet" href="{% static 'open_data_app/css/index.css' %}">
+    <link rel="shortcut icon" href="{% static 'open_data_app/img/favicon.png' %}">
 </head>
 <body>
+<div style="min-height: 100vh">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <img src="{% static 'open_data_app/img/icon.png' %}" onclick="window.location.href='/'" width="7%" height="7%"
+         class="icon"/>
     <a class="navbar-brand" href="/">USA COLLEGES</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
             aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,7 +149,7 @@
                 </ul>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}">
+        <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}" autocomplete="off">
             <input class="form-control mr-sm-2" type="search" name="text" placeholder="Search">
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
         </form>
@@ -153,10 +157,15 @@
 </nav>
 
 <div class="container-fluid">
-
     <div class="row">
-        <div class="col-sm-12 col-md-4 offset-md-3 form-container">
+    <div class="col-sm-12 header">
+        <h1>American colleges and universities in 2019</h1>
+    </div>
+        <div class="col-sm-12 col-md-4 form-container">
             <form action="{% url 'college_app:main_filter' %}">
+                <div class="form-header">
+                    <h2>Find your college now!</h2>
+                </div>
                 <div class="card">
                     <div class="card-header" data-toggle="collapse" data-target="#discipline"
                          aria-expanded="true"
@@ -317,32 +326,6 @@
                         <h3>Other</h3><i class="fas fa-plus"></i>
                     </div>
                     <div class="card-body collapse" id="other">
-
-                        <h4>Race/ethnicity</h4>
-                        <div class="sub-container">
-                            <div class="checkbox">
-                                <label>
-                                    <input name="hist_black" value="1" type="checkbox">
-                                    <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                    Historically black
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input name="predom_black" value="1" type="checkbox">
-                                    <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                    Predominantely black
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input name="hispanic" value="1" type="checkbox">
-                                    <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                    Hispanic
-                                </label>
-                            </div>
-                        </div>
-
                         <h4>Gender</h4>
                         <div class="sub-container">
                             <div class="checkbox">
@@ -384,17 +367,45 @@
                                 </label>
                             </div>
                         </div>
+                        <h4>Race/ethnicity</h4>
+                        <div class="sub-container">
+                            <div class="checkbox">
+                                <label>
+                                    <input name="hist_black" value="1" type="checkbox">
+                                    <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                    Historically black
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input name="predom_black" value="1" type="checkbox">
+                                    <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                    Predominantely black
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input name="hispanic" value="1" type="checkbox">
+                                    <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                    Hispanic
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="submit-button-container">
-                    <button type="submit" class="btn btn-info submit-button">Search</button>
+                    <button type="submit" class="btn btn-outline-info submit-button">Find colleges</button>
                 </div>
             </form>
         </div>
     </div>
-    <footer class="footer">
-        <div class="container">@2019</div>
-    </footer>
+</div>
+<footer class="footer">
+    <div class="container">
+        <p>colleges-us.com @ 2019</p>
+        <p><a href="mailto:info@colleges-us.com">Contact us</a></p>
+    </div>
+</footer>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

@@ -175,6 +175,9 @@ h4 {
   background-color: rgba(0,165,217,0.63);
   border-color: rgba(0,165,217,0.63);
 }
+.icon {
+  cursor: pointer;
+}
 @media (max-width: 767.98px) {
   .gender-header {
     margin-top: 15px;
