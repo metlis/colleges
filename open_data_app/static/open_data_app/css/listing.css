@@ -32,13 +32,13 @@ h4 {
 }
 .progress-bar {
   color: #000;
-  background-color: rgba(0,165,217,0.5);
+  background-color: #73c3e5;
 }
 .card {
-  border: 1px solid rgba(0,165,217,0.5);
+  border: 1px solid #73c3e5;
 }
 .card-header {
-  border-bottom: 1px solid rgba(0,165,217,0.5);
+  border-bottom: 1px solid #73c3e5;
   background-color: rgba(0,165,217,0.05);
 }
 .card-header p {
@@ -48,16 +48,17 @@ h4 {
   display: inline-block;
   cursor: pointer;
   padding: 0px;
-  border: 1px solid rgba(0,165,217,0.5);
+  border: 1px solid #73c3e5;
 }
 .list-group-item :hover {
-  background-color: rgba(0,165,217,0.1);
+  background-color: #73c3e5;
 }
 .list-group-item :hover .dropdown-item {
   background-color: #fff !important;
 }
 .list-group-item :active {
-  background-color: rgba(0,165,217,0.5);
+  background-color: #73c3e5;
+  color: #fff;
 }
 .dropdown-menu .dropdown-item:hover {
   background-color: rgba(0,165,217,0.1) !important;
@@ -73,7 +74,7 @@ h4 {
   margin-bottom: 0px;
   padding-top: 0px;
   padding-bottom: 0px;
-  border: 1px solid rgba(0,165,217,0.5);
+  border: 1px solid #73c3e5;
 }
 .dropdown-menu a {
   white-space: normal;
@@ -105,7 +106,7 @@ h4 {
 }
 .sort {
   width: 100%;
-  border: 1px solid rgba(0,165,217,0.5);
+  border: 1px solid #73c3e5;
   border-radius: 3px;
   padding: 5px;
 }
@@ -140,12 +141,12 @@ h4 {
   border: 0px;
 }
 .dropdown-item {
-  border-bottom: 1px solid rgba(0,165,217,0.5);
+  border-bottom: 1px solid #73c3e5;
   min-height: 48px;
   padding-top: 12px;
 }
 .dropdown-item:active {
-  background-color: rgba(0,165,217,0.5);
+  background-color: #73c3e5;
 }
 .badge {
   white-space: normal;
@@ -180,7 +181,7 @@ footer .container p {
   margin-bottom: 0px;
 }
 .search {
-  border: 1px solid rgba(0,165,217,0.5);
+  border: 1px solid #73c3e5;
 }
 @media (max-width: 767.98px) {
   .sort {
