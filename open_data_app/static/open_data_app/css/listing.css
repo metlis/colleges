@@ -23,13 +23,23 @@ h4 {
 .fa-info-circle {
   font-size: 13px;
 }
+.navbar {
+  background-color: rgba(0,165,217,0.05) !important;
+}
 .progress {
   height: 30px;
   margin-bottom: 10px;
 }
 .progress-bar {
   color: #000;
-  background-color: rgba(0,165,217,0.63);
+  background-color: rgba(0,165,217,0.5);
+}
+.card {
+  border: 1px solid rgba(0,165,217,0.5);
+}
+.card-header {
+  border-bottom: 1px solid rgba(0,165,217,0.5);
+  background-color: rgba(0,165,217,0.05);
 }
 .card-header p {
   margin-bottom: 0px;
@@ -38,14 +48,32 @@ h4 {
   display: inline-block;
   cursor: pointer;
   padding: 0px;
+  border: 1px solid rgba(0,165,217,0.5);
+}
+.list-group-item :hover {
+  background-color: rgba(0,165,217,0.1);
+}
+.list-group-item :hover .dropdown-item {
+  background-color: #fff !important;
+}
+.list-group-item :active {
+  background-color: rgba(0,165,217,0.5);
+}
+.dropdown-menu .dropdown-item:hover {
+  background-color: rgba(0,165,217,0.1) !important;
 }
 .dropright .dropdown-toggle::after {
   border: none;
 }
 .dropdown-menu {
-  width: 300px;
+  width: 250px;
   max-height: 300px;
   overflow-y: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border: 1px solid rgba(0,165,217,0.5);
 }
 .dropdown-menu a {
   white-space: normal;
@@ -62,6 +90,9 @@ h4 {
   top: 12px;
   text-align: center;
 }
+.item-name:hover {
+  background-color: transparent !important;
+}
 .reset-button {
   width: 100%;
   margin-bottom: 15px;
@@ -74,7 +105,7 @@ h4 {
 }
 .sort {
   width: 100%;
-  border: 1px solid rgba(0,0,0,0.125);
+  border: 1px solid rgba(0,165,217,0.5);
   border-radius: 3px;
   padding: 5px;
 }
@@ -108,8 +139,13 @@ h4 {
   padding: 0px;
   border: 0px;
 }
+.dropdown-item {
+  border-bottom: 1px solid rgba(0,165,217,0.5);
+  min-height: 48px;
+  padding-top: 12px;
+}
 .dropdown-item:active {
-  background-color: rgba(0,165,217,0.63);
+  background-color: rgba(0,165,217,0.5);
 }
 .badge {
   white-space: normal;
@@ -129,6 +165,23 @@ h4 {
 }
 .icon {
   cursor: pointer;
+}
+footer {
+  width: 100%;
+  height: 10%;
+}
+footer .container {
+  margin-right: 0px;
+  margin-top: 15px;
+  text-align: right;
+  width: 100%;
+}
+footer .container p {
+  font-size: 12px;
+  margin-bottom: 0px;
+}
+.search {
+  border: 1px solid rgba(0,165,217,0.5);
 }
 @media (max-width: 767.98px) {
   .sort {
