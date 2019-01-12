@@ -13,7 +13,14 @@ def filter_no_values(request, param):
     init_param = param
 
     # initial filter, its value, verbose name and param value
-    param, query_val, verbose_name, param_value = College.get_filter_val('', '', param, '')
+    try:
+        param, query_val, verbose_name, param_value = College.get_filter_val('', '', param, '')
+    except:
+        return render(request, 'filtered_colleges.html', {
+            'error': True,
+            'seo_title': 'Results',
+            'noindex': True,
+        })
 
     query_param = '{}__gt'.format(param)
 
@@ -70,4 +77,8 @@ def filter_no_values(request, param):
 
         return render(request, 'filtered_colleges.html', context)
     else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        return render(request, 'filtered_colleges.html', {
+            'error': True,
+            'seo_title': 'Results',
+            'noindex': True,
+        })

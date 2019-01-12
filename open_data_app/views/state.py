@@ -50,13 +50,21 @@ def get_state_slug(request, state_id, state_slug):
         state, slug = State.get_state_data(state_id)
 
         if state_slug != slug:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+            return render(request, 'filtered_colleges.html', {
+                'error': True,
+                'seo_title': 'Results',
+                'noindex': True,
+            })
         else:
             colleges = College.objects.filter(state=state_id).order_by('name')
 
             filters = College.get_filters('state', state_id, excluded_filters=['state'])
     else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        return render(request, 'filtered_colleges.html', {
+            'error': True,
+            'seo_title': 'Results',
+            'noindex': True,
+        })
 
     # aggregate data
     aggregate_data = College.get_aggregate_data(colleges)
@@ -181,5 +189,9 @@ def get_state_param(request, state_id, state_slug, param, param_value):
         return render(request, 'filtered_colleges.html', context)
 
     else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        return render(request, 'filtered_colleges.html', {
+            'error': True,
+            'seo_title': 'Results',
+            'noindex': True,
+        })
 

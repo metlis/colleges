@@ -54,4 +54,8 @@ def search(request):
 
             return render(request, 'filtered_colleges.html', context)
         else:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+            return render(request, 'filtered_colleges.html', {
+                'error': True,
+                'seo_title': 'Results',
+                'noindex': True,
+            })

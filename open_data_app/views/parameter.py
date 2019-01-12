@@ -13,7 +13,14 @@ from settings import *
 def filter_values(request, param, param_value):
     init_param = param
     # initial filter, its value, verbose name and param value
-    param, query_val, verbose_name, param_value = College.get_filter_val('', '', param, param_value)
+    try:
+        param, query_val, verbose_name, param_value = College.get_filter_val('', '', param, param_value)
+    except:
+        return render(request, 'filtered_colleges.html', {
+            'error': True,
+            'seo_title': 'Results',
+            'noindex': True,
+        })
 
     # colleges filtered by the initial filter
     colleges = College.objects.filter(**{param: param_value}).order_by('name')
@@ -72,4 +79,8 @@ def filter_values(request, param, param_value):
 
         return render(request, 'filtered_colleges.html', context)
     else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        return render(request, 'filtered_colleges.html', {
+            'error': True,
+            'seo_title': 'Results',
+            'noindex': True,
+        })

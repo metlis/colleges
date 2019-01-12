@@ -50,13 +50,21 @@ def get_region_slug(request, region_id, region_slug):
         region_name, slug, region_states = Region.get_region_data(region_id)
 
         if region_slug != slug:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+            return render(request, 'filtered_colleges.html', {
+                'error': True,
+                'seo_title': 'Results',
+                'noindex': True,
+            })
         else:
             colleges = College.objects.filter(region=region_id).order_by('name')
 
             filters = College.get_filters('region', region_id)
     else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        return render(request, 'filtered_colleges.html', {
+            'error': True,
+            'seo_title': 'Results',
+            'noindex': True,
+        })
 
     # aggregate data
     aggregate_data = College.get_aggregate_data(colleges)
@@ -186,5 +194,9 @@ def get_region_param(request, region_id, region_slug, param, param_value):
 
         return render(request, 'filtered_colleges.html', context)
     else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        return render(request, 'filtered_colleges.html', {
+            'error': True,
+            'seo_title': 'Results',
+            'noindex': True,
+        })
 

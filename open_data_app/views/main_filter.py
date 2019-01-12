@@ -21,8 +21,14 @@ def main_filter(request):
     if len(params) > 0:
         # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
         # dictionary of applied filters and their values
-        colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, '', '', main_filter=True)
-
+        try:
+            colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, '', '', main_filter=True)
+        except:
+            return render(request, 'filtered_colleges.html', {
+                'error': True,
+                'seo_title': 'Results',
+                'noindex': True,
+            })
 
         if len(colleges) > 0:
             # aggregate data
@@ -57,7 +63,11 @@ def main_filter(request):
 
             return render(request, 'filtered_colleges.html', context)
         else:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+            return render(request, 'filtered_colleges.html', {
+                'error': True,
+                'seo_title': 'Results',
+                'noindex': True,
+            })
     else:
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)

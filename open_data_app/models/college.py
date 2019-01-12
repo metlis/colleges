@@ -627,7 +627,10 @@ class College(models.Model):
                     dict = cls.get_dict()
                     query_val = dict[param][int(param_value)]
 
-                return param, query_val, field._verbose_name, param_value
+                try:
+                    return param, query_val, field._verbose_name, param_value
+                except:
+                    pass
         else:
             return HttpResponseNotFound('<h1>Page not found</h1>')
 
