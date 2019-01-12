@@ -252,12 +252,13 @@
         {% endif %}
         {# other filer pages breadscrumbs end #}
 
-        {% if filters_vals|length > 0 or init_filter_val or state_init or region_init %}
-            <div class="row">
-                <div class="col-sm-12 col-md-9 filters-applied">
-                    <p class="colleges-count">Colleges found: <strong>{{ colleges.paginator.count }}</strong></p>
-                    {# applied filters list start #}
+
+        <div class="row">
+            <div class="col-sm-12 col-md-9 filters-applied">
+                <p class="colleges-count">Colleges found: <strong>{{ colleges.paginator.count }}</strong></p>
+                {# applied filters list start #}
                     <span>Filters applied:</span>
+                {% if filters_vals|length > 0 or init_filter_val or state_init or region_init %}
                     {% if geo %}
                         <span class="badge badge-light">{{ geo }}</span>
                     {% endif %}
@@ -279,48 +280,50 @@
                     {% for val in filters_vals %}
                         <span class="badge badge-light">{{ val }}</span>
                     {% endfor %}
-                    {# applied filters list end #}
-                </div>
-                {% if colleges|length > 1 %}
-                    {# sort list start #}
-                    <div class="col-sm-12 col-md-3">
-                        <div class="dropdown">
-                            <div class="dropdown-toggle sort" data-toggle="dropdown" aria-haspopup="true"
-                                 aria-expanded="false">
-                                <span>Sort colleges</span>
-                            </div>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=name')">Name (A-Z)</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=-name')">Name (Z-A)</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=in_state_tuition')">Tuition ↑</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=-in_state_tuition')">Tuition ↓</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=mean_earnings')">Earnings ↑</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=-mean_earnings')">Earnings ↓</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=monthly_payments')">Monthly payments ↑</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=-monthly_payments')">Monthly payments ↓</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=admission_rate')">Admission rate ↑</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=-admission_rate')">Admission rate ↓</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=completion_rate_four_year')">Completion rate ↑</a>
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort=-completion_rate_four_year')">Completion rate ↓</a>
-                            </div>
+                {% else %}
+                    <span class="badge badge-light">No filters</span>
+                {% endif %}
+                {# applied filters list end #}
+            </div>
+            {% if colleges|length > 1 %}
+                {# sort list start #}
+                <div class="col-sm-12 col-md-3">
+                    <div class="dropdown">
+                        <div class="dropdown-toggle sort" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="false">
+                            <span>Sort colleges</span>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=name')">Name (A-Z)</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-name')">Name (Z-A)</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=in_state_tuition')">Tuition ↑</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-in_state_tuition')">Tuition ↓</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=mean_earnings')">Earnings ↑</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-mean_earnings')">Earnings ↓</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=monthly_payments')">Monthly payments ↑</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-monthly_payments')">Monthly payments ↓</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=admission_rate')">Admission rate ↑</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-admission_rate')">Admission rate ↓</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=completion_rate_four_year')">Completion rate ↑</a>
+                            <a class="dropdown-item"
+                               onclick="addParam('sort=-completion_rate_four_year')">Completion rate ↓</a>
                         </div>
                     </div>
-                    {# sort list end #}
-                {% endif %}
-            </div>
-        {% endif %}
+                </div>
+                {# sort list end #}
+            {% endif %}
+        </div>
 
 
         <div class="row">
