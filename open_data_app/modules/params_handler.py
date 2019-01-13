@@ -86,7 +86,7 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False):
 
         # logic for queries with region and state at the same time
         region_query = ''
-        state_param = ''
+        state_query = ''
         for p in new_params_dict:
             if 'region' in p:
                 region_param = p
