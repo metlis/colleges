@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://www.colleges-us.com
+Sitemap: https://www.colleges-us.com/sitemap.xml
