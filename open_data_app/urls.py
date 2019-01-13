@@ -14,15 +14,15 @@ from django.contrib.sitemaps.views import sitemap
 
 app_name = 'college_app'
 
-sitemaps = {
-    'regions': RegionsSitemap,
-    'regions_params': RegionFilterParamsSitemap,
-    'states': StatesSitemap,
-    'states_params': StateFilterParamsSitemap,
-    'disciplines': DisciplinesSitemap,
-    'filters': FilterParamsSitemap,
-    'colleges': CollegesSitemap,
-}
+# sitemaps = {
+#     'regions': RegionsSitemap,
+#     'regions_params': RegionFilterParamsSitemap,
+#     'states': StatesSitemap,
+#     'states_params': StateFilterParamsSitemap,
+#     'disciplines': DisciplinesSitemap,
+#     'filters': FilterParamsSitemap,
+#     'colleges': CollegesSitemap,
+# }
 
 handler404 = 'open_data_app.views.page_not_found'
 urlpatterns = [
@@ -44,7 +44,7 @@ urlpatterns = [
 
     path(r'search/', search, name='search'),
 
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    # path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
     path(r'', index, name='index'),
 ]
