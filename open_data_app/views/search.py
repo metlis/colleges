@@ -1,7 +1,7 @@
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
-
+from django.db.models import Q
 from django.contrib.postgres.search import SearchVector
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render
@@ -16,8 +16,10 @@ def search(request):
         return HttpResponseRedirect(reverse('college_app:index'))
     else:
         query = request.GET['text']
-        colleges = College.objects.annotate(search=SearchVector('name', 'city', 'state__name', 'region__name'),
-                                            ).filter(search=query)
+        # posgres solution
+        # colleges = College.objects.annotate(search=SearchVector('name', 'city', 'state__name', 'region__name'),
+        #                                     ).filter(search=query)
+        colleges = College.objects.filter(Q(name__icontains=query) | Q(city__icontains=query) | Q(state__name__icontains=query) | Q(region__name__icontains=query))
 
         if len(colleges) > 0:
 
