@@ -157,6 +157,49 @@ class College(models.Model):
 
     full_data = models.TextField()
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['state']),
+            models.Index(fields=['region']),
+            models.Index(fields=['ownership']),
+            models.Index(fields=['locale']),
+            models.Index(fields=['highest_grad_degree']),
+            models.Index(fields=['carnegie_basic']),
+            models.Index(fields=['inst_level']),
+            models.Index(fields=['agriculture']),
+            models.Index(fields=['architecture']),
+            models.Index(fields=['ethnic_cultural_gender']),
+            models.Index(fields=['business_marketing']),
+            models.Index(fields=['communication']),
+            models.Index(fields=['communications_technology']),
+            models.Index(fields=['computer']),
+            models.Index(fields=['construction']),
+            models.Index(fields=['education']),
+            models.Index(fields=['engineering']),
+            models.Index(fields=['engineering_technology']),
+            models.Index(fields=['english']),
+            models.Index(fields=['family_consumer_science']),
+            models.Index(fields=['language']),
+            models.Index(fields=['health']),
+            models.Index(fields=['history']),
+            models.Index(fields=['security_law_enforcement']),
+            models.Index(fields=['legal']),
+            models.Index(fields=['humanities']),
+            models.Index(fields=['library']),
+            models.Index(fields=['mathematics']),
+            models.Index(fields=['mechanic_repair_technology']),
+            models.Index(fields=['military']),
+            models.Index(fields=['multidiscipline']),
+            models.Index(fields=['resources']),
+            models.Index(fields=['parks_recreation_fitness']),
+            models.Index(fields=['personal_culinary']),
+            models.Index(fields=['philosophy_religious']),
+            models.Index(fields=['physical_science']),
+            models.Index(fields=['precision_production']),
+            models.Index(fields=['psychology']),
+            models.Index(fields=['public_administration_social_service']),
+        ]
+
     def __str__(self):
         return self.name
 
