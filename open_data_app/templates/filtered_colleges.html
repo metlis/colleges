@@ -107,9 +107,7 @@
     <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}">
     <link rel="stylesheet" href="{% static 'open_data_app/css/listing.css' %}">
     {# styleshits end #}
-    <script>
-        window.mapLabels = {{ map_labels|safe }}
-    </script>
+
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -1564,6 +1562,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     })
 </script>
 <script>
+    window.mapLabels = {{ map_labels|safe }}
     var map;
     var locations = []
     for (var i = 0; i < window.mapLabels.length; i++){
