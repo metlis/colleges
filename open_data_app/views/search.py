@@ -21,7 +21,7 @@ def search(request):
         #                                     ).filter(search=query)
         colleges = College.objects.filter(Q(name__icontains=query) | Q(city__icontains=query) | Q(state__name__icontains=query) | Q(region__name__icontains=query))
 
-        if len(colleges) > 0:
+        if colleges.count() > 0:
 
             canonical = reverse('college_app:search')
 

@@ -140,7 +140,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
 
 
 
-    if len(colleges) > 0:
+    if colleges.count() > 0:
 
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)

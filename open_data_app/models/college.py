@@ -590,7 +590,7 @@ class College(models.Model):
         # adding academics filters
         for discipline in disciplines:
             filter = '{}__gt'.format(discipline)
-            if len(colleges.filter(**{filter: 0})) > 0:
+            if colleges.filter(**{filter: 0}).count() > 0:
                 try:
                     filters['academics'].append([discipline, dict[discipline]])
                 except:

@@ -30,7 +30,7 @@ def main_filter(request):
                 'noindex': True,
             })
 
-        if len(colleges) > 0:
+        if colleges.count() > 0:
             # aggregate data
             aggregate_data = College.get_aggregate_data(colleges)
 

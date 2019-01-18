@@ -89,7 +89,8 @@ def get_state_slug(request, state_id, state_slug):
                                                           'state_slug': state_slug,
                                                           })
 
-    context = {'colleges': colleges,
+    context = {
+               'colleges': colleges,
                'state': state,
                'state_id': state_id,
                'state_name': state.name,
@@ -140,7 +141,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
     colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, 'state', state_id)
 
 
-    if len(colleges) > 0:
+    if colleges.count() > 0:
 
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)

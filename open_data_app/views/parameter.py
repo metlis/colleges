@@ -29,7 +29,7 @@ def filter_values(request, param, param_value):
     # dictionary of applied filters and their values
     colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, '', '')
 
-    if len(colleges) > 0:
+    if colleges.count() > 0:
 
         # define seo data before rendering
         seo_template = verbose_name
