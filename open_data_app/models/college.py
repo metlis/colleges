@@ -155,8 +155,6 @@ class College(models.Model):
     act_math = models.FloatField(null=True, verbose_name='act_math')
     act_writing = models.FloatField(null=True, verbose_name='act_writing')
 
-    full_data = models.TextField()
-
     class Meta:
         indexes = [
             models.Index(fields=['state']),
