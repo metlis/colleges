@@ -37,6 +37,15 @@ def search(request):
             else:
                 is_multiple = False
 
+            # check if result is multiple
+            if colleges.count() > 1:
+                is_multiple = True
+            else:
+                is_multiple = False
+
+            # get filters
+            filters = College.get_filters(colleges)
+
             # pagination
             colleges = handle_pagination(request, colleges)
 
@@ -60,6 +69,7 @@ def search(request):
                        }
 
             context.update(aggregate_data)
+            context.update(filters)
 
             return render(request, 'filtered_colleges.html', context)
         else:
