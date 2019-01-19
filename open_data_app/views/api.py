@@ -3,8 +3,10 @@ from open_data_app.models import College
 from open_data_app.modules.params_handler import handle_params
 import json
 from django.db.models import Q
+from htmlmin.decorators import not_minified_response
 
 
+@not_minified_response
 def api(request):
     params = request.GET
     try:
