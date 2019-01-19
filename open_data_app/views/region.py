@@ -72,8 +72,11 @@ def get_region_slug(request, region_id, region_slug):
     # sorting colleges
     colleges = College.sort_colleges(request, colleges)
 
-    # map labels
-    map_labels = College.get_map_labels(colleges)
+    # check if result is multiple
+    if colleges.count() > 1:
+        is_multiple = True
+    else:
+        is_multiple = False
 
     # pagination
     if request.GET.get('page'):
@@ -88,6 +91,8 @@ def get_region_slug(request, region_id, region_slug):
     canonical = reverse('college_app:region_slug', kwargs={'region_id': region_id,
                                                            'region_slug': region_slug,
                                                            })
+    # string for api call
+    api_call = 'region={}'.format(region_id)
 
     context = {'colleges': colleges,
                'region_name': region_name,
@@ -98,8 +103,9 @@ def get_region_slug(request, region_id, region_slug):
                'canonical': canonical,
                'maps_key': GOOGLE_MAPS_API,
                'state_filter': True,
-               'map_labels': map_labels,
                'region_init': True,
+               'api_call': api_call,
+               'is_multiple': is_multiple,
                }
 
     context.update(filters)
@@ -138,8 +144,6 @@ def get_region_param(request, region_id, region_slug, param, param_value):
     # dictionary of applied filters and their values
     colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, 'region', region_id)
 
-
-
     if colleges.count() > 0:
 
         # sorting colleges
@@ -158,8 +162,11 @@ def get_region_param(request, region_id, region_slug, param, param_value):
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
-        # map labels
-        map_labels = College.get_map_labels(colleges)
+        # check if result is multiple
+        if colleges.count() > 1:
+            is_multiple = True
+        else:
+            is_multiple = False
 
         # pagination
         colleges = handle_pagination(request, colleges)
@@ -172,8 +179,14 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                                                                })
 
         # get filters
-        filters = College.get_filters('region', region_id, init_filter=param, init_filter_val=param_value, filters_set=params_dict)
-        context = {'colleges': colleges,
+        filters = College.get_filters('region', region_id, init_filter=param, init_filter_val=param_value,
+                                      filters_set=params_dict)
+
+        # string for api call
+        api_call = 'region={}&{}={}&{}'.format(region_id, param, param_value, req_str)
+
+        context = {
+                   'colleges': colleges,
                    'seo_title': seo_title,
                    'seo_description': seo_description,
                    'canonical': canonical,
@@ -187,7 +200,8 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                    'filters_vals': filters_vals,
                    'maps_key': GOOGLE_MAPS_API,
                    'state_filter': True,
-                   'map_labels': map_labels,
+                   'api_call': api_call,
+                   'is_multiple': is_multiple,
                    }
         context.update(filters)
         context.update(aggregate_data)
@@ -199,4 +213,3 @@ def get_region_param(request, region_id, region_slug, param, param_value):
             'seo_title': 'Results',
             'noindex': True,
         })
-

@@ -72,8 +72,11 @@ def get_state_slug(request, state_id, state_slug):
     # sorting colleges
     colleges = College.sort_colleges(request, colleges)
 
-    # map labels
-    map_labels = College.get_map_labels(colleges)
+    # check if result is multiple
+    if colleges.count() > 1:
+        is_multiple = True
+    else:
+        is_multiple = False
 
     # pagination
     if request.GET.get('page'):
@@ -88,6 +91,8 @@ def get_state_slug(request, state_id, state_slug):
     canonical = reverse('college_app:state_slug', kwargs={'state_id': state_id,
                                                           'state_slug': state_slug,
                                                           })
+    # string for api call
+    api_call = 'state={}'.format(state.id)
 
     context = {
                'colleges': colleges,
@@ -98,9 +103,10 @@ def get_state_slug(request, state_id, state_slug):
                'base_url': canonical,
                'canonical': canonical,
                'maps_key': GOOGLE_MAPS_API,
-               'map_labels': map_labels,
                'state_init': True,
                'state_view': True,
+                'api_call': api_call,
+                'is_multiple': is_multiple,
                }
 
     context.update(filters)
@@ -159,8 +165,11 @@ def get_state_param(request, state_id, state_slug, param, param_value):
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
-        # map labels
-        map_labels = College.get_map_labels(colleges)
+        # check if result is multiple
+        if colleges.count() > 1:
+            is_multiple = True
+        else:
+            is_multiple = False
 
         # pagination
         colleges = handle_pagination(request, colleges)
@@ -168,7 +177,12 @@ def get_state_param(request, state_id, state_slug, param, param_value):
         # get filters
         filters = College.get_filters('state', state_id, excluded_filters=['state'], init_filter=param,
                                       init_filter_val=param_value, filters_set=params_dict)
-        context = {'colleges': colleges,
+
+        # string for api call
+        api_call = 'state={}&{}={}&{}'.format(state_id, param, param_value, req_str)
+
+        context = {
+                    'colleges': colleges,
                    'seo_title': seo_title,
                    'seo_description': seo_description,
                    'canonical': canonical,
@@ -182,8 +196,10 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                    'noindex': noindex,
                    'filters_vals': filters_vals,
                    'maps_key': GOOGLE_MAPS_API,
-                   'map_labels': map_labels,
+                    'api_call': api_call,
+                    'is_multiple': is_multiple,
                    }
+
         context.update(filters)
         context.update(aggregate_data)
 

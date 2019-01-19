@@ -2,11 +2,19 @@
 <html lang="en">
 <head>
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PTMG4DP');</script>
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-PTMG4DP');</script>
     <!-- End Google Tag Manager -->
     {% load static %}
     {% load mathfilters %}
@@ -111,8 +119,10 @@
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PTMG4DP"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PTMG4DP"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
 <!-- End Google Tag Manager (noscript) -->
 <div style="min-height: 100vh">
     {# header start #}
@@ -269,7 +279,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="col-sm-12 col-md-9 filters-applied">
                 <p class="colleges-count">Colleges found: <strong>{{ colleges.paginator.count }}</strong></p>
                 {# applied filters list start #}
-                    <span>Filters applied:</span>
+                <span>Filters applied:</span>
                 {% if filters_vals|length > 0 or init_filter_val or state_init or region_init %}
                     {% if geo %}
                         <span class="badge badge-light">{{ geo }}</span>
@@ -297,7 +307,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 {% endif %}
                 {# applied filters list end #}
             </div>
-            {% if colleges|length > 1 %}
+            {% if is_multiple %}
                 {# sort list start #}
                 <div class="col-sm-12 col-md-3">
                     <div class="dropdown">
@@ -344,7 +354,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <a href="{% url 'college_app:main_filter' %}">
                     <button class="btn btn-outline-info reset-button">Reset</button>
                 </a>
-                {% if colleges|length > 1 %}
+                {% if is_multiple %}
                     {# initial region filter page #}
                     {% if region_init %}
                         <div id="list-menu" class="list-group">
@@ -1144,13 +1154,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="col-sm-12 col-md-10">
                 <div class="row">
                     {# google map start #}
-                        <div class="col-sm-12 college-container">
-                            <div id="map"></div>
-                        </div>
+                    <div class="col-sm-12 college-container">
+                        <div id="map"></div>
+                    </div>
                     {# google map end #}
 
                     {# aggregate data start #}
-                    {% if colleges|length > 1 %}
+                    {% if is_multiple %}
                         <div class="col-sm-12 college-container">
                             <div class="card">
                                 <div class="row card-body aggregate">
@@ -1561,32 +1571,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-    window.mapLabels = {{ map_labels|safe }}
-    var map;
-    var locations = []
-    for (var i = 0; i < window.mapLabels.length; i++){
-       locations.push(window.mapLabels[i])
-    }
     function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
+        window.map = new google.maps.Map(document.getElementById('map'), {
             center: {
                 lat: 46.589931,
                 lng: -95.009003
             },
             zoom: 3
         });
-        for (var i = 0; i < locations.length; i++) {
-            var maker = new google.maps.Marker({
-                position: {
-                    lat: locations[i][0],
-                    lng: locations[i][1]
-                },
-                map: map,
-                title: locations[i][2] + '\n' + locations[i][3] + ', ' + locations[i][4]
-            });
-        }
     }
+    axios.get('/api/?{{ api_call|safe }}')
+        .then(function (response) {
+            if (response.data.data) {
+                var mapLabels = response.data.data;
+                var locations = []
+                for (var i = 0; i < mapLabels.length; i++) {
+                    locations.push(mapLabels[i])
+                }
+                for (var i = 0; i < locations.length; i++) {
+                    var maker = new google.maps.Marker({
+                        position: {
+                            lat: locations[i][0],
+                            lng: locations[i][1]
+                        },
+                        map: window.map,
+                        title: locations[i][2] + '\n' + locations[i][3] + ', ' + locations[i][4]
+                    });
+                }
+
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
 </script>
 </body>
 </html>

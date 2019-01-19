@@ -8,6 +8,7 @@ from open_data_app.views.index import index
 from open_data_app.views.main_filter import main_filter
 from open_data_app.views.search import search
 from open_data_app.views.no_val_parameter import filter_no_values
+from open_data_app.views.api import api
 from open_data_app.modules.sitemap import CollegesSitemap, StatesSitemap, RegionsSitemap, DisciplinesSitemap, \
     FilterParamsSitemap, StateFilterParamsSitemap, RegionFilterParamsSitemap
 from django.contrib.sitemaps.views import sitemap
@@ -43,6 +44,8 @@ urlpatterns = [
     path(r'main/', main_filter, name='main_filter'),
 
     path(r'search/', search, name='search'),
+
+    path(r'api/', api, name='api'),
 
     # path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 

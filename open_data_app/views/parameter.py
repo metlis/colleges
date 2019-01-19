@@ -43,11 +43,15 @@ def filter_values(request, param, param_value):
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
+        # check if result is multiple
+        if colleges.count() > 1:
+            is_multiple = True
+        else:
+            is_multiple = False
+
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
 
-        # map labels
-        map_labels = College.get_map_labels(colleges)
 
         # pagination
         colleges = handle_pagination(request, colleges)
@@ -56,6 +60,8 @@ def filter_values(request, param, param_value):
         base_url = reverse('college_app:filter_values', kwargs={'param': verbose_name,
                                                                'param_value': param_value,
                                                                })
+        # string for api call
+        api_call = '{}={}&{}'.format(init_param, param_value, req_str)
 
         # get filters
         filters = College.get_filters('', '', init_filter=param, init_filter_val=param_value, filters_set=params_dict)
@@ -72,7 +78,9 @@ def filter_values(request, param, param_value):
                    'init_param_value': param_value,
                    'maps_key': GOOGLE_MAPS_API,
                    'state_filter': True,
-                   'map_labels': map_labels,
+                   'api_call': api_call,
+                   'is_multiple': is_multiple,
+
                    }
         context.update(filters)
         context.update(aggregate_data)

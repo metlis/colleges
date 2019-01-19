@@ -3,7 +3,7 @@ from open_data_app.models import College
 import re
 
 
-def handle_params(request, colleges, entity, entity_id, main_filter=False):
+def handle_params(request, colleges, entity, entity_id, main_filter=False, api_call=False):
     # handle filter requests at dynamic urls
     params = request.GET
 
@@ -23,7 +23,7 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False):
 
     disciplines = College.get_disciplines()
 
-    if len(params) == 1 and not 'page' in params and not main_filter:
+    if len(params) == 1 and not 'page' in params and not main_filter and not api_call:
         key = next(iter(params.keys()))
         value = next(iter(params.values()))
         params_dict[key] = value
@@ -38,7 +38,7 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False):
             colleges = colleges.filter(**{new_key: value})
         except:
             return HttpResponseNotFound('<h1>Page not found</h1>')
-    elif len(params) > 1 and 'page' in params and not main_filter:
+    elif len(params) > 1 and 'page' in params and not main_filter and not api_call:
         req = params.copy()
         del req['page']
         noindex = True
@@ -53,7 +53,7 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False):
             colleges = colleges.filter(**new_params_dict)
         except:
             return HttpResponseNotFound('<h1>Page not found</h1>')
-    elif len(params) > 1 and not main_filter:
+    elif len(params) > 1 and not main_filter and not api_call:
         noindex = True
         for key in params:
             params_dict[key] = params[key]
@@ -97,42 +97,44 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False):
 
         if region_query and state_query:
             try:
-                state_colleges = colleges.filter(**state_query)
-                region_colleges = colleges.filter(**region_query)
+                state_colleges = College.objects.filter(**state_query)
+                region_colleges = College.objects.filter(**region_query)
                 colleges = (state_colleges | region_colleges).distinct()
                 param_dict_copy = new_params_dict.copy()
                 param_dict_copy.pop(region_param)
                 param_dict_copy.pop(state_param)
                 if len(param_dict_copy) > 0:
-                    colleges = colleges.filter(**param_dict_copy)
+                    colleges = College.objects.filter(**param_dict_copy)
             except:
                 pass
         else:
             try:
-                colleges = colleges.filter(**new_params_dict)
+                colleges = College.objects.filter(**new_params_dict)
             except:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
 
 
-
-    # get applied filters values to display on results page
-    filters_vals = []
-    for p in params_dict:
-        try:
-            if isinstance(params_dict[p], list):
-                for dict_value in params_dict[p]:
-                    pr, val, verbose, param_value = College.get_filter_val(entity, entity_id, p, dict_value)
+    if not api_call:
+        # get applied filters values to display on results page
+        filters_vals = []
+        for p in params_dict:
+            try:
+                if isinstance(params_dict[p], list):
+                    for dict_value in params_dict[p]:
+                        pr, val, verbose, param_value = College.get_filter_val(entity, entity_id, p, dict_value)
+                        filters_vals.append(val)
+                else:
+                    p, val, verbose, param_value = College.get_filter_val(entity, entity_id, p, params_dict[p])
                     filters_vals.append(val)
-            else:
-                p, val, verbose, param_value = College.get_filter_val(entity, entity_id, p, params_dict[p])
-                filters_vals.append(val)
 
+            except:
+                return HttpResponseNotFound('<h1>Page not found</h1>')
+
+        try:
+            params_dict = new_params_dict
         except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+            pass
 
-    try:
-        params_dict = new_params_dict
-    except:
-        pass
-
-    return colleges, req_str, noindex, filters_vals, params_dict
+        return colleges, req_str, noindex, filters_vals, params_dict
+    else:
+        return colleges

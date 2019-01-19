@@ -46,8 +46,11 @@ def filter_no_values(request, param):
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
 
-        # map labels
-        map_labels = College.get_map_labels(colleges)
+        # check if result is multiple
+        if colleges.count() > 1:
+            is_multiple = True
+        else:
+            is_multiple = False
 
         # pagination
         colleges = handle_pagination(request, colleges)
@@ -55,6 +58,8 @@ def filter_no_values(request, param):
         # a url for pagination first page
         base_url = reverse('college_app:filter_no_values', kwargs={'param': param,
                                                                    })
+        # string for api call
+        api_call = '{}=0'.format(query_param)
 
         # get filters
         filters = College.get_filters('', '', init_filter=param, init_filter_val=0, filters_set=params_dict)
@@ -70,7 +75,8 @@ def filter_no_values(request, param):
                    'init_param': init_param,
                    'maps_key': GOOGLE_MAPS_API,
                    'state_filter': True,
-                   'map_labels': map_labels,
+                   'api_call': api_call,
+                   'is_multiple': is_multiple,
                    }
         context.update(filters)
         context.update(aggregate_data)

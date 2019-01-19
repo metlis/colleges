@@ -16,13 +16,11 @@ def main_filter(request):
     # a url for pagination first page
     base_url = reverse('college_app:main_filter')
 
-    colleges = College.objects.all()
-
     if len(params) > 0:
         # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
         # dictionary of applied filters and their values
         try:
-            colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, '', '', main_filter=True)
+            colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, '', '', '', main_filter=True)
         except:
             return render(request, 'filtered_colleges.html', {
                 'error': True,
@@ -37,8 +35,11 @@ def main_filter(request):
             # sorting colleges
             colleges = College.sort_colleges(request, colleges)
 
-            # map labels
-            map_labels = College.get_map_labels(colleges)
+            # check if result is multiple
+            if colleges.count() > 1:
+                is_multiple = True
+            else:
+                is_multiple = False
 
             # pagination
             colleges = handle_pagination(request, colleges)
@@ -56,7 +57,8 @@ def main_filter(request):
                        'main_filter': True,
                        'maps_key': GOOGLE_MAPS_API,
                        'state_filter': True,
-                       'map_labels': map_labels,
+                       'api_call': req_str,
+                       'is_multiple': is_multiple,
                        }
             context.update(filters)
             context.update(aggregate_data)
@@ -69,6 +71,7 @@ def main_filter(request):
                 'noindex': True,
             })
     else:
+        colleges = College.objects.all()
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
@@ -81,8 +84,11 @@ def main_filter(request):
             pass
 
 
-        # map labels
-        map_labels = College.get_map_labels(colleges)
+        # check if result is multiple
+        if colleges.count() > 1:
+            is_multiple = True
+        else:
+            is_multiple = False
 
         # pagination
         colleges = handle_pagination(request, colleges)
@@ -97,7 +103,8 @@ def main_filter(request):
                    'noindex': True,
                    'maps_key': GOOGLE_MAPS_API,
                    'state_filter': True,
-                   'map_labels': map_labels,
+                   'api_call': '',
+                   'is_multiple': is_multiple,
                    }
         context.update(filters)
         context.update(aggregate_data)
