@@ -1591,10 +1591,13 @@
                     locations.push(mapLabels[i])
                 }
                 for (var i = 0; i < locations.length; i++) {
+                    var lat = Number(locations[i][0])
+                    var lng = Number(locations[i][1])
+                    locations[i][1] = Number(locations[i][1])
                     var maker = new google.maps.Marker({
                         position: {
-                            lat: locations[i][0],
-                            lng: locations[i][1]
+                            lat: lat,
+                            lng: lng
                         },
                         map: window.map,
                         title: locations[i][2] + '\n' + locations[i][3] + ', ' + locations[i][4]

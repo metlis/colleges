@@ -715,12 +715,5 @@ class College(models.Model):
 
     @classmethod
     def get_map_labels(cls, colleges):
-        map_labels = []
-        for college in colleges:
-            if college.latitude and college.longitude:
-                try:
-                    map_labels.append([float(college.latitude), float(college.longitude), college.name, college.city, college.state.name])
-                except:
-                    pass
-
-        return map_labels
+        map_labels = colleges.values_list('latitude', 'longitude', 'name', 'city', 'state__name').exclude(latitude=None)
+        return list(map(list, map_labels))
