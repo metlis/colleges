@@ -41,11 +41,13 @@ def main_filter(request):
             else:
                 is_multiple = False
 
+
+            # get filters
+            filters = College.get_filters(colleges)
+
             # pagination
             colleges = handle_pagination(request, colleges)
 
-            # get filters
-            filters = College.get_filters('', '', filters_set=params_dict)
 
             context = {'colleges': colleges,
                        'seo_title': 'Results',
@@ -90,11 +92,12 @@ def main_filter(request):
         else:
             is_multiple = False
 
+        # get filters
+        filters = College.get_filters(colleges)
+
         # pagination
         colleges = handle_pagination(request, colleges)
 
-        # get filters
-        filters = College.get_filters('', '')
 
         context = {'colleges': colleges,
                    'seo_title': 'Results',

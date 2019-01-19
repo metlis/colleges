@@ -485,56 +485,14 @@ class College(models.Model):
         return new_params_dict
 
     @classmethod
-    def get_filters(cls, entity, entity_id, excluded_filters='', get_filter='', init_filter='', init_filter_val='',
-                    filters_set=''):
+    def get_filters(cls, colleges, excluded_filters=[], get_filter=''):
         """
 
-        :param entity: state or region for initial level of filtration
-        :param entity_id: state_id or region_id
+        :param colleges: colleges query set
         :param excluded_filters: filters that should not be returned
         :param get_filter: specific filter's name to return
-        :param init_filter: second level filtration
-        :param init_filter_val: second level filtration value
-        :param filters_set: third level filtration value
         :return:
         """
-        # transform filter param for academics
-        disciplines = cls.get_disciplines()
-        if init_filter in disciplines:
-            init_filter = '{}__gt'.format(init_filter)
-        if filters_set:
-            for key in filters_set:
-                if key in disciplines:
-                    new_key = '{}__gt'.format(key)
-                    filters_set[new_key] = filters_set[key]
-                    filters_set.pop(key)
-
-        # items for the second level of filtration + region or state
-        if init_filter and entity:
-            filters = {entity: entity_id,
-                       init_filter: init_filter_val,
-                       }
-
-            colleges = cls.objects.filter(**filters)
-            # third level filters
-            if filters_set:
-                colleges = colleges.filter(**filters_set)
-        # items for the second level of filtration without region or state
-        elif init_filter:
-            filters = {init_filter: init_filter_val, }
-
-            colleges = cls.objects.filter(**filters)
-            # third level filters
-            if filters_set:
-                colleges = colleges.filter(**filters_set)
-        # region or state
-        elif entity:
-            colleges = cls.objects.filter(**{entity: entity_id})
-        # third level filters
-        elif filters_set:
-            colleges = cls.objects.filter(**filters_set)
-        else:
-            colleges = cls.objects.all()
 
         colleges_cities = colleges.values_list('city',
                                                'city_slug').order_by('city').exclude(city=None).distinct()
@@ -587,6 +545,7 @@ class College(models.Model):
                    'cur_operating': colleges_cur_operating, }
 
         dict = cls.get_dict()
+        disciplines = cls.get_disciplines()
         # adding academics filters
         for discipline in disciplines:
             filter = '{}__gt'.format(discipline)
@@ -600,9 +559,13 @@ class College(models.Model):
         if len(excluded_filters) > 0:
             for i in excluded_filters:
                 try:
-                    filters[i] = []
+                    if filters[i]:
+                        filters[i] = []
                 except:
-                    pass
+                    for a in filters['academics']:
+                        if i in a:
+                            filters['academics'].remove(a)
+                            break
 
         if len(get_filter) > 0:
             for i in filters:

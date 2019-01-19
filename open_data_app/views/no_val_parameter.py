@@ -52,6 +52,9 @@ def filter_no_values(request, param):
         else:
             is_multiple = False
 
+        # get filters
+        filters = College.get_filters(colleges, excluded_filters=[init_param])
+
         # pagination
         colleges = handle_pagination(request, colleges)
 
@@ -59,10 +62,8 @@ def filter_no_values(request, param):
         base_url = reverse('college_app:filter_no_values', kwargs={'param': param,
                                                                    })
         # string for api call
-        api_call = '{}=0'.format(query_param)
+        api_call = '{}=0&{}'.format(query_param, req_str)
 
-        # get filters
-        filters = College.get_filters('', '', init_filter=param, init_filter_val=0, filters_set=params_dict)
         context = {'colleges': colleges,
                    'seo_title': seo_title,
                    'seo_description': seo_description,

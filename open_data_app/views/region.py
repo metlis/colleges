@@ -58,7 +58,7 @@ def get_region_slug(request, region_id, region_slug):
         else:
             colleges = College.objects.filter(region=region_id).order_by('name')
 
-            filters = College.get_filters('region', region_id)
+            filters = College.get_filters(colleges)
     else:
         return render(request, 'filtered_colleges.html', {
             'error': True,
@@ -168,6 +168,9 @@ def get_region_param(request, region_id, region_slug, param, param_value):
         else:
             is_multiple = False
 
+        # get filters
+        filters = College.get_filters(colleges)
+
         # pagination
         colleges = handle_pagination(request, colleges)
 
@@ -177,10 +180,6 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                                                                'param': verbose_name,
                                                                'param_value': param_value,
                                                                })
-
-        # get filters
-        filters = College.get_filters('region', region_id, init_filter=param, init_filter_val=param_value,
-                                      filters_set=params_dict)
 
         # string for api call
         api_call = 'region={}&{}={}&{}'.format(region_id, param, param_value, req_str)

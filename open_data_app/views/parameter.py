@@ -52,6 +52,8 @@ def filter_values(request, param, param_value):
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
 
+        # get filters
+        filters = College.get_filters(colleges)
 
         # pagination
         colleges = handle_pagination(request, colleges)
@@ -63,8 +65,7 @@ def filter_values(request, param, param_value):
         # string for api call
         api_call = '{}={}&{}'.format(init_param, param_value, req_str)
 
-        # get filters
-        filters = College.get_filters('', '', init_filter=param, init_filter_val=param_value, filters_set=params_dict)
+
         context = {'colleges': colleges,
                    'seo_title': seo_title,
                    'seo_description': seo_description,

@@ -58,7 +58,7 @@ def get_state_slug(request, state_id, state_slug):
         else:
             colleges = College.objects.filter(state=state_id).order_by('name')
 
-            filters = College.get_filters('state', state_id, excluded_filters=['state'])
+            filters = College.get_filters(colleges, excluded_filters=['state'])
     else:
         return render(request, 'filtered_colleges.html', {
             'error': True,
@@ -171,12 +171,12 @@ def get_state_param(request, state_id, state_slug, param, param_value):
         else:
             is_multiple = False
 
+        # get filters
+        filters = College.get_filters(colleges)
+
         # pagination
         colleges = handle_pagination(request, colleges)
 
-        # get filters
-        filters = College.get_filters('state', state_id, excluded_filters=['state'], init_filter=param,
-                                      init_filter_val=param_value, filters_set=params_dict)
 
         # string for api call
         api_call = 'state={}&{}={}&{}'.format(state_id, param, param_value, req_str)
