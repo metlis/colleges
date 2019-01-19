@@ -63,7 +63,7 @@ def filter_values(request, param, param_value):
                                                                'param_value': param_value,
                                                                })
         # string for api call
-        api_call = '{}={}&{}'.format(init_param, param_value, req_str)
+        api_call = '{}={}&{}'.format(param, param_value, req_str)
 
 
         context = {'colleges': colleges,
