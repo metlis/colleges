@@ -37,12 +37,6 @@ def search(request):
             else:
                 is_multiple = False
 
-            # check if result is multiple
-            if colleges.count() > 1:
-                is_multiple = True
-            else:
-                is_multiple = False
-
             # get filters
             filters = College.get_filters(colleges)
 
