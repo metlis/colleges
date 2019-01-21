@@ -155,6 +155,7 @@ class FilterParamsSitemap(Sitemap):
 
 
 class StateFilterParamsSitemap(Sitemap):
+    protocol = 'https'
     def items(self):
         values = []
         for state in states:
@@ -187,6 +188,7 @@ class StateFilterParamsSitemap(Sitemap):
                        )
 
 class RegionFilterParamsSitemap(Sitemap):
+    protocol = 'https'
     def items(self):
         values = []
         for region in regions:
