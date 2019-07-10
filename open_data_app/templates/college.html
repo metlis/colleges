@@ -1,17 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PTMG4DP');</script>
-    <!-- End Google Tag Manager -->
-    <meta charset="UTF-8">
-    <meta name="robots" content="index, follow">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta property="og:type" content="website">
+{% extends "inner_page.html" %}
+
+{% load static %}
+{% load mathfilters %}
+{% load humanize %}
+{% load bar_parcent %}
+
+{% block description %}
     <meta name="description"
           content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
     <meta property="og:description"
@@ -19,43 +13,25 @@
     <meta name="twitter:description"
           content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
     <link rel="canonical" href="{% url 'college_app:college_slug' college_id college_slug %}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+{% endblock %}
+
+{% block title %}
     <title>{{ college.name }}: disciplines, costs, financial aid, admissions</title>
     <meta property="og:title" content="{{ college.name }}: disciplines, costs, financial aid, admissions">
     <meta name="twitter:title" content="{{ college.name }}: disciplines, costs, financial aid, admissions">
-    {% load mathfilters %}
-    {% load humanize %}
-    {% load static %}
-    {% load bar_parcent %}
-    <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}">
-    <link rel="stylesheet" href="{% static 'open_data_app/css/college.css' %}">
-</head>
-<body data-spy="scroll" data-target="#list-menu" data-offset="0">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PTMG4DP"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-<div style="min-height: 100vh">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <img src="{% static 'open_data_app/img/icon.png' %}" onclick="window.location.href='/'" width="7%" height="7%"
-             class="icon"/>
-        <a class="navbar-brand" href="/">USA COLLEGES</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+{% endblock %}
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            </ul>
-            <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}" autocomplete="off">
-                <input class="form-control search mr-sm-2" type="search" name="text" placeholder="Search">
-                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
-    <div class="container-fluid" itemscope itemtype="http://schema.org/CollegeOrUniversity">
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'open_data_app/css/college.css' %}">
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ request.path }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid" itemscope
+         itemtype="http://schema.org/CollegeOrUniversity">
         <div class="row">
             <div class="col-sm-12 col-md-2">
                 <div id="list-menu" class="list-group">
@@ -98,52 +74,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     <div class="col-sm-12 col-md-6">
                                         {% if college.url %}
                                             <p>
-                                        <span class="icon-container"><i class="fab fa-internet-explorer"
-                                                                        data-toggle="tooltip" data-placement="top"
-                                                                        title="Web site"></i></span> <a
+                                            <span class="icon-container"><i class="fab fa-internet-explorer"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Web site"></i></span> <a
                                                     href="//{{ college.url }}" rel="nofollow" target="_blank"><span
                                                     itemprop="url" class="icon-text">{{ college.url }}</span></a>
                                             </p>
                                         {% endif %}
                                         {% if college.city or college.state or college.zip %}
                                             <p>
-                                        <span class="icon-container"><i class="fas fa-map-marker-alt"
-                                                                        data-toggle="tooltip" data-placement="top"
-                                                                        title="Zip code"></i></span> <span
+                                            <span class="icon-container"><i class="fas fa-map-marker-alt"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Zip code"></i></span> <span
                                                     itemprop="location"
                                                     class="icon-text">{{ college.city }}, {{ college.state }} {{ college.zip }}</span>
                                             </p>
                                         {% endif %}
                                         {% if college.locale %}
                                             <p>
-                                        <span class="icon-container"><i class="fas fa-city" data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Locale"></i></span><span
+                                            <span class="icon-container"><i class="fas fa-city" data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Locale"></i></span><span
                                                     class="icon-text">{{ college.locale }}</span>
                                             </p>
                                         {% endif %}
                                         {% if college.undergrad_students %}
                                             <p>
-                                        <span class="icon-container"><i class="fas fa-user-graduate"
-                                                                        data-toggle="tooltip" data-placement="top"
-                                                                        title="Undergraduate students"></i></span><span
+                                            <span class="icon-container"><i class="fas fa-user-graduate"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Undergraduate students"></i></span><span
                                                     class="icon-text">{{ college.undergrad_students|floatformat:"0"|intcomma }}</span>
                                             </p>
                                         {% endif %}
                                         {% if college.religous %}
                                             <p>
-                                            <span class="icon-container"><i class="fas fa-church" data-toggle="tooltip"
-                                                                            data-placement="top"
-                                                                            title="Religous affiliation of the institution"></i></span>
+                                                <span class="icon-container"><i class="fas fa-church"
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                title="Religous affiliation of the institution"></i></span>
                                                 <span
                                                         class="icon-text">{{ college.religous }}</span>
                                             </p>
                                         {% endif %}
                                         {% if college.ownership %}
                                             <p>
-                                        <span class="icon-container"><i class="fas fa-home" data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Ownership"></i></span> <span
+                                            <span class="icon-container"><i class="fas fa-home" data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Ownership"></i></span> <span
                                                     itemprop="ownershipFundingInfo"
                                                     class="icon-text">{{ college.ownership }}</span>
                                             </p>
@@ -194,26 +171,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <div class="col-sm-12 card-body collapse show" id="academics">
                                 {% if college.highest_grad_degree or college.inst_level %}
                                     <p>
-                                <span class="icon-container"><i class="fas fa-university" data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title="Level of institution and highest degree awarded"></i></span>
+                                    <span class="icon-container"><i class="fas fa-university" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="Level of institution and highest degree awarded"></i></span>
                                         <span
                                                 class="icon-text">{{ college.inst_level }}, {{ college.highest_grad_degree }}</span>
                                     </p>
                                 {% endif %}
                                 {% if college.carnegie_basic %}
                                     <p>
-                                <span class="icon-container"><i class="fas fa-flask" data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title="Carnegie Classification"></i></span> <span
+                                    <span class="icon-container"><i class="fas fa-flask" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="Carnegie Classification"></i></span> <span
                                             class="icon-text">{{ college.carnegie_basic }}</span>
                                     </p>
                                 {% endif %}
                                 {% if college.online_only %}
                                     <p>
-                                    <span class="icon-container"><i class="fas fa-globe" data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title="Distance-education-only education"></i></span>
+                                        <span class="icon-container"><i class="fas fa-globe" data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Distance-education-only education"></i></span>
                                         Online-only</p>
                                 {% endif %}
                                 {% if not college.online_only and not college.carnegie_basic and not college.highest_grad_degree and not college.inst_level %}
@@ -337,7 +314,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                                 {% if college.sat_average %}
                                                     {{ college.sat_average|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
-                                                data</span>{% endif %}
+                                                    data</span>{% endif %}
                                             </div>
                                         </div>
                                         <span>Math <i class="fas fa-info-circle" data-toggle="tooltip"
@@ -351,7 +328,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                                 {% if college.sat_math %}
                                                     {{ college.sat_math|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
-                                                data</span>{% endif %}
+                                                    data</span>{% endif %}
                                             </div>
                                         </div>
                                         <span>Crirical reading <i class="fas fa-info-circle" data-toggle="tooltip"
@@ -365,7 +342,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                                 {% if college.sat_reading %}
                                                     {{ college.sat_reading|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
-                                                data</span>{% endif %}
+                                                    data</span>{% endif %}
                                             </div>
                                         </div>
                                         <span>Writing <i class="fas fa-info-circle" data-toggle="tooltip"
@@ -379,7 +356,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                                 {% if college.sat_writing %}
                                                     {{ college.sat_writing|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
-                                                data</span>{% endif %}
+                                                    data</span>{% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -396,7 +373,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                                 {% if college.act_cumulative %}
                                                     {{ college.act_cumulative|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
-                                                data</span>{% endif %}
+                                                    data</span>{% endif %}
                                             </div>
                                         </div>
                                         <span>Math <i class="fas fa-info-circle" data-toggle="tooltip"
@@ -410,7 +387,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                                 {% if college.act_math %}
                                                     {{ college.act_math|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
-                                                data</span>{% endif %}
+                                                    data</span>{% endif %}
                                             </div>
                                         </div>
                                         <span>English <i class="fas fa-info-circle" data-toggle="tooltip"
@@ -424,7 +401,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                                 {% if college.act_english %}
                                                     {{ college.act_english|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
-                                                data</span>{% endif %}
+                                                    data</span>{% endif %}
                                             </div>
                                         </div>
                                         <span>Writing <i class="fas fa-info-circle" data-toggle="tooltip"
@@ -438,7 +415,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                                 {% if college.act_writing %}
                                                     {{ college.act_writing|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
-                                                data</span>{% endif %}
+                                                    data</span>{% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -1093,32 +1070,4 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
         </div>
     </div>
-    <footer class="footer">
-        <div class="container">
-            <p>colleges-us.com @ 2019</p>
-            <p><a href="mailto:info@colleges-us.com">Contact us</a></p>
-        </div>
-    </footer>
-</div>
-</body>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap"
-        async defer></script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-<script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>
-</body>
-</html>
+{% endblock %}
