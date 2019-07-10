@@ -21,6 +21,11 @@ def get_college_slug(request, college_id, college_slug):
     college_exists = College.objects.filter(id=college_id).exists()
 
     if college_exists:
+        if request.session.get('visited_colleges') is None:
+            request.session['visited_colleges'] = ()
+
+        request.session['visited_colleges'] += (college_id,)
+
         college = College.objects.get(id=college_id)
 
         disciplines = College.get_disciplines()
