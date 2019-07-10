@@ -408,8 +408,8 @@ class College(models.Model):
 
             cls.objects.bulk_create(colleges)
 
-    @classmethod
-    def get_dict(cls):
+    @staticmethod
+    def get_dict():
         dict = {'hist_black': ['Historically not black', 'Historically black'],
                 'predom_black': ['Predominantely not black', 'Predominantely black'],
                 'hispanic': ['Predominantely not hispanic', 'Predominantely hispanic'],
@@ -458,8 +458,8 @@ class College(models.Model):
                 }
         return dict
 
-    @classmethod
-    def get_disciplines(cls):
+    @staticmethod
+    def get_disciplines():
         disciplines = ['agriculture', 'architecture', 'ethnic_cultural_gender', 'biological', 'business_marketing',
                        'communication', 'communications_technology', 'computer', 'construction', 'education',
                        'engineering', 'engineering_technology', 'english', 'family_consumer_science', 'language',
@@ -638,8 +638,8 @@ class College(models.Model):
         else:
             return HttpResponseNotFound('<h1>Page not found</h1>')
 
-    @classmethod
-    def get_aggregate_data(cls, colleges):
+    @staticmethod
+    def get_aggregate_data(colleges):
         average_tuition = colleges.aggregate(Avg('in_state_tuition'))
 
         max_tuition = colleges.aggregate(Max('in_state_tuition'))
@@ -687,8 +687,8 @@ class College(models.Model):
             'max_admission_rate': max_admission_rate['admission_rate__max'],
         }
 
-    @classmethod
-    def sort_colleges(cls, request, colleges):
+    @staticmethod
+    def sort_colleges(request, colleges):
         try:
             sort = request.GET['sort']
             if sort:
@@ -711,7 +711,7 @@ class College(models.Model):
                                                       })
         return url
 
-    @classmethod
-    def get_map_labels(cls, colleges):
+    @staticmethod
+    def get_map_labels(colleges):
         map_labels = colleges.values_list('latitude', 'longitude', 'name', 'city', 'state__name').exclude(latitude=None)
         return list(map(list, map_labels))
