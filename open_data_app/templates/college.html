@@ -53,7 +53,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12" style="display: flex; justify-content: flex-end">
+                    <div class="col-sm-12 buttons-container">
+                        <div>
+                            <i class="{% if is_favourite %}fas{% else %}far{% endif %} fa-star favourite-button"
+                               id="college-star" title="Add to favourite"
+                               data-session-key="{{ session_key }}" data-college-id="{{ college.id }}"></i>
+                        </div>
                         <!-- AddToAny BEGIN -->
                         <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
                             <a class="a2a_button_facebook"></a>
@@ -129,29 +134,6 @@
                                     <div class="col-sm-12 col-md-6">
                                         {% if college.latitude and college.longitude %}
                                             <div id="map"></div>
-                                            <script>
-                                                var map, maker;
-
-                                                function initMap() {
-                                                    map = new google.maps.Map(document.getElementById('map'), {
-                                                        center: {
-                                                            lat: {{ college.latitude }},
-                                                            lng: {{ college.longitude }}
-                                                        },
-                                                        zoom: 17
-                                                    });
-                                                    maker = new google.maps.Marker({
-                                                        position: {
-                                                            lat: {{ college.latitude }},
-                                                            lng: {{ college.longitude }}
-                                                        },
-                                                        map: map,
-                                                        {% if college.city and college.state and college.zip %}
-                                                            title: '{{ college.city }}, {{ college.state }} {{ college.zip }}'
-                                                        {% endif %}
-                                                    });
-                                                }
-                                            </script>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -1070,4 +1052,21 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap"
+            async defer></script>
+    <script>
+        function initMap() {
+            initCollegeMap({
+                latitude: {{ college.latitude }},
+                longitude: {{ college.longitude }},
+                city: "{{ college.city }}",
+                state: "{{ college.state }}",
+                zip: "{{ college.zip }}"
+            });
+        }
+    </script>
 {% endblock %}

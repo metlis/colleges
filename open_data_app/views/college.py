@@ -22,9 +22,14 @@ def get_college_slug(request, college_id, college_slug):
 
     if college_exists:
         if request.session.get('visited_colleges') is None:
-            request.session['visited_colleges'] = ()
+            request.session['visited_colleges'] = []
+        request.session['visited_colleges'] = list(set(request.session['visited_colleges'] + [college_id]))
 
-        request.session['visited_colleges'] += (college_id,)
+        is_favourite = False
+        if request.session.get('favourite_colleges') is not None \
+                and str(college_id) in request.session['favourite_colleges']:
+            is_favourite = True
+
 
         college = College.objects.get(id=college_id)
 
@@ -53,7 +58,9 @@ def get_college_slug(request, college_id, college_slug):
                                                     'college_slug': college_slug,
                                                     'top_disciplines': top_disciplines[:5],
                                                     'college_disciplines': disciplines_vals,
+                                                    'is_favourite': is_favourite,
                                                     'maps_key': GOOGLE_MAPS_API,
+                                                    'session_key': request.session.session_key,
                                                     })
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')

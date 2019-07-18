@@ -206,6 +206,15 @@ footer .container p {
 .search {
   border: 1px solid rgba(0,165,217,0.5);
 }
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+}
+.favourite-button {
+  color: #ffa500;
+  cursor: pointer;
+  font-size: 25px;
+}
 @media (max-width: 767.98px) {
   .gender-header {
     margin-top: 15px;
