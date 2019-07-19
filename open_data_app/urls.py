@@ -10,6 +10,7 @@ from open_data_app.views.search import search
 from open_data_app.views.no_val_parameter import filter_no_values
 from open_data_app.api.get_labels import get_labels
 from open_data_app.api.modify_favourites import modify_favourites
+from open_data_app.views.favourite import show_favourite
 from open_data_app.modules.sitemap import CollegesSitemap, StatesSitemap, RegionsSitemap, DisciplinesSitemap, \
     FilterParamsSitemap, StateFilterParamsSitemap, RegionFilterParamsSitemap
 from django.contrib.sitemaps.views import sitemap
@@ -45,6 +46,8 @@ urlpatterns = [
     path(r'main/', main_filter, name='main_filter'),
 
     path(r'search/', search, name='search'),
+
+    path(r'favourite/', show_favourite, name='show_favourite'),
 
     path(r'api/get_labels/', get_labels, name='get_labels'),
     path(r'api/modify_favourites/', modify_favourites, name='modify_favourites'),

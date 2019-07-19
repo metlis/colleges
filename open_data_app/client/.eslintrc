@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/base",
+    "airbnb"
+  ],
+  "parserOptions": {
+    "parser": "babel-eslint"
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "plugins": [],
+  "rules": {
+    "no-unused-vars": 0,
+    "no-debugger": 0,
+    "no-console": 0,
+    "new-cap": 0,
+    "strict": 0,
+    "no-underscore-dangle": 0,
+    "no-use-before-define": 0,
+    "eol-last": 0,
+    "quotes": [2, "single"],
+    "indent": ["error", 2],
+    "no-var": "error"
+  }
+}
