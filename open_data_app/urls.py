@@ -27,7 +27,7 @@ app_name = 'college_app'
 #     'colleges': CollegesSitemap,
 # }
 
-handler404 = 'open_data_app.views.page_not_found'
+# handler404 = 'open_data_app.views.page_not_found'
 urlpatterns = [
     path(r'state/<int:state_id>/', get_state, name='state'),
     path(r'state/<int:state_id>/<slug:state_slug>/', get_state_slug, name='state_slug'),
