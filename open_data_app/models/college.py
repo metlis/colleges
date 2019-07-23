@@ -297,7 +297,7 @@ class College(models.Model):
                     college.cur_operating = check_val(col_values[315], False)
                     college.url = check_val(col_values[8], True)
                     college.calc_url = check_val(col_values[9], True)
-                    college.full_data = ','.join(col_values)
+                    # college.full_data = ','.join(col_values)
 
                     # academics section
                     college.agriculture = check_val(col_values[61], False)
