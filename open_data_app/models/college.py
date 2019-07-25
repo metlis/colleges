@@ -204,7 +204,7 @@ class College(models.Model):
     @classmethod
     def parse_csv(cls):
         csv.field_size_limit(sys.maxsize)
-        with open(os.path.abspath(os.path.join(BASE_DIR, 'open_data_app', 'static/data.csv')), 'r', newline='',
+        with open(os.path.abspath(os.path.join(BASE_DIR, 'open_data_app', 'static/data2.csv')), 'r', newline='',
                   encoding='utf-8') as file:
 
             colleges = []
@@ -219,7 +219,7 @@ class College(models.Model):
                 if row_num > 1:
                     col_values = row.split(',')
                     
-                    if len(col_values) != 1847:
+                    if len(col_values) != 1977:
 
                         links = []
                         i = row.index('"') + 1
@@ -236,7 +236,7 @@ class College(models.Model):
                         col_values = row.split(',')
 
                     def check_val(val, str):
-                        if (val == 'NULL' or val == 'PrivacySuppressed') and not str:
+                        if (val == 'NULL' or val == 'NU' or val == 'PrivacySuppressed') and not str:
                             return None
                         elif val == 'NULL' and str:
                             return ''
