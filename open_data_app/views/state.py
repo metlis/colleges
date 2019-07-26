@@ -1,46 +1,13 @@
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-from django.apps import apps
 from open_data_app.models import State
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
 from settings import *
-import urllib.parse
 from open_data_app.modules.seo import Seo
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-
-
-# def get_state(request, state_id):
-#     state_exists = State.objects.filter(id=state_id).exists()
-#
-#     if state_exists:
-#         params = request.GET
-#         state, state_slug = State.get_state_data(state_id)
-#
-#         if len(params) == 0:
-#             return HttpResponseRedirect(urllib.parse.urljoin(str(state_id), state_slug))
-#         # static address for url with one parameter
-#         elif len(params) == 1:
-#             key = next(iter(params.keys()))
-#             value = next(iter(params.values()))
-#
-#             try:
-#                 verbose_name = College._meta.get_field(key).verbose_name
-#                 url = reverse('college_app:state_param', kwargs={'state_id': state_id,
-#                                                                  'state_slug': state_slug,
-#                                                                  'param': verbose_name,
-#                                                                  'param_value': value,
-#                                                                  })
-#                 return HttpResponseRedirect(url)
-#             except:
-#                 return HttpResponseNotFound('<h1>Page not found</h1>')
-#         else:
-#             return HttpResponse('In development')
-#
-#     else:
-#         return HttpResponseNotFound('<h1>Page not found</h1>')
+from django.core.paginator import Paginator
 
 
 def get_state(request, state_id, state_slug):
