@@ -3,7 +3,7 @@ from django.urls import path
 from open_data_app.views.college import get_college
 from open_data_app.views.parameter import filter_values
 from open_data_app.views.region import get_region, get_region_param
-from open_data_app.views.state import get_state, get_state_slug, get_state_param
+from open_data_app.views.state import get_state, get_state_param
 from open_data_app.views.index import index
 from open_data_app.views.main_filter import main_filter
 from open_data_app.views.search import search
@@ -29,8 +29,7 @@ app_name = 'college_app'
 
 # handler404 = 'open_data_app.views.page_not_found'
 urlpatterns = [
-    path(r'state/<int:state_id>/', get_state, name='state'),
-    path(r'state/<int:state_id>/<slug:state_slug>/', get_state_slug, name='state_slug'),
+    path(r'state/<int:state_id>/<slug:state_slug>/', get_state, name='state'),
     path(r'state/<int:state_id>/<slug:state_slug>/<param>/<param_value>/', get_state_param, name='state_param'),
 
     path(r'region/<int:region_id>/<slug:region_slug>/', get_region, name='region'),

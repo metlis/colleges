@@ -10,12 +10,10 @@ class State(models.Model):
     def __str__(self):
         return self.name
 
-    @classmethod
-    def get_state_data(cls, state_id):
-        state = cls.objects.get(id=state_id)
-        state_slug = slugify(state.name)
+    def get_state_slug(self):
+        state_slug = slugify(self.name)
 
-        return state, state_slug
+        return state_slug
 
     def get_absolute_path(self):
         id = self.id

@@ -117,7 +117,7 @@
                                 <ul class="dropdown-menu">
                                     {% for state in states %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:state' state.id %}">{{ state.name }}</a></li>
+                                               href="{% url 'college_app:state' state.id state.get_state_slug %}">{{ state.name }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </li>

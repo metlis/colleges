@@ -12,17 +12,54 @@ from open_data_app.modules.seo import Seo
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
-def get_state(request, state_id):
+# def get_state(request, state_id):
+#     state_exists = State.objects.filter(id=state_id).exists()
+#
+#     if state_exists:
+#         params = request.GET
+#         state, state_slug = State.get_state_data(state_id)
+#
+#         if len(params) == 0:
+#             return HttpResponseRedirect(urllib.parse.urljoin(str(state_id), state_slug))
+#         # static address for url with one parameter
+#         elif len(params) == 1:
+#             key = next(iter(params.keys()))
+#             value = next(iter(params.values()))
+#
+#             try:
+#                 verbose_name = College._meta.get_field(key).verbose_name
+#                 url = reverse('college_app:state_param', kwargs={'state_id': state_id,
+#                                                                  'state_slug': state_slug,
+#                                                                  'param': verbose_name,
+#                                                                  'param_value': value,
+#                                                                  })
+#                 return HttpResponseRedirect(url)
+#             except:
+#                 return HttpResponseNotFound('<h1>Page not found</h1>')
+#         else:
+#             return HttpResponse('In development')
+#
+#     else:
+#         return HttpResponseNotFound('<h1>Page not found</h1>')
+
+
+def get_state(request, state_id, state_slug):
     state_exists = State.objects.filter(id=state_id).exists()
 
     if state_exists:
-        params = request.GET
-        state, state_slug = State.get_state_data(state_id)
+        state = State.objects.get(id=state_id)
+        slug = state.get_state_slug()
 
-        if len(params) == 0:
-            return HttpResponseRedirect(urllib.parse.urljoin(str(state_id), state_slug))
+        params = request.GET
+
+        if state_slug != slug:
+            return render(request, 'filtered_colleges.html', {
+                'error': True,
+                'seo_title': 'Results',
+                'noindex': True,
+            })
         # static address for url with one parameter
-        elif len(params) == 1:
+        elif len(params) == 1 and not 'page' in params:
             key = next(iter(params.keys()))
             value = next(iter(params.values()))
 
@@ -36,25 +73,6 @@ def get_state(request, state_id):
                 return HttpResponseRedirect(url)
             except:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
-        else:
-            return HttpResponse('In development')
-
-    else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
-
-
-def get_state_slug(request, state_id, state_slug):
-    state_exists = State.objects.filter(id=state_id).exists()
-
-    if state_exists:
-        state, slug = State.get_state_data(state_id)
-
-        if state_slug != slug:
-            return render(request, 'filtered_colleges.html', {
-                'error': True,
-                'seo_title': 'Results',
-                'noindex': True,
-            })
         else:
             colleges = College.objects.filter(state=state_id).order_by('name')
 
@@ -88,7 +106,7 @@ def get_state_slug(request, state_id, state_slug):
         paginator = Paginator(colleges, 50)
         colleges = paginator.get_page(page)
 
-    canonical = reverse('college_app:state_slug', kwargs={'state_id': state_id,
+    canonical = reverse('college_app:state', kwargs={'state_id': state_id,
                                                           'state_slug': state_slug,
                                                           })
     # string for api call
@@ -99,7 +117,7 @@ def get_state_slug(request, state_id, state_slug):
                'state': state,
                'state_id': state_id,
                'state_name': state.name,
-               'slug': state_slug,
+               'state_slug': state_slug,
                'base_url': canonical,
                'canonical': canonical,
                'maps_key': GOOGLE_MAPS_API,
@@ -189,6 +207,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                    'base_url': canonical,
                    'state_view': True,
                    'state_id': state_id,
+                   'state_slug': state_slug,
                    'init_filter_val': query_val,
                    'geo': state_name,
                    'second_filter': query_val,
@@ -196,8 +215,8 @@ def get_state_param(request, state_id, state_slug, param, param_value):
                    'noindex': noindex,
                    'filters_vals': filters_vals,
                    'maps_key': GOOGLE_MAPS_API,
-                    'api_call': api_call,
-                    'is_multiple': is_multiple,
+                   'api_call': api_call,
+                   'is_multiple': is_multiple,
                    }
 
         context.update(filters)
