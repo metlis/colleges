@@ -1,28 +1,31 @@
-import urllib.parse
-from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from open_data_app.models import Region, College, State
-from django.utils.text import slugify
-from settings import *
-
+from django.core.paginator import Paginator
+from open_data_app.models import Region, College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.seo import Seo
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from settings import *
 
 
-def get_region(request, region_id):
+def get_region(request, region_id, region_slug):
     region_exists = Region.objects.filter(id=region_id).exists()
 
     if region_exists:
-        params = request.GET
-        region_name, region_slug, region_states = Region.get_region_data(region_id)
+        region = Region.objects.get(id=region_id)
+        region_name, slug, region_states = region.get_region_data()
 
-        if len(params) == 0:
-            return HttpResponseRedirect(urllib.parse.urljoin(str(region_id), region_slug))
-        # static address for url with one parameter
-        elif len(params) == 1:
+        params = request.GET
+
+        if region_slug != slug:
+            return render(request, 'filtered_colleges.html', {
+                'error': True,
+                'seo_title': 'Results',
+                'noindex': True,
+            })
+        # static address for url with single parameter
+        elif len(params) == 1 and not 'page' in params:
             key = next(iter(params.keys()))
             value = next(iter(params.values()))
 
@@ -36,25 +39,6 @@ def get_region(request, region_id):
                 return HttpResponseRedirect(url)
             except:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
-        else:
-            return HttpResponse('In development')
-
-    else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
-
-
-def get_region_slug(request, region_id, region_slug):
-    region_exists = Region.objects.filter(id=region_id).exists()
-
-    if region_exists:
-        region_name, slug, region_states = Region.get_region_data(region_id)
-
-        if region_slug != slug:
-            return render(request, 'filtered_colleges.html', {
-                'error': True,
-                'seo_title': 'Results',
-                'noindex': True,
-            })
         else:
             colleges = College.objects.filter(region=region_id).order_by('name')
 
@@ -88,7 +72,7 @@ def get_region_slug(request, region_id, region_slug):
         paginator = Paginator(colleges, 50)
         colleges = paginator.get_page(page)
 
-    canonical = reverse('college_app:region_slug', kwargs={'region_id': region_id,
+    canonical = reverse('college_app:region', kwargs={'region_id': region_id,
                                                            'region_slug': region_slug,
                                                            })
     # string for api call
@@ -98,7 +82,7 @@ def get_region_slug(request, region_id, region_slug):
                'region_name': region_name,
                'region_states': region_states,
                'region_id': region_id,
-               'slug': region_slug,
+               'region_slug': region_slug,
                'base_url': canonical,
                'canonical': canonical,
                'maps_key': GOOGLE_MAPS_API,
@@ -125,7 +109,8 @@ def get_region_param(request, region_id, region_slug, param, param_value):
     :param param_value: value of a field
     :return:
     """
-    region_name, region_slug, region_states = Region.get_region_data(region_id)
+    region = Region.objects.get(id=region_id)
+    region_name, region_slug, region_states = region.get_region_data()
 
     # initial filter, its value, verbose name and param value
     param, query_val, verbose_name, param_value = College.get_filter_val('region', region_id, param, param_value)
@@ -191,6 +176,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                    'canonical': canonical,
                    'base_url': base_url,
                    'region_id': region_id,
+                   'region_slug': region_slug,
                    'init_filter_val': query_val,
                    'geo': region_name,
                    'second_filter': query_val,

@@ -5,13 +5,13 @@ from django.http import HttpResponseNotFound
 from settings import *
 
 
-def get_college(request, college_id, slug):
+def get_college(request, college_id, college_slug):
     college_exists = College.objects.filter(id=college_id).exists()
 
     if college_exists:
         college = College.objects.get(id=college_id)
 
-        if slug != slugify(college.name):
+        if college_slug != slugify(college.name):
             return HttpResponseNotFound('<h1>Page not found</h1>')
 
         else:

@@ -11,10 +11,8 @@ class Region(models.Model):
     def __str__(self):
         return self.name
 
-    @classmethod
-    def get_region_data(cls, region_id):
-        region = cls.objects.get(id=region_id)
-        region_re = re.search('(.*?)\s\((.*?)\)', region.name)
+    def get_region_data(self):
+        region_re = re.search('(.*?)\s\((.*?)\)', self.name)
         try:
             region_name = region_re.group(1)
             region_slug = slugify(region_name)

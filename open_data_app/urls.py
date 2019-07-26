@@ -2,7 +2,7 @@ from django.urls import path
 
 from open_data_app.views.college import get_college
 from open_data_app.views.parameter import filter_values
-from open_data_app.views.region import get_region, get_region_slug, get_region_param
+from open_data_app.views.region import get_region, get_region_param
 from open_data_app.views.state import get_state, get_state_slug, get_state_param
 from open_data_app.views.index import index
 from open_data_app.views.main_filter import main_filter
@@ -33,11 +33,10 @@ urlpatterns = [
     path(r'state/<int:state_id>/<slug:state_slug>/', get_state_slug, name='state_slug'),
     path(r'state/<int:state_id>/<slug:state_slug>/<param>/<param_value>/', get_state_param, name='state_param'),
 
-    path(r'region/<int:region_id>/', get_region, name='region'),
-    path(r'region/<int:region_id>/<slug:region_slug>/', get_region_slug, name='region_slug'),
+    path(r'region/<int:region_id>/<slug:region_slug>/', get_region, name='region'),
     path(r'region/<int:region_id>/<slug:region_slug>/<param>/<param_value>/', get_region_param, name='region_param'),
 
-    path(r'college/<int:college_id>/<slug:slug>/', get_college, name='college'),
+    path(r'college/<int:college_id>/<slug:college_slug>/', get_college, name='college'),
 
     path(r'param/<param>/', filter_no_values, name='filter_no_values'),
     path(r'param/<param>/<param_value>/', filter_values, name='filter_values'),

@@ -107,7 +107,7 @@
                                     {% for region in regions %}
                                         {% if region.id > 0 %}
                                             <li><a class="dropdown-item"
-                                                   href="{% url 'college_app:region' region.id %}">{{ region.name }}</a>
+                                                   href="{% url 'college_app:region' region.id region.get_region_data.1 %}">{{ region.name }}</a>
                                             </li>
                                         {% endif %}
                                     {% endfor %}
