@@ -238,7 +238,14 @@
 
         <div class="row">
             <div class="col-sm-12 col-md-9 filters-applied">
-                <p class="colleges-count">Colleges found: <strong>{{ colleges.count }}</strong></p>
+                <p class="colleges-count">Colleges found:
+                <strong>
+                    {% if colleges.paginator %}
+                        {{ colleges.paginator.count }}
+                    {% else %}
+                        {{ colleges.count }}
+                    {% endif %}
+                </strong></p>
                 {# applied filters list start #}
                 <span>Filters applied:</span>
                 {% if filters_vals|length > 0 or init_filter_val or state_init or region_init %}
