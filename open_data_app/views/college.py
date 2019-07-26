@@ -1,37 +1,26 @@
 from django.shortcuts import render
 from open_data_app.models import College
 from django.utils.text import slugify
-from django.http import HttpResponseNotFound, HttpResponseRedirect
-import urllib.parse
+from django.http import HttpResponseNotFound
 from settings import *
 
 
-def get_college(request, college_id):
-    college_exists = College.objects.filter(id=college_id).exists()
+def get_college(request, college_slug):
+    college_exists = College.objects.filter(slug=college_slug).exists()
 
     if college_exists:
-        college = College.objects.get(id=college_id)
-        college_slug = slugify(college.name)
-        return HttpResponseRedirect(urllib.parse.urljoin(str(college_id), college_slug))
-    else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        college = College.objects.get(slug=college_slug)
 
-
-def get_college_slug(request, college_id, college_slug):
-    college_exists = College.objects.filter(id=college_id).exists()
-
-    if college_exists:
         if request.session.get('visited_colleges') is None:
             request.session['visited_colleges'] = []
-        request.session['visited_colleges'] = list(set(request.session['visited_colleges'] + [college_id]))
+        request.session['visited_colleges'] = list(set(request.session['visited_colleges'] + [college.id]))
 
         is_favourite = False
         if request.session.get('favourite_colleges') is not None \
-                and str(college_id) in request.session['favourite_colleges']:
+                and str(college.id) in request.session['favourite_colleges']:
             is_favourite = True
 
 
-        college = College.objects.get(id=college_id)
 
         disciplines = College.get_disciplines()
 
@@ -54,8 +43,6 @@ def get_college_slug(request, college_id, college_slug):
             return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
             return render(request, 'college.html', {'college': college,
-                                                    'college_id': college_id,
-                                                    'college_slug': college_slug,
                                                     'top_disciplines': top_disciplines[:5],
                                                     'college_disciplines': disciplines_vals,
                                                     'is_favourite': is_favourite,

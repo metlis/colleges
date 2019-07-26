@@ -12,7 +12,7 @@
           content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
     <meta name="twitter:description"
           content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
-    <link rel="canonical" href="{% url 'college_app:college_slug' college_id college_slug %}">
+    <link rel="canonical" href="{% url 'college_app:college' college.slug %}">
 {% endblock %}
 
 {% block title %}

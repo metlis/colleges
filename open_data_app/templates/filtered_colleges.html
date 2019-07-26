@@ -1174,7 +1174,7 @@
                                             <div id="maxTuition" class="collapse">
                                                 {% for college in max_tuition_colleges %}
                                                     <p>
-                                                        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                        <a href="{% url 'college_app:college' college.slug %}">{{ college.name }}</a>
                                                     </p>
                                                 {% endfor %}
                                             </div>
@@ -1196,7 +1196,7 @@
                                             <div id="minTuition" class="collapse">
                                                 {% for college in min_tuition_colleges %}
                                                     <p>
-                                                        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                        <a href="{% url 'college_app:college' college.slug %}">{{ college.name }}</a>
                                                     </p>
                                                 {% endfor %}
                                             </div>
@@ -1233,7 +1233,7 @@
                                             <div id="maxPayments" class="collapse">
                                                 {% for college in max_payments_colleges %}
                                                     <p>
-                                                        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                        <a href="{% url 'college_app:college' college.slug %}">{{ college.name }}</a>
                                                     </p>
                                                 {% endfor %}
                                             </div>
@@ -1255,7 +1255,7 @@
                                             <div id="minPayments" class="collapse">
                                                 {% for college in min_payments_colleges %}
                                                     <p>
-                                                        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                        <a href="{% url 'college_app:college' college.slug %}">{{ college.name }}</a>
                                                     </p>
                                                 {% endfor %}
                                             </div>
@@ -1291,7 +1291,7 @@
                                             <div id="maxEarnings" class="collapse">
                                                 {% for college in max_earnings_colleges %}
                                                     <p>
-                                                        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                        <a href="{% url 'college_app:college' college.slug %}">{{ college.name }}</a>
                                                     </p>
                                                 {% endfor %}
                                             </div>
@@ -1313,7 +1313,7 @@
                                             <div id="minEarnings" class="collapse">
                                                 {% for college in min_earnings_colleges %}
                                                     <p>
-                                                        <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                                        <a href="{% url 'college_app:college' college.slug %}">{{ college.name }}</a>
                                                     </p>
                                                 {% endfor %}
                                             </div>
@@ -1330,7 +1330,7 @@
                         <div class="col-sm-12 college-container">
                             <div class="card">
                                 <div class="card-header">
-                                    <a href="{% url 'college_app:college' college.id %}">{{ college.name }}</a>
+                                    <a href="{% url 'college_app:college' college.slug %}">{{ college.name }}</a>
                                     <p><i class="fas fa-map-marker-alt"></i> {{ college.city }}, {{ college.state }}</p>
                                 </div>
                                 <div class="row card-body">
