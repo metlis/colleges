@@ -42,15 +42,15 @@
 {% block title %}
     {% if state_init %}
         {# state initital filter page #}
-        <meta property="og:title" content="2019 colleges and universities in {{ state_name }}, USA">
-        <meta name="twitter:title" content="2019 colleges and universities in {{ state_name }}, USA">
-        <title>2019 colleges and universities in {{ state_name }}, USA{% if colleges.number > 1 %} - Page
+        <meta property="og:title" content="Colleges and universities in {{ state_name }}, USA">
+        <meta name="twitter:title" content="Colleges and universities in {{ state_name }}, USA">
+        <title>Colleges and universities in {{ state_name }}, USA{% if colleges.number > 1 %} - Page
             {{ colleges.number }}{% endif %}</title>
     {% elif region_init %}
         {# region initital filter page #}
-        <meta property="og:title" content="2019 colleges and universities in {{ region_name }}, USA">
-        <meta name="twitter:title" content="2019 colleges and universities in {{ region_name }}, USA">
-        <title>2019 colleges and universities in {{ region_name }}, USA {% if colleges.number > 1 %} - Page
+        <meta property="og:title" content="Colleges and universities in {{ region_name }}, USA">
+        <meta name="twitter:title" content="Colleges and universities in {{ region_name }}, USA">
+        <title>Colleges and universities in {{ region_name }}, USA {% if colleges.number > 1 %} - Page
             {{ colleges.number }}{% endif %}</title>
     {% else %}
         {# other filter pages #}
