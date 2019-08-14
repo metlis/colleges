@@ -35,7 +35,7 @@ urlpatterns = [
     path(r'region/<int:region_id>/<slug:region_slug>/', get_region, name='region'),
     path(r'region/<int:region_id>/<slug:region_slug>/<param>/<param_value>/', get_region_param, name='region_param'),
 
-    path(r'college/<int:college_id>/<slug:college_slug>/', get_college, name='college'),
+    path(r'institution/<int:college_id>/<slug:college_slug>/', get_college, name='college'),
 
     path(r'param/<param>/', filter_no_values, name='filter_no_values'),
     path(r'param/<param>/<param_value>/', filter_values, name='filter_values'),
