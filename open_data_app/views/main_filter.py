@@ -100,7 +100,7 @@ def main_filter(request):
 
 
         context = {'colleges': colleges,
-                   'seo_title': '2019 USA College and University search',
+                   'seo_title': 'USA College and University search',
                    'seo_description': 'You can use filters on this page to search between more than 7,000 american universities and colleges in 50 states. The information on this web site is provided by College Scorecard.',
                    'canonical': canonical,
                    'base_url': base_url,
