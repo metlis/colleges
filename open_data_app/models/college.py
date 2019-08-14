@@ -1,10 +1,10 @@
 from django.db import models
 import csv
-import os
 import sys
 import urllib.parse
 
 from django.http import HttpResponseNotFound
+from django.core.exceptions import ObjectDoesNotExist
 
 from settings import *
 from django.utils.text import slugify
@@ -16,6 +16,7 @@ from open_data_app.models.degree import Degree
 from open_data_app.models.carnegie import Carnegie
 from open_data_app.models.religion import Religion
 from open_data_app.models.level import Level
+from open_data_app.models.dictionary import Dictionary
 from django.db.models import Avg, Max, Min, F
 from django.urls import reverse
 
@@ -430,66 +431,33 @@ class College(models.Model):
 
     @staticmethod
     def get_dict():
-        dict = {'hist_black': ['Historically not black', 'Historically black'],
-                'predom_black': ['Predominantely not black', 'Predominantely black'],
-                'hispanic': ['Predominantely not hispanic', 'Predominantely hispanic'],
-                'men_only': ['Not men-only', 'Men-only'],
-                'women_only': ['Not women-only', 'Women-only'],
-                'online_only': ['Not online-only', 'Online-only'],
-                'cur_operating': ['Currently closed', 'Currently operating'],
-                'agriculture': 'Agriculture, Agriculture Operations, and Related Sciences',
-                'architecture': 'Architecture and Related Services',
-                'ethnic_cultural_gender': 'Area, Ethnic, Cultural, Gender, and Group Studies',
-                'biological': 'Biological and Biomedical Sciences',
-                'business_marketing': 'Business, Management, Marketing, and Related Support Services',
-                'communication': 'Communication, Journalism, and Related Programs',
-                'communications_technology': 'Communications Technologies/Technicians and Support Services',
-                'computer': 'Computer and Information Sciences and Support Services',
-                'construction': 'Construction Trades',
-                'education': 'Education',
-                'engineering': 'Engineering',
-                'engineering_technology': 'Engineering Technologies and Engineering-Related Fields',
-                'english': 'English Language and Literature/Letters',
-                'family_consumer_science': 'Family and Consumer Sciences/Human Sciences',
-                'language': 'Foreign Languages, Literatures, and Linguistics',
-                'health': 'Health Professions and Related Programs',
-                'history': 'History',
-                'security_law_enforcement': 'Homeland Security, Law Enforcement, Firefighting and Related Protective Services',
-                'legal': 'Legal Professions and Studies',
-                'humanities': 'Liberal Arts and Sciences, General Studies and Humanities',
-                'library': 'Library Science',
-                'mathematics': 'Mathematics and Statistics',
-                'mechanic_repair_technology': 'Mechanic and Repair Technologies/Technicians',
-                'military': 'Military Technologies and Applied Sciences',
-                'multidiscipline': 'Multi/Interdisciplinary Studies',
-                'resources': 'Natural Resources and Conservation',
-                'parks_recreation_fitness': 'Parks, Recreation, Leisure, and Fitness Studies',
-                'personal_culinary': 'Personal and Culinary Services',
-                'philosophy_religious': 'Philosophy and Religious Studies',
-                'physical_science': 'Physical Sciences',
-                'precision_production': 'Precision Production',
-                'psychology': 'Psychology',
-                'public_administration_social_service': 'Public Administration and Social Service Professions',
-                'science_technology': 'Science Technologies/Technicians',
-                'social_science': 'Social Sciences',
-                'theology_religious_vocation': 'Theology and Religious Vocations',
-                'transportation': 'Transportation and Materials Moving',
-                'visual_performing': 'Visual and Performing Arts',
-                }
-        return dict
+        """
+        Returns dictionary of titles for college properties
+        :return Dictionary:
+        """
+        try:
+            content = Dictionary.objects.get(name='property_titles').content
+            if content is not None:
+                return content
+            else:
+                return {}
+        except ObjectDoesNotExist:
+            return {}
 
     @staticmethod
     def get_disciplines():
-        disciplines = ['agriculture', 'architecture', 'ethnic_cultural_gender', 'biological', 'business_marketing',
-                       'communication', 'communications_technology', 'computer', 'construction', 'education',
-                       'engineering', 'engineering_technology', 'english', 'family_consumer_science', 'language',
-                       'health', 'history', 'security_law_enforcement', 'legal', 'humanities', 'library', 'mathematics',
-                       'mechanic_repair_technology', 'military', 'multidiscipline', 'resources',
-                       'parks_recreation_fitness', 'personal_culinary', 'philosophy_religious', 'physical_science',
-                       'precision_production', 'psychology', 'public_administration_social_service',
-                       'science_technology', 'social_science', 'theology_religious_vocation', 'transportation',
-                       'visual_performing']
-        return disciplines
+        """
+        Returns slugs of college disciplines
+        :return Array:
+        """
+        try:
+            content = Dictionary.objects.get(name='discipline_slugs').content
+            if content is not None:
+                return content
+            else:
+                return []
+        except ObjectDoesNotExist:
+            return []
 
     @classmethod
     def create_new_params_dict(cls, params_dict):
@@ -505,7 +473,6 @@ class College(models.Model):
     @classmethod
     def get_filters(cls, colleges, excluded_filters=[], get_filter=''):
         """
-
         :param colleges: colleges query set
         :param excluded_filters: filters that should not be returned
         :param get_filter: specific filter's name to return
