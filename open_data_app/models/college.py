@@ -204,17 +204,12 @@ class College(models.Model):
     @classmethod
     def parse_csv(cls):
         csv.field_size_limit(sys.maxsize)
-        with open(os.path.abspath(os.path.join(BASE_DIR, 'open_data_app', 'static/data2.csv')), 'r', newline='',
+        with open(os.path.abspath(os.path.join(BASE_DIR, 'open_data_app', DATA_PATH)), 'r', newline='',
                   encoding='utf-8') as file:
 
             colleges = []
             row_num = 1
             for row in file:
-
-                # for checking column name:
-                # col_values = row.split(',')
-                # print(col_values[314])
-                # return
 
                 if row_num > 1:
                     col_values = row.split(',')
@@ -297,7 +292,6 @@ class College(models.Model):
                     college.cur_operating = check_val(col_values[315], False)
                     college.url = check_val(col_values[8], True)
                     college.calc_url = check_val(col_values[9], True)
-                    # college.full_data = ','.join(col_values)
 
                     # academics section
                     college.agriculture = check_val(col_values[61], False)
@@ -407,6 +401,32 @@ class College(models.Model):
                 row_num += 1
 
             cls.objects.bulk_create(colleges)
+
+    @staticmethod
+    def get_column_title(index):
+        csv.field_size_limit(sys.maxsize)
+        with open(os.path.abspath(os.path.join(BASE_DIR, 'open_data_app', DATA_PATH)), 'r', newline='',
+                  encoding='utf-8') as file:
+
+            for row in file:
+                col_values = row.split(',')
+                try:
+                    return col_values[index]
+                except IndexError:
+                    return 'List index out of range'
+
+    @staticmethod
+    def get_column_index(title):
+        csv.field_size_limit(sys.maxsize)
+        with open(os.path.abspath(os.path.join(BASE_DIR, 'open_data_app', DATA_PATH)), 'r', newline='',
+                  encoding='utf-8') as file:
+
+            for row in file:
+                col_values = row.split(',')
+                for index, value in enumerate(col_values):
+                    if value == title:
+                        return index
+                return 'Not found'
 
     @staticmethod
     def get_dict():
