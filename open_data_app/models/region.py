@@ -11,10 +11,8 @@ class Region(models.Model):
     def __str__(self):
         return self.name
 
-    @classmethod
-    def get_region_data(cls, region_id):
-        region = cls.objects.get(id=region_id)
-        region_re = re.search('(.*?)\s\((.*?)\)', region.name)
+    def get_region_data(self):
+        region_re = re.search('(.*?)\s\((.*?)\)', self.name)
         try:
             region_name = region_re.group(1)
             region_slug = slugify(region_name)
@@ -32,7 +30,7 @@ class Region(models.Model):
             region_re = re.search('(.*?)\s\((.*?)\)', self.name)
             region_name = region_re.group(1)
             slug = slugify(region_name)
-            url = reverse('college_app:region_slug', kwargs={'region_id': id,
+            url = reverse('college_app:region', kwargs={'region_id': id,
                                                           'region_slug': slug,
                                                           })
         except:

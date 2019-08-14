@@ -7,7 +7,7 @@ from htmlmin.decorators import not_minified_response
 
 
 @not_minified_response
-def api(request):
+def get_labels(request):
     params = request.GET
     try:
         colleges = College.objects.filter(Q(name__icontains=params['text']) | Q(city__icontains=params['text']) | Q(state__name__icontains=params['text']) | Q(region__name__icontains=params['text']))
