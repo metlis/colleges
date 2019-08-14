@@ -1,9 +1,11 @@
 from django.contrib.sitemaps import Sitemap
+from django.core.exceptions import ObjectDoesNotExist
 
 from open_data_app.models import Degree, Carnegie, Religion, Level, Ownership, Locale
 from open_data_app.models.college import College
 from open_data_app.models.state import State
 from open_data_app.models.region import Region
+from open_data_app.models.dictionary import Dictionary
 from django.urls import reverse
 from django.utils.text import slugify
 import re
@@ -62,6 +64,7 @@ colleges = College.objects.all()
 regions = Region.objects.all()
 states = State.objects.all()
 
+
 class CollegesSitemap(Sitemap):
     protocol = 'https'
 
@@ -96,15 +99,14 @@ class DisciplinesSitemap(Sitemap):
     protocol = 'https'
 
     def items(self):
-        return ['agriculture', 'architecture', 'ethnic_cultural_gender', 'biological', 'business_marketing',
-                'communication', 'communications_technology', 'computer', 'construction', 'education',
-                'engineering', 'engineering_technology', 'english', 'family_consumer_science', 'language',
-                'health', 'history', 'security_law_enforcement', 'legal', 'humanities', 'library', 'mathematics',
-                'mechanic_repair_technology', 'military', 'multidiscipline', 'resources',
-                'parks_recreation_fitness', 'personal_culinary', 'philosophy_religious', 'physical_science',
-                'precision_production', 'psychology', 'public_administration_social_service',
-                'science_technology', 'social_science', 'theology_religious_vocation', 'transportation',
-                'visual_performing']
+        try:
+            content = Dictionary.objects.get(name='discipline_slugs').content
+            if content is not None:
+                return content
+            else:
+                return []
+        except ObjectDoesNotExist:
+            return []
 
     def location(self, item):
         return reverse('college_app:filter_no_values', kwargs={
@@ -156,6 +158,7 @@ class FilterParamsSitemap(Sitemap):
 
 class StateFilterParamsSitemap(Sitemap):
     protocol = 'https'
+
     def items(self):
         values = []
         for state in states:
@@ -187,8 +190,10 @@ class StateFilterParamsSitemap(Sitemap):
         }
                        )
 
+
 class RegionFilterParamsSitemap(Sitemap):
     protocol = 'https'
+
     def items(self):
         values = []
         for region in regions:

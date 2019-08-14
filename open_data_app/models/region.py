@@ -30,7 +30,7 @@ class Region(models.Model):
             region_re = re.search('(.*?)\s\((.*?)\)', self.name)
             region_name = region_re.group(1)
             slug = slugify(region_name)
-            url = reverse('college_app:region_slug', kwargs={'region_id': id,
+            url = reverse('college_app:region', kwargs={'region_id': id,
                                                           'region_slug': slug,
                                                           })
         except:

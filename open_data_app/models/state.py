@@ -18,7 +18,7 @@ class State(models.Model):
     def get_absolute_path(self):
         id = self.id
         slug = slugify(self.name)
-        url = reverse('college_app:state_slug', kwargs={'state_id': id,
-                                                      'state_slug': slug,
-                                                      })
+        url = reverse('college_app:state', kwargs={'state_id': id,
+                                                       'state_slug': slug,
+                                                       })
         return url
