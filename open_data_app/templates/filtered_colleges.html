@@ -1154,7 +1154,7 @@
                                     <div class="col-sm-12 col-md-3">
                                         <h4>Tuition <i class="fas fa-info-circle" data-toggle="tooltip"
                                                        data-placement="top"
-                                                       title="In-state tuition and fees"></i></h4>
+                                                       title="In-state tuition and fees (2019 College Scorecard data)"></i></h4>
                                         <div>
                                             <p>
                                                 {% if average_tuition %}
@@ -1212,7 +1212,7 @@
                                     <div class="col-md-3">
                                         <h4>Monthly payments <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                 data-placement="top"
-                                                                title="Median loan debt of completers in monthly payments"></i>
+                                                                title="Median loan debt of completers in monthly payments (2019 College Scorecard data)"></i>
                                         </h4>
                                         <div>
                                             <p>
@@ -1271,7 +1271,7 @@
                                     <div class="col-md-3">
                                         <h4>Earnings <i class="fas fa-info-circle" data-toggle="tooltip"
                                                         data-placement="top"
-                                                        title="Median earnings of students working and not enrolled 10 years after entry"></i>
+                                                        title="Median earnings of students working and not enrolled 10 years after entry (2019 College Scorecard data)"></i>
                                         </h4>
                                         <div>
                                             <p>
@@ -1346,7 +1346,7 @@
                                             <div class="col-6 admission">
                                                 <h3>Admission rate <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                       data-placement="top"
-                                                                      title="The ratio of the number of students who are admitted to the number of total applicants"></i>
+                                                                      title="The ratio of the number of students who are admitted to the number of total applicants (2019 College Scorecard data)"></i>
                                                 </h3>
                                                 {% if college.admission_rate %}
                                                     <div class="c100 orange p{{ college.admission_rate|mul:100|floatformat:"0" }}">
@@ -1371,7 +1371,7 @@
                                                     <h3>Completion rate <i class="fas fa-info-circle"
                                                                            data-toggle="tooltip"
                                                                            data-placement="top"
-                                                                           title="Completion rate for first-time, full-time students at four-year institutions"></i>
+                                                                           title="Completion rate for first-time, full-time students at four-year institutions (2019 College Scorecard data)"></i>
                                                     </h3>
                                                     <div class="c100 green p{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}">
                                                         <span>{{ college.completion_rate_four_year_pooled|mul:100|floatformat:"0" }}%</span>
@@ -1384,7 +1384,7 @@
                                                     <h3>Completion rate <i
                                                             class="fas fa-info-circle" data-toggle="tooltip"
                                                             data-placement="top"
-                                                            title="Completion rate for first-time, full-time students at less-than-four-year institutions"></i>
+                                                            title="Completion rate for first-time, full-time students at less-than-four-year institutions (2019 College Scorecard data)"></i>
                                                     </h3>
                                                     <div class="c100 green p{{ college.completion_rate_less_four_year_pooled|mul:100|floatformat:"0" }}">
                                                         <span>{{ college.completion_rate_less_four_year_pooled|mul:100|floatformat:"0" }}%</span>
@@ -1397,7 +1397,7 @@
                                                     <h3>Completion rate <i
                                                             class="fas fa-info-circle" data-toggle="tooltip"
                                                             data-placement="top"
-                                                            title="Completion rate for first-time, full-time students"></i>
+                                                            title="Completion rate for first-time, full-time students (2019 College Scorecard data)"></i>
                                                     </h3>
                                                     <div class="c100 green p0">
                                                         <span>N/A</span>
@@ -1413,7 +1413,7 @@
                                     <div class="col-sm-12 col-md-6 hor-bars-block">
                                     <span>In-state tuition <i class="fas fa-info-circle" data-toggle="tooltip"
                                                               data-placement="top"
-                                                              title="In-state tuition and fees"></i></span>
+                                                              title="In-state tuition and fees (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.in_state_tuition|bar_percent:max_tuition }}%;"
@@ -1424,7 +1424,7 @@
                                         </div>
                                         <span>Monthly payments <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                   data-placement="top"
-                                                                  title="Median loan debt of completers in monthly payments"></i></span>
+                                                                  title="Median loan debt of completers in monthly payments (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.monthly_payments|bar_percent:max_payments }}%;"
@@ -1435,7 +1435,7 @@
                                         </div>
                                         <span>Earnings <i class="fas fa-info-circle" data-toggle="tooltip"
                                                           data-placement="top"
-                                                          title="Median earnings of students working and not enrolled 10 years after entry"></i></span>
+                                                          title="Median earnings of students working and not enrolled 10 years after entry (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.mean_earnings|bar_percent:max_earnings }}%;"

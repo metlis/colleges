@@ -11,11 +11,11 @@
 
 {% block description %}
     <meta name="description"
-          content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
+          content="This page provides details about {{ college.name }}. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
     <meta property="og:description"
-          content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
+          content="This page provides details about {{ college.name }}. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
     <meta name="twitter:description"
-          content="This page provides details about {{ college.name }} in 2019. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
+          content="This page provides details about {{ college.name }}. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
     <link rel="canonical" href="{% url 'college_app:college' college.id college.slug %}">
 {% endblock %}
 
@@ -111,7 +111,7 @@
                                             <p>
                                             <span class="icon-container"><i class="fas fa-user-graduate"
                                                                             data-toggle="tooltip" data-placement="top"
-                                                                            title="Undergraduate students"></i></span><span
+                                                                            title="Undergraduate students (2019 College Scorecard data)"></i></span><span
                                                     class="icon-text">{{ college.undergrad_students|floatformat:"0"|intcomma }}</span>
                                             </p>
                                         {% endif %}
@@ -159,7 +159,7 @@
                                     <p>
                                     <span class="icon-container"><i class="fas fa-university" data-toggle="tooltip"
                                                                     data-placement="top"
-                                                                    title="Level of institution and highest degree awarded"></i></span>
+                                                                    title="Level of institution and highest degree awarded (2019 College Scorecard data)"></i></span>
                                         <span
                                                 class="icon-text">{{ college.inst_level }}, {{ college.highest_grad_degree }}</span>
                                     </p>
@@ -168,7 +168,7 @@
                                     <p>
                                     <span class="icon-container"><i class="fas fa-flask" data-toggle="tooltip"
                                                                     data-placement="top"
-                                                                    title="Carnegie Classification"></i></span> <span
+                                                                    title="Carnegie Classification (2019 College Scorecard data)"></i></span> <span
                                             class="icon-text">{{ college.carnegie_basic }}</span>
                                     </p>
                                 {% endif %}
@@ -176,7 +176,7 @@
                                     <p>
                                         <span class="icon-container"><i class="fas fa-globe" data-toggle="tooltip"
                                                                         data-placement="top"
-                                                                        title="Distance-education-only education"></i></span>
+                                                                        title="Distance-education-only education (2019 College Scorecard data)"></i></span>
                                         Online-only</p>
                                 {% endif %}
                                 {% if not college.online_only and not college.carnegie_basic and not college.highest_grad_degree and not college.inst_level %}
@@ -201,7 +201,7 @@
                                         <div class="col-sm-12 col-md-6 top-disciplines">
                                             <h3>Top programs <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                 data-placement="top"
-                                                                title="Measured as the percentage of degrees awarded"></i>
+                                                                title="Measured as the percentage of degrees awarded (2019 College Scorecard data)"></i>
                                             </h3>
                                             <div class="disciplines-container">
                                                 {% for discipline in top_disciplines %}
@@ -226,7 +226,7 @@
                                                     class="fas fa-info-circle"
                                                     data-toggle="tooltip"
                                                     data-placement="top"
-                                                    title="All programs offered at the institution"></i>
+                                                    title="All programs offered at the institution (2019 College Scorecard data)"></i>
                                             </h3>
                                             <div class="disciplines-container">
                                                 {% for discipline in college_disciplines %}
@@ -261,7 +261,7 @@
                                     <div class="col-sm-12 admission-header">
                                         <h3>Admission rate <i class="fas fa-info-circle" data-toggle="tooltip"
                                                               data-placement="top"
-                                                              title="The ratio of the number of students who are admitted to the number of total applicants"></i>
+                                                              title="The ratio of the number of students who are admitted to the number of total applicants (2019 College Scorecard data)"></i>
                                         </h3>
                                     </div>
                                     {% if college.admission_rate %}
@@ -291,7 +291,7 @@
                                         <h4>SAT</h4>
                                         <span>Average <i class="fas fa-info-circle" data-toggle="tooltip"
                                                          data-placement="top"
-                                                         title="Average SAT equivalent score of students admitted"></i></span>
+                                                         title="Average SAT equivalent score of students admitted (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.sat_average|floatformat:"0"|bar_percent:'1600' }}%;"
@@ -305,7 +305,7 @@
                                         </div>
                                         <span>Math <i class="fas fa-info-circle" data-toggle="tooltip"
                                                       data-placement="top"
-                                                      title="Midpoint of SAT scores at the institution (math)"></i></span>
+                                                      title="Midpoint of SAT scores at the institution (math) (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.sat_math|floatformat:"0"|bar_percent:'800' }}%;"
@@ -319,7 +319,7 @@
                                         </div>
                                         <span>Crirical reading <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                   data-placement="top"
-                                                                  title="Midpoint of SAT scores at the institution (critical reading)"></i></span>
+                                                                  title="Midpoint of SAT scores at the institution (critical reading) (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.sat_reading|floatformat:"0"|bar_percent:'800' }}%;"
@@ -333,7 +333,7 @@
                                         </div>
                                         <span>Writing <i class="fas fa-info-circle" data-toggle="tooltip"
                                                          data-placement="top"
-                                                         title="Midpoint of SAT scores at the institution (writing)"></i></span>
+                                                         title="Midpoint of SAT scores at the institution (writing) (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.sat_writing|floatformat:"0"|bar_percent:'800' }}%;"
@@ -350,7 +350,7 @@
                                         <h4>ACT</h4>
                                         <span>Cumulative <i class="fas fa-info-circle" data-toggle="tooltip"
                                                             data-placement="top"
-                                                            title="Midpoint of the ACT cumulative score"></i></span>
+                                                            title="Midpoint of the ACT cumulative score (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.act_cumulative|floatformat:"0"|bar_percent:'36' }}%;"
@@ -364,7 +364,7 @@
                                         </div>
                                         <span>Math <i class="fas fa-info-circle" data-toggle="tooltip"
                                                       data-placement="top"
-                                                      title="Midpoint of the ACT math score"></i></span>
+                                                      title="Midpoint of the ACT math score (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.act_math|floatformat:"0"|bar_percent:'36' }}%;"
@@ -378,7 +378,7 @@
                                         </div>
                                         <span>English <i class="fas fa-info-circle" data-toggle="tooltip"
                                                          data-placement="top"
-                                                         title="Midpoint of the ACT English score"></i></span>
+                                                         title="Midpoint of the ACT English score (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.act_english|floatformat:"0"|bar_percent:'36' }}%;"
@@ -392,7 +392,7 @@
                                         </div>
                                         <span>Writing <i class="fas fa-info-circle" data-toggle="tooltip"
                                                          data-placement="top"
-                                                         title="Midpoint of the ACT writing score"></i></span>
+                                                         title="Midpoint of the ACT writing score (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                  style="width: {{ college.act_writing|floatformat:"0"|bar_percent:'36' }}%;"
@@ -428,7 +428,7 @@
                                                     <h3>Completion rate: 4-year programs <i class="fas fa-info-circle"
                                                                                             data-toggle="tooltip"
                                                                                             data-placement="top"
-                                                                                            title="Completion rate for first-time, full-time students at four-year institutions"></i>
+                                                                                            title="Completion rate for first-time, full-time students at four-year institutions (2019 College Scorecard data)"></i>
                                                     </h3>
                                                 </div>
                                                 <div class="col-sm-12 completion-circle">
@@ -447,7 +447,7 @@
                                                     <h3>Completion rate: less-than-4-year programs <i
                                                             class="fas fa-info-circle" data-toggle="tooltip"
                                                             data-placement="top"
-                                                            title="Completion rate for first-time, full-time students at less-than-four-year institutions"></i>
+                                                            title="Completion rate for first-time, full-time students at less-than-four-year institutions (2019 College Scorecard data)"></i>
                                                     </h3>
                                                 </div>
                                                 <div class="col-sm-12 completion-circle">
@@ -466,7 +466,7 @@
                                                     <h3>Completion rate <i
                                                             class="fas fa-info-circle" data-toggle="tooltip"
                                                             data-placement="top"
-                                                            title="Completion rate for first-time, full-time students"></i>
+                                                            title="Completion rate for first-time, full-time students (2019 College Scorecard data)"></i>
                                                     </h3>
                                                 </div>
                                                 <div class="col-sm-12 completion-circle">
@@ -488,7 +488,7 @@
                                                     <h3>Retention rate: 4-year programs <i class="fas fa-info-circle"
                                                                                            data-toggle="tooltip"
                                                                                            data-placement="top"
-                                                                                           title="The proportion of full-time, first-time, degree/certificate-seeking undergraduates who were enrolled at the institution in the fall 1 year after starting at the institution"></i>
+                                                                                           title="The proportion of full-time, first-time, degree/certificate-seeking undergraduates who were enrolled at the institution in the fall 1 year after starting at the institution (2019 College Scorecard data)"></i>
                                                     </h3>
                                                 </div>
                                                 <div class="col-sm-12 completion-circle">
@@ -507,7 +507,7 @@
                                                     <h3>Retention rate: less-than-4-year programs <i
                                                             class="fas fa-info-circle" data-toggle="tooltip"
                                                             data-placement="top"
-                                                            title="The proportion of full-time, first-time, degree/certificate-seeking undergraduates who were enrolled at the institution in the fall 1 year after starting at the institution"></i>
+                                                            title="The proportion of full-time, first-time, degree/certificate-seeking undergraduates who were enrolled at the institution in the fall 1 year after starting at the institution (2019 College Scorecard data)"></i>
                                                     </h3>
                                                 </div>
                                                 <div class="col-12 completion-circle">
@@ -526,7 +526,7 @@
                                                     <h3>Retention rate <i
                                                             class="fas fa-info-circle" data-toggle="tooltip"
                                                             data-placement="top"
-                                                            title="The proportion of full-time, first-time, degree/certificate-seeking undergraduates who were enrolled at the institution in the fall 1 year after starting at the institution"></i>
+                                                            title="The proportion of full-time, first-time, degree/certificate-seeking undergraduates who were enrolled at the institution in the fall 1 year after starting at the institution (2019 College Scorecard data)"></i>
                                                     </h3>
                                                 </div>
                                                 <div class="col-12 completion-circle">
@@ -560,7 +560,7 @@
                                     <div class="col-sm-12 col-md-6">
                                         <h3>Race/ethnicity <i class="fas fa-info-circle" data-toggle="tooltip"
                                                               data-placement="top"
-                                                              title="Total share of enrollment of undergraduate degree-seeking students of particular race/ethnicity"></i>
+                                                              title="Total share of enrollment of undergraduate degree-seeking students of particular race/ethnicity (2019 College Scorecard data)"></i>
                                         </h3>
                                         {% if college.students_white > 0 %}
                                             <span>White</span>
@@ -669,7 +669,7 @@
                                         <h3 class="gender-header">Gender <i class="fas fa-info-circle"
                                                                             data-toggle="tooltip"
                                                                             data-placement="top"
-                                                                            title="Share of female and male students"></i>
+                                                                            title="Share of female and male students (2019 College Scorecard data)"></i>
                                         </h3>
                                         <div class="row">
                                             {% if college.students_female %}
@@ -727,11 +727,11 @@
                                                 <h3>Full-time students <i class="fas fa-info-circle"
                                                                           data-toggle="tooltip"
                                                                           data-placement="top"
-                                                                          title="Share of undergraduate, degree-/certificate-seeking students who are full-time"></i>
+                                                                          title="Share of undergraduate, degree-/certificate-seeking students who are full-time (2019 College Scorecard data)"></i>
                                                 </h3>
                                                 {% if college.students_part_time %}
-                                                    <div class="c100 p{{ college.students_part_time|sub:100|mul:-1|floatformat:"0" }}">
-                                                        <span>{{ college.students_part_time|sub:100|mul:-1|floatformat:"2"|intcomma }}%</span>
+                                                    <div class="c100 p{{ college.students_part_time|sub:1|mul:-100|floatformat:"0" }}">
+                                                        <span>{{ college.students_part_time|sub:1|mul:-100|floatformat:"2"|intcomma }}%</span>
                                                         <div class="slice">
                                                             <div class="bar"></div>
                                                             <div class="fill"></div>
@@ -750,7 +750,7 @@
                                             <div class="col-sm-12 family-income">
                                                 <h3>Family income <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                      data-placement="top"
-                                                                     title="Average family income of dependent students in real 2015 dollars"></i>
+                                                                     title="Average family income of dependent students in real 2015 dollars (2019 College Scorecard data)"></i>
                                                 </h3>
                                                 {% if college.students_family_income %}
                                                     <p class="single-value">{{ college.students_family_income|floatformat:"0"|intcomma }}$</p>
@@ -781,7 +781,7 @@
                                             <div class="col-sm-12 col-md-6 grant">
                                                 <h3>Pell grand <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                   data-placement="top"
-                                                                  title="Percentage of undergraduates who receive a Pell Grant"></i>
+                                                                  title="Percentage of undergraduates who receive a Pell Grant (2019 College Scorecard data)"></i>
                                                 </h3>
                                                 {% if college.pell_grand %}
                                                     <div class="c100 orange p{{ college.pell_grand|mul:100|floatformat:"0" }}">
@@ -804,7 +804,7 @@
                                             <div class="col-sm-12 col-md-6 loan">
                                                 <h3>Federal loan <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                     data-placement="top"
-                                                                    title="Percent of all undergraduate students receiving a federal student loan"></i>
+                                                                    title="Percent of all undergraduate students receiving a federal student loan (2019 College Scorecard data)"></i>
                                                 </h3>
                                                 {% if college.federal_loan %}
                                                     <div class="c100 green p{{ college.federal_loan|mul:100|floatformat:"0" }}">
@@ -840,7 +840,7 @@
                                     <div class="col-sm-12 col-md-6">
                                         <h3 class="debt-header">Debt <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                         data-placement="top"
-                                                                        title="The median debt for students who have completed"></i>
+                                                                        title="The median debt for students who have completed (2019 College Scorecard data)"></i>
                                         </h3>
                                         {% if college.debt_completed_median %}
                                             <p class="single-value">{{ college.debt_completed_median|floatformat:"0"|intcomma }}$</p>
@@ -849,7 +849,7 @@
                                         {% endif %}
                                         <h3>Monthly payments <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                 data-placement="top"
-                                                                title="Median loan debt of completers in monthly payments"></i>
+                                                                title="Median loan debt of completers in monthly payments (2019 College Scorecard data)"></i>
                                         </h3>
                                         {% if college.monthly_payments %}
                                             <p class="single-value">{{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
@@ -880,7 +880,7 @@
                                                 <h3>Average net price <i class="fas fa-info-circle"
                                                                          data-toggle="tooltip"
                                                                          data-placement="top"
-                                                                         title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid"></i>
+                                                                         title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid (2019 College Scorecard data)"></i>
                                                 </h3>
                                                 {% if college.average_net_price_public %}
                                                     <p class="single-value">{{ college.average_net_price_public|floatformat:"0"|intcomma }}$</p>
@@ -893,7 +893,7 @@
                                             <div class="col-6 in-state">
                                                 <h3>In-state tuition <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                         data-placement="top"
-                                                                        title="In-state tuition and fees"></i></h3>
+                                                                        title="In-state tuition and fees (2019 College Scorecard data)"></i></h3>
                                                 {% if college.in_state_tuition %}
                                                     <p class="single-value">{{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
                                                 {% else %}
@@ -904,7 +904,7 @@
                                                 <h3>Out-state tuition <i class="fas fa-info-circle"
                                                                          data-toggle="tooltip"
                                                                          data-placement="top"
-                                                                         title="Out-of-state tuition and fees"></i></h3>
+                                                                         title="Out-of-state tuition and fees (2019 College Scorecard data)"></i></h3>
                                                 {% if college.out_state_tuition %}
                                                     <p class="single-value">{{ college.out_state_tuition|floatformat:"0"|intcomma }}$</p>
                                                 {% else %}
@@ -919,7 +919,7 @@
                                                     class="fas fa-info-circle"
                                                     data-toggle="tooltip"
                                                     data-placement="top"
-                                                    title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid, by detailed income category"></i>
+                                                    title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid, by detailed income category (2019 College Scorecard data)"></i>
                                             </h3>
                                             <table class="table table-sm">
                                                 <thead>
@@ -1042,7 +1042,7 @@
                             <div class="col-sm-12 card-body collapse show" id="earnings">
                                 <h3>Salary after attending <i class="fas fa-info-circle" data-toggle="tooltip"
                                                               data-placement="top"
-                                                              title="Median earnings of students working and not enrolled 10 years after entry"></i>
+                                                              title="Median earnings of students working and not enrolled 10 years after entry (2019 College Scorecard data)"></i>
                                 </h3>
                                 {% if college.median_earnings %}
                                     <p class="single-value">{{ college.median_earnings|floatformat:"0"|intcomma }}$</p>
