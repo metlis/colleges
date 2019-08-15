@@ -1,4 +1,3 @@
-from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
@@ -16,29 +15,12 @@ def get_region(request, region_id, region_slug):
         region = Region.objects.get(id=region_id)
         region_name, slug, region_states = region.get_region_data()
 
-        params = request.GET
-
         if region_slug != slug:
             return render(request, 'filtered_colleges.html', {
                 'error': True,
                 'seo_title': 'Results',
                 'noindex': True,
             })
-        # static address for url with single parameter
-        elif len(params) == 1 and not 'page' in params:
-            key = next(iter(params.keys()))
-            value = next(iter(params.values()))
-
-            try:
-                verbose_name = College._meta.get_field(key).verbose_name
-                url = reverse('college_app:region_param', kwargs={'region_id': region_id,
-                                                                  'region_slug': region_slug,
-                                                                  'param': verbose_name,
-                                                                  'param_value': value,
-                                                                  })
-                return HttpResponseRedirect(url)
-            except:
-                return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
             colleges = College.objects.filter(region=region_id).order_by('name')
 

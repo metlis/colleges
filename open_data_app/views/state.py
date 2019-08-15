@@ -1,4 +1,3 @@
-from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from open_data_app.models import State
@@ -17,29 +16,12 @@ def get_state(request, state_id, state_slug):
         state = State.objects.get(id=state_id)
         slug = state.get_state_slug()
 
-        params = request.GET
-
         if state_slug != slug:
             return render(request, 'filtered_colleges.html', {
                 'error': True,
                 'seo_title': 'Results',
                 'noindex': True,
             })
-        # redirect to static address for url with single filter parameter
-        elif len(params) == 1 and not 'page' in params:
-            key = next(iter(params.keys()))
-            value = next(iter(params.values()))
-
-            try:
-                verbose_name = College._meta.get_field(key).verbose_name
-                url = reverse('college_app:state_param', kwargs={'state_id': state_id,
-                                                                 'state_slug': state_slug,
-                                                                 'param': verbose_name,
-                                                                 'param_value': value,
-                                                                 })
-                return HttpResponseRedirect(url)
-            except:
-                return HttpResponseNotFound('<h1>Page not found</h1>')
         else:
             colleges = College.objects.filter(state=state_id).order_by('name')
 
@@ -90,8 +72,8 @@ def get_state(request, state_id, state_slug):
                'maps_key': GOOGLE_MAPS_API,
                'state_init': True,
                'state_view': True,
-                'api_call': api_call,
-                'is_multiple': is_multiple,
+               'api_call': api_call,
+               'is_multiple': is_multiple,
                }
 
     context.update(filters)
