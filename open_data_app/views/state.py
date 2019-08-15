@@ -25,7 +25,7 @@ def get_state(request, state_id, state_slug):
                 'seo_title': 'Results',
                 'noindex': True,
             })
-        # static address for url with one parameter
+        # redirect to static address for url with single filter parameter
         elif len(params) == 1 and not 'page' in params:
             key = next(iter(params.keys()))
             value = next(iter(params.values()))
@@ -98,7 +98,6 @@ def get_state(request, state_id, state_slug):
     context.update(aggregate_data)
 
     return render(request, 'filtered_colleges.html', context)
-
 
 
 def get_state_param(request, state_id, state_slug, param, param_value):
