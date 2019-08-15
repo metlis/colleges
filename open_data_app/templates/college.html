@@ -730,8 +730,8 @@
                                                                           title="Share of undergraduate, degree-/certificate-seeking students who are full-time"></i>
                                                 </h3>
                                                 {% if college.students_part_time %}
-                                                    <div class="c100 p{{ college.students_part_time|sub:100|mul:-1|floatformat:"0" }}">
-                                                        <span>{{ college.students_part_time|sub:100|mul:-1|floatformat:"2"|intcomma }}%</span>
+                                                    <div class="c100 p{{ college.students_part_time|sub:1|mul:-100|floatformat:"0" }}">
+                                                        <span>{{ college.students_part_time|sub:1|mul:-100|floatformat:"2"|intcomma }}%</span>
                                                         <div class="slice">
                                                             <div class="bar"></div>
                                                             <div class="fill"></div>
