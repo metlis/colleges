@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils.text import slugify
 from open_data_app.models import State
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
@@ -56,8 +57,8 @@ def get_state(request, state_id, state_slug):
         colleges = paginator.get_page(page)
 
     canonical = reverse('college_app:state', kwargs={'state_id': state_id,
-                                                          'state_slug': state_slug,
-                                                          })
+                                                     'state_slug': state_slug,
+                                                     })
     # string for api call
     api_call = 'state={}'.format(state.id)
 
@@ -112,7 +113,6 @@ def get_state_param(request, state_id, state_slug, param, param_value):
     # dictionary of applied filters and their values
     colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, 'state', state_id)
 
-
     if colleges.count() > 0:
 
         # sorting colleges
@@ -125,7 +125,7 @@ def get_state_param(request, state_id, state_slug, param, param_value):
         canonical = reverse('college_app:state_param', kwargs={'state_id': state_id,
                                                                'state_slug': state_slug,
                                                                'param': verbose_name,
-                                                               'param_value': param_value,
+                                                               'param_value': slugify(param_value),
                                                                })
 
         # aggregate data
@@ -143,12 +143,11 @@ def get_state_param(request, state_id, state_slug, param, param_value):
         # pagination
         colleges = handle_pagination(request, colleges)
 
-
-        # string for api call
+        # string for an api call
         api_call = 'state={}&{}={}&{}'.format(state_id, param, param_value, req_str)
 
         context = {
-                    'colleges': colleges,
+                   'colleges': colleges,
                    'seo_title': seo_title,
                    'seo_description': seo_description,
                    'canonical': canonical,

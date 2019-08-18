@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils.text import slugify
 from django.core.paginator import Paginator
 from open_data_app.models import Region, College
 from open_data_app.modules.pagination_handler import handle_pagination
@@ -55,8 +56,8 @@ def get_region(request, region_id, region_slug):
         colleges = paginator.get_page(page)
 
     canonical = reverse('college_app:region', kwargs={'region_id': region_id,
-                                                           'region_slug': region_slug,
-                                                           })
+                                                      'region_slug': region_slug,
+                                                      })
     # string for api call
     api_call = 'region={}'.format(region_id)
 
@@ -124,7 +125,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
             canonical = reverse('college_app:region_param', kwargs={'region_id': region_id,
                                                                     'region_slug': region_slug,
                                                                     'param': verbose_name,
-                                                                    'param_value': param_value,
+                                                                    'param_value': slugify(param_value),
                                                                     })
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
@@ -145,7 +146,7 @@ def get_region_param(request, region_id, region_slug, param, param_value):
         base_url = reverse('college_app:region_param', kwargs={'region_id': region_id,
                                                                'region_slug': region_slug,
                                                                'param': verbose_name,
-                                                               'param_value': param_value,
+                                                               'param_value': slugify(param_value),
                                                                })
 
         # string for api call
