@@ -1,6 +1,7 @@
 from django.urls import path
 
 from open_data_app.views.college import get_college
+
 from open_data_app.views.parameter import filter_values
 from open_data_app.views.region import get_region, get_region_param
 from open_data_app.views.state import get_state, get_state_param

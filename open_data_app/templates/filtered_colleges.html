@@ -242,36 +242,40 @@
                 <strong>
                     {% if colleges.paginator %}
                         {{ colleges.paginator.count }}
-                    {% else %}
+                    {% elif colleges.count %}
                         {{ colleges.count }}
+                    {% else %}
+                        0
                     {% endif %}
                 </strong></p>
                 {# applied filters list start #}
-                <span>Filters applied:</span>
-                {% if filters_vals|length > 0 or init_filter_val or state_init or region_init %}
-                    {% if geo %}
-                        <span class="badge badge-light">{{ geo }}</span>
+                {% if not error %}
+                    <span>Filters applied:</span>
+                    {% if filters_vals|length > 0 or init_filter_val or state_init or region_init %}
+                        {% if geo %}
+                            <span class="badge badge-light">{{ geo }}</span>
+                        {% endif %}
+                        {% if init_filter_val %}
+                            <span class="badge badge-light">{{ init_filter_val }}</span>
+                        {% endif %}
+                        {% if query_val %}
+                            <span class="badge badge-light">{{ query_val }}</span>
+                        {% endif %}
+                        {% if serach_query %}
+                            <span class="badge badge-light">{{ serach_query }}</span>
+                        {% endif %}
+                        {% if region_init %}
+                            <span class="badge badge-light">{{ region_name }}</span>
+                        {% endif %}
+                        {% if state_init %}
+                            <span class="badge badge-light">{{ state_name }}</span>
+                        {% endif %}
+                        {% for val in filters_vals %}
+                            <span class="badge badge-light">{{ val }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <span class="badge badge-light">No filters</span>
                     {% endif %}
-                    {% if init_filter_val %}
-                        <span class="badge badge-light">{{ init_filter_val }}</span>
-                    {% endif %}
-                    {% if query_val %}
-                        <span class="badge badge-light">{{ query_val }}</span>
-                    {% endif %}
-                    {% if serach_query %}
-                        <span class="badge badge-light">{{ serach_query }}</span>
-                    {% endif %}
-                    {% if region_init %}
-                        <span class="badge badge-light">{{ region_name }}</span>
-                    {% endif %}
-                    {% if state_init %}
-                        <span class="badge badge-light">{{ state_name }}</span>
-                    {% endif %}
-                    {% for val in filters_vals %}
-                        <span class="badge badge-light">{{ val }}</span>
-                    {% endfor %}
-                {% else %}
-                    <span class="badge badge-light">No filters</span>
                 {% endif %}
                 {# applied filters list end #}
             </div>
@@ -1122,23 +1126,27 @@
             <div class="col-sm-12 col-md-10">
                 <div class="row">
 
-                    <div class="col-sm-12" style="display: flex; justify-content: flex-end; margin-bottom: 23px">
-                        <!-- AddToAny BEGIN -->
-                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
-                            <a class="a2a_button_facebook"></a>
-                            <a class="a2a_button_twitter"></a>
-                            <a class="a2a_button_pinterest"></a>
-                            <a class="a2a_button_reddit"></a>
-                            <a class="a2a_button_tumblr"></a>
+                    {% if not error %}
+                        <div class="col-sm-12" style="display: flex; justify-content: flex-end; margin-bottom: 23px">
+                            <!-- AddToAny BEGIN -->
+                            <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+                                <a class="a2a_button_facebook"></a>
+                                <a class="a2a_button_twitter"></a>
+                                <a class="a2a_button_pinterest"></a>
+                                <a class="a2a_button_reddit"></a>
+                                <a class="a2a_button_tumblr"></a>
+                            </div>
+                            <script async src="https://static.addtoany.com/menu/page.js"></script>
+                            <!-- AddToAny END -->
                         </div>
-                        <script async src="https://static.addtoany.com/menu/page.js"></script>
-                        <!-- AddToAny END -->
-                    </div>
+                    {% endif %}
 
                     {# google map start #}
-                    <div class="col-sm-12 college-container">
-                        <div id="map"></div>
-                    </div>
+                    {% if not error %}
+                        <div class="col-sm-12 college-container">
+                            <div id="map"></div>
+                        </div>
+                    {% endif %}
                     {# google map end #}
 
                     {# aggregate data start #}
@@ -1531,11 +1539,13 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap"
-            async defer></script>
-    <script>
-        function initMap() {
-           getMapLabels("{{ api_call|safe }}");
-        }
-    </script>
+    {% if not error %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap"
+                async defer></script>
+        <script>
+            function initMap() {
+               getMapLabels("{{ api_call|safe }}");
+            }
+        </script>
+    {% endif %}
 {% endblock %}

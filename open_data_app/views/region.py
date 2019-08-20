@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.core.paginator import Paginator
 from django.core.exceptions import FieldError
+from django.http import Http404
 
 from open_data_app.models import Region, College
 from open_data_app.modules.pagination_handler import handle_pagination
@@ -105,11 +106,14 @@ def get_region_param(request, region_id, region_slug, param_name, param_value):
         # colleges filtered by region + by the initial filter
         colleges = College.objects.filter(region__id=region_id).filter(**{filter_param: param_value}).order_by('name')
     except FieldError:
-        return render(request, '404.html')
+        raise Http404()
 
     # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
     # dictionary of applied filters and their values
-    colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, 'region', region_id)
+    try:
+        colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, 'region', region_id)
+    except ValueError:
+        raise Http404()
 
     if colleges.count() > 0:
 

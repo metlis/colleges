@@ -1,6 +1,7 @@
-from django.http import HttpResponseNotFound
-from open_data_app.models import College
 import re
+from django.core.exceptions import FieldError
+
+from open_data_app.models import College
 
 
 def handle_params(request, colleges, entity, entity_id, main_filter=False, api_call=False):
@@ -36,8 +37,8 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
             else:
                 new_key = key
             colleges = colleges.filter(**{new_key: value})
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+        except FieldError:
+            return ''
     elif len(params) > 1 and 'page' in params and not main_filter and not api_call:
         req = params.copy()
         del req['page']
@@ -51,8 +52,8 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
         try:
             new_params_dict = College.create_new_params_dict(params_dict)
             colleges = colleges.filter(**new_params_dict)
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+        except FieldError:
+            return ''
     elif len(params) > 1 and not main_filter and not api_call:
         noindex = True
         for key in params:
@@ -64,8 +65,8 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
         try:
             new_params_dict = College.create_new_params_dict(params_dict)
             colleges = colleges.filter(**new_params_dict)
-        except:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+        except FieldError:
+            return ''
     elif main_filter:
         req_str = re.sub('page=(\d)+&?', '', request.META['QUERY_STRING'])
         noindex = True
@@ -82,7 +83,6 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
                     new_params_dict['{}__in'.format(p)] = new_params_dict.pop(p)
             else:
                 new_params_dict[p] = new_params_dict[p][0]
-
 
         # logic for queries with region and state at the same time
         region_query = ''
@@ -105,13 +105,13 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
                 param_dict_copy.pop(state_param)
                 if len(param_dict_copy) > 0:
                     colleges = College.objects.filter(**param_dict_copy)
-            except:
+            except FieldError:
                 pass
         else:
             try:
                 colleges = College.objects.filter(**new_params_dict)
-            except:
-                return HttpResponseNotFound('<h1>Page not found</h1>')
+            except FieldError:
+                return ''
 
     if not api_call:
         # get applied filters values to display on results page
@@ -127,7 +127,7 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
                     filters_vals.append(param_text_value)
 
             except:
-                return HttpResponseNotFound('<h1>Page not found</h1>')
+                return ''
 
         try:
             params_dict = new_params_dict

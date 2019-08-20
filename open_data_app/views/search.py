@@ -1,12 +1,12 @@
-from open_data_app.models import College
-from open_data_app.modules.pagination_handler import handle_pagination
-from open_data_app.modules.params_handler import handle_params
 from django.db.models import Q
-from django.contrib.postgres.search import SearchVector
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.http import Http404
 from settings import *
+
+from open_data_app.models import College
+from open_data_app.modules.pagination_handler import handle_pagination
 
 
 def search(request):
@@ -15,7 +15,10 @@ def search(request):
     if len(params) == 0:
         return HttpResponseRedirect(reverse('college_app:index'))
     else:
-        query = request.GET['text']
+        try:
+            query = request.GET['text']
+        except KeyError:
+            raise Http404()
         # posgres solution
         # colleges = College.objects.annotate(search=SearchVector('name', 'city', 'state__name', 'region__name'),
         #                                     ).filter(search=query)

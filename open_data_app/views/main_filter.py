@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -21,12 +21,8 @@ def main_filter(request):
         # dictionary of applied filters and their values
         try:
             colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, '', '', '', main_filter=True)
-        except:
-            return render(request, 'filtered_colleges.html', {
-                'error': True,
-                'seo_title': 'Results',
-                'noindex': True,
-            })
+        except ValueError:
+            raise Http404()
 
         if colleges.count() > 0:
             # aggregate data
@@ -41,13 +37,11 @@ def main_filter(request):
             else:
                 is_multiple = False
 
-
             # get filters
             filters = College.get_filters(colleges)
 
             # pagination
             colleges = handle_pagination(request, colleges)
-
 
             context = {'colleges': colleges,
                        'seo_title': 'Results',
@@ -85,7 +79,6 @@ def main_filter(request):
         except:
             pass
 
-
         # check if result is multiple
         if colleges.count() > 1:
             is_multiple = True
@@ -97,7 +90,6 @@ def main_filter(request):
 
         # pagination
         colleges = handle_pagination(request, colleges)
-
 
         context = {'colleges': colleges,
                    'seo_title': 'USA College and University search',

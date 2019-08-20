@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from open_data_app.models import College
 from django.utils.text import slugify
-from django.http import HttpResponseNotFound
+from django.http import Http404
 from settings import *
 
 
@@ -12,7 +12,7 @@ def get_college(request, college_id, college_slug):
         college = College.objects.get(id=college_id)
 
         if college_slug != slugify(college.name):
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+            raise Http404()
 
         else:
             if request.session.get('visited_colleges') is None:
@@ -51,4 +51,4 @@ def get_college(request, college_id, college_slug):
                                                     'session_key': request.session.session_key,
                                                     })
     else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        raise Http404()

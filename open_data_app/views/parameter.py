@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.exceptions import FieldError
+from django.http import Http404
 
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
@@ -12,23 +14,22 @@ def filter_values(request, param_name, param_value):
     init_param = param_name
 
     try:
-        # parameter's text value
-        param_text_value = College.get_param_text_val('', '', param_name, param_value)
-    except:
-        return render(request, 'filtered_colleges.html', {
-            'error': True,
-            'seo_title': 'Results',
-            'noindex': True,
-        })
+        # colleges filtered by the initial filter
+        colleges = College.objects.filter(**{param_name: param_value}).order_by('name')
+    except FieldError:
+        raise Http404()
 
-    # colleges filtered by the initial filter
-    colleges = College.objects.filter(**{param_name: param_value}).order_by('name')
-
-    # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
-    # dictionary of applied filters and their values
-    colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, '', '')
+    try:
+        # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
+        # dictionary of applied filters and their values
+        colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, '', '')
+    except ValueError:
+        raise Http404()
 
     if colleges.count() > 0:
+
+        # parameter's text value
+        param_text_value = College.get_param_text_val('', '', param_name, param_value)
 
         # define seo data before rendering
         seo_template = param_name
