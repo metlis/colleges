@@ -1,4 +1,3 @@
-from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -9,12 +8,12 @@ from open_data_app.modules.seo import Seo
 from settings import *
 
 
-def filter_no_values(request, param):
-    init_param = param
+def filter_no_values(request, param_name):
+    init_param = param_name
 
-    # initial filter, its value, verbose name and param value
     try:
-        param, query_val, verbose_name, param_value = College.get_filter_val('', '', param, '')
+        # parameter's text value
+        param_text_value = College.get_param_text_val('', '', param_name, '')
     except:
         return render(request, 'filtered_colleges.html', {
             'error': True,
@@ -22,7 +21,7 @@ def filter_no_values(request, param):
             'noindex': True,
         })
 
-    query_param = '{}__gt'.format(param)
+    query_param = '{}__gt'.format(param_name)
 
     # colleges filtered by the initial filter
     colleges = College.objects.filter(**{query_param: 0}).order_by('name')
@@ -34,11 +33,11 @@ def filter_no_values(request, param):
     if colleges.count() > 0:
 
         # define seo data before rendering
-        seo_template = param
-        seo_title = Seo.generate_title(seo_template, query_val, '')
-        seo_description = Seo.generate_description(seo_template, query_val, '')
+        seo_template = param_name
+        seo_title = Seo.generate_title(seo_template, param_text_value, '')
+        seo_description = Seo.generate_description(seo_template, param_text_value, '')
         if not 'canonical' in locals():
-            canonical = reverse('college_app:filter_no_values', kwargs={'param': param,
+            canonical = reverse('college_app:filter_no_values', kwargs={'param_name': param_name,
                                                                         })
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
@@ -59,7 +58,7 @@ def filter_no_values(request, param):
         colleges = handle_pagination(request, colleges)
 
         # a url for pagination first page
-        base_url = reverse('college_app:filter_no_values', kwargs={'param': param,
+        base_url = reverse('college_app:filter_no_values', kwargs={'param_name': param_name,
                                                                    })
         # string for api call
         api_call = '{}=0&{}'.format(query_param, req_str)
@@ -69,7 +68,7 @@ def filter_no_values(request, param):
                    'seo_description': seo_description,
                    'canonical': canonical,
                    'base_url': base_url,
-                   'init_filter_val': query_val,
+                   'init_filter_val': param_text_value,
                    'params': req_str,
                    'noindex': noindex,
                    'filters_vals': filters_vals,

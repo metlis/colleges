@@ -19,6 +19,6 @@ class State(models.Model):
         id = self.id
         slug = slugify(self.name)
         url = reverse('college_app:state', kwargs={'state_id': id,
-                                                       'state_slug': slug,
-                                                       })
+                                                   'state_slug': slug,
+                                                   })
         return url

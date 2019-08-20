@@ -377,7 +377,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if inst_level|length > 1 %}
+                            {% if level|length > 1 %}
                                 <div class="list-group-item btn-group dropright">
                                     <div class="dropdown-toggle" data-toggle="dropdown"
                                          aria-haspopup="true"
@@ -387,14 +387,14 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for l in inst_level %}
+                                        {% for l in level %}
                                             <a class="dropdown-item"
                                                href="{% url 'college_app:region_param' region_id region_slug 'level' l.0 %}">{{ l.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if highest_grad_degree|length > 1 %}
+                            {% if degree|length > 1 %}
                                 <div class="btn-group dropright">
                                     <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
                                          aria-haspopup="true"
@@ -404,7 +404,7 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for d in highest_grad_degree %}
+                                        {% for d in degree %}
                                             <a class="dropdown-item"
                                                href="{% url 'college_app:region_param' region_id region_slug 'degree' d.0 %}">{{ d.1 }}</a>
                                         {% endfor %}
@@ -428,7 +428,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if carnegie_basic|length > 1 %}
+                            {% if carnegie|length > 1 %}
                                 <div class="btn-group dropright">
                                     <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
                                          aria-haspopup="true"
@@ -438,7 +438,7 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for b in carnegie_basic %}
+                                        {% for b in carnegie %}
                                             <a class="dropdown-item"
                                                href="{% url 'college_app:region_param' region_id region_slug 'carnegie' b.0 %}">{{ b.1 }}</a>
                                         {% endfor %}
@@ -479,7 +479,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if religous|length > 1 %}
+                            {% if religion|length > 1 %}
                                 <div class="btn-group dropright">
                                     <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
                                          aria-haspopup="true"
@@ -489,7 +489,7 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for r in religous %}
+                                        {% for r in religion %}
                                             <a class="dropdown-item"
                                                href="{% url 'college_app:region_param' region_id region_slug 'religion' r.0 %}">{{ r.1 }}</a>
                                         {% endfor %}
@@ -636,7 +636,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if inst_level|length > 1 %}
+                            {% if level|length > 1 %}
                                 <div class="list-group-item btn-group dropright">
                                     <div class="dropdown-toggle" data-toggle="dropdown"
                                          aria-haspopup="true"
@@ -646,14 +646,14 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for l in inst_level %}
+                                        {% for l in level %}
                                             <a class="dropdown-item"
                                                href="{% url 'college_app:state_param' state_id state_slug 'level' l.0 %}">{{ l.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if highest_grad_degree|length > 1 %}
+                            {% if degree|length > 1 %}
                                 <div class="btn-group dropright">
                                     <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
                                          aria-haspopup="true"
@@ -663,7 +663,7 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for d in highest_grad_degree %}
+                                        {% for d in degree %}
                                             <a class="dropdown-item"
                                                href="{% url 'college_app:state_param' state_id state_slug 'degree' d.0 %}">{{ d.1 }}</a>
                                         {% endfor %}
@@ -687,7 +687,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if carnegie_basic|length > 1 %}
+                            {% if carnegie|length > 1 %}
                                 <div class="btn-group dropright">
                                     <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
                                          aria-haspopup="true"
@@ -697,7 +697,7 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for b in carnegie_basic %}
+                                        {% for b in carnegie %}
                                             <a class="dropdown-item"
                                                href="{% url 'college_app:state_param' state_id state_slug 'carnegie' b.0 %}">{{ b.1 }}</a>
                                         {% endfor %}
@@ -738,7 +738,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if religous|length > 1 %}
+                            {% if religion|length > 1 %}
                                 <div class="btn-group dropright">
                                     <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
                                          aria-haspopup="true"
@@ -748,7 +748,7 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for r in religous %}
+                                        {% for r in religion %}
                                             <a class="dropdown-item"
                                                href="{% url 'college_app:state_param' state_id state_slug 'religion' r.0 %}">{{ r.1 }}</a>
                                         {% endfor %}
@@ -910,7 +910,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if inst_level|length > 1 %}
+                            {% if level|length > 1 %}
                                 <div class="list-group-item btn-group dropright">
                                     <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                          aria-expanded="false">
@@ -919,14 +919,14 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for l in inst_level %}
+                                        {% for l in level %}
                                             <a class="dropdown-item"
-                                               onclick="addParam('inst_level={{ l.0 }}')">{{ l.1 }}</a>
+                                               onclick="addParam('level={{ l.0 }}')">{{ l.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if highest_grad_degree|length > 1 %}
+                            {% if degree|length > 1 %}
                                 <div class="list-group-item btn-group dropright">
                                     <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                          aria-expanded="false">
@@ -935,9 +935,9 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for d in highest_grad_degree %}
+                                        {% for d in degree %}
                                             <a class="dropdown-item"
-                                               onclick="addParam('highest_grad_degree={{ d.0 }}')">{{ d.1 }}</a>
+                                               onclick="addParam('degree={{ d.0 }}')">{{ d.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -959,7 +959,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if carnegie_basic|length > 1 %}
+                            {% if carnegie|length > 1 %}
                                 <div class="list-group-item btn-group dropright">
                                     <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                          aria-expanded="false">
@@ -968,9 +968,9 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for b in carnegie_basic %}
+                                        {% for b in carnegie %}
                                             <a class="dropdown-item"
-                                               onclick="addParam('carnegie_basic={{ b.0 }}')">{{ b.1 }}</a>
+                                               onclick="addParam('carnegie={{ b.0 }}')">{{ b.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -1006,7 +1006,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if religous|length > 1 %}
+                            {% if religion|length > 1 %}
                                 <div class="list-group-item btn-group dropright">
                                     <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                          aria-expanded="false">
@@ -1015,9 +1015,9 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu">
-                                        {% for r in religous %}
+                                        {% for r in religion %}
                                             <a class="dropdown-item"
-                                               onclick="addParam('religous={{ r.0 }}')">{{ r.1 }}</a>
+                                               onclick="addParam('religion={{ r.0 }}')">{{ r.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>

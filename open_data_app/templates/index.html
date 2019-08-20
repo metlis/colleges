@@ -161,7 +161,7 @@
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Carnegie
                                 classification</a>
                                 <ul class="dropdown-menu">
-                                    {% for c in carnegie_basic %}
+                                    {% for c in carnegie %}
                                         <li><a class="dropdown-item"
                                                href="{% url 'college_app:filter_values' 'carnegie' c.0 %}">{{ c.1 }}</a>
                                         </li>
@@ -266,7 +266,7 @@
                                     {% for d in degrees %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="highest_grad_degree" value="{{ d.0 }}" type="checkbox">
+                                                <input name="degree" value="{{ d.0 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
                                                 {{ d.1 }}
                                             </label>
@@ -347,7 +347,7 @@
                                     {% for l in levels %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="inst_level" value="{{ l.0 }}" type="checkbox">
+                                                <input name="level" value="{{ l.0 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
                                                 {{ l.1 }}
                                             </label>
@@ -356,10 +356,10 @@
                                 </div>
                                 <h4>Carnegie classification</h4>
                                 <div class="sub-container">
-                                    {% for c in carnegie_basic %}
+                                    {% for c in carnegie %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="carnegie_basic" value="{{ c.0 }}" type="checkbox">
+                                                <input name="carnegie" value="{{ c.0 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
                                                 {{ c.1 }}
                                             </label>
@@ -379,7 +379,7 @@
                                     {% for r in religions %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="religous" value="{{ r.0 }}" type="checkbox">
+                                                <input name="religion" value="{{ r.0 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
                                                 {{ r.1 }}
                                             </label>

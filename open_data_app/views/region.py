@@ -1,12 +1,14 @@
+from settings import *
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.paginator import Paginator
+from django.core.exceptions import FieldError
+
 from open_data_app.models import Region, College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.seo import Seo
-from settings import *
 
 
 def get_region(request, region_id, region_slug):
@@ -81,32 +83,29 @@ def get_region(request, region_id, region_slug):
     return render(request, 'filtered_colleges.html', context)
 
 
-def get_region_param(request, region_id, region_slug, param, param_value):
+def get_region_param(request, region_id, region_slug, param_name, param_value):
     """
-    Searches field by verbose name and takes its value. Works for any filter page
+    Takes filters, filter values, and colleges to show on filter page
 
     :param request:
     :param region_id:
     :param region_slug:
-    :param param: verbose name of a field
-    :param param_value: value of a field
+    :param param_name: name of filter's parameter
+    :param param_value: value of filter's parameter
     :return:
     """
-    region = Region.objects.get(id=region_id)
-    region_name, region_slug, region_states = region.get_region_data()
 
-    # initial filter, its value, verbose name and param value
-    param, query_val, verbose_name, param_value = College.get_filter_val('region', region_id, param, param_value)
-
-    # modify filter if it is about disciplines
-    disciplines = College.get_disciplines()
-    if param in disciplines:
-        filter_param = '{}__gt'.format(param)
+    # modify parameter name if it is a discipline
+    if param_name in College.get_disciplines():
+        filter_param = '{}__gt'.format(param_name)
     else:
-        filter_param = param
+        filter_param = param_name
 
-    # colleges filtered by the initial filter + by region
-    colleges = College.objects.filter(region__id=region_id).filter(**{filter_param: param_value}).order_by('name')
+    try:
+        # colleges filtered by region + by the initial filter
+        colleges = College.objects.filter(region__id=region_id).filter(**{filter_param: param_value}).order_by('name')
+    except FieldError:
+        return render(request, '404.html')
 
     # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
     # dictionary of applied filters and their values
@@ -114,17 +113,23 @@ def get_region_param(request, region_id, region_slug, param, param_value):
 
     if colleges.count() > 0:
 
+        region = Region.objects.get(id=region_id)
+        region_name, region_slug, region_states = region.get_region_data()
+
+        # parameter's text value
+        param_text_value = College.get_param_text_val('region', region_id, param_name, param_value)
+
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
 
         # define seo data before rendering
-        seo_template = verbose_name
-        seo_title = Seo.generate_title(seo_template, query_val, region_name)
-        seo_description = Seo.generate_description(seo_template, query_val, region_name)
+        seo_template = param_name
+        seo_title = Seo.generate_title(seo_template, param_text_value, region_name)
+        seo_description = Seo.generate_description(seo_template, param_text_value, region_name)
         if not 'canonical' in locals():
             canonical = reverse('college_app:region_param', kwargs={'region_id': region_id,
                                                                     'region_slug': region_slug,
-                                                                    'param': verbose_name,
+                                                                    'param_name': param_name,
                                                                     'param_value': slugify(param_value),
                                                                     })
         # aggregate data
@@ -145,12 +150,12 @@ def get_region_param(request, region_id, region_slug, param, param_value):
         # a url for pagination first page
         base_url = reverse('college_app:region_param', kwargs={'region_id': region_id,
                                                                'region_slug': region_slug,
-                                                               'param': verbose_name,
+                                                               'param_name': param_name,
                                                                'param_value': slugify(param_value),
                                                                })
 
         # string for api call
-        api_call = 'region={}&{}={}&{}'.format(region_id, param, param_value, req_str)
+        api_call = 'region={}&{}={}&{}'.format(region_id, param_name, param_value, req_str)
 
         context = {
                    'colleges': colleges,
@@ -160,9 +165,9 @@ def get_region_param(request, region_id, region_slug, param, param_value):
                    'base_url': base_url,
                    'region_id': region_id,
                    'region_slug': region_slug,
-                   'init_filter_val': query_val,
+                   'init_filter_val': param_text_value,
                    'geo': region_name,
-                   'second_filter': query_val,
+                   'second_filter': param_text_value,
                    'params': req_str,
                    'noindex': noindex,
                    'filters_vals': filters_vals,

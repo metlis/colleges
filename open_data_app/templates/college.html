@@ -115,14 +115,14 @@
                                                     class="icon-text">{{ college.undergrad_students|floatformat:"0"|intcomma }}</span>
                                             </p>
                                         {% endif %}
-                                        {% if college.religous %}
+                                        {% if college.religion %}
                                             <p>
                                                 <span class="icon-container"><i class="fas fa-church"
                                                                                 data-toggle="tooltip"
                                                                                 data-placement="top"
                                                                                 title="Religous affiliation of the institution"></i></span>
                                                 <span
-                                                        class="icon-text">{{ college.religous }}</span>
+                                                        class="icon-text">{{ college.religion }}</span>
                                             </p>
                                         {% endif %}
                                         {% if college.ownership %}
@@ -155,21 +155,21 @@
                                 <h2 id="academics-anchor">Academics</h2><i class="fas fa-plus"></i>
                             </div>
                             <div class="col-sm-12 card-body collapse show" id="academics">
-                                {% if college.highest_grad_degree or college.inst_level %}
+                                {% if college.degree or college.level %}
                                     <p>
                                     <span class="icon-container"><i class="fas fa-university" data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title="Level of institution and highest degree awarded (2019 College Scorecard data)"></i></span>
                                         <span
-                                                class="icon-text">{{ college.inst_level }}, {{ college.highest_grad_degree }}</span>
+                                                class="icon-text">{{ college.level }}, {{ college.degree }}</span>
                                     </p>
                                 {% endif %}
-                                {% if college.carnegie_basic %}
+                                {% if college.carnegie %}
                                     <p>
                                     <span class="icon-container"><i class="fas fa-flask" data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title="Carnegie Classification (2019 College Scorecard data)"></i></span> <span
-                                            class="icon-text">{{ college.carnegie_basic }}</span>
+                                            class="icon-text">{{ college.carnegie }}</span>
                                     </p>
                                 {% endif %}
                                 {% if college.online_only %}
@@ -179,7 +179,7 @@
                                                                         title="Distance-education-only education (2019 College Scorecard data)"></i></span>
                                         Online-only</p>
                                 {% endif %}
-                                {% if not college.online_only and not college.carnegie_basic and not college.highest_grad_degree and not college.inst_level %}
+                                {% if not college.online_only and not college.carnegie and not college.degree and not college.level %}
                                     <p style="text-align: center">No data available</p>
                                 {% endif %}
                             </div>

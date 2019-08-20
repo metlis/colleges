@@ -113,7 +113,6 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
             except:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
 
-
     if not api_call:
         # get applied filters values to display on results page
         filters_vals = []
@@ -121,11 +120,11 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
             try:
                 if isinstance(params_dict[p], list):
                     for dict_value in params_dict[p]:
-                        pr, val, verbose, param_value = College.get_filter_val(entity, entity_id, p, dict_value)
-                        filters_vals.append(val)
+                        param_text_value = College.get_param_text_val(entity, entity_id, p, dict_value)
+                        filters_vals.append(param_text_value)
                 else:
-                    p, val, verbose, param_value = College.get_filter_val(entity, entity_id, p, params_dict[p])
-                    filters_vals.append(val)
+                    param_text_value = College.get_param_text_val(entity, entity_id, p, params_dict[p])
+                    filters_vals.append(param_text_value)
 
             except:
                 return HttpResponseNotFound('<h1>Page not found</h1>')

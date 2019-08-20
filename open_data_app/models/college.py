@@ -1,13 +1,14 @@
-from django.db import models
 import csv
 import sys
 import urllib.parse
 
-from django.http import HttpResponseNotFound
-from django.core.exceptions import ObjectDoesNotExist
-
 from settings import *
+from django.db import models
+from django.db.models import Avg, Max, Min, F
+from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.text import slugify
+
 from open_data_app.models.state import State
 from open_data_app.models.region import Region
 from open_data_app.models.ownership import Ownership
@@ -17,8 +18,6 @@ from open_data_app.models.carnegie import Carnegie
 from open_data_app.models.religion import Religion
 from open_data_app.models.level import Level
 from open_data_app.models.dictionary import Dictionary
-from django.db.models import Avg, Max, Min, F
-from django.urls import reverse
 
 
 class College(models.Model):
@@ -27,177 +26,131 @@ class College(models.Model):
     name = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(max_length=255, blank=True)
     city = models.CharField(max_length=255, blank=True)
-    city_slug = models.SlugField(max_length=255, blank=True, verbose_name='city')
+    city_slug = models.SlugField(max_length=255, blank=True)
     zip = models.CharField(max_length=255, blank=True)
     url = models.CharField(max_length=255, blank=True)
     calc_url = models.CharField(max_length=255, blank=True)
-    state = models.ForeignKey(State, on_delete=models.PROTECT, null=True, verbose_name='state')
+    state = models.ForeignKey(State, on_delete=models.PROTECT, null=True)
     region = models.ForeignKey(Region, on_delete=models.PROTECT, null=True)
-    ownership = models.ForeignKey(Ownership, on_delete=models.PROTECT, null=True, verbose_name='ownership')
-    locale = models.ForeignKey(Locale, on_delete=models.PROTECT, null=True, verbose_name='locale')
+    ownership = models.ForeignKey(Ownership, on_delete=models.PROTECT, null=True)
+    locale = models.ForeignKey(Locale, on_delete=models.PROTECT, null=True)
     latitude = models.CharField(max_length=255, blank=True, null=True)
     longitude = models.CharField(max_length=255, blank=True, null=True)
-    highest_grad_degree = models.ForeignKey(Degree, on_delete=models.PROTECT, null=True, verbose_name='degree')
-    carnegie_basic = models.ForeignKey(Carnegie, on_delete=models.PROTECT, null=True, verbose_name='carnegie')
-    hist_black = models.IntegerField(null=True, verbose_name='hist_black')
-    predom_black = models.IntegerField(null=True, verbose_name='predom_black')
-    hispanic = models.IntegerField(null=True, verbose_name='hispanic')
-    men_only = models.IntegerField(null=True, verbose_name='men_only')
-    women_only = models.IntegerField(null=True, verbose_name='women_only')
-    religous = models.ForeignKey(Religion, on_delete=models.PROTECT, null=True, verbose_name='religion')
-    online_only = models.IntegerField(null=True, verbose_name='online_only')
-    inst_level = models.ForeignKey(Level, on_delete=models.PROTECT, null=True, verbose_name='level')
-    cur_operating = models.IntegerField(null=True, verbose_name='cur_operating')
+    degree = models.ForeignKey(Degree, on_delete=models.PROTECT, null=True)
+    carnegie = models.ForeignKey(Carnegie, on_delete=models.PROTECT, null=True)
+    hist_black = models.IntegerField(null=True)
+    predom_black = models.IntegerField(null=True)
+    hispanic = models.IntegerField(null=True)
+    men_only = models.IntegerField(null=True)
+    women_only = models.IntegerField(null=True)
+    religion = models.ForeignKey(Religion, on_delete=models.PROTECT, null=True)
+    online_only = models.IntegerField(null=True)
+    level = models.ForeignKey(Level, on_delete=models.PROTECT, null=True)
+    cur_operating = models.IntegerField(null=True)
 
     # academics section
-    agriculture = models.FloatField(null=True, verbose_name='agriculture')
-    architecture = models.FloatField(null=True, verbose_name='architecture')
-    ethnic_cultural_gender = models.FloatField(null=True, verbose_name='ethnic_cultural_gender')
-    biological = models.FloatField(null=True, verbose_name='biological')
-    business_marketing = models.FloatField(null=True, verbose_name='business_marketing')
-    communication = models.FloatField(null=True, verbose_name='communication')
-    communications_technology = models.FloatField(null=True, verbose_name='communications_technology')
-    computer = models.FloatField(null=True, verbose_name='computer')
-    construction = models.FloatField(null=True, verbose_name='construction')
-    education = models.FloatField(null=True, verbose_name='education')
-    engineering = models.FloatField(null=True, verbose_name='engineering')
-    engineering_technology = models.FloatField(null=True, verbose_name='engineering_technology')
-    english = models.FloatField(null=True, verbose_name='english')
-    family_consumer_science = models.FloatField(null=True, verbose_name='family_consumer_science')
-    language = models.FloatField(null=True, verbose_name='language')
-    health = models.FloatField(null=True, verbose_name='health')
-    history = models.FloatField(null=True, verbose_name='history')
-    security_law_enforcement = models.FloatField(null=True, verbose_name='security_law_enforcement')
-    legal = models.FloatField(null=True, verbose_name='legal')
-    humanities = models.FloatField(null=True, verbose_name='humanities')
-    library = models.FloatField(null=True, verbose_name='library')
-    mathematics = models.FloatField(null=True, verbose_name='mathematics')
-    mechanic_repair_technology = models.FloatField(null=True, verbose_name='mechanic_repair_technology')
-    military = models.FloatField(null=True, verbose_name='military')
-    multidiscipline = models.FloatField(null=True, verbose_name='multidiscipline')
-    resources = models.FloatField(null=True, verbose_name='resources')
-    parks_recreation_fitness = models.FloatField(null=True, verbose_name='parks_recreation_fitness')
-    personal_culinary = models.FloatField(null=True, verbose_name='personal_culinary')
-    philosophy_religious = models.FloatField(null=True, verbose_name='philosophy_religious')
-    physical_science = models.FloatField(null=True, verbose_name='physical_science')
-    precision_production = models.FloatField(null=True, verbose_name='precision_production')
-    psychology = models.FloatField(null=True, verbose_name='psychology')
-    public_administration_social_service = models.FloatField(null=True,
-                                                             verbose_name='public_administration_social_service')
-    science_technology = models.FloatField(null=True, verbose_name='science_technology')
-    social_science = models.FloatField(null=True, verbose_name='social_science')
-    theology_religious_vocation = models.FloatField(null=True, verbose_name='theology_religious_vocation')
-    transportation = models.FloatField(null=True, verbose_name='transportation')
-    visual_performing = models.FloatField(null=True, verbose_name='visual_performing')
+    agriculture = models.FloatField(null=True)
+    architecture = models.FloatField(null=True)
+    ethnic_cultural_gender = models.FloatField(null=True)
+    biological = models.FloatField(null=True)
+    business_marketing = models.FloatField(null=True)
+    communication = models.FloatField(null=True)
+    communications_technology = models.FloatField(null=True)
+    computer = models.FloatField(null=True)
+    construction = models.FloatField(null=True)
+    education = models.FloatField(null=True)
+    engineering = models.FloatField(null=True)
+    engineering_technology = models.FloatField(null=True)
+    english = models.FloatField(null=True)
+    family_consumer_science = models.FloatField(null=True)
+    language = models.FloatField(null=True)
+    health = models.FloatField(null=True)
+    history = models.FloatField(null=True)
+    security_law_enforcement = models.FloatField(null=True)
+    legal = models.FloatField(null=True)
+    humanities = models.FloatField(null=True)
+    library = models.FloatField(null=True)
+    mathematics = models.FloatField(null=True)
+    mechanic_repair_technology = models.FloatField(null=True)
+    military = models.FloatField(null=True)
+    multidiscipline = models.FloatField(null=True)
+    resources = models.FloatField(null=True)
+    parks_recreation_fitness = models.FloatField(null=True)
+    personal_culinary = models.FloatField(null=True)
+    philosophy_religious = models.FloatField(null=True)
+    physical_science = models.FloatField(null=True)
+    precision_production = models.FloatField(null=True)
+    psychology = models.FloatField(null=True)
+    public_administration_social_service = models.FloatField(null=True)
+    science_technology = models.FloatField(null=True)
+    social_science = models.FloatField(null=True)
+    theology_religious_vocation = models.FloatField(null=True)
+    transportation = models.FloatField(null=True)
+    visual_performing = models.FloatField(null=True)
 
     # cost
-    average_net_price_public = models.FloatField(null=True, verbose_name='average_net_price_public')
-    average_net_price_private = models.FloatField(null=True, verbose_name='average_net_price_private')
-    average_cost_of_attendance_academic = models.FloatField(null=True,
-                                                            verbose_name='average_cost_of_attendance_academic')
-    average_cost_of_attendance_program = models.FloatField(null=True, verbose_name='average_cost_of_attendance_program')
-    in_state_tuition = models.FloatField(null=True, verbose_name='in_state_tuition')
-    out_state_tuition = models.FloatField(null=True, verbose_name='out_state_tuition')
-    average_net_price_pub_30 = models.FloatField(null=True, verbose_name='average_net_price_pub_30')
-    average_net_price_pub_48 = models.FloatField(null=True, verbose_name='average_net_price_pub_48')
-    average_net_price_pub_75 = models.FloatField(null=True, verbose_name='average_net_price_pub_75')
-    average_net_price_pub_110 = models.FloatField(null=True, verbose_name='average_net_price_pub_110')
-    average_net_price_pub_110_plus = models.FloatField(null=True, verbose_name='average_net_price_pub_110_plus')
-    average_net_price_priv_30 = models.FloatField(null=True, verbose_name='average_net_price_priv_30')
-    average_net_price_priv_48 = models.FloatField(null=True, verbose_name='average_net_price_priv_48')
-    average_net_price_priv_75 = models.FloatField(null=True, verbose_name='average_net_price_priv_75')
-    average_net_price_priv_110 = models.FloatField(null=True, verbose_name='average_net_price_priv_110')
-    average_net_price_priv_110_plus = models.FloatField(null=True, verbose_name='average_net_price_priv_110_plus')
+    average_net_price_public = models.FloatField(null=True)
+    average_net_price_private = models.FloatField(null=True)
+    average_cost_of_attendance_academic = models.FloatField(null=True)
+    average_cost_of_attendance_program = models.FloatField(null=True)
+    in_state_tuition = models.FloatField(null=True)
+    out_state_tuition = models.FloatField(null=True)
+    average_net_price_pub_30 = models.FloatField(null=True)
+    average_net_price_pub_48 = models.FloatField(null=True)
+    average_net_price_pub_75 = models.FloatField(null=True)
+    average_net_price_pub_110 = models.FloatField(null=True)
+    average_net_price_pub_110_plus = models.FloatField(null=True)
+    average_net_price_priv_30 = models.FloatField(null=True)
+    average_net_price_priv_48 = models.FloatField(null=True)
+    average_net_price_priv_75 = models.FloatField(null=True)
+    average_net_price_priv_110 = models.FloatField(null=True)
+    average_net_price_priv_110_plus = models.FloatField(null=True)
 
     # aid
-    pell_grand = models.FloatField(null=True, verbose_name='pell_grand')
-    federal_loan = models.FloatField(null=True, verbose_name='federal_loan')
-    debt_completed = models.FloatField(null=True, verbose_name='debt_completed')
-    debt_not_completed = models.FloatField(null=True, verbose_name='debt_not_completed')
-    debt_completed_median = models.FloatField(null=True, verbose_name='debt_completed_median')
-    monthly_payments = models.FloatField(null=True, verbose_name='monthly_payments')
+    pell_grand = models.FloatField(null=True)
+    federal_loan = models.FloatField(null=True)
+    debt_completed = models.FloatField(null=True)
+    debt_not_completed = models.FloatField(null=True)
+    debt_completed_median = models.FloatField(null=True)
+    monthly_payments = models.FloatField(null=True)
 
     # completion
-    completion_rate_four_year = models.FloatField(null=True, verbose_name='completion_rate_four_year')
-    completion_rate_less_four_year = models.FloatField(null=True, verbose_name='completion_rate_less_four_year')
-    completion_rate_four_year_pooled = models.FloatField(null=True, verbose_name='completion_rate_four_year_pooled')
-    completion_rate_less_four_year_pooled = models.FloatField(null=True, verbose_name='completion_rate_less_four_year_pooled')
-    retention_rate_four_year_pooled = models.FloatField(null=True, verbose_name='retention_rate_four_year_pooled')
-    retention_rate_less_four_year_pooled = models.FloatField(null=True,
-                                                              verbose_name='retention_rate_less_four_year_pooled')
+    completion_rate_four_year = models.FloatField(null=True)
+    completion_rate_less_four_year = models.FloatField(null=True)
+    completion_rate_four_year_pooled = models.FloatField(null=True)
+    completion_rate_less_four_year_pooled = models.FloatField(null=True)
+    retention_rate_four_year_pooled = models.FloatField(null=True)
+    retention_rate_less_four_year_pooled = models.FloatField(null=True)
 
     # earnings
-    mean_earnings = models.FloatField(null=True, verbose_name='mean_earnings')
-    median_earnings = models.FloatField(null=True, verbose_name='median_earnings')
+    mean_earnings = models.FloatField(null=True)
+    median_earnings = models.FloatField(null=True)
 
     # student
-    undergrad_students = models.FloatField(null=True, verbose_name='undergrad_students')
-    students_white = models.FloatField(null=True, verbose_name='students_white')
-    students_black = models.FloatField(null=True, verbose_name='students_black')
-    students_hispanic = models.FloatField(null=True, verbose_name='students_hispanic')
-    students_asian = models.FloatField(null=True, verbose_name='students_asian')
-    students_native = models.FloatField(null=True, verbose_name='students_native')
-    students_pacific = models.FloatField(null=True, verbose_name='students_pacific')
-    students_multiple_races = models.FloatField(null=True, verbose_name='students_multiple_races')
-    students_non_resident = models.FloatField(null=True, verbose_name='students_non_resident')
-    students_unknown_race = models.FloatField(null=True, verbose_name='students_unknown_race')
-    students_part_time = models.FloatField(null=True, verbose_name='students_part_time')
-    students_female = models.FloatField(null=True, verbose_name='students_female')
-    students_family_income = models.FloatField(null=True, verbose_name='students_family_income')
+    undergrad_students = models.FloatField(null=True)
+    students_white = models.FloatField(null=True)
+    students_black = models.FloatField(null=True)
+    students_hispanic = models.FloatField(null=True)
+    students_asian = models.FloatField(null=True)
+    students_native = models.FloatField(null=True)
+    students_pacific = models.FloatField(null=True)
+    students_multiple_races = models.FloatField(null=True)
+    students_non_resident = models.FloatField(null=True)
+    students_unknown_race = models.FloatField(null=True)
+    students_part_time = models.FloatField(null=True)
+    students_female = models.FloatField(null=True)
+    students_family_income = models.FloatField(null=True)
 
     # admission
-    admission_rate = models.FloatField(null=True, verbose_name='admission_rate')
-    sat_reading = models.FloatField(null=True, verbose_name='sat_reading')
-    sat_math = models.FloatField(null=True, verbose_name='sat_math')
-    sat_writing = models.FloatField(null=True, verbose_name='sat_writing')
-    sat_average = models.FloatField(null=True, verbose_name='sat_average')
-    act_cumulative = models.FloatField(null=True, verbose_name='act_cumulative')
-    act_english = models.FloatField(null=True, verbose_name='act_english')
-    act_math = models.FloatField(null=True, verbose_name='act_math')
-    act_writing = models.FloatField(null=True, verbose_name='act_writing')
-
-    class Meta:
-        indexes = [
-            models.Index(fields=['state']),
-            models.Index(fields=['region']),
-            models.Index(fields=['ownership']),
-            models.Index(fields=['locale']),
-            models.Index(fields=['highest_grad_degree']),
-            models.Index(fields=['carnegie_basic']),
-            models.Index(fields=['inst_level']),
-            models.Index(fields=['agriculture']),
-            models.Index(fields=['architecture']),
-            models.Index(fields=['ethnic_cultural_gender']),
-            models.Index(fields=['business_marketing']),
-            models.Index(fields=['communication']),
-            models.Index(fields=['communications_technology']),
-            models.Index(fields=['computer']),
-            models.Index(fields=['construction']),
-            models.Index(fields=['education']),
-            models.Index(fields=['engineering']),
-            models.Index(fields=['engineering_technology']),
-            models.Index(fields=['english']),
-            models.Index(fields=['family_consumer_science']),
-            models.Index(fields=['language']),
-            models.Index(fields=['health']),
-            models.Index(fields=['history']),
-            models.Index(fields=['security_law_enforcement']),
-            models.Index(fields=['legal']),
-            models.Index(fields=['humanities']),
-            models.Index(fields=['library']),
-            models.Index(fields=['mathematics']),
-            models.Index(fields=['mechanic_repair_technology']),
-            models.Index(fields=['military']),
-            models.Index(fields=['multidiscipline']),
-            models.Index(fields=['resources']),
-            models.Index(fields=['parks_recreation_fitness']),
-            models.Index(fields=['personal_culinary']),
-            models.Index(fields=['philosophy_religious']),
-            models.Index(fields=['physical_science']),
-            models.Index(fields=['precision_production']),
-            models.Index(fields=['psychology']),
-            models.Index(fields=['public_administration_social_service']),
-        ]
+    admission_rate = models.FloatField(null=True)
+    sat_reading = models.FloatField(null=True)
+    sat_math = models.FloatField(null=True)
+    sat_writing = models.FloatField(null=True)
+    sat_average = models.FloatField(null=True)
+    act_cumulative = models.FloatField(null=True)
+    act_english = models.FloatField(null=True)
+    act_math = models.FloatField(null=True)
+    act_writing = models.FloatField(null=True)
 
     def __str__(self):
         return self.name
@@ -214,7 +167,7 @@ class College(models.Model):
 
                 if row_num > 1:
                     col_values = row.split(',')
-                    
+
                     if len(col_values) != 1977:
 
                         links = []
@@ -271,10 +224,10 @@ class College(models.Model):
                     college.longitude = check_val(col_values[22], False)
 
                     degree = get_instance(Degree.objects.filter(id=check_val(col_values[15], False)))
-                    college.highest_grad_degree = degree
+                    college.degree = degree
 
-                    carnegie_basic = get_instance(Carnegie.objects.filter(code_num=check_val(col_values[23], False)))
-                    college.carnegie_basic = carnegie_basic
+                    carnegie = get_instance(Carnegie.objects.filter(code_num=check_val(col_values[23], False)))
+                    college.carnegie = carnegie
 
                     college.hist_black = check_val(col_values[26], False)
                     college.predom_black = check_val(col_values[27], False)
@@ -283,12 +236,12 @@ class College(models.Model):
                     college.women_only = check_val(col_values[34], False)
 
                     religion = get_instance(Religion.objects.filter(code_num=check_val(col_values[35], False)))
-                    college.religous = religion
+                    college.religion = religion
 
                     college.online_only = check_val(col_values[289], False)
 
                     level = get_instance(Level.objects.filter(id=check_val(col_values[1738], False)))
-                    college.inst_level = level
+                    college.level = level
 
                     college.cur_operating = check_val(col_values[315], False)
                     college.url = check_val(col_values[8], True)
@@ -433,7 +386,7 @@ class College(models.Model):
     def get_dict():
         """
         Returns dictionary of titles for college properties
-        :return Dictionary:
+        :return dict:
         """
         try:
             content = Dictionary.objects.get(name='property_titles').content
@@ -448,7 +401,7 @@ class College(models.Model):
     def get_disciplines():
         """
         Returns slugs of college disciplines
-        :return Array:
+        :return list:
         """
         try:
             content = Dictionary.objects.get(name='discipline_slugs').content
@@ -492,19 +445,19 @@ class College(models.Model):
                                                 'locale__description').order_by('locale__id').exclude(
             locale__description=None).exclude(
             locale__description='Not applicable').distinct()
-        colleges_degrees = colleges.values_list('highest_grad_degree__id',
-                                                'highest_grad_degree__description').order_by(
-            'highest_grad_degree__id').exclude(highest_grad_degree__description=None).exclude(
-            highest_grad_degree__description='Not applicable').distinct()
-        colleges_carnegie_basic = colleges.values_list('carnegie_basic__id',
-                                                       'carnegie_basic__description').order_by(
-            'carnegie_basic__description').exclude(carnegie_basic__description=None).exclude(
-            carnegie_basic__description='Not applicable').distinct()
-        colleges_religions = colleges.values_list('religous__id',
-                                                  'religous__name').order_by(
-            'religous__name').exclude(religous__name=None).distinct()
-        colleges_levels = colleges.values_list('inst_level__id',
-                                               'inst_level__description').order_by('inst_level__id').distinct()
+        colleges_degrees = colleges.values_list('degree__id',
+                                                'degree__description').order_by(
+            'degree__id').exclude(degree__description=None).exclude(
+            degree__description='Not applicable').distinct()
+        colleges_carnegie = colleges.values_list('carnegie__id',
+                                                       'carnegie__description').order_by(
+            'carnegie').exclude(carnegie__description=None).exclude(
+            carnegie__description='Not applicable').distinct()
+        colleges_religions = colleges.values_list('religion__id',
+                                                  'religion__name').order_by(
+            'religion__name').exclude(religion__name=None).distinct()
+        colleges_levels = colleges.values_list('level__id',
+                                               'level__description').order_by('level__id').distinct()
         colleges_hist_black = colleges.values('hist_black').exclude(hist_black=None).distinct()
         colleges_predom_black = colleges.values('predom_black').exclude(predom_black=None).distinct()
         colleges_hispanic = colleges.values('hispanic').exclude(hispanic=None).distinct()
@@ -517,10 +470,10 @@ class College(models.Model):
                    'state': colleges_states,
                    'ownership': colleges_ownership,
                    'locale': colleges_locales,
-                   'highest_grad_degree': colleges_degrees,
-                   'carnegie_basic': colleges_carnegie_basic,
-                   'religous': colleges_religions,
-                   'inst_level': colleges_levels,
+                   'degree': colleges_degrees,
+                   'carnegie': colleges_carnegie,
+                   'religion': colleges_religions,
+                   'level': colleges_levels,
                    'hist_black': colleges_hist_black,
                    'predom_black': colleges_predom_black,
                    'hispanic': colleges_hispanic,
@@ -560,24 +513,20 @@ class College(models.Model):
         return filters
 
     @classmethod
-    def get_filter_val(cls, entity, entity_id, param, param_value):
+    def get_param_text_val(cls, entity, entity_id, param_name, param_value):
         """
-        Searches field by verbose name and takes its value. Works for any filter page
+        Searches the field by parameter's name and returns a text representation of parameter's value
 
-        :param entity: state or region
+        :param entity: a state or region
         :param entity_id:
-        :param param: verbose name of a field
-        :param param_value: value of a field
-        :return:
+        :param param_name: name of a filter parameter
+        :param param_value: value of a filter parameter
+        :return str:
         """
         college_fields = cls._meta.get_fields()
 
         for field in college_fields:
-            if param == field._verbose_name or param == field.name:
-
-                # if verbose name and name are different, change query param to name of the field
-                if param != field.attname:
-                    param = field.attname
+            if param_name == field.name:
 
                 # for relational fields get related object
                 if field.related_model is not None:
@@ -588,12 +537,13 @@ class College(models.Model):
 
                         # get relational field text value
                         try:
-                            query_val = rel_obj.description
-                        except:
-                            query_val = rel_obj.name
+                            param_text_value = rel_obj.description
+                        except AttributeError:
+                            param_text_value = rel_obj.name
 
                 # for non-relational fields (city) get query value
-                elif param in ['city', 'city_slug']:
+                elif param_name in ['city', 'city_slug']:
+
                     if entity == 'state':
                         query_field = cls.objects.filter(state__id=entity_id).filter(
                             **{'city_slug': param_value}).values(
@@ -604,26 +554,29 @@ class College(models.Model):
                             'city').distinct()
                     else:
                         query_field = cls.objects.filter(**{'city_slug': param_value}).values('city').distinct()
+
                     if len(query_field) > 0:
-                        query_val = query_field[0]['city']
-                        return param, query_val, param, query_val
+                        param_text_value = query_field[0]['city']
+                        return param_text_value
                     else:
-                        return HttpResponseNotFound('<h1>Page not found</h1>')
+                        return ''
+
                 # params without value (academics)
-                elif param in cls.get_disciplines():
-                    dict = cls.get_dict()
-                    query_val = dict[param]
+                elif param_name in cls.get_disciplines():
+                    dictionary = cls.get_dict()
+                    param_text_value = dictionary[param_name]
+
                 # yes/no queries
                 else:
-                    dict = cls.get_dict()
-                    query_val = dict[param][int(param_value)]
+                    dictionary = cls.get_dict()
+                    param_text_value = dictionary[param_name][int(param_value)]
 
                 try:
-                    return param, query_val, field._verbose_name, param_value
-                except:
+                    return param_text_value
+                except UnboundLocalError:
                     pass
         else:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+            return ''
 
     @staticmethod
     def get_aggregate_data(colleges):
@@ -693,9 +646,9 @@ class College(models.Model):
         id = self.id
         slug = self.slug
 
-        url = reverse('college_app:college_slug', kwargs={'college_id': id,
-                                                      'college_slug': slug,
-                                                      })
+        url = reverse('college_app:college', kwargs={'college_id': id,
+                                                     'college_slug': slug,
+                                                     })
         return url
 
     @staticmethod

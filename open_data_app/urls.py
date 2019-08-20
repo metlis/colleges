@@ -30,15 +30,15 @@ app_name = 'college_app'
 handler404 = 'open_data_app.views.page_not_found'
 urlpatterns = [
     path(r'state/<int:state_id>/<slug:state_slug>/', get_state, name='state'),
-    path(r'state/<int:state_id>/<slug:state_slug>/<param>/<param_value>/', get_state_param, name='state_param'),
+    path(r'state/<int:state_id>/<slug:state_slug>/<param_name>/<param_value>/', get_state_param, name='state_param'),
 
     path(r'region/<int:region_id>/<slug:region_slug>/', get_region, name='region'),
-    path(r'region/<int:region_id>/<slug:region_slug>/<param>/<param_value>/', get_region_param, name='region_param'),
+    path(r'region/<int:region_id>/<slug:region_slug>/<param_name>/<param_value>/', get_region_param, name='region_param'),
 
     path(r'institution/<int:college_id>/<slug:college_slug>/', get_college, name='college'),
 
-    path(r'param/<param>/', filter_no_values, name='filter_no_values'),
-    path(r'param/<param>/<param_value>/', filter_values, name='filter_values'),
+    path(r'param/<param_name>/', filter_no_values, name='filter_no_values'),
+    path(r'param/<param_name>/<param_value>/', filter_values, name='filter_values'),
 
     path(r'main/', main_filter, name='main_filter'),
 
