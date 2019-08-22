@@ -98,8 +98,8 @@ function getMapLabels(url) {
         })
 }
 
-function modifyFavourites(el, key, collegeId) {
-    axios.get('/api/modify_favourites/?session_key=' + key + '&college_id=' + collegeId)
+function modifyFavourites(el, collegeId) {
+    axios.get('/api/modify_favourites/?college_id=' + collegeId)
         .then(function (response) {
             if (response.data && response.data == 'Added') {
                 el.classList.remove('far');
@@ -135,7 +135,6 @@ $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
 });
 
 $('#college-star').on('click', function(e) {
-    var key = this.getAttribute('data-session-key');
     var id = this.getAttribute('data-college-id');
-    if (key && id) modifyFavourites(this, key, id);
+    if (id) modifyFavourites(this, id);
 });

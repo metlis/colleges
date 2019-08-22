@@ -24,20 +24,18 @@ def get_college(request, college_id, college_slug):
                     and str(college.id) in request.session['favourite_colleges']:
                 is_favourite = True
 
-
-
             disciplines = College.get_disciplines()
 
             disciplines_vals = []
 
-            dict = College.get_dict()
+            dictionary = College.get_dict()
 
-            for disc in disciplines:
-                val = getattr(college, disc)
+            for d in disciplines:
+                val = getattr(college, d)
                 try:
                     if float(val) > 0:
                         val_formatted = float("{0:.2f}".format(val * 100))
-                        disciplines_vals.append([dict[disc], val_formatted])
+                        disciplines_vals.append([dictionary[d], val_formatted])
                 except:
                     pass
 
@@ -48,7 +46,6 @@ def get_college(request, college_id, college_slug):
                                                     'college_disciplines': disciplines_vals,
                                                     'is_favourite': is_favourite,
                                                     'maps_key': GOOGLE_MAPS_API,
-                                                    'session_key': request.session.session_key,
                                                     })
     else:
         raise Http404()

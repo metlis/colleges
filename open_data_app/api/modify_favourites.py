@@ -1,26 +1,28 @@
-from django.contrib.sessions.models import Session
-from django.contrib.sessions.backends.db import SessionStore
 from django.http import HttpResponse
 
 
 def modify_favourites(request):
     params = request.GET
-    session = Session.objects.get(session_key=params['session_key'])
-    session_data = session.get_decoded()
 
-    if session_data.get('favourite_colleges') is None:
-        session_data['favourite_colleges'] = []
+    try:
+        session = request.session
+    except Exception as e:
+        return HttpResponse(e)
 
-    if params['college_id']:
-        if params['college_id'] in session_data['favourite_colleges']:
-            session_data['favourite_colleges'].remove(params['college_id'])
-            session.session_data = SessionStore().encode(session_data)
-            session.save()
-            return HttpResponse('Removed')
+    if session.get('favourite_colleges') is None:
+        session['favourite_colleges'] = []
+
+    if 'college_id' in params:
+        college_id = params['college_id']
+        favourite_colleges = session['favourite_colleges']
+
+        if college_id in favourite_colleges:
+            session['favourite_colleges'] = favourite_colleges.remove(college_id)
+            message = 'Removed'
         else:
-            session_data['favourite_colleges'] = list(set(request.session['favourite_colleges'] + [params['college_id']]))
-            session.session_data = SessionStore().encode(session_data)
-            session.save()
-            return HttpResponse('Added')
+            session['favourite_colleges'] = list(set(favourite_colleges + [college_id]))
+            message = 'Added'
+
+        return HttpResponse(message)
 
     return HttpResponse('No college data')
