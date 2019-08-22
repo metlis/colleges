@@ -52,6 +52,11 @@ def search(request):
             # string for api call
             api_call = 'text={}'.format(query)
 
+            # ids of favourite colleges
+            favourite_colleges = []
+            if 'favourite_colleges' in request.session:
+                favourite_colleges = request.session['favourite_colleges']
+
             context = {'colleges': colleges,
                        'canonical': canonical,
                        'seo_title': 'Search',
@@ -63,6 +68,7 @@ def search(request):
                        'state_filter': True,
                        'api_call': api_call,
                        'is_multiple': is_multiple,
+                       'favourite_colleges': favourite_colleges,
                        }
 
             context.update(aggregate_data)

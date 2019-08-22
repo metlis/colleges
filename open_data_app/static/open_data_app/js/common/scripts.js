@@ -104,9 +104,17 @@ function modifyFavourites(el, collegeId) {
             if (response.data && response.data == 'Added') {
                 el.classList.remove('far');
                 el.classList.add('fas');
+                if (el.parentNode.className == 'card-header') {
+                    el.parentNode.parentNode.classList.remove('card');
+                    el.parentNode.parentNode.classList.add('card-favourite');
+                }
             } else if (response.data && response.data == 'Removed') {
                 el.classList.remove('fas');
                 el.classList.add('far');
+                if (el.parentNode.className == 'card-header') {
+                    el.parentNode.parentNode.classList.remove('card-favourite');
+                    el.parentNode.parentNode.classList.add('card');
+                }
             }
         })
         .catch(function (error) {
@@ -134,7 +142,7 @@ $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
   return false;
 });
 
-$('#college-star').on('click', function(e) {
+$('.favourite-button').on('click', function(e) {
     var id = this.getAttribute('data-college-id');
     if (id) modifyFavourites(this, id);
 });

@@ -1343,10 +1343,12 @@
                     {# colleges list start #}
                     {% for college in colleges %}
                         <div class="col-sm-12 college-container">
-                            <div class="card">
+                            <div class="{% if college.id|stringformat:"i" in favourite_colleges %}card-favourite{% else %}card{% endif %}">
                                 <div class="card-header">
                                     <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
                                     <p><i class="fas fa-map-marker-alt"></i> {{ college.city }}, {{ college.state }}</p>
+                                    <i class="{% if college.id|stringformat:"i" in favourite_colleges %}fas{% else %}far{% endif %} fa-star favourite-button"
+                                       title="Add to favourite" data-college-id="{{ college.id }}"></i>
                                 </div>
                                 <div class="row card-body">
                                     <div class="col-sm-12 col-md-6">

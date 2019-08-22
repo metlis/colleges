@@ -43,6 +43,11 @@ def main_filter(request):
             # pagination
             colleges = handle_pagination(request, colleges)
 
+            # ids of favourite colleges
+            favourite_colleges = []
+            if 'favourite_colleges' in request.session:
+                favourite_colleges = request.session['favourite_colleges']
+
             context = {'colleges': colleges,
                        'seo_title': 'Results',
                        'canonical': canonical,
@@ -55,6 +60,7 @@ def main_filter(request):
                        'state_filter': True,
                        'api_call': req_str,
                        'is_multiple': is_multiple,
+                       'favourite_colleges': favourite_colleges,
                        }
             context.update(filters)
             context.update(aggregate_data)
@@ -91,6 +97,11 @@ def main_filter(request):
         # pagination
         colleges = handle_pagination(request, colleges)
 
+        # ids of favourite colleges
+        favourite_colleges = []
+        if 'favourite_colleges' in request.session:
+            favourite_colleges = request.session['favourite_colleges']
+
         context = {'colleges': colleges,
                    'seo_title': 'USA College and University search',
                    'seo_description': 'You can use filters on this page to search between more than 7,000 american universities and colleges in 50 states. The information on this web site is provided by College Scorecard.',
@@ -101,6 +112,7 @@ def main_filter(request):
                    'state_filter': True,
                    'api_call': '',
                    'is_multiple': is_multiple,
+                   'favourite_colleges': favourite_colleges,
                    }
         context.update(filters)
         context.update(aggregate_data)

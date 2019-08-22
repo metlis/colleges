@@ -64,6 +64,11 @@ def get_region(request, region_id, region_slug):
     # string for api call
     api_call = 'region={}'.format(region_id)
 
+    # ids of favourite colleges
+    favourite_colleges = []
+    if 'favourite_colleges' in request.session:
+        favourite_colleges = request.session['favourite_colleges']
+
     context = {'colleges': colleges,
                'region_name': region_name,
                'region_states': region_states,
@@ -76,6 +81,7 @@ def get_region(request, region_id, region_slug):
                'region_init': True,
                'api_call': api_call,
                'is_multiple': is_multiple,
+               'favourite_colleges': favourite_colleges,
                }
 
     context.update(filters)
@@ -161,6 +167,11 @@ def get_region_param(request, region_id, region_slug, param_name, param_value):
         # string for api call
         api_call = 'region={}&{}={}&{}'.format(region_id, param_name, param_value, req_str)
 
+        # ids of favourite colleges
+        favourite_colleges = []
+        if 'favourite_colleges' in request.session:
+            favourite_colleges = request.session['favourite_colleges']
+
         context = {
                    'colleges': colleges,
                    'seo_title': seo_title,
@@ -179,6 +190,7 @@ def get_region_param(request, region_id, region_slug, param_name, param_value):
                    'state_filter': True,
                    'api_call': api_call,
                    'is_multiple': is_multiple,
+                   'favourite_colleges': favourite_colleges,
                    }
         context.update(filters)
         context.update(aggregate_data)

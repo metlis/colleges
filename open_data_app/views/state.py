@@ -65,6 +65,11 @@ def get_state(request, state_id, state_slug):
     # string for api call
     api_call = 'state={}'.format(state.id)
 
+    # ids of favourite colleges
+    favourite_colleges = []
+    if 'favourite_colleges' in request.session:
+        favourite_colleges = request.session['favourite_colleges']
+
     context = {
                'colleges': colleges,
                'state': state,
@@ -78,6 +83,7 @@ def get_state(request, state_id, state_slug):
                'state_view': True,
                'api_call': api_call,
                'is_multiple': is_multiple,
+               'favourite_colleges': favourite_colleges,
                }
 
     context.update(filters)
@@ -155,6 +161,11 @@ def get_state_param(request, state_id, state_slug, param_name, param_value):
         # string for an api call
         api_call = 'state={}&{}={}&{}'.format(state_id, param_name, param_value, req_str)
 
+        # ids of favourite colleges
+        favourite_colleges = []
+        if 'favourite_colleges' in request.session:
+            favourite_colleges = request.session['favourite_colleges']
+
         context = {
                    'colleges': colleges,
                    'seo_title': seo_title,
@@ -173,6 +184,7 @@ def get_state_param(request, state_id, state_slug, param_name, param_value):
                    'maps_key': GOOGLE_MAPS_API,
                    'api_call': api_call,
                    'is_multiple': is_multiple,
+                   'favourite_colleges': favourite_colleges,
                    }
 
         context.update(filters)

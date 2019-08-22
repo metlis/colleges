@@ -65,6 +65,11 @@ def filter_values(request, param_name, param_value):
         # string for api call
         api_call = '{}={}&{}'.format(param_name, param_value, req_str)
 
+        # ids of favourite colleges
+        favourite_colleges = []
+        if 'favourite_colleges' in request.session:
+            favourite_colleges = request.session['favourite_colleges']
+
         context = {'colleges': colleges,
                    'seo_title': seo_title,
                    'seo_description': seo_description,
@@ -80,6 +85,7 @@ def filter_values(request, param_name, param_value):
                    'state_filter': True,
                    'api_call': api_call,
                    'is_multiple': is_multiple,
+                   'favourite_colleges': favourite_colleges,
                    }
         context.update(filters)
         context.update(aggregate_data)
