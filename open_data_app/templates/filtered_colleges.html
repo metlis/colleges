@@ -139,7 +139,7 @@
                             </li>
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem"><a
-                                    href="{% url 'college_app:state' state_id state_slug %}"
+                                    href="{% url 'college_app:state' state_slug %}"
                                     itemprop="item"><span
                                     itemprop="name">{{ state_name }}</span></a>
                                 <meta itemprop="position" content="2"/>
@@ -164,7 +164,7 @@
                             </li>
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem"><a
-                                    href="{% url 'college_app:region' region_id region_slug %}"
+                                    href="{% url 'college_app:region' region_slug %}"
                                     itemprop="item"><span
                                     itemprop="name">{{ region_name }}</span></a>
                                 <meta itemprop="position" content="2"/>
@@ -190,14 +190,14 @@
                             {% if state_view %}
                                 <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                     itemtype="http://schema.org/ListItem"><a
-                                        href="{% url 'college_app:state' state_id state_slug %}" itemprop="item"><span
+                                        href="{% url 'college_app:state' state_slug %}" itemprop="item"><span
                                         itemprop="name">{{ geo }}</span></a>
                                     <meta itemprop="position" content="2"/>
                                 </li>
                             {% elif geo %}
                                 <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                     itemtype="http://schema.org/ListItem"><a
-                                        href="{% url 'college_app:region' region_id region_slug %}" itemprop="item"><span
+                                        href="{% url 'college_app:region' region_slug %}" itemprop="item"><span
                                         itemprop="name">{{ geo }}</span></a>
                                     <meta itemprop="position" content="2"/>
                                 </li>
@@ -342,7 +342,7 @@
                                     <div class="dropdown-menu">
                                         {% for s in state %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:region_param' region_id region_slug 'state' s.0 %}">{{ s.1 }}</a>
+                                               href="{% url 'college_app:region_param' region_slug 'state' s.0 %}">{{ s.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -359,7 +359,7 @@
                                     <div class="dropdown-menu">
                                         {% for c in city %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:region_param' region_id region_slug 'city' c.1 %}">{{ c.0 }}</a>
+                                               href="{% url 'college_app:region_param' region_slug 'city' c.1 %}">{{ c.0 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -376,7 +376,7 @@
                                     <div class="dropdown-menu">
                                         {% for l in locale %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:region_param' region_id region_slug 'locale' l.0 %}">{{ l.1 }}</a>
+                                               href="{% url 'college_app:region_param' region_slug 'locale' l.0 %}">{{ l.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -393,7 +393,7 @@
                                     <div class="dropdown-menu">
                                         {% for l in level %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:region_param' region_id region_slug 'level' l.0 %}">{{ l.1 }}</a>
+                                               href="{% url 'college_app:region_param' region_slug 'level' l.0 %}">{{ l.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -410,7 +410,7 @@
                                     <div class="dropdown-menu">
                                         {% for d in degree %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:region_param' region_id region_slug 'degree' d.0 %}">{{ d.1 }}</a>
+                                               href="{% url 'college_app:region_param' region_slug 'degree' d.0 %}">{{ d.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -427,7 +427,7 @@
                                     <div class="dropdown-menu">
                                         {% for program in academics %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:region_param' region_id region_slug program.0 0 %}">{{ program.1 }}</a>
+                                               href="{% url 'college_app:region_param' region_slug program.0 0 %}">{{ program.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -444,7 +444,7 @@
                                     <div class="dropdown-menu">
                                         {% for b in carnegie %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:region_param' region_id region_slug 'carnegie' b.0 %}">{{ b.1 }}</a>
+                                               href="{% url 'college_app:region_param' region_slug 'carnegie' b.0 %}">{{ b.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -461,7 +461,7 @@
                                     <div class="dropdown-menu">
                                         {% for o in ownership %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:region_param' region_id region_slug 'ownership' o.0 %}">{{ o.1 }}</a>
+                                               href="{% url 'college_app:region_param' region_slug 'ownership' o.0 %}">{{ o.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -477,9 +477,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'cur_operating' 0 %}">No</a>
+                                           href="{% url 'college_app:region_param' region_slug 'cur_operating' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'cur_operating' 1 %}">Yes</a>
+                                           href="{% url 'college_app:region_param' region_slug 'cur_operating' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -495,7 +495,7 @@
                                     <div class="dropdown-menu">
                                         {% for r in religion %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:region_param' region_id region_slug 'religion' r.0 %}">{{ r.1 }}</a>
+                                               href="{% url 'college_app:region_param' region_slug 'religion' r.0 %}">{{ r.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -511,9 +511,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'online_only' 0 %}">No</a>
+                                           href="{% url 'college_app:region_param' region_slug 'online_only' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'online_only' 1 %}">Yes</a>
+                                           href="{% url 'college_app:region_param' region_slug 'online_only' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -528,9 +528,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'hist_black' 0 %}">No</a>
+                                           href="{% url 'college_app:region_param' region_slug 'hist_black' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'hist_black' 1 %}">Yes</a>
+                                           href="{% url 'college_app:region_param' region_slug 'hist_black' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -545,9 +545,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'predom_black' 0 %}">No</a>
+                                           href="{% url 'college_app:region_param' region_slug 'predom_black' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'predom_black' 1 %}">Yes</a>
+                                           href="{% url 'college_app:region_param' region_slug 'predom_black' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -562,9 +562,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'hispanic' 0 %}">No</a>
+                                           href="{% url 'college_app:region_param' region_slug 'hispanic' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'hispanic' 1 %}">Yes</a>
+                                           href="{% url 'college_app:region_param' region_slug 'hispanic' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -579,9 +579,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'men_only' 0 %}">No</a>
+                                           href="{% url 'college_app:region_param' region_slug 'men_only' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'men_only' 1 %}">Yes</a>
+                                           href="{% url 'college_app:region_param' region_slug 'men_only' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -596,9 +596,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'women_only' 0%}">No</a>
+                                           href="{% url 'college_app:region_param' region_slug 'women_only' 0%}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:region_param' region_id region_slug 'women_only' 1 %}">Yes</a>
+                                           href="{% url 'college_app:region_param' region_slug 'women_only' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -618,7 +618,7 @@
                                     <div class="dropdown-menu">
                                         {% for c in city %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:state_param' state_id state_slug 'city' c.1 %}">{{ c.0 }}</a>
+                                               href="{% url 'college_app:state_param' state_slug 'city' c.1 %}">{{ c.0 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -635,7 +635,7 @@
                                     <div class="dropdown-menu">
                                         {% for l in locale %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:state_param' state_id state_slug 'locale' l.0 %}">{{ l.1 }}</a>
+                                               href="{% url 'college_app:state_param' state_slug 'locale' l.0 %}">{{ l.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -652,7 +652,7 @@
                                     <div class="dropdown-menu">
                                         {% for l in level %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:state_param' state_id state_slug 'level' l.0 %}">{{ l.1 }}</a>
+                                               href="{% url 'college_app:state_param' state_slug 'level' l.0 %}">{{ l.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -669,7 +669,7 @@
                                     <div class="dropdown-menu">
                                         {% for d in degree %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:state_param' state_id state_slug 'degree' d.0 %}">{{ d.1 }}</a>
+                                               href="{% url 'college_app:state_param' state_slug 'degree' d.0 %}">{{ d.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -686,7 +686,7 @@
                                     <div class="dropdown-menu">
                                         {% for program in academics %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:state_param' state_id state_slug program.0 0 %}">{{ program.1 }}</a>
+                                               href="{% url 'college_app:state_param' state_slug program.0 0 %}">{{ program.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -703,7 +703,7 @@
                                     <div class="dropdown-menu">
                                         {% for b in carnegie %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:state_param' state_id state_slug 'carnegie' b.0 %}">{{ b.1 }}</a>
+                                               href="{% url 'college_app:state_param' state_slug 'carnegie' b.0 %}">{{ b.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -720,7 +720,7 @@
                                     <div class="dropdown-menu">
                                         {% for o in ownership %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:state_param' state_id state_slug 'ownership' o.0 %}">{{ o.1 }}</a>
+                                               href="{% url 'college_app:state_param' state_slug 'ownership' o.0 %}">{{ o.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -736,9 +736,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'cur_operating' 0 %}">No</a>
+                                           href="{% url 'college_app:state_param' state_slug 'cur_operating' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'cur_operating' 1 %}">Yes</a>
+                                           href="{% url 'college_app:state_param' state_slug 'cur_operating' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -754,7 +754,7 @@
                                     <div class="dropdown-menu">
                                         {% for r in religion %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:state_param' state_id state_slug 'religion' r.0 %}">{{ r.1 }}</a>
+                                               href="{% url 'college_app:state_param' state_slug 'religion' r.0 %}">{{ r.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -770,9 +770,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'online_only' 0 %}">No</a>
+                                           href="{% url 'college_app:state_param' state_slug 'online_only' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'online_only' 1 %}">Yes</a>
+                                           href="{% url 'college_app:state_param' state_slug 'online_only' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -787,9 +787,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'hist_black' 0 %}">No</a>
+                                           href="{% url 'college_app:state_param' state_slug 'hist_black' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'hist_black' 1 %}">Yes</a>
+                                           href="{% url 'college_app:state_param' state_slug 'hist_black' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -804,9 +804,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'predom_black' 0 %}">No</a>
+                                           href="{% url 'college_app:state_param' state_slug 'predom_black' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'predom_black' 1 %}">Yes</a>
+                                           href="{% url 'college_app:state_param' state_slug 'predom_black' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -821,9 +821,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'hispanic' 0 %}">No</a>
+                                           href="{% url 'college_app:state_param' state_slug 'hispanic' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'hispanic' 1 %}">Yes</a>
+                                           href="{% url 'college_app:state_param' state_slug 'hispanic' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -838,9 +838,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'men_only' 0 %}">No</a>
+                                           href="{% url 'college_app:state_param' state_slug 'men_only' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'men_only' 1 %}">Yes</a>
+                                           href="{% url 'college_app:state_param' state_slug 'men_only' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -855,9 +855,9 @@
                                     </div>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'women_only' 0 %}">No</a>
+                                           href="{% url 'college_app:state_param' state_slug 'women_only' 0 %}">No</a>
                                         <a class="dropdown-item"
-                                           href="{% url 'college_app:state_param' state_id state_slug 'women_only' 1 %}">Yes</a>
+                                           href="{% url 'college_app:state_param' state_slug 'women_only' 1 %}">Yes</a>
                                     </div>
                                 </div>
                             {% endif %}

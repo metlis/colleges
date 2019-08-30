@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.paginator import Paginator
-from django.core.exceptions import FieldError
-from django.http import Http404
+from django.core.exceptions import FieldError, ObjectDoesNotExist
+from django.http import Http404, HttpResponsePermanentRedirect
 
 from open_data_app.models import Region, College
 from open_data_app.modules.pagination_handler import handle_pagination
@@ -12,29 +12,16 @@ from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.seo import Seo
 
 
-def get_region(request, region_id, region_slug):
-    region_exists = Region.objects.filter(id=region_id).exists()
-
-    if region_exists:
-        region = Region.objects.get(id=region_id)
+def get_region(request, region_slug):
+    try:
+        region = Region.objects.get(slug=region_slug)
         region_name, slug, region_states = region.get_region_data()
 
-        if region_slug != slug:
-            return render(request, 'filtered_colleges.html', {
-                'error': True,
-                'seo_title': 'Results',
-                'noindex': True,
-            })
-        else:
-            colleges = College.objects.filter(region=region_id).order_by('name')
+        colleges = College.objects.filter(region=region.id).order_by('name')
 
-            filters = College.get_filters(colleges)
-    else:
-        return render(request, 'filtered_colleges.html', {
-            'error': True,
-            'seo_title': 'Results',
-            'noindex': True,
-        })
+        filters = College.get_filters(colleges)
+    except ObjectDoesNotExist:
+        raise Http404()
 
     # aggregate data
     aggregate_data = College.get_aggregate_data(colleges)
@@ -58,11 +45,10 @@ def get_region(request, region_id, region_slug):
         paginator = Paginator(colleges, 50)
         colleges = paginator.get_page(page)
 
-    canonical = reverse('college_app:region', kwargs={'region_id': region_id,
-                                                      'region_slug': region_slug,
+    canonical = reverse('college_app:region', kwargs={'region_slug': region_slug,
                                                       })
     # string for api call
-    api_call = 'region={}'.format(region_id)
+    api_call = 'region={}'.format(region.id)
 
     # ids of favourite colleges
     favourite_colleges = []
@@ -72,8 +58,8 @@ def get_region(request, region_id, region_slug):
     context = {'colleges': colleges,
                'region_name': region_name,
                'region_states': region_states,
-               'region_id': region_id,
-               'region_slug': region_slug,
+               'region_id': region.id,
+               'region_slug': region.slug,
                'base_url': canonical,
                'canonical': canonical,
                'maps_key': GOOGLE_MAPS_API,
@@ -90,17 +76,21 @@ def get_region(request, region_id, region_slug):
     return render(request, 'filtered_colleges.html', context)
 
 
-def get_region_param(request, region_id, region_slug, param_name, param_value):
+def get_region_param(request, region_slug, param_name, param_value):
     """
     Takes filters, filter values, and colleges to show on filter page
 
     :param request:
-    :param region_id:
     :param region_slug:
     :param param_name: name of filter's parameter
     :param param_value: value of filter's parameter
     :return:
     """
+
+    try:
+        region = Region.objects.get(slug=region_slug)
+    except ObjectDoesNotExist:
+        raise Http404()
 
     # modify parameter name if it is a discipline
     if param_name in College.get_disciplines():
@@ -110,24 +100,23 @@ def get_region_param(request, region_id, region_slug, param_name, param_value):
 
     try:
         # colleges filtered by region + by the initial filter
-        colleges = College.objects.filter(region__id=region_id).filter(**{filter_param: param_value}).order_by('name')
+        colleges = College.objects.filter(region__id=region.id).filter(**{filter_param: param_value}).order_by('name')
     except FieldError:
         raise Http404()
 
     # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
     # dictionary of applied filters and their values
     try:
-        colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, 'region', region_id)
+        colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, 'region', region.id)
     except ValueError:
         raise Http404()
 
     if colleges.count() > 0:
 
-        region = Region.objects.get(id=region_id)
         region_name, region_slug, region_states = region.get_region_data()
 
         # parameter's text value
-        param_text_value = College.get_param_text_val('region', region_id, param_name, param_value)
+        param_text_value = College.get_param_text_val('region', region.id, param_name, param_value)
 
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
@@ -137,8 +126,7 @@ def get_region_param(request, region_id, region_slug, param_name, param_value):
         seo_title = Seo.generate_title(seo_template, param_text_value, region_name)
         seo_description = Seo.generate_description(seo_template, param_text_value, region_name)
         if not 'canonical' in locals():
-            canonical = reverse('college_app:region_param', kwargs={'region_id': region_id,
-                                                                    'region_slug': region_slug,
+            canonical = reverse('college_app:region_param', kwargs={'region_slug': region.slug,
                                                                     'param_name': param_name,
                                                                     'param_value': slugify(param_value),
                                                                     })
@@ -158,14 +146,13 @@ def get_region_param(request, region_id, region_slug, param_name, param_value):
         colleges = handle_pagination(request, colleges)
 
         # a url for pagination first page
-        base_url = reverse('college_app:region_param', kwargs={'region_id': region_id,
-                                                               'region_slug': region_slug,
+        base_url = reverse('college_app:region_param', kwargs={'region_slug': region.slug,
                                                                'param_name': param_name,
                                                                'param_value': slugify(param_value),
                                                                })
 
         # string for api call
-        api_call = 'region={}&{}={}&{}'.format(region_id, param_name, param_value, req_str)
+        api_call = 'region={}&{}={}&{}'.format(region.id, param_name, param_value, req_str)
 
         # ids of favourite colleges
         favourite_colleges = []
@@ -178,8 +165,8 @@ def get_region_param(request, region_id, region_slug, param_name, param_value):
                    'seo_description': seo_description,
                    'canonical': canonical,
                    'base_url': base_url,
-                   'region_id': region_id,
-                   'region_slug': region_slug,
+                   'region_id': region.id,
+                   'region_slug': region.slug,
                    'init_filter_val': param_text_value,
                    'geo': region_name,
                    'second_filter': param_text_value,
@@ -202,3 +189,24 @@ def get_region_param(request, region_id, region_slug, param_name, param_value):
             'seo_title': 'Results',
             'noindex': True,
         })
+
+
+def get_region_redirect(request, region_id, region_slug, param_name='', param_value=''):
+    try:
+        region = Region.objects.get(id=region_id)
+
+        if region_slug != region.slug:
+            raise Http404()
+        else:
+            if not param_name and not param_value:
+                return HttpResponsePermanentRedirect(reverse('college_app:region', kwargs={
+                    'region_slug': region_slug,
+                }))
+            else:
+                return HttpResponsePermanentRedirect(reverse('college_app:region_param', kwargs={
+                    'region_slug': region_slug,
+                    'param_name': param_name,
+                    'param_value': param_value,
+                }))
+    except ObjectDoesNotExist:
+        raise Http404()

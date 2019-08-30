@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import Http404
@@ -13,7 +13,7 @@ def search(request):
     params = request.GET
 
     if len(params) == 0:
-        return HttpResponseRedirect(reverse('college_app:index'))
+        return HttpResponsePermanentRedirect(reverse('college_app:index'))
     else:
         try:
             query = request.GET['text']
