@@ -91,12 +91,22 @@ def get_state_param(request, state_slug, param_name, param_value):
     except ObjectDoesNotExist:
         raise Http404()
 
+    try:
+        param_value_is_int = isinstance(int(param_value), int)
+    except ValueError:
+        param_value_is_int = False
+
+    # if param_value_is_int and param_name not in ['hist_black', 'predom_black']:
+    #     param_text_value = College.get_param_text_val('state', state.id, param_name, param_value)
+    #     print(param_text_value)
 
     # modify parameter name if it is a discipline
     if param_name in College.get_disciplines():
         filter_param = '{}__gt'.format(param_name)
-    else:
+    elif param_name == 'city' or param_value_is_int:
         filter_param = param_name
+    else:
+        filter_param = '{}__slug'.format(param_name)
 
     try:
         # colleges filtered by state + by the initial filter

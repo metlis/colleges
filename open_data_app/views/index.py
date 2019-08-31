@@ -6,30 +6,11 @@ from settings import *
 
 
 def index(request):
+    states, cities, ownership, locales, degrees, carnegie, religions, levels, hist_black, predom_black, hispanic, \
+    men_only, women_only, online_only, cur_operating = College.get_values()
+
     states = State.objects.all()
     regions = Region.objects.all()
-    ownership = College.objects.values_list('ownership__id',
-                                            'ownership__description').order_by('ownership__id').exclude(
-        ownership__description=None).exclude(
-        ownership__description='Not applicable').distinct()
-    locales = College.objects.values_list('locale__id',
-                                          'locale__description').order_by('locale__id').exclude(
-        locale__description=None).exclude(
-        locale__description='Not applicable').distinct()
-    degrees = College.objects.values_list('degree__id',
-                                          'degree__description').order_by(
-        'degree__id').exclude(degree__description=None).exclude(
-        degree__description='Not applicable').distinct()
-    carnegie = College.objects.values_list('carnegie__id',
-                                           'carnegie__description').order_by(
-        'carnegie__description').exclude(carnegie__description=None).exclude(
-        carnegie__description='Not applicable').distinct()
-    religions = College.objects.values_list('religion__id',
-                                            'religion__name').order_by(
-        'religion__name').exclude(religion__name=None).distinct()
-    levels = College.objects.values_list('level__id',
-                                         'level__description').order_by('level__id').distinct()
-
     dictionary = College.get_dict()
     disciplines = College.get_disciplines()
     academics = []

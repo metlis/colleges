@@ -25,20 +25,34 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
     disciplines = College.get_disciplines()
 
     if len(params) == 1 and not 'page' in params and not main_filter and not api_call:
+
+        noindex = True
+
         key = next(iter(params.keys()))
         value = next(iter(params.values()))
+
+        try:
+            value_is_int = isinstance(int(value), int)
+        except Exception as e:
+            print(e)
+            value_is_int = False
+
         params_dict[key] = value
-        noindex = True
+
         req_str = '{}={}'.format(key, value)
+
         try:
             # modify academics query param
             if key in disciplines:
                 new_key = '{}__gt'.format(key)
+            elif key not in ['state', 'region', 'city_slug'] and not value_is_int:
+                new_key = '{}__slug'.format(key)
             else:
                 new_key = key
             colleges = colleges.filter(**{new_key: value})
         except FieldError:
             return ''
+
     elif len(params) > 1 and 'page' in params and not main_filter and not api_call:
         req = params.copy()
         del req['page']
@@ -93,7 +107,7 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
                 region_query = {p: new_params_dict[p]}
             if 'state' in p:
                 state_param = p
-                state_query = {p: new_params_dict[p]}
+                state_query = {'{}__slug'.format(p): new_params_dict[p]}
 
         if region_query and state_query:
             try:

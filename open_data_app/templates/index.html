@@ -125,7 +125,7 @@
                                 <ul class="dropdown-menu">
                                     {% for l in locales %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'locale' l.0 %}">{{ l.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'locale' l.2 %}">{{ l.1 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -135,7 +135,7 @@
                                 <ul class="dropdown-menu">
                                     {% for l in levels %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'level' l.0 %} ">{{ l.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'level' l.2 %} ">{{ l.1 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -144,7 +144,7 @@
                                 <ul class="dropdown-menu">
                                     {% for d in degrees %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'degree' d.0 %}">{{ d.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'degree' d.2 %}">{{ d.1 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -163,7 +163,7 @@
                                 <ul class="dropdown-menu">
                                     {% for c in carnegie %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'carnegie' c.0 %}">{{ c.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'carnegie' c.2 %}">{{ c.1 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -172,7 +172,7 @@
                                 <ul class="dropdown-menu">
                                     {% for o in ownership %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'ownership' o.0 %}">{{ o.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'ownership' o.2 %}">{{ o.1 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -182,7 +182,7 @@
                                 <ul class="dropdown-menu">
                                     {% for r in religions %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'religion' r.0 %}">{{ r.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'religion' r.2 %}">{{ r.1 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -266,7 +266,7 @@
                                     {% for d in degrees %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="degree" value="{{ d.0 }}" type="checkbox">
+                                                <input name="degree" value="{{ d.2 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
                                                 {{ d.1 }}
                                             </label>
@@ -314,7 +314,7 @@
                                     {% for l in locales %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="locale" value="{{ l.0 }}" type="checkbox">
+                                                <input name="locale" value="{{ l.2 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
                                                 {{ l.1 }}
                                             </label>
@@ -335,7 +335,7 @@
                                     {% for o in ownership %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="ownership" value="{{ o.0 }}" type="checkbox">
+                                                <input name="ownership" value="{{ o.2 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
                                                 {{ o.1 }}
                                             </label>
@@ -347,7 +347,7 @@
                                     {% for l in levels %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="level" value="{{ l.0 }}" type="checkbox">
+                                                <input name="level" value="{{ l.2 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
                                                 {{ l.1 }}
                                             </label>
@@ -359,7 +359,7 @@
                                     {% for c in carnegie %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="carnegie" value="{{ c.0 }}" type="checkbox">
+                                                <input name="carnegie" value="{{ c.2 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
                                                 {{ c.1 }}
                                             </label>
@@ -379,7 +379,7 @@
                                     {% for r in religions %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="religion" value="{{ r.0 }}" type="checkbox">
+                                                <input name="religion" value="{{ r.2 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
                                                 {{ r.1 }}
                                             </label>

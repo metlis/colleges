@@ -415,12 +415,29 @@ class College(models.Model):
     @classmethod
     def create_new_params_dict(cls, params_dict):
         disciplines = cls.get_disciplines()
-        new_params_dict = params_dict.copy()
-        for key in new_params_dict:
+        new_params_dict = dict()
+
+        for key in params_dict:
+
+            value = params_dict[key]
+            try:
+                if isinstance(value, list):
+                    value_is_int = isinstance(int(value[0]), int)
+                else:
+                    value_is_int = isinstance(int(value), int)
+
+            except Exception as e:
+                print(e)
+                value_is_int = False
+
             if key in disciplines:
                 new_key = '{}__gt'.format(key)
-                new_params_dict[new_key] = new_params_dict[key]
-                new_params_dict.pop(key)
+                new_params_dict[new_key] = value
+            elif key not in ['state', 'region', 'city', 'city_slug'] and '__slug' not in key and not value_is_int:
+                new_key = '{}__slug'.format(key)
+                new_params_dict[new_key] = value
+            else:
+                new_params_dict[key] = value
         return new_params_dict
 
     @classmethod
@@ -432,55 +449,24 @@ class College(models.Model):
         :return:
         """
 
-        colleges_cities = colleges.values_list('city',
-                                               'city_slug').order_by('city').exclude(city=None).distinct()
-        colleges_states = colleges.values_list('state__id',
-                                               'state__name').order_by('state__name').exclude(
-            state__name=None).distinct()
-        colleges_ownership = colleges.values_list('ownership__id',
-                                                  'ownership__description').order_by('ownership__id').exclude(
-            ownership__description=None).exclude(
-            ownership__description='Not applicable').distinct()
-        colleges_locales = colleges.values_list('locale__id',
-                                                'locale__description').order_by('locale__id').exclude(
-            locale__description=None).exclude(
-            locale__description='Not applicable').distinct()
-        colleges_degrees = colleges.values_list('degree__id',
-                                                'degree__description').order_by(
-            'degree__id').exclude(degree__description=None).exclude(
-            degree__description='Not applicable').distinct()
-        colleges_carnegie = colleges.values_list('carnegie__id',
-                                                       'carnegie__description').order_by(
-            'carnegie').exclude(carnegie__description=None).exclude(
-            carnegie__description='Not applicable').distinct()
-        colleges_religions = colleges.values_list('religion__id',
-                                                  'religion__name').order_by(
-            'religion__name').exclude(religion__name=None).distinct()
-        colleges_levels = colleges.values_list('level__id',
-                                               'level__description').order_by('level__id').distinct()
-        colleges_hist_black = colleges.values('hist_black').exclude(hist_black=None).distinct()
-        colleges_predom_black = colleges.values('predom_black').exclude(predom_black=None).distinct()
-        colleges_hispanic = colleges.values('hispanic').exclude(hispanic=None).distinct()
-        colleges_men_only = colleges.values('men_only').exclude(men_only=None).distinct()
-        colleges_women_only = colleges.values('women_only').exclude(women_only=None).distinct()
-        colleges_online_only = colleges.values('online_only').exclude(online_only=None).distinct()
-        colleges_cur_operating = colleges.values('cur_operating').exclude(cur_operating=None).distinct()
+        states, cities, ownership, locales, degrees, carnegie, religions, levels, hist_black, predom_black, hispanic, \
+        men_only, women_only, online_only, cur_operating = College.get_values(colleges)
 
-        filters = {'city': colleges_cities,
-                   'state': colleges_states,
-                   'ownership': colleges_ownership,
-                   'locale': colleges_locales,
-                   'degree': colleges_degrees,
-                   'carnegie': colleges_carnegie,
-                   'religion': colleges_religions,
-                   'level': colleges_levels,
-                   'hist_black': colleges_hist_black,
-                   'predom_black': colleges_predom_black,
-                   'hispanic': colleges_hispanic,
-                   'men_only': colleges_men_only,
-                   'women_only': colleges_women_only,
-                   'online_only': colleges_online_only,
-                   'cur_operating': colleges_cur_operating, }
+        filters = {'city': cities,
+                   'state': states,
+                   'ownership': ownership,
+                   'locale': locales,
+                   'degree': degrees,
+                   'carnegie': carnegie,
+                   'religion': religions,
+                   'level': levels,
+                   'hist_black': hist_black,
+                   'predom_black': predom_black,
+                   'hispanic': hispanic,
+                   'men_only': men_only,
+                   'women_only': women_only,
+                   'online_only': online_only,
+                   'cur_operating': cur_operating, }
 
         dict = cls.get_dict()
         disciplines = cls.get_disciplines()
@@ -530,10 +516,10 @@ class College(models.Model):
 
                 # for relational fields get related object
                 if field.related_model is not None:
-                    rel_obj_exists = field.related_model.objects.filter(pk=param_value).exists()
+                    rel_obj_exists = field.related_model.objects.filter(slug=param_value).exists()
 
                     if rel_obj_exists:
-                        rel_obj = field.related_model.objects.get(pk=param_value)
+                        rel_obj = field.related_model.objects.get(slug=param_value)
 
                         # get relational field text value
                         try:
@@ -655,3 +641,54 @@ class College(models.Model):
     def get_map_labels(colleges):
         map_labels = colleges.values_list('latitude', 'longitude', 'name', 'city', 'state__name').exclude(latitude=None)
         return list(map(list, map_labels))
+
+    @classmethod
+    def get_values(cls, filtered_colleges=''):
+
+        if filtered_colleges:
+            colleges = filtered_colleges
+        else:
+            colleges = cls.objects.all()
+
+        cities = colleges.values_list('city',
+                                      'city_slug').order_by('city').exclude(city=None).distinct()
+        states = colleges.values_list('state__id',
+                                      'state__name',
+                                      'state__slug').order_by('state__name').exclude(
+            state__name=None).distinct()
+        ownership = colleges.values_list('ownership__id',
+                                         'ownership__description',
+                                         'ownership__slug').order_by('ownership__id').exclude(
+            ownership__description=None).exclude(
+            ownership__description='Not applicable').distinct()
+        locales = colleges.values_list('locale__id',
+                                       'locale__description',
+                                       'locale__slug').order_by('locale__id').exclude(
+            locale__description=None).exclude(
+            locale__description='Not applicable').distinct()
+        degrees = colleges.values_list('degree__id',
+                                       'degree__description',
+                                       'degree__slug').order_by(
+            'degree__id').exclude(degree__description=None).exclude(
+            degree__description='Not applicable').distinct()
+        carnegie = colleges.values_list('carnegie__id',
+                                        'carnegie__description',
+                                        'carnegie__slug').order_by(
+            'carnegie').exclude(carnegie__description=None).exclude(
+            carnegie__description='Not applicable').distinct()
+        religions = colleges.values_list('religion__id',
+                                         'religion__name',
+                                         'religion__slug').order_by(
+            'religion__name').exclude(religion__name=None).distinct()
+        levels = colleges.values_list('level__id',
+                                      'level__description',
+                                      'level__slug').order_by('level__id').distinct()
+        hist_black = colleges.values('hist_black').exclude(hist_black=None).distinct()
+        predom_black = colleges.values('predom_black').exclude(predom_black=None).distinct()
+        hispanic = colleges.values('hispanic').exclude(hispanic=None).distinct()
+        men_only = colleges.values('men_only').exclude(men_only=None).distinct()
+        women_only = colleges.values('women_only').exclude(women_only=None).distinct()
+        online_only = colleges.values('online_only').exclude(online_only=None).distinct()
+        cur_operating = colleges.values('cur_operating').exclude(cur_operating=None).distinct()
+
+        return states, cities, ownership, locales, degrees, carnegie, religions, levels, hist_black, predom_black, hispanic, men_only, women_only, online_only, cur_operating

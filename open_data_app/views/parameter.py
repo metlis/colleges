@@ -11,11 +11,20 @@ from settings import *
 
 
 def filter_values(request, param_name, param_value):
-    init_param = param_name
+
+    try:
+        param_value_is_int = isinstance(int(param_value), int)
+    except ValueError:
+        param_value_is_int = False
+
+    if param_value_is_int:
+        filter_param = param_name
+    else:
+        filter_param = '{}__slug'.format(param_name)
 
     try:
         # colleges filtered by the initial filter
-        colleges = College.objects.filter(**{param_name: param_value}).order_by('name')
+        colleges = College.objects.filter(**{filter_param: param_value}).order_by('name')
     except FieldError:
         raise Http404()
 
@@ -79,7 +88,7 @@ def filter_values(request, param_name, param_value):
                    'params': req_str,
                    'noindex': noindex,
                    'filters_vals': filters_vals,
-                   'init_param': init_param,
+                   'init_param': param_name,
                    'init_param_value': param_value,
                    'maps_key': GOOGLE_MAPS_API,
                    'state_filter': True,
