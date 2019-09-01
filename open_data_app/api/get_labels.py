@@ -17,10 +17,13 @@ def get_labels(request):
     # map labels
     map_labels = College.get_map_labels(colleges)
 
-    return HttpResponse(
+    response = HttpResponse(
         json.dumps(
             {
                 'data': map_labels
             }
-        )
+        ), content_type="application/json"
     )
+
+    response['X-Robots-Tag'] = 'noindex'
+    return response
