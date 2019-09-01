@@ -41,11 +41,15 @@ def get_college(request, college_id, college_slug):
 
             top_disciplines = sorted(disciplines_vals, key=lambda x: x[1], reverse=True)
 
+            # referring page's url for the back button
+            referer = request.META.get('HTTP_REFERER')
+
             return render(request, 'college.html', {'college': college,
                                                     'top_disciplines': top_disciplines[:5],
                                                     'college_disciplines': disciplines_vals,
                                                     'is_favourite': is_favourite,
                                                     'maps_key': GOOGLE_MAPS_API,
+                                                    'referer': referer,
                                                     })
     else:
         raise Http404()
