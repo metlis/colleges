@@ -97,6 +97,17 @@ def get_region_param(request, region_slug, param_name, param_value):
     except ValueError:
         param_value_is_int = False
 
+    # redirecting urls with integers as parameter's values where parameter is a foreign key
+    if param_value_is_int:
+        if param_name not in College.get_binary_params() and param_name not in College.get_disciplines():
+            param_slug_value = College.get_param_slug_val(param_name, param_value)
+            if param_slug_value:
+                return HttpResponsePermanentRedirect(reverse('college_app:region_param', kwargs={
+                    'region_slug': region_slug,
+                    'param_name': param_name,
+                    'param_value': param_slug_value,
+                }))
+
     # modify parameter name if it is a discipline
     if param_name in College.get_disciplines():
         filter_param = '{}__gt'.format(param_name)

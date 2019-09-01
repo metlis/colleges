@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.core.exceptions import FieldError
-from django.http import Http404
+from django.http import Http404, HttpResponsePermanentRedirect
 
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
@@ -16,6 +16,16 @@ def filter_values(request, param_name, param_value):
         param_value_is_int = isinstance(int(param_value), int)
     except ValueError:
         param_value_is_int = False
+
+    # redirecting urls with integers as parameter's values where parameter is a foreign key
+    if param_value_is_int:
+        if param_name not in College.get_binary_params() and param_name not in College.get_disciplines():
+            param_slug_value = College.get_param_slug_val(param_name, param_value)
+            if param_slug_value:
+                return HttpResponsePermanentRedirect(reverse('college_app:filter_values', kwargs={
+                    'param_name': param_name,
+                    'param_value': param_slug_value,
+                }))
 
     if param_value_is_int:
         filter_param = param_name

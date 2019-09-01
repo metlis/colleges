@@ -96,9 +96,16 @@ def get_state_param(request, state_slug, param_name, param_value):
     except ValueError:
         param_value_is_int = False
 
-    # if param_value_is_int and param_name not in ['hist_black', 'predom_black']:
-    #     param_text_value = College.get_param_text_val('state', state.id, param_name, param_value)
-    #     print(param_text_value)
+    # redirecting urls with integers as parameter's values where parameter is a foreign key
+    if param_value_is_int:
+        if param_name not in College.get_binary_params() and param_name not in College.get_disciplines():
+            param_slug_value = College.get_param_slug_val(param_name, param_value)
+            if param_slug_value:
+                return HttpResponsePermanentRedirect(reverse('college_app:state_param', kwargs={
+                    'state_slug': state_slug,
+                    'param_name': param_name,
+                    'param_value': param_slug_value,
+                }))
 
     # modify parameter name if it is a discipline
     if param_name in College.get_disciplines():

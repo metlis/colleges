@@ -412,6 +412,21 @@ class College(models.Model):
         except ObjectDoesNotExist:
             return []
 
+    @staticmethod
+    def get_binary_params():
+        """
+        Returns list of binary (yes/no) filter parameters
+        :return list:
+        """
+        try:
+            content = Dictionary.objects.get(name='binary_params').content
+            if content is not None:
+                return content
+            else:
+                return []
+        except ObjectDoesNotExist:
+            return []
+
     @classmethod
     def create_new_params_dict(cls, params_dict):
         disciplines = cls.get_disciplines()
@@ -561,6 +576,34 @@ class College(models.Model):
                     return param_text_value
                 except UnboundLocalError:
                     pass
+        else:
+            return ''
+
+    @classmethod
+    def get_param_slug_val(cls, param_name, param_id_value):
+        """
+        The methods retrieves object's slug by it's id
+        :param param_name:
+        :param param_id_value:
+        :return str:
+        """
+        college_fields = cls._meta.get_fields()
+
+        for field in college_fields:
+            if param_name == field.name:
+
+                if field.related_model is not None:
+                    rel_obj_exists = field.related_model.objects.filter(pk=param_id_value).exists()
+
+                    if rel_obj_exists:
+                        rel_obj = field.related_model.objects.get(pk=param_id_value)
+
+                        try:
+                            param_slug_value = rel_obj.slug
+                        except AttributeError:
+                            param_slug_value = ''
+
+                        return param_slug_value
         else:
             return ''
 
