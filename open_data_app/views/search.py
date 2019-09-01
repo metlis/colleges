@@ -7,6 +7,7 @@ from settings import *
 
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
+from open_data_app.modules.params_handler import handle_params
 
 
 def search(request):
@@ -23,6 +24,13 @@ def search(request):
         # colleges = College.objects.annotate(search=SearchVector('name', 'city', 'state__name', 'region__name'),
         #                                     ).filter(search=query)
         colleges = College.objects.filter(Q(name__icontains=query) | Q(city__icontains=query) | Q(state__name__icontains=query) | Q(region__name__icontains=query))
+
+        try:
+            # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
+            # dictionary of applied filters and their values
+            colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, '', '')
+        except ValueError:
+            raise Http404()
 
         if colleges.count() > 0:
 
@@ -50,7 +58,7 @@ def search(request):
             base_url = reverse('college_app:search')
 
             # string for api call
-            api_call = 'text={}'.format(query)
+            api_call = 'text={}&{}'.format(query, req_str)
 
             # ids of favourite colleges
             favourite_colleges = []
@@ -63,6 +71,7 @@ def search(request):
                        'base_url': base_url,
                        'params': 'text={}'.format(query),
                        'noindex': True,
+                       'filters_vals': filters_vals,
                        'serach_query': query,
                        'maps_key': GOOGLE_MAPS_API,
                        'state_filter': True,

@@ -251,7 +251,7 @@
                 {# applied filters list start #}
                 {% if not error %}
                     <span>Filters applied:</span>
-                    {% if filters_vals|length > 0 or init_filter_val or state_init or region_init %}
+                    {% if filters_vals|length > 0 or init_filter_val or state_init or region_init or serach_query %}
                         {% if geo %}
                             <span class="badge badge-light">{{ geo }}</span>
                         {% endif %}
