@@ -17,7 +17,7 @@ def main_filter(request):
     base_url = reverse('college_app:main_filter')
 
     if len(params) > 0:
-        # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
+        # filtered colleges, request string for rendering links, readable values of applied filters and
         # dictionary of applied filters and their values
         try:
             colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, '', '', '', main_filter=True)

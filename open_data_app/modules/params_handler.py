@@ -1,5 +1,6 @@
 import re
 from django.core.exceptions import FieldError
+from django.db.models import Q
 
 from open_data_app.models import College
 
@@ -30,11 +31,9 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
     params_dict = {}
 
     # robots directive for filter pages
-    noindex = ''
+    noindex = True
 
     if not main_filter:
-
-        noindex = True
 
         for key in params:
             params_dict[key] = params[key]
@@ -51,52 +50,70 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
 
     else:
         req_str = re.sub('page=(\d)+&?', '', request.META['QUERY_STRING'])
-        noindex = True
+
+        disciplines = College.get_disciplines()
+        discipline_args_list = []
+        discipline_args_dict = {}
+        discipline_args_query = Q()
 
         for key in params:
-            params_dict[key] = params.getlist(key)
+            # store discipline arguments separately to filter on them with an OR condition later
+            if key in disciplines:
+                discipline_args_dict[key] = params.getlist(key)
+                arg = College.create_new_params_dict({key: params.getlist(key)})
+                key, value = next(iter(arg.items()))
+                discipline_args_list.append({key: value[0]})
+            # store other arguments in a common dictionary
+            else:
+                params_dict[key] = params.getlist(key)
+
+        # create a query for all disciplines arguments with an OR condition
+        for arg in discipline_args_list:
+            discipline_args_query = discipline_args_query | Q(**arg)
 
         # modify param name for the query if its value is a list
         new_params_dict = College.create_new_params_dict(params_dict)
         for p in new_params_dict:
             if len(new_params_dict[p]) > 1:
-                if not '__in' in p:
+                if '__in' not in p:
                     new_params_dict['{}__in'.format(p)] = new_params_dict.pop(p)
             else:
                 new_params_dict[p] = new_params_dict[p][0]
 
-        # logic for queries with region and state at the same time
-        region_query = ''
-        state_query = ''
-        for p in new_params_dict:
-            if 'region' in p:
-                region_param = p
-                region_query = {p: new_params_dict[p]}
-            if 'state' in p:
-                state_param = p
-                state_query = {'{}__slug'.format(p): new_params_dict[p]}
+        # logic for queries with region and state arguments simultaneously
+        new_params_dict_copy = new_params_dict.copy()
+        region_query, state_query = {}, {}
 
-        if region_query and state_query:
-            try:
-                state_colleges = College.objects.filter(**state_query)
-                region_colleges = College.objects.filter(**region_query)
-                colleges = (state_colleges | region_colleges).distinct()
-                param_dict_copy = new_params_dict.copy()
-                param_dict_copy.pop(region_param)
-                param_dict_copy.pop(state_param)
-                if len(param_dict_copy) > 0:
-                    colleges = College.objects.filter(**param_dict_copy)
-            except FieldError:
-                pass
-        else:
-            try:
-                colleges = College.objects.filter(**new_params_dict)
-            except FieldError:
-                return ''
+        for p in new_params_dict:
+            if 'region' in p or 'state' in p:
+                param_is_list = isinstance(new_params_dict[p], list)
+                param_value = new_params_dict[p]
+                new_params_dict_copy.pop(p)
+
+            if 'region' in p:
+                if param_is_list:
+                    region_query = {'region__slug__in': param_value}
+                else:
+                    region_query = {'region__slug': param_value}
+            if 'state' in p:
+                if param_is_list:
+                    state_query = {'state__slug__in': param_value}
+                else:
+                    state_query = {'state__slug': param_value}
+
+        try:
+            colleges = College.objects.filter(Q(**state_query) | Q(**region_query)).filter(
+                **new_params_dict_copy).filter(*(discipline_args_query,))
+        except FieldError:
+            return ''
 
     if not api_call:
         # get applied filters text values to display on the results page
         filters_vals = []
+
+        if discipline_args_dict:
+            params_dict.update(discipline_args_dict)
+
         for p in params_dict:
             try:
                 if isinstance(params_dict[p], list):
@@ -112,7 +129,8 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
 
         try:
             params_dict = new_params_dict
-        except:
+        except Exception as e:
+            print(e)
             pass
 
         return colleges, req_str, noindex, filters_vals, params_dict
