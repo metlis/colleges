@@ -1,8 +1,10 @@
 from django.shortcuts import render
-from open_data_app.models import College
 from django.utils.text import slugify
 from django.http import Http404
+from django.urls import reverse
 from settings import *
+
+from open_data_app.models import College, Carnegie, Degree, Level, Locale, Ownership, Religion, Region, State
 
 
 def get_college(request, college_id, college_slug):
@@ -44,12 +46,76 @@ def get_college(request, college_id, college_slug):
             # referring page's url for the back button
             referer = request.META.get('HTTP_REFERER')
 
+            # college's categories tags
+            tags = []
+
+            try:
+                region = Region.objects.get(id=college.region_id)
+                tags.append([region.name, reverse('college_app:region', kwargs={'region_slug': region.slug})])
+            except AttributeError:
+                pass
+
+            try:
+                state = State.objects.get(id=college.state_id)
+                tags.append([state.name, reverse('college_app:state', kwargs={'state_slug': state.slug})])
+            except AttributeError:
+                pass
+
+            try:
+                carnegie = Carnegie.objects.get(id=college.carnegie_id)
+                tags.append([carnegie.description, reverse('college_app:filter_values',
+                                                           kwargs={'param_name': 'carnegie',
+                                                                   'param_value': carnegie.slug})])
+            except AttributeError:
+                pass
+
+            try:
+                degree = Degree.objects.get(id=college.degree_id)
+                tags.append([degree.description, reverse('college_app:filter_values',
+                                                         kwargs={'param_name': 'degree',
+                                                                 'param_value': degree.slug})])
+            except AttributeError:
+                pass
+
+            try:
+                level = Level.objects.get(id=college.level_id)
+                tags.append([level.description, reverse('college_app:filter_values',
+                                                        kwargs={'param_name': 'level',
+                                                                'param_value': level.slug})])
+            except AttributeError:
+                pass
+
+            try:
+                locale = Locale.objects.get(id=college.locale_id)
+                tags.append([locale.description, reverse('college_app:filter_values',
+                                                         kwargs={'param_name': 'locale',
+                                                                 'param_value': locale.slug})])
+            except AttributeError:
+                pass
+
+            try:
+                ownership = Ownership.objects.get(id=college.ownership_id)
+                tags.append([ownership.description, reverse('college_app:filter_values',
+                                                            kwargs={'param_name': 'ownership',
+                                                                    'param_value': ownership.slug})])
+            except AttributeError:
+                pass
+
+            try:
+                religion = Religion.objects.get(id=college.religion_id)
+                tags.append([religion.description, reverse('college_app:filter_values',
+                                                           kwargs={'param_name': 'religion',
+                                                                   'param_value': religion.slug})])
+            except AttributeError:
+                pass
+
             return render(request, 'college.html', {'college': college,
                                                     'top_disciplines': top_disciplines[:5],
                                                     'college_disciplines': disciplines_vals,
                                                     'is_favourite': is_favourite,
                                                     'maps_key': GOOGLE_MAPS_API,
                                                     'referer': referer,
+                                                    'tags': tags,
                                                     })
     else:
         raise Http404()

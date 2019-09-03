@@ -80,6 +80,13 @@
                         <script async src="https://static.addtoany.com/menu/page.js"></script>
                         <!-- AddToAny END -->
                     </div>
+                    <div class="col-sm-12">
+                        {% for tag in tags %}
+                            <a href="{{ tag.1 }}" class="badge-link">
+                                <span class="badge badge-light">{{ tag.0 }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="row" id="overview-anchor">
                     <div class="col-sm-12">
