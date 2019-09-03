@@ -53,13 +53,15 @@ def get_college(request, college_id, college_slug):
             try:
                 region = Region.objects.get(id=college.region_id)
                 tags.append([region.name, reverse('college_app:region', kwargs={'region_slug': region.slug})])
-            except AttributeError:
+            except Exception as e:
+                print(e)
                 pass
 
             try:
                 state = State.objects.get(id=college.state_id)
                 tags.append([state.name, reverse('college_app:state', kwargs={'state_slug': state.slug})])
-            except AttributeError:
+            except Exception as e:
+                print(e)
                 pass
 
             try:
@@ -67,7 +69,8 @@ def get_college(request, college_id, college_slug):
                 tags.append([carnegie.description, reverse('college_app:filter_values',
                                                            kwargs={'param_name': 'carnegie',
                                                                    'param_value': carnegie.slug})])
-            except AttributeError:
+            except Exception as e:
+                print(e)
                 pass
 
             try:
@@ -75,7 +78,8 @@ def get_college(request, college_id, college_slug):
                 tags.append([degree.description, reverse('college_app:filter_values',
                                                          kwargs={'param_name': 'degree',
                                                                  'param_value': degree.slug})])
-            except AttributeError:
+            except Exception as e:
+                print(e)
                 pass
 
             try:
@@ -83,7 +87,8 @@ def get_college(request, college_id, college_slug):
                 tags.append([level.description, reverse('college_app:filter_values',
                                                         kwargs={'param_name': 'level',
                                                                 'param_value': level.slug})])
-            except AttributeError:
+            except Exception as e:
+                print(e)
                 pass
 
             try:
@@ -91,7 +96,8 @@ def get_college(request, college_id, college_slug):
                 tags.append([locale.description, reverse('college_app:filter_values',
                                                          kwargs={'param_name': 'locale',
                                                                  'param_value': locale.slug})])
-            except AttributeError:
+            except Exception as e:
+                print(e)
                 pass
 
             try:
@@ -99,7 +105,8 @@ def get_college(request, college_id, college_slug):
                 tags.append([ownership.description, reverse('college_app:filter_values',
                                                             kwargs={'param_name': 'ownership',
                                                                     'param_value': ownership.slug})])
-            except AttributeError:
+            except Exception as e:
+                print(e)
                 pass
 
             try:
@@ -107,7 +114,8 @@ def get_college(request, college_id, college_slug):
                 tags.append([religion.description, reverse('college_app:filter_values',
                                                            kwargs={'param_name': 'religion',
                                                                    'param_value': religion.slug})])
-            except AttributeError:
+            except Exception as e:
+                print(e)
                 pass
 
             return render(request, 'college.html', {'college': college,
