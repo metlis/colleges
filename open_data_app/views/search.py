@@ -66,17 +66,21 @@ def search(request):
                 favourite_colleges = request.session['favourite_colleges']
 
             context = {'colleges': colleges,
+                       'is_multiple': is_multiple,
+                       # seo
                        'canonical': canonical,
                        'seo_title': 'Search',
                        'base_url': base_url,
-                       'params': 'text={}'.format(query),
                        'noindex': True,
+                       # filters
                        'filters_vals': filters_vals,
-                       'serach_query': query,
-                       'maps_key': GOOGLE_MAPS_API,
                        'state_filter': True,
+                       'serach_query': query,
+                       # a string with parameters
+                       'params': 'text={}'.format(query),
+                       # api
                        'api_call': api_call,
-                       'is_multiple': is_multiple,
+                       'maps_key': GOOGLE_MAPS_API,
                        'favourite_colleges': favourite_colleges,
                        }
 

@@ -109,9 +109,7 @@
     <div class="container-fluid">
         {# h1 header start #}
         {% if geo %}
-            <h1>Colleges of {{ geo }}: {{ second_filter }}</h1>
-        {% elif second_filter %}
-            <h1>Colleges: {{ second_filter }}</h1>
+            <h1>Colleges of {{ geo }}: {{ init_filter_val }}</h1>
         {% elif init_filter_val %}
             <h1>Colleges: {{ init_filter_val }}</h1>
         {% elif serach_query %}
@@ -187,6 +185,7 @@
                                     itemprop="name">Home</span></a>
                                 <meta itemprop="position" content="1"/>
                             </li>
+                            {# state breadscrumb #}
                             {% if state_view %}
                                 <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                     itemtype="http://schema.org/ListItem"><a
@@ -194,6 +193,7 @@
                                         itemprop="name">{{ geo }}</span></a>
                                     <meta itemprop="position" content="2"/>
                                 </li>
+                            {# region breadscrumb #}
                             {% elif geo %}
                                 <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                     itemtype="http://schema.org/ListItem"><a
@@ -201,6 +201,7 @@
                                         itemprop="name">{{ geo }}</span></a>
                                     <meta itemprop="position" content="2"/>
                                 </li>
+                            {# initial parameter with a value breadscrumb #}
                             {% elif init_param and init_param_value %}
                                 <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                     itemtype="http://schema.org/ListItem"><a
@@ -208,6 +209,7 @@
                                         itemprop="item"><span itemprop="name">{{ init_filter_val }}</span></a>
                                     <meta itemprop="position" content="2"/>
                                 </li>
+                            {# initial parameter without a value breadscrumb #}
                             {% elif init_param %}
                                 <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                     itemtype="http://schema.org/ListItem"><a
@@ -215,17 +217,19 @@
                                         itemprop="name">{{ init_filter_val }}</span></a>
                                     <meta itemprop="position" content="2"/>
                                 </li>
-                            {% elif serach_query %}
+                            {# search or main filter breadscrumb #}
+                            {% elif serach_query or main_filter %}
                                 <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                     itemtype="http://schema.org/ListItem" itemprop="item"><span
                                         itemprop="name">Search</span>
                                     <meta itemprop="position" content="2"/>
                                 </li>
                             {% endif %}
-                            {% if second_filter %}
+                            {# a breadscrumb for the second filter on state/region parameters' page #}
+                            {% if geo and init_filter_val %}
                                 <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                     itemtype="http://schema.org/ListItem" itemprop="item"><a href="{{ base_url }}"><span
-                                        itemprop="name">{{ second_filter }}</span></a></li>
+                                        itemprop="name">{{ init_filter_val }}</span></a></li>
                                 <meta itemprop="position" content="3"/>
                             {% endif %}
                         </ol>
@@ -252,26 +256,45 @@
                 {% if not error %}
                     <span>Filters applied:</span>
                     {% if filters_vals|length > 0 or init_filter_val or state_init or region_init or serach_query %}
+{#                       {# state/region bage with a link for parameter page #}
                         {% if geo %}
-                            <span class="badge badge-light">{{ geo }}</span>
+                            <a href="{{ geo_page }}" class="badge-link">
+                                <span class="badge badge-light">{{ geo }}</span>
+                            </a>
                         {% endif %}
-                        {% if init_filter_val %}
+                        {# initial filter bage with a link for state/region parameter page #}
+                        {% if geo and init_filter_val %}
+                            <a href="{{ init_filter_page }}" class="badge-link">
+                                <span class="badge badge-light">{{ init_filter_val }}</span>
+                            </a>
+                        {% endif %}
+                        {# initial filter bage without a link for initial parameter's page #}
+                        {% if init_filter_val and not geo and filters_vals|length == 0 %}
                             <span class="badge badge-light">{{ init_filter_val }}</span>
                         {% endif %}
-                        {% if query_val %}
-                            <span class="badge badge-light">{{ query_val }}</span>
+                        {# initial filter bage with a link for initial parameter's page #}
+                        {% if init_filter_val and not geo and filters_vals|length > 0 %}
+                            <a href="{{ base_url }}" class="badge-link">
+                                <span class="badge badge-light">{{ init_filter_val }}</span>
+                            </a>
                         {% endif %}
+                        {# a badge for a search query  #}
                         {% if serach_query %}
                             <span class="badge badge-light">{{ serach_query }}</span>
                         {% endif %}
+                        {# region bage without a link #}
                         {% if region_init %}
                             <span class="badge badge-light">{{ region_name }}</span>
                         {% endif %}
+                        {# state bage without a link #}
                         {% if state_init %}
                             <span class="badge badge-light">{{ state_name }}</span>
                         {% endif %}
+                        {# others filters' bages with links #}
                         {% for val in filters_vals %}
-                            <span class="badge badge-light">{{ val }}</span>
+                            <a href="{{ val.1 }}" class="badge-link">
+                                <span class="badge badge-light">{{ val.0 }}</span>
+                            </a>
                         {% endfor %}
                     {% else %}
                         <span class="badge badge-light">No filters</span>

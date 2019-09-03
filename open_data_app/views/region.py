@@ -133,8 +133,8 @@ def get_region_param(request, region_slug, param_name, param_value):
 
         region_name, region_slug, region_states = region.get_region_data()
 
-        # parameter's text value
-        param_text_value = College.get_param_text_val('region', region.id, param_name, param_value)
+        # parameter's text value and page link
+        param_text_value, param_page_link = College.get_param_text_val('region', region.id, param_name, param_value)
 
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
@@ -148,6 +148,9 @@ def get_region_param(request, region_slug, param_name, param_value):
                                                                     'param_name': param_name,
                                                                     'param_value': slugify(param_value),
                                                                     })
+        # region's url
+        region_page = reverse('college_app:region', kwargs={'region_slug': region_slug, })
+
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
@@ -179,22 +182,30 @@ def get_region_param(request, region_slug, param_name, param_value):
 
         context = {
                    'colleges': colleges,
+                   'is_multiple': is_multiple,
+                   # seo
                    'seo_title': seo_title,
                    'seo_description': seo_description,
+                   'noindex': noindex,
                    'canonical': canonical,
                    'base_url': base_url,
+                   # region data
                    'region_id': region.id,
                    'region_slug': region.slug,
-                   'init_filter_val': param_text_value,
                    'geo': region_name,
-                   'second_filter': param_text_value,
-                   'params': req_str,
-                   'noindex': noindex,
+                   'geo_page': region_page,
+                   # initial filter
+                   'init_filter_val': param_text_value,
+                   'init_filter_page': param_page_link,
+                   # other filters
                    'filters_vals': filters_vals,
-                   'maps_key': GOOGLE_MAPS_API,
+                   # show a filter by state
                    'state_filter': True,
+                   # a string with parameters
+                   'params': req_str,
+                    # api
                    'api_call': api_call,
-                   'is_multiple': is_multiple,
+                   'maps_key': GOOGLE_MAPS_API,
                    'favourite_colleges': favourite_colleges,
                    }
         context.update(filters)

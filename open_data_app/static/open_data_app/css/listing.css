@@ -200,6 +200,9 @@ footer .container p {
   top: 12px;
   right: 12px;
 }
+.badge-link {
+  text-decoration: none !important;
+}
 @media (max-width: 767.98px) {
   .sort {
     margin-bottom: 15px;

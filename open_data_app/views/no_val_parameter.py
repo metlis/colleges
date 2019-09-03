@@ -30,8 +30,8 @@ def filter_no_values(request, param_name):
 
     if colleges.count() > 0:
 
-        # parameter's text value
-        param_text_value = College.get_param_text_val('', '', param_name, '')
+        # parameter's text value and page link
+        param_text_value, param_page_link = College.get_param_text_val('', '', param_name, '')
 
         # define seo data before rendering
         seo_template = param_name
@@ -70,19 +70,24 @@ def filter_no_values(request, param_name):
             favourite_colleges = request.session['favourite_colleges']
 
         context = {'colleges': colleges,
+                   'is_multiple': is_multiple,
+                   # seo
                    'seo_title': seo_title,
                    'seo_description': seo_description,
                    'canonical': canonical,
                    'base_url': base_url,
-                   'init_filter_val': param_text_value,
-                   'params': req_str,
                    'noindex': noindex,
-                   'filters_vals': filters_vals,
+                   # initial filter
+                   'init_filter_val': param_text_value,
                    'init_param': init_param,
-                   'maps_key': GOOGLE_MAPS_API,
+                   # filters
+                   'filters_vals': filters_vals,
                    'state_filter': True,
+                   # a string with parameters
+                   'params': req_str,
+                   # api
                    'api_call': api_call,
-                   'is_multiple': is_multiple,
+                   'maps_key': GOOGLE_MAPS_API,
                    'favourite_colleges': favourite_colleges,
                    }
         context.update(filters)

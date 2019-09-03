@@ -49,17 +49,20 @@ def main_filter(request):
                 favourite_colleges = request.session['favourite_colleges']
 
             context = {'colleges': colleges,
+                       'is_multiple': is_multiple,
+                       # seo
                        'seo_title': 'Results',
                        'canonical': canonical,
                        'base_url': base_url,
                        'params': req_str,
                        'noindex': noindex,
+                       # filters
                        'filters_vals': filters_vals,
                        'main_filter': True,
-                       'maps_key': GOOGLE_MAPS_API,
                        'state_filter': True,
+                       # api
                        'api_call': req_str,
-                       'is_multiple': is_multiple,
+                       'maps_key': GOOGLE_MAPS_API,
                        'favourite_colleges': favourite_colleges,
                        }
             context.update(filters)

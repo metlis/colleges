@@ -542,6 +542,15 @@ class College(models.Model):
                         except AttributeError:
                             param_text_value = rel_obj.name
 
+                        # get link for parameter's filter page
+                        if param_name == 'state':
+                            param_page_link = reverse('college_app:state', kwargs={'state_slug': rel_obj.slug, })
+                        elif param_name == 'region':
+                            param_page_link = reverse('college_app:region', kwargs={'region_slug': rel_obj.slug, })
+                        else:
+                            param_page_link = reverse('college_app:filter_values',
+                                                      kwargs={'param_name': param_name, 'param_value': param_value})
+
                 # for non-relational fields (city) get query value
                 elif param_name in ['city', 'city_slug']:
 
@@ -556,28 +565,34 @@ class College(models.Model):
                     else:
                         query_field = cls.objects.filter(**{'city_slug': param_value}).values('city').distinct()
 
+                    param_page_link = reverse('college_app:filter_values',
+                                              kwargs={'param_name': param_name, 'param_value': param_value})
+
                     if len(query_field) > 0:
                         param_text_value = query_field[0]['city']
-                        return param_text_value
+                        return param_text_value, param_page_link
                     else:
-                        return ''
+                        return '', ''
 
                 # params without value (academics)
                 elif param_name in cls.get_disciplines():
                     dictionary = cls.get_dict()
                     param_text_value = dictionary[param_name]
+                    param_page_link = reverse('college_app:filter_no_values', kwargs={'param_name': param_name,})
 
                 # yes/no queries
                 else:
                     dictionary = cls.get_dict()
                     param_text_value = dictionary[param_name][int(param_value)]
+                    param_page_link = reverse('college_app:filter_values',
+                                   kwargs={'param_name': param_name, 'param_value': param_value})
 
                 try:
-                    return param_text_value
+                    return param_text_value, param_page_link
                 except UnboundLocalError:
                     pass
         else:
-            return ''
+            return '', ''
 
     @classmethod
     def get_param_slug_val(cls, param_name, param_id_value):
