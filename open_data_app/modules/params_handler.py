@@ -92,14 +92,14 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
 
             if 'region' in p:
                 if param_is_list:
-                    region_query = {'region__slug__in': param_value}
+                    region_query = {'{}__in'.format(p): param_value}
                 else:
-                    region_query = {'region__slug': param_value}
+                    region_query = {p: param_value}
             if 'state' in p:
                 if param_is_list:
-                    state_query = {'state__slug__in': param_value}
+                    state_query = {'{}__in'.format(p): param_value}
                 else:
-                    state_query = {'state__slug': param_value}
+                    state_query = {p: param_value}
 
         try:
             colleges = College.objects.filter(Q(**state_query) | Q(**region_query)).filter(
@@ -111,8 +111,10 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
         # get applied filters text values to display on the results page
         filters_vals = []
 
-        if discipline_args_dict:
+        try:
             params_dict.update(discipline_args_dict)
+        except UnboundLocalError:
+            pass
 
         for p in params_dict:
             try:

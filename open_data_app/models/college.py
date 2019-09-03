@@ -448,7 +448,7 @@ class College(models.Model):
             if key in disciplines:
                 new_key = '{}__gt'.format(key)
                 new_params_dict[new_key] = value
-            elif key not in ['state', 'region', 'city', 'city_slug'] and '__slug' not in key and not value_is_int:
+            elif key not in ['city', 'city_slug'] and '__slug' not in key and not value_is_int:
                 new_key = '{}__slug'.format(key)
                 new_params_dict[new_key] = value
             else:
