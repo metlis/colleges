@@ -35,6 +35,9 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
 
     if not main_filter:
 
+        if len(params.keys()) == 0:
+            noindex = False
+
         for key in params:
             params_dict[key] = params[key]
             if len(req_str) > 0:

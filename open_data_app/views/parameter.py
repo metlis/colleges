@@ -27,7 +27,7 @@ def filter_values(request, param_name, param_value):
                     'param_value': param_slug_value,
                 }))
 
-    if param_value_is_int:
+    if param_value_is_int or param_name == 'city_slug':
         filter_param = param_name
     else:
         filter_param = '{}__slug'.format(param_name)
