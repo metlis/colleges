@@ -1,10 +1,12 @@
 $green = #41B3A3
+$grey = #676060
 $blue = rgba(0, 165, 217, 0.5)
 $blue-top = rgba(0, 165, 217, 0.05)
 $blue-bottom = rgba(0, 165, 217, 0.1)
 $red = #EC7556
 $brown = #EDA875
 $velvet = #CA829A
+$black = #212529
 
 body
   position relative
@@ -219,6 +221,12 @@ footer
 
 .badge-link
   text-decoration none !important
+
+.discipline-link
+  text-decoration none !important
+  color $black
+  :hover
+    color $grey !important
 
 @media (max-width: 767.98px)
   .gender-header

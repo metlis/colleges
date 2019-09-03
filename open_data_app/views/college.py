@@ -37,7 +37,8 @@ def get_college(request, college_id, college_slug):
                 try:
                     if float(val) > 0:
                         val_formatted = float("{0:.2f}".format(val * 100))
-                        disciplines_vals.append([dictionary[d], val_formatted])
+                        disciplines_vals.append([dictionary[d], val_formatted,
+                                                reverse('college_app:filter_no_values', kwargs={'param_name': d})])
                 except:
                     pass
 

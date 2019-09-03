@@ -223,6 +223,13 @@ footer .container p {
 .badge-link {
   text-decoration: none !important;
 }
+.discipline-link {
+  text-decoration: none !important;
+  color: #212529;
+}
+.discipline-link :hover {
+  color: #676060 !important;
+}
 @media (max-width: 767.98px) {
   .gender-header {
     margin-top: 15px;
