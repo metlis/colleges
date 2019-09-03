@@ -111,7 +111,7 @@ def get_college(request, college_id, college_slug):
 
             try:
                 religion = Religion.objects.get(id=college.religion_id)
-                tags.append([religion.description, reverse('college_app:filter_values',
+                tags.append([religion.name, reverse('college_app:filter_values',
                                                            kwargs={'param_name': 'religion',
                                                                    'param_value': religion.slug})])
             except Exception as e:
