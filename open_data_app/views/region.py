@@ -2,7 +2,6 @@ from settings import *
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.text import slugify
-from django.core.paginator import Paginator
 from django.core.exceptions import FieldError, ObjectDoesNotExist
 from django.http import Http404, HttpResponsePermanentRedirect
 
@@ -37,14 +36,7 @@ def get_region(request, region_slug):
     is_multiple = College.check_result_is_multiple(colleges)
 
     # pagination
-    if request.GET.get('page'):
-        page = request.GET.get('page')
-    else:
-        page = 1
-    # if parameter page does not have value all, show pagination
-    if request.GET.get('page') != 'all':
-        paginator = Paginator(colleges, 50)
-        colleges = paginator.get_page(page)
+    colleges = handle_pagination(request, colleges)
 
     canonical = reverse('college_app:region', kwargs={'region_slug': region_slug,
                                                       })
