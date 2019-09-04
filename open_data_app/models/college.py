@@ -683,7 +683,8 @@ class College(models.Model):
                 else:
                     colleges = colleges.order_by(F(sort).asc(nulls_last=True))
             return colleges
-        except:
+        except Exception as e:
+            print(e)
             return colleges
 
     def get_absolute_path(self):

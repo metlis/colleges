@@ -8,6 +8,7 @@ from settings import *
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
+from open_data_app.modules.sort_param_handler import handle_sort_param
 
 
 def search(request):
@@ -38,6 +39,9 @@ def search(request):
 
             # sorting colleges
             colleges = College.sort_colleges(request, colleges)
+
+            # sort parameters
+            sort_params, active_sort_param_name = handle_sort_param(request)
 
             # aggregate data
             aggregate_data = College.get_aggregate_data(colleges)
@@ -82,6 +86,9 @@ def search(request):
                        'api_call': api_call,
                        'maps_key': GOOGLE_MAPS_API,
                        'favourite_colleges': favourite_colleges,
+                       # sort parameters
+                       'sort_params': sort_params,
+                       'active_sort_param_name': active_sort_param_name,
                        }
 
             context.update(aggregate_data)

@@ -10,15 +10,14 @@ from open_data_app.models import State
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
+from open_data_app.modules.sort_param_handler import handle_sort_param
 from open_data_app.modules.seo import Seo
 
 
 def get_state(request, state_slug):
     try:
         state = State.objects.get(slug=state_slug)
-
         colleges = College.objects.filter(state=state.id).order_by('name')
-
         filters = College.get_filters(colleges, excluded_filters=['state'])
     except ObjectDoesNotExist:
         raise Http404()
@@ -28,6 +27,9 @@ def get_state(request, state_slug):
 
     # sorting colleges
     colleges = College.sort_colleges(request, colleges)
+
+    # sort parameters
+    sort_params, active_sort_param_name = handle_sort_param(request)
 
     # check if result is multiple
     if colleges.count() > 1:
@@ -45,7 +47,9 @@ def get_state(request, state_slug):
         paginator = Paginator(colleges, 50)
         colleges = paginator.get_page(page)
 
+    # canonical link
     canonical = reverse('college_app:state', kwargs={'state_slug': state_slug,})
+
     # string for api call
     api_call = 'state={}'.format(state.id)
 
@@ -56,17 +60,23 @@ def get_state(request, state_slug):
 
     context = {
                'colleges': colleges,
+               'is_multiple': is_multiple,
+               # state data
                'state': state,
                'state_name': state.name,
                'state_slug': state.slug,
-               'base_url': canonical,
-               'canonical': canonical,
-               'maps_key': GOOGLE_MAPS_API,
                'state_init': True,
                'state_view': True,
+               # seo
+               'base_url': canonical,
+               'canonical': canonical,
+               # api
+               'maps_key': GOOGLE_MAPS_API,
                'api_call': api_call,
-               'is_multiple': is_multiple,
                'favourite_colleges': favourite_colleges,
+               # sort parameters
+               'sort_params': sort_params,
+               'active_sort_param_name': active_sort_param_name,
                }
 
     context.update(filters)
@@ -136,6 +146,9 @@ def get_state_param(request, state_slug, param_name, param_value):
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
 
+        # sort parameters
+        sort_params, active_sort_param_name = handle_sort_param(request)
+
         # define seo data before rendering
         seo_template = param_name
         seo_title = Seo.generate_title(seo_template, param_text_value, state.name)
@@ -190,6 +203,9 @@ def get_state_param(request, state_slug, param_name, param_value):
                    'init_filter_page': param_page_link,
                    # other filters
                    'filters_vals': filters_vals,
+                   # sort parameters
+                   'sort_params': sort_params,
+                   'active_sort_param_name': active_sort_param_name,
                    # a string with parameters
                    'params': req_str,
                     # api

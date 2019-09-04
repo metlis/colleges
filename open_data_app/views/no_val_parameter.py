@@ -7,6 +7,7 @@ from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.seo import Seo
+from open_data_app.modules.sort_param_handler import handle_sort_param
 from settings import *
 
 
@@ -45,6 +46,9 @@ def filter_no_values(request, param_name):
 
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
+
+        # sort parameters
+        sort_params, active_sort_param_name = handle_sort_param(request)
 
         # check if result is multiple
         if colleges.count() > 1:
@@ -85,6 +89,9 @@ def filter_no_values(request, param_name):
                    'state_filter': True,
                    # a string with parameters
                    'params': req_str,
+                   # sort parameters
+                   'sort_params': sort_params,
+                   'active_sort_param_name': active_sort_param_name,
                    # api
                    'api_call': api_call,
                    'maps_key': GOOGLE_MAPS_API,

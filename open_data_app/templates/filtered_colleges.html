@@ -308,33 +308,17 @@
                     <div class="dropdown">
                         <div class="dropdown-toggle sort" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
-                            <span>Sort colleges</span>
+                            {% if active_sort_param_name %}
+                                <span>{{active_sort_param_name}}</span>
+                            {% else %}
+                                <span>Sort colleges</span>
+                            {% endif %}
                         </div>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=name')">Name (A-Z)</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=-name')">Name (Z-A)</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=in_state_tuition')">Tuition ↑</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=-in_state_tuition')">Tuition ↓</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=mean_earnings')">Earnings ↑</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=-mean_earnings')">Earnings ↓</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=monthly_payments')">Monthly payments ↑</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=-monthly_payments')">Monthly payments ↓</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=admission_rate')">Admission rate ↑</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=-admission_rate')">Admission rate ↓</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=completion_rate_four_year')">Completion rate ↑</a>
-                            <a class="dropdown-item"
-                               onclick="addParam('sort=-completion_rate_four_year')">Completion rate ↓</a>
+                            {% for key, val in sort_params.items %}
+                                <a class="dropdown-item"
+                                   onclick="addParam('sort={{key}}')">{{val}}</a>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

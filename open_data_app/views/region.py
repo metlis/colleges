@@ -9,6 +9,7 @@ from django.http import Http404, HttpResponsePermanentRedirect
 from open_data_app.models import Region, College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
+from open_data_app.modules.sort_param_handler import handle_sort_param
 from open_data_app.modules.seo import Seo
 
 
@@ -28,6 +29,9 @@ def get_region(request, region_slug):
 
     # sorting colleges
     colleges = College.sort_colleges(request, colleges)
+
+    # sort parameters
+    sort_params, active_sort_param_name = handle_sort_param(request)
 
     # check if result is multiple
     if colleges.count() > 1:
@@ -56,18 +60,25 @@ def get_region(request, region_slug):
         favourite_colleges = request.session['favourite_colleges']
 
     context = {'colleges': colleges,
+               'is_multiple': is_multiple,
+               # region data
                'region_name': region_name,
                'region_states': region_states,
                'region_id': region.id,
                'region_slug': region.slug,
+               'region_init': True,
+               # seo
                'base_url': canonical,
                'canonical': canonical,
-               'maps_key': GOOGLE_MAPS_API,
+               # filter
                'state_filter': True,
-               'region_init': True,
+               # api
                'api_call': api_call,
-               'is_multiple': is_multiple,
                'favourite_colleges': favourite_colleges,
+               'maps_key': GOOGLE_MAPS_API,
+               # sort parameters
+               'sort_params': sort_params,
+               'active_sort_param_name': active_sort_param_name,
                }
 
     context.update(filters)
@@ -139,6 +150,9 @@ def get_region_param(request, region_slug, param_name, param_value):
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
 
+        # sort parameters
+        sort_params, active_sort_param_name = handle_sort_param(request)
+
         # define seo data before rendering
         seo_template = param_name
         seo_title = Seo.generate_title(seo_template, param_text_value, region_name)
@@ -199,6 +213,9 @@ def get_region_param(request, region_slug, param_name, param_value):
                    'init_filter_page': param_page_link,
                    # other filters
                    'filters_vals': filters_vals,
+                   # sort parameters
+                   'sort_params': sort_params,
+                   'active_sort_param_name': active_sort_param_name,
                    # show a filter by state
                    'state_filter': True,
                    # a string with parameters

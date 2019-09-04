@@ -5,6 +5,7 @@ from django.urls import reverse
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
+from open_data_app.modules.sort_param_handler import handle_sort_param
 from settings import *
 
 
@@ -30,6 +31,9 @@ def main_filter(request):
 
             # sorting colleges
             colleges = College.sort_colleges(request, colleges)
+
+            # sort parameters
+            sort_params, active_sort_param_name = handle_sort_param(request)
 
             # check if result is multiple
             if colleges.count() > 1:
@@ -64,6 +68,9 @@ def main_filter(request):
                        'api_call': req_str + '&main_filter=1',
                        'maps_key': GOOGLE_MAPS_API,
                        'favourite_colleges': favourite_colleges,
+                       # sort parameters
+                       'sort_params': sort_params,
+                       'active_sort_param_name': active_sort_param_name,
                        }
             context.update(filters)
             context.update(aggregate_data)
@@ -77,16 +84,15 @@ def main_filter(request):
             })
     else:
         colleges = College.objects.all()
+
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
         # sorting colleges
-        try:
-            sort = request.GET['sort']
-            if sort:
-                colleges = colleges.order_by(sort)
-        except:
-            pass
+        colleges = College.sort_colleges(request, colleges)
+
+        # sort parameters
+        sort_params, active_sort_param_name = handle_sort_param(request)
 
         # check if result is multiple
         if colleges.count() > 1:
@@ -106,16 +112,22 @@ def main_filter(request):
             favourite_colleges = request.session['favourite_colleges']
 
         context = {'colleges': colleges,
+                   'is_multiple': is_multiple,
+                   # seo
                    'seo_title': 'USA College and University search',
                    'seo_description': 'You can use filters on this page to search between more than 7,000 american universities and colleges in 50 states. The information on this web site is provided by College Scorecard.',
                    'canonical': canonical,
                    'base_url': base_url,
                    'noindex': False,
+                   # api
                    'maps_key': GOOGLE_MAPS_API,
-                   'state_filter': True,
                    'api_call': '',
-                   'is_multiple': is_multiple,
                    'favourite_colleges': favourite_colleges,
+                   # filter
+                   'state_filter': True,
+                   # sort parameters
+                   'sort_params': sort_params,
+                   'active_sort_param_name': active_sort_param_name,
                    }
         context.update(filters)
         context.update(aggregate_data)
