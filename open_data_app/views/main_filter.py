@@ -36,10 +36,7 @@ def main_filter(request):
             sort_params, active_sort_param_name = handle_sort_param(request)
 
             # check if result is multiple
-            if colleges.count() > 1:
-                is_multiple = True
-            else:
-                is_multiple = False
+            is_multiple = College.check_result_is_multiple(colleges)
 
             # get filters
             filters = College.get_filters(colleges)
@@ -95,10 +92,7 @@ def main_filter(request):
         sort_params, active_sort_param_name = handle_sort_param(request)
 
         # check if result is multiple
-        if colleges.count() > 1:
-            is_multiple = True
-        else:
-            is_multiple = False
+        is_multiple = College.check_result_is_multiple(colleges)
 
         # get filters
         filters = College.get_filters(colleges)

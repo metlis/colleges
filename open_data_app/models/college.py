@@ -751,3 +751,10 @@ class College(models.Model):
         cur_operating = colleges.values('cur_operating').exclude(cur_operating=None).distinct()
 
         return states, cities, ownership, locales, degrees, carnegie, religions, levels, hist_black, predom_black, hispanic, men_only, women_only, online_only, cur_operating
+
+    @staticmethod
+    def check_result_is_multiple(colleges):
+        if colleges.count() > 1:
+            return True
+
+        return False

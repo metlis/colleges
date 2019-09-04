@@ -32,10 +32,7 @@ def get_state(request, state_slug):
     sort_params, active_sort_param_name = handle_sort_param(request)
 
     # check if result is multiple
-    if colleges.count() > 1:
-        is_multiple = True
-    else:
-        is_multiple = False
+    is_multiple = College.check_result_is_multiple(colleges)
 
     # pagination
     if request.GET.get('page'):
@@ -164,10 +161,7 @@ def get_state_param(request, state_slug, param_name, param_value):
         aggregate_data = College.get_aggregate_data(colleges)
 
         # check if result is multiple
-        if colleges.count() > 1:
-            is_multiple = True
-        else:
-            is_multiple = False
+        is_multiple = College.check_result_is_multiple(colleges)
 
         # get filters
         filters = College.get_filters(colleges)

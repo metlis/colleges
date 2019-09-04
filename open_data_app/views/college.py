@@ -39,7 +39,8 @@ def get_college(request, college_id, college_slug):
                         val_formatted = float("{0:.2f}".format(val * 100))
                         disciplines_vals.append([dictionary[d], val_formatted,
                                                 reverse('college_app:filter_no_values', kwargs={'param_name': d})])
-                except:
+                except Exception as e:
+                    print(e)
                     pass
 
             top_disciplines = sorted(disciplines_vals, key=lambda x: x[1], reverse=True)

@@ -64,10 +64,7 @@ def filter_values(request, param_name, param_value):
         aggregate_data = College.get_aggregate_data(colleges)
 
         # check if result is multiple
-        if colleges.count() > 1:
-            is_multiple = True
-        else:
-            is_multiple = False
+        is_multiple = College.check_result_is_multiple(colleges)
 
         # sorting colleges
         colleges = College.sort_colleges(request, colleges)
