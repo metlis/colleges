@@ -382,7 +382,7 @@
                                     <div class="dropdown-menu">
                                         {% for c in city %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:region_param' region_slug 'city' c.1 %}">{{ c.0 }}</a>
+                                               href="{% url 'college_app:region_param' region_slug 'city_slug' c.1 %}">{{ c.0 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -641,7 +641,7 @@
                                     <div class="dropdown-menu">
                                         {% for c in city %}
                                             <a class="dropdown-item"
-                                               href="{% url 'college_app:state_param' state_slug 'city' c.1 %}">{{ c.0 }}</a>
+                                               href="{% url 'college_app:state_param' state_slug 'city_slug' c.1 %}">{{ c.0 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>

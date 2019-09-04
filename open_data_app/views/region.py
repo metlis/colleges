@@ -111,7 +111,7 @@ def get_region_param(request, region_slug, param_name, param_value):
     # modify parameter name if it is a discipline
     if param_name in College.get_disciplines():
         filter_param = '{}__gt'.format(param_name)
-    elif param_name == 'city' or param_value_is_int:
+    elif param_name == 'city_slug' or param_value_is_int:
         filter_param = param_name
     else:
         filter_param = '{}__slug'.format(param_name)
