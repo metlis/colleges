@@ -78,7 +78,7 @@ def search(request):
                        'state_filter': True,
                        'serach_query': query,
                        # a string with parameters
-                       'params': 'text={}'.format(query),
+                       'params': req_str,
                        # api
                        'api_call': api_call,
                        'maps_key': GOOGLE_MAPS_API,

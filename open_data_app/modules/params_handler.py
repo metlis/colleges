@@ -9,26 +9,6 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
 
     params = request.GET.copy()
 
-    try:
-        del params['page']
-    except KeyError:
-        pass
-
-    try:
-        del params['text']
-    except KeyError:
-        pass
-
-    try:
-        del params['sort']
-    except KeyError:
-        pass
-
-    try:
-        del params['main_filter']
-    except KeyError:
-        pass
-
     # string for pagination links
     req_str = ''
 
@@ -37,6 +17,35 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
 
     # robots directive for filter pages
     noindex = True
+
+    # delete params which are not filter params
+    try:
+        del params['page']
+    except KeyError:
+        pass
+
+    try:
+        # preserve param for url string
+        req_str = 'text={}'.format(params['text'])
+        del params['text']
+    except KeyError:
+        pass
+
+    try:
+        # preserve param for url string
+        sort_string = 'sort={}'.format(params['sort'])
+        if req_str:
+            req_str += '&{}'.format(sort_string)
+        else:
+            req_str = sort_string
+        del params['sort']
+    except KeyError:
+        pass
+
+    try:
+        del params['main_filter']
+    except KeyError:
+        pass
 
     if not main_filter:
 

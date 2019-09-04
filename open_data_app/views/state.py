@@ -28,7 +28,10 @@ def get_state(request, state_slug):
     colleges = College.sort_colleges(request, colleges)
 
     # sort parameters
-    sort_params, active_sort_param_name = handle_sort_param(request)
+    sort_params, active_sort_param_name, active_sort_param_val = handle_sort_param(request, is_geo_view=True)
+    # sort param to insert into pagination url
+    if active_sort_param_val:
+        active_sort_param_val = 'sort={}'.format(active_sort_param_val)
 
     # check if result is multiple
     is_multiple = College.check_result_is_multiple(colleges)
@@ -66,6 +69,7 @@ def get_state(request, state_slug):
                # sort parameters
                'sort_params': sort_params,
                'active_sort_param_name': active_sort_param_name,
+               'params': active_sort_param_val,
                }
 
     context.update(filters)
