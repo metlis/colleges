@@ -61,7 +61,7 @@ def main_filter(request):
                        'main_filter': True,
                        'state_filter': True,
                        # api
-                       'api_call': req_str,
+                       'api_call': req_str + '&main_filter=1',
                        'maps_key': GOOGLE_MAPS_API,
                        'favourite_colleges': favourite_colleges,
                        }
