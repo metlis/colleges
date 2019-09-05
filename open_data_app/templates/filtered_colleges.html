@@ -15,49 +15,15 @@
 {% endblock %}
 
 {% block description %}
-    {% if state_init %}
-        {# state initital filter page #}
-        <meta name="description"
-              content="This page provides details about colleges and universities in {{ state_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
-        <meta property="og:description"
-              content="This page provides details about colleges and universities in {{ state_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
-        <meta name="twitter:description"
-              content="This page provides details about colleges and universities in {{ state_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
-    {% elif region_init %}
-        {# region initital filter page #}
-        <meta name="description"
-              content="This page provides details about colleges and universities in {{ region_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
-        <meta property="og:description"
-              content="This page provides details about colleges and universities in {{ region_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
-        <meta name="twitter:description"
-              content="This page provides details about colleges and universities in {{ region_name }}, USA in 2019. Here you can find supporting data on student completion, debt and repayment, earnings, and more.">
-    {% else %}
-        {# other filter pages #}
-        <meta name="description" content="{{ seo_description }}">
-        <meta property="og:description" content="{{ seo_description }}">
-        <meta name="twitter:description" content="{{ seo_description }}">
-    {% endif %}
+    <meta name="description" content="{{ seo_description }}">
+    <meta property="og:description" content="{{ seo_description }}">
+    <meta name="twitter:description" content="{{ seo_description }}">
 {% endblock %}
 
 {% block title %}
-    {% if state_init %}
-        {# state initital filter page #}
-        <meta property="og:title" content="Colleges and universities in {{ state_name }}, USA">
-        <meta name="twitter:title" content="Colleges and universities in {{ state_name }}, USA">
-        <title>Colleges and universities in {{ state_name }}, USA{% if colleges.number > 1 %} - Page
-            {{ colleges.number }}{% endif %}</title>
-    {% elif region_init %}
-        {# region initital filter page #}
-        <meta property="og:title" content="Colleges and universities in {{ region_name }}, USA">
-        <meta name="twitter:title" content="Colleges and universities in {{ region_name }}, USA">
-        <title>Colleges and universities in {{ region_name }}, USA {% if colleges.number > 1 %} - Page
-            {{ colleges.number }}{% endif %}</title>
-    {% else %}
-        {# other filter pages #}
-        <meta property="og:title" content="{{ seo_title }}">
-        <meta name="twitter:title" content="{{ seo_title }}">
-        <title>{{ seo_title }}{% if colleges.number > 1 %} - Page {{ colleges.number }}{% endif %}</title>
-    {% endif %}
+    <meta property="og:title" content="{{ seo_title }}">
+    <meta name="twitter:title" content="{{ seo_title }}">
+    <title>{{ seo_title }}{% if colleges.number > 1 %} - Page {{ colleges.number }}{% endif %}</title>
 {% endblock %}
 
 {% block canonical %}

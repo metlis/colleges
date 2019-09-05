@@ -35,6 +35,10 @@ def get_region(request, region_slug):
     if active_sort_param_val:
         active_sort_param_val = 'sort={}'.format(active_sort_param_val)
 
+    # define seo data before rendering
+    seo_title = Seo.generate_title('geo_init', region.name, '')
+    seo_description = Seo.generate_description('geo_init', region.name, '')
+
     # check if result is multiple
     is_multiple = College.check_result_is_multiple(colleges)
 
@@ -60,6 +64,8 @@ def get_region(request, region_slug):
                'region_slug': region.slug,
                'region_init': True,
                # seo
+               'seo_title': seo_title,
+               'seo_description': seo_description,
                'base_url': canonical,
                'canonical': canonical,
                # filter

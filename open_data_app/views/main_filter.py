@@ -5,6 +5,7 @@ from django.urls import reverse
 from open_data_app.models import College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
+from open_data_app.modules.seo import Seo
 from open_data_app.modules.sort_param_handler import handle_sort_param
 from settings import *
 
@@ -91,6 +92,10 @@ def main_filter(request):
         # sort parameters
         sort_params, active_sort_param_name = handle_sort_param(request)
 
+        # define seo data before rendering
+        seo_title = Seo.generate_title('main', '', '')
+        seo_description = Seo.generate_description('main', '', '')
+
         # check if result is multiple
         is_multiple = College.check_result_is_multiple(colleges)
 
@@ -108,8 +113,8 @@ def main_filter(request):
         context = {'colleges': colleges,
                    'is_multiple': is_multiple,
                    # seo
-                   'seo_title': 'USA College and University search',
-                   'seo_description': 'You can use filters on this page to search between more than 7,000 american universities and colleges in 50 states. The information on this web site is provided by College Scorecard.',
+                   'seo_title': seo_title,
+                   'seo_description': seo_description,
                    'canonical': canonical,
                    'base_url': base_url,
                    'noindex': False,
