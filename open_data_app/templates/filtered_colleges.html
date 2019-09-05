@@ -89,122 +89,69 @@
         {% endif %}
         {# h1 header end #}
 
-        {# state initial filter page breadscrumbs start #}
-        {% if state_init %}
-            <div class="row">
-                <div class="col-12">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
-                            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
-                                itemtype="http://schema.org/ListItem"><a href="{% url 'college_app:index' %}"
-                                                                         itemprop="item"><span
-                                    itemprop="name">Home</span></a>
-                                <meta itemprop="position" content="1"/>
-                            </li>
+        {# breadscrumbs start #}
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+                        <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                            itemtype="http://schema.org/ListItem"><a href="{% url 'college_app:index' %}"
+                                                                     itemprop="item"><span
+                                itemprop="name">Home</span></a>
+                            <meta itemprop="position" content="1"/>
+                        </li>
+                        {# state breadscrumb #}
+                        {% if state_view or state_init %}
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem"><a
-                                    href="{% url 'college_app:state' state_slug %}"
-                                    itemprop="item"><span
+                                    href="{% url 'college_app:state' state_slug %}" itemprop="item"><span
                                     itemprop="name">{{ state_name }}</span></a>
                                 <meta itemprop="position" content="2"/>
                             </li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-            {# state initial filter page breadscrumbs end #}
-
-            {# region initial filter page breadscrumbs start #}
-        {% elif region_init %}
-            <div class="row">
-                <div class="col-12">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
-                            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
-                                itemtype="http://schema.org/ListItem"><a href="{% url 'college_app:index' %}"
-                                                                         itemprop="item"><span
-                                    itemprop="name">Home</span></a>
-                                <meta itemprop="position" content="1"/>
-                            </li>
+                        {# region breadscrumb #}
+                        {% elif geo or region_init %}
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem"><a
-                                    href="{% url 'college_app:region' region_slug %}"
-                                    itemprop="item"><span
+                                    href="{% url 'college_app:region' region_slug %}" itemprop="item"><span
                                     itemprop="name">{{ region_name }}</span></a>
                                 <meta itemprop="position" content="2"/>
                             </li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-            {# region initial filter page breadscrumbs end #}
-
-            {# other filer pages breadscrumbs start #}
-        {% else %}
-            <div class="row">
-                <div class="col-sm-12">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+                        {# initial parameter with a value breadscrumb #}
+                        {% elif init_param and init_param_value %}
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
-                                itemtype="http://schema.org/ListItem"><a href="{% url 'college_app:index' %}"
-                                                                         itemprop="item"><span
-                                    itemprop="name">Home</span></a>
-                                <meta itemprop="position" content="1"/>
+                                itemtype="http://schema.org/ListItem"><a
+                                    href="{% url 'college_app:filter_values' init_param init_param_value %}"
+                                    itemprop="item"><span itemprop="name">{{ init_filter_val }}</span></a>
+                                <meta itemprop="position" content="2"/>
                             </li>
-                            {# state breadscrumb #}
-                            {% if state_view %}
-                                <li class="breadcrumb-item" itemprop="itemListElement" itemscope
-                                    itemtype="http://schema.org/ListItem"><a
-                                        href="{% url 'college_app:state' state_slug %}" itemprop="item"><span
-                                        itemprop="name">{{ geo }}</span></a>
-                                    <meta itemprop="position" content="2"/>
-                                </li>
-                            {# region breadscrumb #}
-                            {% elif geo %}
-                                <li class="breadcrumb-item" itemprop="itemListElement" itemscope
-                                    itemtype="http://schema.org/ListItem"><a
-                                        href="{% url 'college_app:region' region_slug %}" itemprop="item"><span
-                                        itemprop="name">{{ geo }}</span></a>
-                                    <meta itemprop="position" content="2"/>
-                                </li>
-                            {# initial parameter with a value breadscrumb #}
-                            {% elif init_param and init_param_value %}
-                                <li class="breadcrumb-item" itemprop="itemListElement" itemscope
-                                    itemtype="http://schema.org/ListItem"><a
-                                        href="{% url 'college_app:filter_values' init_param init_param_value %}"
-                                        itemprop="item"><span itemprop="name">{{ init_filter_val }}</span></a>
-                                    <meta itemprop="position" content="2"/>
-                                </li>
-                            {# initial parameter without a value breadscrumb #}
-                            {% elif init_param %}
-                                <li class="breadcrumb-item" itemprop="itemListElement" itemscope
-                                    itemtype="http://schema.org/ListItem"><a
-                                        href="{% url 'college_app:filter_no_values' init_param %}" itemprop="item"><span
-                                        itemprop="name">{{ init_filter_val }}</span></a>
-                                    <meta itemprop="position" content="2"/>
-                                </li>
-                            {# search or main filter breadscrumb #}
-                            {% elif serach_query or main_filter %}
-                                <li class="breadcrumb-item" itemprop="itemListElement" itemscope
-                                    itemtype="http://schema.org/ListItem" itemprop="item"><span
-                                        itemprop="name">Search</span>
-                                    <meta itemprop="position" content="2"/>
-                                </li>
-                            {% endif %}
-                            {# a breadscrumb for the second filter on state/region parameters' page #}
-                            {% if geo and init_filter_val %}
-                                <li class="breadcrumb-item" itemprop="itemListElement" itemscope
-                                    itemtype="http://schema.org/ListItem" itemprop="item"><a href="{{ base_url }}"><span
-                                        itemprop="name">{{ init_filter_val }}</span></a></li>
-                                <meta itemprop="position" content="3"/>
-                            {% endif %}
-                        </ol>
-                    </nav>
-                </div>
+                        {# initial parameter without a value breadscrumb #}
+                        {% elif init_param %}
+                            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                                itemtype="http://schema.org/ListItem"><a
+                                    href="{% url 'college_app:filter_no_values' init_param %}" itemprop="item"><span
+                                    itemprop="name">{{ init_filter_val }}</span></a>
+                                <meta itemprop="position" content="2"/>
+                            </li>
+                        {# search or main filter breadscrumb #}
+                        {% elif serach_query or main_filter %}
+                            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                                itemtype="http://schema.org/ListItem" itemprop="item"><span
+                                    itemprop="name">Search</span>
+                                <meta itemprop="position" content="2"/>
+                            </li>
+                        {% endif %}
+                        {# a breadscrumb for the second filter on state/region parameters' page #}
+                        {% if geo and init_filter_val %}
+                            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+                                itemtype="http://schema.org/ListItem" itemprop="item"><a href="{{ base_url }}"><span
+                                    itemprop="name">{{ init_filter_val }}</span></a></li>
+                            <meta itemprop="position" content="3"/>
+                        {% endif %}
+                    </ol>
+                </nav>
             </div>
-        {% endif %}
-        {# other filer pages breadscrumbs end #}
-
+        </div>
+        {# breadscrumbs end #}
 
         <div class="row">
             <div class="col-sm-12 col-md-9 filters-applied">

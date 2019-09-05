@@ -191,6 +191,7 @@ def get_state_param(request, state_slug, param_name, param_value):
                    # state data
                    'state_id': state.id,
                    'state_slug': state.slug,
+                   'state_name': state.name,
                    'state_view': True,
                    'geo': state.name,
                    'geo_page': state_page,

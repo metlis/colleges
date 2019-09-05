@@ -202,6 +202,7 @@ def get_region_param(request, region_slug, param_name, param_value):
                    # region data
                    'region_id': region.id,
                    'region_slug': region.slug,
+                   'region_name': region_name,
                    'geo': region_name,
                    'geo_page': region_page,
                    # initial filter
