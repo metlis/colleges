@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.utils.text import slugify
 from django.http import Http404
 from django.urls import reverse
+
+from open_data_app.modules.seo import Seo
 from settings import *
 
 from open_data_app.models import College, Carnegie, Degree, Level, Locale, Ownership, Religion, Region, State
@@ -47,6 +49,10 @@ def get_college(request, college_id, college_slug):
 
             # referring page's url for the back button
             referer = request.META.get('HTTP_REFERER')
+
+            # define seo data before rendering
+            seo_title = Seo.generate_title('college', college.name, '')
+            seo_description = Seo.generate_description('college', college.name, '')
 
             # college's categories tags
             tags = []
@@ -122,6 +128,8 @@ def get_college(request, college_id, college_slug):
             return render(request, 'college.html', {'college': college,
                                                     'top_disciplines': top_disciplines[:5],
                                                     'college_disciplines': disciplines_vals,
+                                                    'seo_title': seo_title,
+                                                    'seo_description': seo_description,
                                                     'is_favourite': is_favourite,
                                                     'maps_key': GOOGLE_MAPS_API,
                                                     'referer': referer,

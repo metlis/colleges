@@ -10,19 +10,16 @@
 {% endblock %}
 
 {% block description %}
-    <meta name="description"
-          content="This page provides details about {{ college.name }}. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
-    <meta property="og:description"
-          content="This page provides details about {{ college.name }}. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
-    <meta name="twitter:description"
-          content="This page provides details about {{ college.name }}. Here you can find supporting data on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
+    <meta name="description" content="{{ seo_description }}">
+    <meta property="og:description" content="{{ seo_description }}">
+    <meta name="twitter:description" content="{{ seo_description }}">
     <link rel="canonical" href="{% url 'college_app:college' college.id college.slug %}">
 {% endblock %}
 
 {% block title %}
-    <title>{{ college.name }}: disciplines, costs, financial aid, admissions</title>
-    <meta property="og:title" content="{{ college.name }}: disciplines, costs, financial aid, admissions">
-    <meta name="twitter:title" content="{{ college.name }}: disciplines, costs, financial aid, admissions">
+    <title>{{ seo_title }}</title>
+    <meta property="og:title" content="{{ seo_title }}">
+    <meta name="twitter:title" content="{{ seo_title }}">
 {% endblock %}
 
 {% block styles %}
