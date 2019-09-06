@@ -229,91 +229,6 @@
                     {# initial region/state filter page #}
                     {% if region_init or state_init %}
                         <div id="list-menu" class="list-group">
-                            {% if state|length > 1 %}
-                                <div class="btn-group dropright">
-                                    <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            State
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for s in state %}
-                                            <a class="dropdown-item"
-                                               href="{% url view_name slug 'state' s.2 %}">{{ s.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if city|length > 1 %}
-                                <div class="btn-group dropright">
-                                    <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            City/town
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for c in city %}
-                                            <a class="dropdown-item"
-                                               href="{% url view_name slug 'city_slug' c.1 %}">{{ c.0 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if locale|length > 1 %}
-                                <div class="btn-group dropright">
-                                    <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Locale
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for l in locale %}
-                                            <a class="dropdown-item"
-                                               href="{% url view_name slug 'locale' l.2 %}">{{ l.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if level|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Level
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for l in level %}
-                                            <a class="dropdown-item"
-                                               href="{% url view_name slug 'level' l.2 %}">{{ l.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if degree|length > 1 %}
-                                <div class="btn-group dropright">
-                                    <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Highest Degree
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for d in degree %}
-                                            <a class="dropdown-item"
-                                               href="{% url view_name slug 'degree' d.2 %}">{{ d.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
                             {% if academics|length > 1 %}
                                 <div class="list-group-item btn-group dropright">
                                     <div class="dropdown-toggle" data-toggle="dropdown"
@@ -331,261 +246,48 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if carnegie|length > 1 %}
-                                <div class="btn-group dropright">
-                                    <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Carnegie Basic
+                            {% for key, val in multi_val_filters.items %}
+                                {% if val.0|length > 1 %}
+                                    <div class="list-group-item btn-group dropright">
+                                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                             aria-haspopup="true"
+                                             aria-expanded="false">
+                                            <div class="item-name">
+                                                {{ val.1 }}
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-menu">
+                                            {% for v in val.0 %}
+                                                <a class="dropdown-item"
+                                                   href="{% url view_name slug key v.1 %}">{{ v.0 }}</a>
+                                            {% endfor %}
                                         </div>
                                     </div>
-                                    <div class="dropdown-menu">
-                                        {% for b in carnegie %}
+                                {% endif %}
+                            {% endfor %}
+                            {% for key, val in binary_filters.items %}
+                                {% if val.0|length > 1 %}
+                                    <div class="list-group-item btn-group dropright">
+                                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                             aria-haspopup="true"
+                                             aria-expanded="false">
+                                            <div class="item-name">
+                                                {{ val.1 }}
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-menu">
                                             <a class="dropdown-item"
-                                               href="{% url view_name slug 'carnegie' b.2 %}">{{ b.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if ownership|length > 1 %}
-                                <div class="btn-group dropright">
-                                    <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Ownership
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for o in ownership %}
+                                               href="{% url view_name slug key 0 %}">No</a>
                                             <a class="dropdown-item"
-                                               href="{% url view_name slug 'ownership' o.2 %}">{{ o.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if cur_operating|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Currently operating
+                                               href="{% url view_name slug key 1 %}">Yes</a>
                                         </div>
                                     </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'cur_operating' 0 %}">No</a>
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'cur_operating' 1 %}">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if religion|length > 1 %}
-                                <div class="btn-group dropright">
-                                    <div class="list-group-item dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Religious affiliation
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for r in religion %}
-                                            <a class="dropdown-item"
-                                               href="{% url view_name slug 'religion' r.2 %}">{{ r.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if online_only|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Online-only
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'online_only' 0 %}">No</a>
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'online_only' 1 %}">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if hist_black|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Historically black
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'hist_black' 0 %}">No</a>
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'hist_black' 1 %}">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if predom_black|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Predominantely black
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'predom_black' 0 %}">No</a>
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'predom_black' 1 %}">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if hispanic|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Hispanic
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'hispanic' 0 %}">No</a>
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'hispanic' 1 %}">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if men_only|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Men-only
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'men_only' 0 %}">No</a>
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'men_only' 1 %}">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if women_only|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Women-only
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'women_only' 0 %}">No</a>
-                                        <a class="dropdown-item"
-                                           href="{% url view_name slug 'women_only' 1 %}">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
+                                {% endif %}
+                            {% endfor %}
                         </div>
                         {# filters for other page types #}
                     {% else %}
                         <div id="list-menu" class="list-group">
-                            {% if not state_view and state|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            State
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for s in state %}
-                                            <a class="dropdown-item"
-                                               onclick="addParam('state={{ s.2 }}')">{{ s.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if city|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            City/town
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for c in city %}
-                                            <a class="dropdown-item"
-                                               onclick="addParam('city_slug={{ c.1 }}')">{{ c.0 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if locale|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Locale
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for l in locale %}
-                                            <div><a class="dropdown-item"
-                                                    onclick="addParam('locale={{ l.2 }}')">{{ l.1 }}</a>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if level|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Level
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for l in level %}
-                                            <a class="dropdown-item"
-                                               onclick="addParam('level={{ l.2 }}')">{{ l.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if degree|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Highest Degree
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for d in degree %}
-                                            <a class="dropdown-item"
-                                               onclick="addParam('degree={{ d.2 }}')">{{ d.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
                             {% if academics %}
                                 <div class="list-group-item btn-group dropright">
                                     <div class="dropdown-toggle" data-toggle="dropdown"
@@ -603,159 +305,42 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if carnegie|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Carnegie Basic
+                            {% for key, val in multi_val_filters.items %}
+                                {% if val.0|length > 1 %}
+                                    <div class="list-group-item btn-group dropright">
+                                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                             aria-haspopup="true"
+                                             aria-expanded="false">
+                                            <div class="item-name">
+                                                {{ val.1 }}
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-menu">
+                                            {% for v in val.0 %}
+                                                <a class="dropdown-item"
+                                                   onclick="addParam('{{ key }}={{ v.1 }}')">{{ v.0 }}</a>
+                                            {% endfor %}
                                         </div>
                                     </div>
-                                    <div class="dropdown-menu">
-                                        {% for b in carnegie %}
-                                            <a class="dropdown-item"
-                                               onclick="addParam('carnegie={{ b.2 }}')">{{ b.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if ownership|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Ownership
+                                {% endif %}
+                            {% endfor %}
+                            {% for key, val in binary_filters.items %}
+                                {% if val.0|length > 1 %}
+                                    <div class="list-group-item btn-group dropright">
+                                        <div class="dropdown-toggle" data-toggle="dropdown"
+                                             aria-haspopup="true"
+                                             aria-expanded="false">
+                                            <div class="item-name">
+                                                {{ val.1 }}
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" onclick="addParam('{{ key }}=0')">No</a>
+                                            <a class="dropdown-item" onclick="addParam('{{ key }}=1')">Yes</a>
                                         </div>
                                     </div>
-                                    <div class="dropdown-menu">
-                                        {% for o in ownership %}
-                                            <a class="dropdown-item"
-                                               onclick="addParam('ownership={{ o.2 }}')">{{ o.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if cur_operating|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Currently operating
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" onclick="addParam('cur_operating=0')">No</a>
-                                        <a class="dropdown-item" onclick="addParam('cur_operating=1')">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if religion|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Religious affiliation
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        {% for r in religion %}
-                                            <a class="dropdown-item"
-                                               onclick="addParam('religion={{ r.2 }}')">{{ r.1 }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if online_only|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Online-only
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" onclick="addParam('online_only=0')">No</a>
-                                        <a class="dropdown-item" onclick="addParam('online_only=1')">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if hist_black|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Historically black
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" onclick="addParam('hist_black=0')">No</a>
-                                        <a class="dropdown-item" onclick="addParam('hist_black=1')">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if predom_black|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Predominantely black
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" onclick="addParam('predom_black=0')">No</a>
-                                        <a class="dropdown-item" onclick="addParam('predom_black=1')">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if hispanic|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Hispanic
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" onclick="addParam('hispanic=0')">No</a>
-                                        <a class="dropdown-item" onclick="addParam('hispanic=1')">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if men_only|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Men-only
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" onclick="addParam('men_only=0')">No</a>
-                                        <a class="dropdown-item" onclick="addParam('men_only=1')">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if women_only|length > 1 %}
-                                <div class="list-group-item btn-group dropright">
-                                    <div class="dropdown-toggle" data-toggle="dropdown"
-                                         aria-haspopup="true"
-                                         aria-expanded="false">
-                                        <div class="item-name">
-                                            Women-only
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" onclick="addParam('women_only=0')">No</a>
-                                        <a class="dropdown-item" onclick="addParam('women_only=1')">Yes</a>
-                                    </div>
-                                </div>
-                            {% endif %}
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     {% endif %}
                 {% endif %}

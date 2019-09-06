@@ -125,7 +125,7 @@
                                 <ul class="dropdown-menu">
                                     {% for l in locales %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'locale' l.2 %}">{{ l.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'locale' l.1 %}">{{ l.0 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -135,7 +135,7 @@
                                 <ul class="dropdown-menu">
                                     {% for l in levels %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'level' l.2 %} ">{{ l.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'level' l.1 %} ">{{ l.0 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -144,7 +144,7 @@
                                 <ul class="dropdown-menu">
                                     {% for d in degrees %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'degree' d.2 %}">{{ d.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'degree' d.1 %}">{{ d.0 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -163,7 +163,7 @@
                                 <ul class="dropdown-menu">
                                     {% for c in carnegie %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'carnegie' c.2 %}">{{ c.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'carnegie' c.1 %}">{{ c.0 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -172,7 +172,7 @@
                                 <ul class="dropdown-menu">
                                     {% for o in ownership %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'ownership' o.2 %}">{{ o.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'ownership' o.1 %}">{{ o.0 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -182,7 +182,7 @@
                                 <ul class="dropdown-menu">
                                     {% for r in religions %}
                                         <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'religion' r.2 %}">{{ r.1 }}</a>
+                                               href="{% url 'college_app:filter_values' 'religion' r.1 %}">{{ r.0 }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>

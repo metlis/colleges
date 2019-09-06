@@ -421,7 +421,7 @@ class College(models.Model):
         try:
             content = Dictionary.objects.get(name='binary_params').content
             if content is not None:
-                return content
+                return list(content.keys())
             else:
                 return []
         except ObjectDoesNotExist:
@@ -467,21 +467,31 @@ class College(models.Model):
         states, cities, ownership, locales, degrees, carnegie, religions, levels, hist_black, predom_black, hispanic, \
         men_only, women_only, online_only, cur_operating = College.get_values(colleges)
 
-        filters = {'city': cities,
-                   'state': states,
-                   'ownership': ownership,
-                   'locale': locales,
-                   'degree': degrees,
-                   'carnegie': carnegie,
-                   'religion': religions,
-                   'level': levels,
-                   'hist_black': hist_black,
-                   'predom_black': predom_black,
-                   'hispanic': hispanic,
-                   'men_only': men_only,
-                   'women_only': women_only,
-                   'online_only': online_only,
-                   'cur_operating': cur_operating, }
+        bin_params = Dictionary.objects.get(name='binary_params').content
+
+        try:
+            filters = {
+                'multi_val_filters': {
+                    'state': [states, 'State'],
+                    'city': [cities, 'City/town'],
+                    'locale': [locales, 'Locale'],
+                    'ownership': [ownership, 'Ownership'],
+                    'level': [levels, 'Level'],
+                    'degree': [degrees, 'Highest Degree'],
+                    'carnegie': [carnegie, 'Carnegie Basic'],
+                    'religion': [religions, 'Religious affiliation'],
+                },
+                'binary_filters': {
+                    'hist_black': [hist_black, bin_params['hist_black']],
+                    'predom_black': [predom_black, bin_params['predom_black']],
+                    'hispanic': [hispanic, bin_params['hispanic']],
+                    'men_only': [men_only, bin_params['men_only']],
+                    'women_only': [women_only, bin_params['women_only']],
+                    'online_only': [online_only, bin_params['online_only']],
+                    'cur_operating': [cur_operating, bin_params['cur_operating']], },
+            }
+        except KeyError:
+            filters = {}
 
         dict = cls.get_dict()
         disciplines = cls.get_disciplines()
@@ -711,44 +721,37 @@ class College(models.Model):
 
         cities = colleges.values_list('city',
                                       'city_slug').order_by('city').exclude(city=None).distinct()
-        states = colleges.values_list('state__id',
-                                      'state__name',
+        states = colleges.values_list('state__name',
                                       'state__slug').order_by('state__name').exclude(
             state__name=None).distinct()
-        ownership = colleges.values_list('ownership__id',
-                                         'ownership__description',
+        ownership = colleges.values_list('ownership__description',
                                          'ownership__slug').order_by('ownership__id').exclude(
             ownership__description=None).exclude(
             ownership__description='Not applicable').distinct()
-        locales = colleges.values_list('locale__id',
-                                       'locale__description',
+        locales = colleges.values_list('locale__description',
                                        'locale__slug').order_by('locale__id').exclude(
             locale__description=None).exclude(
             locale__description='Not applicable').distinct()
-        degrees = colleges.values_list('degree__id',
-                                       'degree__description',
+        degrees = colleges.values_list('degree__description',
                                        'degree__slug').order_by(
             'degree__id').exclude(degree__description=None).exclude(
             degree__description='Not applicable').distinct()
-        carnegie = colleges.values_list('carnegie__id',
-                                        'carnegie__description',
+        carnegie = colleges.values_list('carnegie__description',
                                         'carnegie__slug').order_by(
             'carnegie').exclude(carnegie__description=None).exclude(
             carnegie__description='Not applicable').distinct()
-        religions = colleges.values_list('religion__id',
-                                         'religion__name',
+        religions = colleges.values_list('religion__name',
                                          'religion__slug').order_by(
             'religion__name').exclude(religion__name=None).distinct()
-        levels = colleges.values_list('level__id',
-                                      'level__description',
+        levels = colleges.values_list('level__description',
                                       'level__slug').order_by('level__id').distinct()
-        hist_black = colleges.values('hist_black').exclude(hist_black=None).distinct()
-        predom_black = colleges.values('predom_black').exclude(predom_black=None).distinct()
-        hispanic = colleges.values('hispanic').exclude(hispanic=None).distinct()
-        men_only = colleges.values('men_only').exclude(men_only=None).distinct()
-        women_only = colleges.values('women_only').exclude(women_only=None).distinct()
-        online_only = colleges.values('online_only').exclude(online_only=None).distinct()
-        cur_operating = colleges.values('cur_operating').exclude(cur_operating=None).distinct()
+        hist_black = colleges.values('hist_black').order_by('hist_black').exclude(hist_black=None).distinct()
+        predom_black = colleges.values('predom_black').order_by('predom_black').exclude(predom_black=None).distinct()
+        hispanic = colleges.values('hispanic').order_by('hispanic').exclude(hispanic=None).distinct()
+        men_only = colleges.values('men_only').order_by('men_only').exclude(men_only=None).distinct()
+        women_only = colleges.values('women_only').order_by('women_only').exclude(women_only=None).distinct()
+        online_only = colleges.values('online_only').order_by('online_only').exclude(online_only=None).distinct()
+        cur_operating = colleges.values('cur_operating').order_by('cur_operating').exclude(cur_operating=None).distinct()
 
         return states, cities, ownership, locales, degrees, carnegie, religions, levels, hist_black, predom_black, hispanic, men_only, women_only, online_only, cur_operating
 
