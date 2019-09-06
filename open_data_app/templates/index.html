@@ -190,9 +190,9 @@
                                     {% for d in degrees %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="degree" value="{{ d.2 }}" type="checkbox">
+                                                <input name="degree" value="{{ d.1 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ d.1 }}
+                                                {{ d.0 }}
                                             </label>
                                         </div>
                                     {% endfor %}
@@ -238,9 +238,9 @@
                                     {% for l in locales %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="locale" value="{{ l.2 }}" type="checkbox">
+                                                <input name="locale" value="{{ l.1 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ l.1 }}
+                                                {{ l.0 }}
                                             </label>
                                         </div>
                                     {% endfor %}
@@ -259,9 +259,9 @@
                                     {% for o in ownership %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="ownership" value="{{ o.2 }}" type="checkbox">
+                                                <input name="ownership" value="{{ o.1 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ o.1 }}
+                                                {{ o.0 }}
                                             </label>
                                         </div>
                                     {% endfor %}
@@ -271,9 +271,9 @@
                                     {% for l in levels %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="level" value="{{ l.2 }}" type="checkbox">
+                                                <input name="level" value="{{ l.1 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ l.1 }}
+                                                {{ l.0 }}
                                             </label>
                                         </div>
                                     {% endfor %}
@@ -283,9 +283,9 @@
                                     {% for c in carnegie %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="carnegie" value="{{ c.2 }}" type="checkbox">
+                                                <input name="carnegie" value="{{ c.1 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ c.1 }}
+                                                {{ c.0 }}
                                             </label>
                                         </div>
                                     {% endfor %}
@@ -303,9 +303,9 @@
                                     {% for r in religions %}
                                         <div class="checkbox">
                                             <label>
-                                                <input name="religion" value="{{ r.2 }}" type="checkbox">
+                                                <input name="religion" value="{{ r.1 }}" type="checkbox">
                                                 <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ r.1 }}
+                                                {{ r.0 }}
                                             </label>
                                         </div>
                                     {% endfor %}
@@ -373,7 +373,7 @@
                                         <label>
                                             <input name="predom_black" value="1" type="checkbox">
                                             <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                            Predominantely black
+                                            Predominantly black
                                         </label>
                                     </div>
                                     <div class="checkbox">
@@ -396,7 +396,7 @@
                         <p>This web site is based on the data set from <a href="https://collegescorecard.ed.gov/data/"
                                                                           target="_blank" rel="nofollow">College
                             Scorecard</a> which "is designed to help students and their families to compare how well
-                            different insitutions of postsecondary education are preparing their students to be
+                            different institutions of post-secondary education are preparing their students to be
                             successful".</p>
                         <p>Quick access is provided to some of the data in which users may be most interested:
                         <ul>
