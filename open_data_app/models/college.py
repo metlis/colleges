@@ -456,7 +456,7 @@ class College(models.Model):
         return new_params_dict
 
     @classmethod
-    def get_filters(cls, colleges, excluded_filters=[], get_filter=''):
+    def get_filters(cls, colleges='', excluded_filters=[], get_filter=''):
         """
         :param colleges: colleges query set
         :param excluded_filters: filters that should not be returned
@@ -464,14 +464,18 @@ class College(models.Model):
         :return:
         """
 
-        states, cities, ownership, locales, degrees, carnegie, religions, levels, hist_black, predom_black, hispanic, \
-        men_only, women_only, online_only, cur_operating = College.get_values(colleges)
+        if not colleges:
+            colleges = College.objects.all()
+
+        regions, states, cities, ownership, locales, degrees, carnegie, religions, levels, hist_black, predom_black, \
+        hispanic, men_only, women_only, online_only, cur_operating = College.get_values(colleges)
 
         bin_params = Dictionary.objects.get(name='binary_params').content
 
         try:
             filters = {
                 'multi_val_filters': {
+                    'region': [regions, 'Region'],
                     'state': [states, 'State'],
                     'city': [cities, 'City/town'],
                     'locale': [locales, 'Locale'],
@@ -721,6 +725,9 @@ class College(models.Model):
 
         cities = colleges.values_list('city',
                                       'city_slug').order_by('city').exclude(city=None).distinct()
+        regions = colleges.values_list('region__name',
+                                       'region__slug').order_by('region__name').exclude(
+            region__name=None).exclude(region__slug='').distinct()
         states = colleges.values_list('state__name',
                                       'state__slug').order_by('state__name').exclude(
             state__name=None).distinct()
@@ -753,7 +760,8 @@ class College(models.Model):
         online_only = colleges.values('online_only').order_by('online_only').exclude(online_only=None).distinct()
         cur_operating = colleges.values('cur_operating').order_by('cur_operating').exclude(cur_operating=None).distinct()
 
-        return states, cities, ownership, locales, degrees, carnegie, religions, levels, hist_black, predom_black, hispanic, men_only, women_only, online_only, cur_operating
+        return regions, states, cities, ownership, locales, degrees, carnegie, religions, levels, hist_black, \
+               predom_black, hispanic, men_only, women_only, online_only, cur_operating
 
     @staticmethod
     def check_result_is_multiple(colleges):

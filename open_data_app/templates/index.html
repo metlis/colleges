@@ -99,53 +99,6 @@
                             Categories
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Region</a>
-                                <ul class="dropdown-menu">
-                                    {% for region in regions %}
-                                        {% if region.id > 0 %}
-                                            <li><a class="dropdown-item"
-                                                   href="{% url 'college_app:region' region.slug %}">{{ region.name }}</a>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">State</a>
-                                <ul class="dropdown-menu">
-                                    {% for state in states %}
-                                        <li><a class="dropdown-item"
-                                               href="{% url 'college_app:state' state.slug %}">{{ state.name }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Locale</a>
-                                <ul class="dropdown-menu">
-                                    {% for l in locales %}
-                                        <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'locale' l.1 %}">{{ l.0 }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Institution's
-                                level</a>
-                                <ul class="dropdown-menu">
-                                    {% for l in levels %}
-                                        <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'level' l.1 %} ">{{ l.0 }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Degree</a>
-                                <ul class="dropdown-menu">
-                                    {% for d in degrees %}
-                                        <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'degree' d.1 %}">{{ d.0 }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Program</a>
                                 <ul class="dropdown-menu">
                                     {% for discipline in disciplines %}
@@ -155,59 +108,33 @@
                                     {% endfor %}
                                 </ul>
                             </li>
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Carnegie
-                                classification</a>
-                                <ul class="dropdown-menu">
-                                    {% for c in carnegie %}
-                                        <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'carnegie' c.1 %}">{{ c.0 }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Ownership</a>
-                                <ul class="dropdown-menu">
-                                    {% for o in ownership %}
-                                        <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'ownership' o.1 %}">{{ o.0 }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Religious
-                                affiliation</a>
-                                <ul class="dropdown-menu">
-                                    {% for r in religions %}
-                                        <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_values' 'religion' r.1 %}">{{ r.0 }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
+                            {% for key, val in multi_val_filters.items %}
+                                {% if val.0|length > 1 and key != 'city' %}
+                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">{{ val.1 }}</a>
+                                        <ul class="dropdown-menu">
+                                            {% for v in val.0 %}
+                                                <li><a class="dropdown-item"
+                                                        {% if key == 'region' %}
+                                                            href="{% url 'college_app:region' v.1 %}">{{ v.0 }}
+                                                        {% elif key == 'state' %}
+                                                            href="{% url 'college_app:state' v.1 %}">{{ v.0 }}
+                                                        {% else %}
+                                                            href="{% url 'college_app:filter_values' key v.1 %}">{{ v.0 }}
+                                                        {% endif %}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Other</a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item"
-                                           href="{% url 'college_app:filter_values' 'hist_black' 1 %}">Historically
-                                        black</a></li>
-                                    <li><a class="dropdown-item"
-                                           href="{% url 'college_app:filter_values' 'predom_black' 1 %}">Predominantely
-                                        black</a></li>
-                                    <li><a class="dropdown-item"
-                                           href="{% url 'college_app:filter_values' 'hispanic' 1 %}">Hispanic</a></li>
-                                    <li><a class="dropdown-item"
-                                           href="{% url 'college_app:filter_values' 'men_only' 1 %}">Men-only</a></li>
-                                    <li><a class="dropdown-item"
-                                           href="{% url 'college_app:filter_values' 'women_only' 1 %}">Women-only</a>
-                                    </li>
-                                    <li><a class="dropdown-item"
-                                           href="{% url 'college_app:filter_values' 'online_only' 1 %}">Online-only</a>
-                                    </li>
-                                    <li><a class="dropdown-item"
-                                           href="{% url 'college_app:filter_values' 'cur_operating' 1 %}">Currently
-                                        operating</a></li>
-                                    <li><a class="dropdown-item"
-                                           href="{% url 'college_app:filter_values' 'cur_operating' 0 %}">Currently
-                                        closed</a></li>
+                                    {% for key, val in binary_filters.items %}
+                                        {% if val.0|length > 1 %}
+                                            <li><a class="dropdown-item"
+                                                   href="{% url 'college_app:filter_values' key 1 %}">{{ val.1 }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
                                 </ul>
                             </li>
                         </ul>
