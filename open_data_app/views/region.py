@@ -61,8 +61,9 @@ def get_region(request, region_slug):
                'region_name': region_name,
                'region_states': region_states,
                'region_id': region.id,
-               'region_slug': region.slug,
+               'slug': region.slug,
                'region_init': True,
+               'view_name': 'college_app:region_param',
                # seo
                'seo_title': seo_title,
                'seo_description': seo_description,
@@ -201,10 +202,11 @@ def get_region_param(request, region_slug, param_name, param_value):
                    'base_url': base_url,
                    # region data
                    'region_id': region.id,
-                   'region_slug': region.slug,
+                   'slug': region.slug,
                    'region_name': region_name,
                    'geo': region_name,
                    'geo_page': region_page,
+                   'view_name': 'college_app:region_param',
                    # initial filter
                    'init_filter_val': param_text_value,
                    'init_filter_page': param_page_link,

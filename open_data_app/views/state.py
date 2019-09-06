@@ -60,9 +60,10 @@ def get_state(request, state_slug):
                # state data
                'state': state,
                'state_name': state.name,
-               'state_slug': state.slug,
+               'slug': state.slug,
                'state_init': True,
                'state_view': True,
+               'view_name': 'college_app:state_param',
                # seo
                'seo_title': seo_title,
                'seo_description': seo_description,
@@ -190,11 +191,12 @@ def get_state_param(request, state_slug, param_name, param_value):
                    'base_url': canonical,
                    # state data
                    'state_id': state.id,
-                   'state_slug': state.slug,
+                   'slug': state.slug,
                    'state_name': state.name,
                    'state_view': True,
                    'geo': state.name,
                    'geo_page': state_page,
+                   'view_name': 'college_app:state_param',
                    # initial filter
                    'init_filter_val': param_text_value,
                    'init_filter_page': param_page_link,
