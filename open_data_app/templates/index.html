@@ -26,18 +26,15 @@
     {% endblock %}
 
     {% block description %}
-        <meta name="description"
-              content="This site provides details about colleges and universities in the USA. Here you can find supporting data for any american college on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
-        <meta property="og:description"
-              content="This site provides details about colleges and universities in the USA. Here you can find supporting data for any american college on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
-        <meta name="twitter:description"
-              content="This site provides details about colleges and universities in the USA. Here you can find supporting data for any american college on disciplines, admissions, student completion, costs, debt and repayment, financial aid, earnings, and more.">
+        <meta name="description" content="{{ seo_description }}">
+        <meta property="og:description" content="{{ seo_description }}">
+        <meta name="twitter:description" content="{{ seo_description }}">
     {% endblock %}
 
     {% block title %}
-        <title>USA colleges and universities</title>
-        <meta property="og:title" content="USA colleges and universities">
-        <meta name="twitter:title" content="USA colleges and universities">
+        <title>{{ seo_title }}</title>
+        <meta property="og:title" content="{{ seo_title }}">
+        <meta name="twitter:title" content="{{ seo_title }}">
     {% endblock %}
 
     {% block external_styles %}

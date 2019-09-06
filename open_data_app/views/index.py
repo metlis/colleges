@@ -2,6 +2,7 @@ from django.shortcuts import render
 from open_data_app.models import College
 from open_data_app.models import State
 from open_data_app.models import Region
+from open_data_app.modules.seo import Seo
 from settings import *
 
 
@@ -18,6 +19,9 @@ def index(request):
     for discipline in disciplines:
         academics.append([discipline, dictionary[discipline]])
 
+    seo_title = Seo.generate_title('index', '', '')
+    seo_description = Seo.generate_description('index', '', '')
+
     return render(request, 'index.html', {'states': states,
                                           'regions': regions,
                                           'ownership': ownership,
@@ -27,4 +31,6 @@ def index(request):
                                           'religions': religions,
                                           'levels': levels,
                                           'disciplines': academics,
+                                          'seo_title': seo_title,
+                                          'seo_description': seo_description,
                                           })
