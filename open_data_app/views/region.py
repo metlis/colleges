@@ -10,6 +10,7 @@ from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.sort_param_handler import handle_sort_param
 from open_data_app.modules.params_modifier import modify_param
+from open_data_app.modules.old_url_redirect_handler import handle_old_url_redirect
 from open_data_app.modules.seo import Seo
 
 
@@ -114,14 +115,9 @@ def get_region_param(request, region_slug, param_name, param_value):
 
     # redirecting urls with integers as parameter's values where parameter is a foreign key
     if param_value_is_int:
-        if param_name not in College.get_binary_params() and param_name not in College.get_disciplines():
-            param_slug_value = College.get_param_slug_val(param_name, param_value)
-            if param_slug_value:
-                return HttpResponsePermanentRedirect(reverse('college_app:region_param', kwargs={
-                    'region_slug': region_slug,
-                    'param_name': param_name,
-                    'param_value': param_slug_value,
-                }))
+        redirect = handle_old_url_redirect(param_name, param_value, region_slug, 'region')
+        if redirect:
+            return redirect
 
     # modify parameter name if it is a discipline
     filter_param = modify_param(param_name, param_value, param_value_is_int)
