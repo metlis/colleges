@@ -46,7 +46,6 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
 
     try:
         del params['main_filter']
-        noindex = True
     except KeyError:
         pass
 
@@ -72,6 +71,8 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
             return ''
 
     else:
+        noindex = True
+
         req_str = re.sub('page=(\d)+&?', '', request.META['QUERY_STRING'])
 
         disciplines = College.get_disciplines()
