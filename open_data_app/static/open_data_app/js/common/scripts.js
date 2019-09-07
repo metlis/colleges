@@ -72,6 +72,11 @@ function getMapLabels(url) {
             if (response.data.data) {
                 initFilterMap();
                 var mapLabels = response.data.data;
+                if (mapLabels.length == 0) {
+                    var mapContainer = document.getElementById('map');
+                    mapContainer.style.display = 'none';
+                    return;
+                }
                 var locations = [];
                 for (var i = 0; i < mapLabels.length; i++) {
                     locations.push(mapLabels[i])
