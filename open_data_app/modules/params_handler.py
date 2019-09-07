@@ -145,10 +145,12 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
                 if isinstance(params_dict[p], list):
                     for dict_value in params_dict[p]:
                         param_text_value, param_page_link = College.get_param_text_val(entity, entity_id, p, dict_value)
+                        if param_text_value:
+                            filters_vals.append((param_text_value, param_page_link,))
                 else:
                     param_text_value, param_page_link = College.get_param_text_val(entity, entity_id, p, params_dict[p])
-                if param_text_value:
-                    filters_vals.append((param_text_value, param_page_link,))
+                    if param_text_value:
+                        filters_vals.append((param_text_value, param_page_link,))
             except Exception as e:
                 print(e)
                 return ''
