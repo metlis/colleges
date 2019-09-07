@@ -120,7 +120,7 @@ def main_filter(request):
                    'noindex': False,
                    # api
                    'maps_key': GOOGLE_MAPS_API,
-                   'api_call': '',
+                   'api_call': 'main_filter=1',
                    'favourite_colleges': favourite_colleges,
                    # filter
                    'state_filter': True,
