@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.exceptions import FieldError, ObjectDoesNotExist
-from django.http import Http404, HttpResponsePermanentRedirect
+from django.http import Http404
 
 from open_data_app.models import State
 from open_data_app.models import College
@@ -12,6 +12,7 @@ from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.sort_param_handler import handle_sort_param
 from open_data_app.modules.params_modifier import modify_param
 from open_data_app.modules.old_url_redirect_handler import handle_old_url_redirect
+from open_data_app.modules.geo_redirect_handler import handle_geo_redirect
 from open_data_app.modules.seo import Seo
 
 
@@ -222,21 +223,4 @@ def get_state_param(request, state_slug, param_name, param_value):
 
 
 def get_state_redirect(request, state_id, state_slug, param_name='', param_value=''):
-    try:
-        state = State.objects.get(id=state_id)
-
-        if state_slug != state.slug:
-            raise Http404()
-        else:
-            if not param_name and not param_value:
-                return HttpResponsePermanentRedirect(reverse('college_app:state', kwargs={
-                    'state_slug': state_slug,
-                }))
-            else:
-                return HttpResponsePermanentRedirect(reverse('college_app:state_param', kwargs={
-                    'state_slug': state_slug,
-                    'param_name': param_name,
-                    'param_value': param_value,
-                }))
-    except ObjectDoesNotExist:
-        raise Http404()
+    return handle_geo_redirect('state', state_id, state_slug, param_name, param_value)
