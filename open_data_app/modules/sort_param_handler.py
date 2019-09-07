@@ -1,5 +1,6 @@
 from open_data_app.models import Dictionary
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 
 
 def handle_sort_param(request, is_geo_view=False):
@@ -13,6 +14,9 @@ def handle_sort_param(request, is_geo_view=False):
 
     if 'sort' in request.GET:
         active_sort_param_val = request.GET['sort']
+        if active_sort_param_val not in list(sort_params.keys()):
+            raise Http404()
+
         active_sort_param_name = sort_params[active_sort_param_val]
 
     if is_geo_view:
