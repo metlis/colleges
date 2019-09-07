@@ -109,7 +109,7 @@
                                 </ul>
                             </li>
                             {% for key, val in multi_val_filters.items %}
-                                {% if val.0|length > 1 and key != 'city' %}
+                                {% if val.0|length > 1 and key != 'city_slug' %}
                                     <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">{{ val.1 }}</a>
                                         <ul class="dropdown-menu">
                                             {% for v in val.0 %}
