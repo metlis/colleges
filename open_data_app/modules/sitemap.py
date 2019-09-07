@@ -11,12 +11,12 @@ from open_data_app.models.region import Region
 from open_data_app.models.dictionary import Dictionary
 
 PARAMS = {
-    'ownership': Ownership.objects.all().values('id'),
-    'locale': Locale.objects.all().values('id'),
-    'degree': Degree.objects.all().values('id'),
-    'carnegie': Carnegie.objects.all().values('id'),
-    'religion': Religion.objects.all().values('id'),
-    'level': Level.objects.all().values('id'),
+    'ownership__slug': Ownership.objects.all().values('slug'),
+    'locale__slug': Locale.objects.all().values('slug'),
+    'degree__slug': Degree.objects.all().values('slug'),
+    'carnegie__slug': Carnegie.objects.all().values('slug'),
+    'religion__slug': Religion.objects.all().values('slug'),
+    'level__slug': Level.objects.all().values('slug'),
     'hist_black': [0, 1],
     'predom_black': [0, 1],
     'men_only': [0, 1],
@@ -27,6 +27,7 @@ PARAMS = {
 COLLEGES = College.objects.all()
 REGIONS = Region.objects.all()
 STATES = State.objects.all()
+CITIES = College.objects.values('city_slug').distinct()
 
 
 class CollegesSitemap(Sitemap):
@@ -58,6 +59,24 @@ class RegionsSitemap(Sitemap):
     def items(self):
         return REGIONS
 
+
+class CitiesSitemap(Sitemap):
+    protocol = 'https'
+
+    def items(self):
+        cities = []
+
+        for city in CITIES:
+            cities.append(city['city_slug'])
+
+        return cities
+
+    def location(self, item):
+        return reverse('college_app:filter_values', kwargs={
+            'param_name': 'city_slug',
+            'param_value': item,
+        }
+                       )
 
 class DisciplinesSitemap(Sitemap):
     protocol = 'https'
@@ -95,11 +114,11 @@ class FilterParamsSitemap(Sitemap):
         for param_name in PARAMS:
             for i in PARAMS[param_name]:
                 try:
-                    param_value = i['id']
+                    param_value = i['slug']
                 except TypeError:
                     param_value = i
                 param_values.append({
-                    'param_name': param_name,
+                    'param_name': param_name.replace('__slug', ''),
                     'param_value': param_value
                 })
 
@@ -114,21 +133,19 @@ class StateFilterParamsSitemap(Sitemap):
 
         for state in STATES:
             state_slug = slugify(state.name)
-            state_id = state.id
 
             for param_name in PARAMS:
                 for i in PARAMS[param_name]:
                     try:
-                        param_value = i['id']
+                        param_value = i['slug']
                     except TypeError:
                         param_value = i
-                    filtered_colleges = COLLEGES.filter(state__id=state_id).filter(**{param_name: param_value})
+                    filtered_colleges = COLLEGES.filter(state__slug=state_slug).filter(**{param_name: param_value})
                     if len(filtered_colleges) > 0:
                         param_values.append({
-                            'param_name': param_name,
+                            'param_name': param_name.replace('__slug', ''),
                             'param_value': param_value,
                             'state_slug': state_slug,
-                            'state_id': state_id,
                         })
 
         return param_values
@@ -138,7 +155,6 @@ class StateFilterParamsSitemap(Sitemap):
             'param_name': item['param_name'],
             'param_value': item['param_value'],
             'state_slug': item['state_slug'],
-            'state_id': item['state_id'],
         }
                        )
 
@@ -150,7 +166,6 @@ class RegionFilterParamsSitemap(Sitemap):
         param_values = []
 
         for region in REGIONS:
-            region_id = region.id
 
             try:
                 region_re = re.search('(.*?)\s\((.*?)\)', region.name)
@@ -160,16 +175,15 @@ class RegionFilterParamsSitemap(Sitemap):
                 for param_name in PARAMS:
                     for i in PARAMS[param_name]:
                         try:
-                            param_value = i['id']
+                            param_value = i['slug']
                         except TypeError:
                             param_value = i
-                        filtered_colleges = COLLEGES.filter(region__id=region_id).filter(**{param_name: param_value})
+                        filtered_colleges = COLLEGES.filter(region__slug=region_slug).filter(**{param_name: param_value})
                         if len(filtered_colleges) > 0:
                             param_values.append({
-                                'param_name': param_name,
+                                'param_name': param_name.replace('__slug', ''),
                                 'param_value': param_value,
                                 'region_slug': region_slug,
-                                'region_id': region_id,
                             })
             except:
                 pass
@@ -181,6 +195,5 @@ class RegionFilterParamsSitemap(Sitemap):
             'param_name': item['param_name'],
             'param_value': item['param_value'],
             'region_slug': item['region_slug'],
-            'region_id': item['region_id'],
         }
                        )

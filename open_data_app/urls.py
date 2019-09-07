@@ -13,7 +13,7 @@ from open_data_app.api.get_labels import get_labels
 from open_data_app.api.modify_favourites import modify_favourites
 from open_data_app.views.favourite import show_favourite
 from open_data_app.modules.sitemap import CollegesSitemap, StatesSitemap, RegionsSitemap, DisciplinesSitemap, \
-    FilterParamsSitemap, StateFilterParamsSitemap, RegionFilterParamsSitemap
+    FilterParamsSitemap, StateFilterParamsSitemap, RegionFilterParamsSitemap, CitiesSitemap
 from django.contrib.sitemaps.views import sitemap
 
 app_name = 'college_app'
@@ -25,6 +25,7 @@ app_name = 'college_app'
 #     'states_params': StateFilterParamsSitemap,
 #     'disciplines': DisciplinesSitemap,
 #     'filters': FilterParamsSitemap,
+#     'cities': CitiesSitemap,
 #     'colleges': CollegesSitemap,
 # }
 
