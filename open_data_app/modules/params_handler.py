@@ -97,37 +97,32 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
 
         # modify param name for the query if its value is a list
         new_params_dict = College.create_new_params_dict(params_dict)
+        new_params_dict_copy = {}
         for p in new_params_dict:
             if len(new_params_dict[p]) > 1:
                 if '__in' not in p:
-                    new_params_dict['{}__in'.format(p)] = new_params_dict.pop(p)
+                    new_params_dict_copy['{}__in'.format(p)] = new_params_dict[p]
+                else:
+                    new_params_dict_copy[p] = new_params_dict[p]
             else:
-                new_params_dict[p] = new_params_dict[p][0]
+                new_params_dict_copy[p] = new_params_dict[p][0]
 
         # logic for queries with region and state arguments simultaneously
-        new_params_dict_copy = new_params_dict.copy()
+        new_params_dict_second_copy = new_params_dict_copy.copy()
         region_query, state_query = {}, {}
 
-        for p in new_params_dict:
+        for p in new_params_dict_copy:
             if 'region' in p or 'state' in p:
-                param_is_list = isinstance(new_params_dict[p], list)
-                param_value = new_params_dict[p]
-                new_params_dict_copy.pop(p)
+                new_params_dict_second_copy.pop(p)
 
             if 'region' in p:
-                if param_is_list:
-                    region_query = {'{}__in'.format(p): param_value}
-                else:
-                    region_query = {p: param_value}
+                region_query = {p: new_params_dict_copy[p]}
             if 'state' in p:
-                if param_is_list:
-                    state_query = {'{}__in'.format(p): param_value}
-                else:
-                    state_query = {p: param_value}
+                state_query = {p: new_params_dict_copy[p]}
 
         try:
             colleges = College.objects.filter(Q(**state_query) | Q(**region_query)).filter(
-                **new_params_dict_copy).filter(*(discipline_args_query,))
+                **new_params_dict_second_copy).filter(*(discipline_args_query,))
         except FieldError:
             return ''
 
