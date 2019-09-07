@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.core.exceptions import FieldError
-from django.http import Http404, HttpResponsePermanentRedirect
+from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 
 from open_data_app.models import College, Dictionary
+from open_data_app.modules.old_url_redirect_handler import handle_old_url_redirect
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.seo import Seo
@@ -28,13 +29,9 @@ def filter_values(request, param_name, param_value):
 
     # redirecting urls with integers as parameter's values where parameter is a foreign key
     if param_value_is_int:
-        if param_name not in College.get_binary_params() and param_name not in College.get_disciplines():
-            param_slug_value = College.get_param_slug_val(param_name, param_value)
-            if param_slug_value:
-                return HttpResponsePermanentRedirect(reverse('college_app:filter_values', kwargs={
-                    'param_name': param_name,
-                    'param_value': param_slug_value,
-                }))
+        redirect = handle_old_url_redirect(param_name, param_value)
+        if redirect:
+            return redirect
 
     if param_value_is_int or param_name == 'city_slug':
         filter_param = param_name
