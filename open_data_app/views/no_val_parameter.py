@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse
-from django.core.exceptions import FieldError
+from django.core.exceptions import FieldError, ObjectDoesNotExist
 from django.http import Http404
 
-from open_data_app.models import College
+from open_data_app.models import College, Dictionary
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.seo import Seo
@@ -12,6 +12,14 @@ from settings import *
 
 
 def filter_no_values(request, param_name):
+    try:
+        disciplines = Dictionary.objects.get(name='discipline_slugs').content
+    except ObjectDoesNotExist:
+        disciplines = []
+
+    if param_name not in disciplines:
+        raise Http404()
+
     init_param = param_name
 
     query_param = '{}__gt'.format(param_name)
