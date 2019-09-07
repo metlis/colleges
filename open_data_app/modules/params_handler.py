@@ -16,7 +16,7 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
     params_dict = {}
 
     # robots directive for filter pages
-    noindex = True
+    noindex = False
 
     # delete params which are not filter params
     try:
@@ -28,6 +28,7 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
         # preserve param for url string
         req_str = 'text={}'.format(params['text'])
         del params['text']
+        noindex = True
     except KeyError:
         pass
 
@@ -39,18 +40,20 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
         else:
             req_str = sort_string
         del params['sort']
+        noindex = True
     except KeyError:
         pass
 
     try:
         del params['main_filter']
+        noindex = True
     except KeyError:
         pass
 
     if not main_filter:
 
-        if len(params.keys()) == 0:
-            noindex = False
+        if len(params.keys()) > 0:
+            noindex = True
 
         for key in params:
             params_dict[key] = params[key]

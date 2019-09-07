@@ -30,8 +30,10 @@ def get_state(request, state_slug):
     # sort parameters
     sort_params, active_sort_param_name, active_sort_param_val = handle_sort_param(request, is_geo_view=True)
     # sort param to insert into pagination url
+    noindex = False
     if active_sort_param_val:
         active_sort_param_val = 'sort={}'.format(active_sort_param_val)
+        noindex = True
 
     # define seo data before rendering
     seo_title = Seo.generate_title('geo_init', state.name, '')
@@ -69,6 +71,7 @@ def get_state(request, state_slug):
                'seo_description': seo_description,
                'base_url': canonical,
                'canonical': canonical,
+               'noindex': noindex,
                # api
                'maps_key': GOOGLE_MAPS_API,
                'api_call': api_call,
