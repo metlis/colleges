@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.core.exceptions import FieldError
 from django.http import Http404, HttpResponsePermanentRedirect
+from django.core.exceptions import ObjectDoesNotExist
 
-from open_data_app.models import College
+from open_data_app.models import College, Dictionary
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.seo import Seo
@@ -12,6 +13,13 @@ from settings import *
 
 
 def filter_values(request, param_name, param_value):
+
+    try:
+        disciplines = Dictionary.objects.get(name='discipline_slugs').content
+    except ObjectDoesNotExist:
+        disciplines = []
+    if param_name in disciplines:
+        raise Http404()
 
     try:
         param_value_is_int = isinstance(int(param_value), int)
