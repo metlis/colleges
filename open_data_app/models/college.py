@@ -477,7 +477,7 @@ class College(models.Model):
                 'multi_val_filters': {
                     'region': [regions, 'Region'],
                     'state': [states, 'State'],
-                    'city': [cities, 'City/town'],
+                    'city_slug': [cities, 'City/town'],
                     'locale': [locales, 'Locale'],
                     'ownership': [ownership, 'Ownership'],
                     'level': [levels, 'Level'],
