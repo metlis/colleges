@@ -9,6 +9,7 @@ from open_data_app.models import Region, College
 from open_data_app.modules.pagination_handler import handle_pagination
 from open_data_app.modules.params_handler import handle_params
 from open_data_app.modules.sort_param_handler import handle_sort_param
+from open_data_app.modules.params_modifier import modify_param
 from open_data_app.modules.seo import Seo
 
 
@@ -123,12 +124,7 @@ def get_region_param(request, region_slug, param_name, param_value):
                 }))
 
     # modify parameter name if it is a discipline
-    if param_name in College.get_disciplines():
-        filter_param = '{}__gt'.format(param_name)
-    elif param_name == 'city_slug' or param_value_is_int:
-        filter_param = param_name
-    else:
-        filter_param = '{}__slug'.format(param_name)
+    filter_param = modify_param(param_name, param_value, param_value_is_int)
 
     try:
         # colleges filtered by region + by the initial filter
