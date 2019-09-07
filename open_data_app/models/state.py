@@ -14,7 +14,7 @@ class State(models.Model):
     def get_absolute_path(self):
 
         try:
-            url = reverse('college_app:state', kwargs={'state_id': self.id,
+            url = reverse('college_app:state', kwargs={
                                                        'state_slug': self.slug,
                                                        })
         except Exception as e:

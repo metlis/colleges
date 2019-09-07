@@ -29,7 +29,7 @@ class Region(models.Model):
     def get_absolute_path(self):
 
         try:
-            url = reverse('college_app:region', kwargs={'region_id': self.id,
+            url = reverse('college_app:region', kwargs={
                                                         'region_slug': self.slug,
                                                         })
         except Exception as e:
