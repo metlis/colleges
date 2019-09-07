@@ -674,7 +674,7 @@
                                                           title="Median earnings of students working and not enrolled 10 years after entry (2019 College Scorecard data)"></i></span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
-                                                 style="width: {{ college.mean_earnings|bar_percent:max_earnings }}%;"
+                                                 style="width: {{ college.median_earnings|bar_percent:max_earnings }}%;"
                                                  aria-valuenow="{{ college.median_earnings|bar_percent:max_earnings }}"
                                                  aria-valuemin="0" aria-valuemax="100">{% if college.median_earnings %}
                                                 {{ college.median_earnings|floatformat:"0"|intcomma }}${% else %}
