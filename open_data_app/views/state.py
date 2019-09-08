@@ -149,10 +149,15 @@ def get_state_param(request, state_slug, param_name, param_value):
         seo_template = param_name
         seo_title = Seo.generate_title(seo_template, param_text_value, state.name)
         seo_description = Seo.generate_description(seo_template, param_text_value, state.name)
-        canonical = reverse('college_app:state_param', kwargs={'state_slug': state.slug,
-                                                               'param_name': param_name,
-                                                               'param_value': slugify(param_value),
-                                                               })
+        if param_name == 'city_slug':
+            canonical = reverse('college_app:filter_values', kwargs={'param_name': param_name,
+                                                                     'param_value': slugify(param_value),
+                                                                     })
+        else:
+            canonical = reverse('college_app:state_param', kwargs={'state_slug': state.slug,
+                                                                   'param_name': param_name,
+                                                                   'param_value': slugify(param_value),
+                                                                   })
         # state's url
         state_page = reverse('college_app:state', kwargs={'state_slug': state_slug, })
 

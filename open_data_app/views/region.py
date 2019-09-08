@@ -153,7 +153,11 @@ def get_region_param(request, region_slug, param_name, param_value):
         seo_template = param_name
         seo_title = Seo.generate_title(seo_template, param_text_value, region_name)
         seo_description = Seo.generate_description(seo_template, param_text_value, region_name)
-        if not 'canonical' in locals():
+        if param_name == 'city_slug':
+            canonical = reverse('college_app:filter_values', kwargs={'param_name': param_name,
+                                                                     'param_value': slugify(param_value),
+                                                                    })
+        elif not 'canonical' in locals():
             canonical = reverse('college_app:region_param', kwargs={'region_slug': region.slug,
                                                                     'param_name': param_name,
                                                                     'param_value': slugify(param_value),
