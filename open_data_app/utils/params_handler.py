@@ -65,6 +65,8 @@ def handle_params(request, colleges, entity, entity_id, main_filter=False, api_c
             new_params_dict = College.create_new_params_dict(params_dict)
             if colleges:
                 colleges = colleges.filter(**new_params_dict)
+            elif not colleges and api_call:
+                colleges = College.objects.filter(**new_params_dict)
             else:
                 colleges = College.objects.none()
         except FieldError:
