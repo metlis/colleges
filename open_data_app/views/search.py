@@ -6,9 +6,9 @@ from django.http import Http404
 from settings import *
 
 from open_data_app.models import College
-from open_data_app.modules.pagination_handler import handle_pagination
-from open_data_app.modules.params_handler import handle_params
-from open_data_app.modules.sort_param_handler import handle_sort_param
+from open_data_app.utils.pagination_handler import handle_pagination
+from open_data_app.utils.params_handler import handle_params
+from open_data_app.utils.sort_param_handler import handle_sort_param
 
 
 def search(request):

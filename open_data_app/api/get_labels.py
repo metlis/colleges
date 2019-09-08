@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from open_data_app.models import College
-from open_data_app.modules.params_handler import handle_params
+from open_data_app.utils.params_handler import handle_params
 import json
 from django.db.models import Q
 from htmlmin.decorators import not_minified_response

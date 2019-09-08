@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from django.http import Http404
 from django.urls import reverse
 
-from open_data_app.modules.seo import Seo
+from open_data_app.utils.seo import Seo
 from settings import *
 
 from open_data_app.models import College, Carnegie, Degree, Level, Locale, Ownership, Religion, Region, State

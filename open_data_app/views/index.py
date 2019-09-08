@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from open_data_app.models import College
-from open_data_app.modules.seo import Seo
+from open_data_app.utils.seo import Seo
 from open_data_app.models import State
 from open_data_app.models import Region
 from settings import *

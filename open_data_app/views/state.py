@@ -7,13 +7,13 @@ from django.http import Http404
 
 from open_data_app.models import State
 from open_data_app.models import College
-from open_data_app.modules.pagination_handler import handle_pagination
-from open_data_app.modules.params_handler import handle_params
-from open_data_app.modules.sort_param_handler import handle_sort_param
-from open_data_app.modules.params_modifier import modify_param
-from open_data_app.modules.old_url_redirect_handler import handle_old_url_redirect
-from open_data_app.modules.geo_redirect_handler import handle_geo_redirect
-from open_data_app.modules.seo import Seo
+from open_data_app.utils.pagination_handler import handle_pagination
+from open_data_app.utils.params_handler import handle_params
+from open_data_app.utils.sort_param_handler import handle_sort_param
+from open_data_app.utils.params_modifier import modify_param
+from open_data_app.utils.old_url_redirect_handler import handle_old_url_redirect
+from open_data_app.utils.geo_redirect_handler import handle_geo_redirect
+from open_data_app.utils.seo import Seo
 
 
 def get_state(request, state_slug):

@@ -12,7 +12,7 @@ from open_data_app.views.no_val_parameter import filter_no_values
 from open_data_app.api.get_labels import get_labels
 from open_data_app.api.modify_favourites import modify_favourites
 from open_data_app.views.favourite import show_favourite
-from open_data_app.modules.sitemap import CollegesSitemap, StatesSitemap, RegionsSitemap, DisciplinesSitemap, \
+from open_data_app.utils.sitemap import CollegesSitemap, StatesSitemap, RegionsSitemap, DisciplinesSitemap, \
     FilterParamsSitemap, StateFilterParamsSitemap, RegionFilterParamsSitemap, CitiesSitemap
 from django.contrib.sitemaps.views import sitemap
 
