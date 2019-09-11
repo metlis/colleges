@@ -83,7 +83,7 @@
                         {% if state_view or state_init %}
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem"><a
-                                    href="{% url 'college_app:state' slug %}" itemprop="item"><span
+                                    href="{% url 'college_app:geo' 'state' slug %}" itemprop="item"><span
                                     itemprop="name">{{ state_name }}</span></a>
                                 <meta itemprop="position" content="2"/>
                             </li>
@@ -91,7 +91,7 @@
                         {% elif geo or region_init %}
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem"><a
-                                    href="{% url 'college_app:region' slug %}" itemprop="item"><span
+                                    href="{% url 'college_app:geo' 'region' slug %}" itemprop="item"><span
                                     itemprop="name">{{ region_name }}</span></a>
                                 <meta itemprop="position" content="2"/>
                             </li>

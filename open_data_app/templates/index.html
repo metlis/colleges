@@ -114,10 +114,8 @@
                                         <ul class="dropdown-menu">
                                             {% for v in val.0 %}
                                                 <li><a class="dropdown-item"
-                                                        {% if key == 'region' %}
-                                                            href="{% url 'college_app:region' v.1 %}">{{ v.0 }}
-                                                        {% elif key == 'state' %}
-                                                            href="{% url 'college_app:state' v.1 %}">{{ v.0 }}
+                                                        {% if key == 'region' or key == 'state' %}
+                                                            href="{% url 'college_app:geo' key v.1 %}">{{ v.0 }}
                                                         {% else %}
                                                             href="{% url 'college_app:filter_values' key v.1 %}">{{ v.0 }}
                                                         {% endif %}</a>

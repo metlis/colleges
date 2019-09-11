@@ -59,14 +59,18 @@ def get_college(request, college_id, college_slug):
 
             try:
                 region = Region.objects.get(id=college.region_id)
-                tags.append([region.name, reverse('college_app:region', kwargs={'region_slug': region.slug})])
+                tags.append([region.name, reverse('college_app:geo', kwargs={
+                    'geo_name': 'region',
+                    'geo_slug': region.slug})])
             except Exception as e:
                 print(e)
                 pass
 
             try:
                 state = State.objects.get(id=college.state_id)
-                tags.append([state.name, reverse('college_app:state', kwargs={'state_slug': state.slug})])
+                tags.append([state.name, reverse('college_app:geo', kwargs={
+                    'geo_name': 'state',
+                    'geo_slug': state.slug})])
             except Exception as e:
                 print(e)
                 pass

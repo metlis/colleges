@@ -557,10 +557,10 @@ class College(models.Model):
                             param_text_value = rel_obj.name
 
                         # get link for parameter's filter page
-                        if param_name == 'state':
-                            param_page_link = reverse('college_app:state', kwargs={'state_slug': rel_obj.slug, })
-                        elif param_name == 'region':
-                            param_page_link = reverse('college_app:region', kwargs={'region_slug': rel_obj.slug, })
+                        if param_name in ['state', 'region']:
+                            param_page_link = reverse('college_app:geo', kwargs={
+                                'geo_name': param_name,
+                                'geo_slug': rel_obj.slug, })
                         else:
                             param_page_link = reverse('college_app:filter_values',
                                                       kwargs={'param_name': param_name, 'param_value': param_value})

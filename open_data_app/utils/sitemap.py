@@ -151,10 +151,11 @@ class StateFilterParamsSitemap(Sitemap):
         return param_values
 
     def location(self, item):
-        return reverse('college_app:state_param', kwargs={
+        return reverse('college_app:geo_param', kwargs={
             'param_name': item['param_name'],
             'param_value': item['param_value'],
-            'state_slug': item['state_slug'],
+            'geo_slug': item['state_slug'],
+            'geo_name': 'state',
         }
                        )
 
@@ -191,9 +192,10 @@ class RegionFilterParamsSitemap(Sitemap):
         return param_values
 
     def location(self, item):
-        return reverse('college_app:region_param', kwargs={
+        return reverse('college_app:geo_param', kwargs={
             'param_name': item['param_name'],
             'param_value': item['param_value'],
-            'region_slug': item['region_slug'],
+            'geo_slug': item['region_slug'],
+            'geo_name': 'region',
         }
                        )
