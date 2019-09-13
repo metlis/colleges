@@ -241,7 +241,7 @@
                                     <div class="dropdown-menu">
                                         {% for program in academics %}
                                             <a class="dropdown-item"
-                                               href="{% url view_name slug program.0 0 %}">{{ program.1 }}</a>
+                                               href="{% url view_name geo_name slug program.0 0 %}">{{ program.1 }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -259,7 +259,7 @@
                                         <div class="dropdown-menu">
                                             {% for v in val.0 %}
                                                 <a class="dropdown-item"
-                                                   href="{% url view_name slug key v.1 %}">{{ v.0 }}</a>
+                                                   href="{% url view_name geo_name slug key v.1 %}">{{ v.0 }}</a>
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -277,9 +277,9 @@
                                         </div>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item"
-                                               href="{% url view_name slug key 0 %}">No</a>
+                                               href="{% url view_name geo_name slug key 0 %}">No</a>
                                             <a class="dropdown-item"
-                                               href="{% url view_name slug key 1 %}">Yes</a>
+                                               href="{% url view_name geo_name slug key 1 %}">Yes</a>
                                         </div>
                                     </div>
                                 {% endif %}

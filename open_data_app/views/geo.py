@@ -55,7 +55,8 @@ def get_geo(request, geo_name, geo_slug):
     colleges = handle_pagination(request, colleges)
 
     # canonical link
-    canonical = reverse('college_app:{}'.format(geo_name), kwargs={'{}_slug'.format(geo_name): geo_slug, })
+    canonical = reverse('college_app:geo', kwargs={'geo_name': geo_name,
+                                                   'geo_slug': geo_slug, })
 
     # string for api call
     api_call = '{}={}'.format(geo_name, geo_obj.id)
@@ -70,7 +71,8 @@ def get_geo(request, geo_name, geo_slug):
                'is_multiple': is_multiple,
                # state data
                'slug': geo_slug,
-               'view_name': 'college_app:{}_param'.format(geo_name),
+               'view_name': 'college_app:geo_param',
+               'geo_name': geo_name,
                # seo
                'seo_title': seo_title,
                'seo_description': seo_description,
@@ -183,12 +185,14 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
                                                                      'param_value': slugify(param_value),
                                                                      })
         else:
-            canonical = reverse('college_app:{}_param'.format(geo_name), kwargs={'{}_slug'.format(geo_name): geo_slug,
-                                                                                 'param_name': param_name,
-                                                                                 'param_value': slugify(param_value),
-                                                                                 })
+            canonical = reverse('college_app:geo_param', kwargs={'geo_name': geo_name,
+                                                                 'geo_slug': geo_slug,
+                                                                 'param_name': param_name,
+                                                                 'param_value': slugify(param_value),
+                                                                 })
         # state's url
-        geo_page = reverse('college_app:{}'.format(geo_name), kwargs={'{}_slug'.format(geo_name): geo_slug, })
+        geo_page = reverse('college_app:geo', kwargs={'geo_name': geo_name,
+                                                      'geo_slug': geo_slug, })
 
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
@@ -223,7 +227,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
                    '{}_id'.format(geo_name): geo_obj.id,
                    'slug': geo_slug,
                    'geo_page': geo_page,
-                   'view_name': 'college_app:{}_param'.format(geo_name),
+                   'view_name': 'college_app:geo_param',
                    # initial filter
                    'init_filter_val': param_text_value,
                    'init_filter_page': param_page_link,
