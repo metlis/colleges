@@ -31,14 +31,57 @@ function updateURLParameter(url, param, paramVal) {
     window.location.href = url.replace(/(.*)(page\=\d+&)(.*)/, '$1$3');
 }
 
-function initFilterMap() {
+function initFilterMap(center, zoom) {
+    var mapCenter = center || {
+        lat: 46.589931,
+        lng: -95.009003
+    };
+    var mapZoom = zoom || 3;
     window.map = new google.maps.Map(document.getElementById('map'), {
-        center: {
-            lat: 46.589931,
-            lng: -95.009003
-        },
-        zoom: 3
+        center: mapCenter,
+        zoom: mapZoom
     });
+}
+
+function getMapLabels(url) {
+    axios.get('/api/get_labels/?' + url)
+        .then(function (response) {
+            if (response.data.data) {
+                var mapLabels = response.data.data;
+                var mapContainer = document.getElementById('map');
+                // hide an empty map
+                if (mapLabels.length == 0) {
+                    mapContainer.style.display = 'none';
+                    return;
+                // center on a single label
+                } else if (mapLabels.length == 1) {
+                    initFilterMap({
+                        lat: Number(mapLabels[0][0]),
+                        lng: Number(mapLabels[0][1])
+                    }, 6)
+                } else {
+                    initFilterMap();
+                }
+                for (var i = 0; i < mapLabels.length; i++) {
+                    var lat = Number(mapLabels[i][0]);
+                    var lng = Number(mapLabels[i][1]);
+                    mapLabels[i][1] = Number(mapLabels[i][1]);
+                    var maker = new google.maps.Marker({
+                        position: {
+                            lat: lat,
+                            lng: lng
+                        },
+                        map: window.map,
+                        title: mapLabels[i][2] + '\n' + mapLabels[i][3] + ', ' + mapLabels[i][4]
+                    });
+                }
+
+            }
+        })
+        .catch(function (error) {
+            initFilterMap();
+            console.log(error);
+        })
 }
 
 function initCollegeMap(college) {
@@ -64,43 +107,6 @@ function initCollegeMap(college) {
         title: title
     });
 
-}
-
-function getMapLabels(url) {
-    axios.get('/api/get_labels/?' + url)
-        .then(function (response) {
-            if (response.data.data) {
-                initFilterMap();
-                var mapLabels = response.data.data;
-                if (mapLabels.length == 0) {
-                    var mapContainer = document.getElementById('map');
-                    mapContainer.style.display = 'none';
-                    return;
-                }
-                var locations = [];
-                for (var i = 0; i < mapLabels.length; i++) {
-                    locations.push(mapLabels[i])
-                }
-                for (var i = 0; i < locations.length; i++) {
-                    var lat = Number(locations[i][0]);
-                    var lng = Number(locations[i][1]);
-                    locations[i][1] = Number(locations[i][1]);
-                    var maker = new google.maps.Marker({
-                        position: {
-                            lat: lat,
-                            lng: lng
-                        },
-                        map: window.map,
-                        title: locations[i][2] + '\n' + locations[i][3] + ', ' + locations[i][4]
-                    });
-                }
-
-            }
-        })
-        .catch(function (error) {
-            initFilterMap();
-            console.log(error);
-        })
 }
 
 function modifyFavourites(el, collegeId) {
@@ -138,11 +144,9 @@ $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
   var $subMenu = $(this).next(".dropdown-menu");
   $subMenu.toggleClass('show');
 
-
   $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
     $('.dropdown-submenu .show').removeClass("show");
   });
-
 
   return false;
 });
