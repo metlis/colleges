@@ -63,16 +63,26 @@ function getMapLabels(url) {
                     initFilterMap();
                 }
                 var markers = mapLabels.map(function (label, i) {
+                    var contentString = '<div class="mapInfo">' +
+                        '<h4>' + label[4] + '</h4>' +
+                        '<p><span class="icon-container"><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top"></i></span>: <a href="' + '/institution/' + label[2] + '/' + label[3] + '/' + '">College page</a></p>' +
+                        '<p><span class="icon-container"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[5] + ', ' + label[6] + '</p>' +
+                        '<p><span class="icon-container"><i class="fas fa-city" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[8] + '</p>' +
+                        '<p><span class="icon-container"><i class="fas fa-user-graduate" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[7] + '</p>' +
+                        '<p><span class="icon-container"><i class="fas fa-home" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[9] + '</p>' +
+                        '</div>';
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
                     var marker = new google.maps.Marker({
                         position: {
                             lat: Number(label[0]),
                             lng: Number(label[1])
                         },
-                        url: '/institution/' + label[2] + '/' + label[3] + '/',
                         title: label[4] + '\n' + label[5] + ', ' + label[6]
                     });
                     google.maps.event.addListener(marker, 'click', function () {
-                        window.location.href = this.url;
+                        infowindow.open(map, marker);
                     });
                     return marker;
                 });

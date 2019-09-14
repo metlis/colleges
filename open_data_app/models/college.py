@@ -712,8 +712,9 @@ class College(models.Model):
 
     @staticmethod
     def get_map_labels(colleges):
-        map_labels = colleges.values_list('latitude', 'longitude', 'id', 'slug', 'name', 'city', 'state__name').exclude(
-            latitude=None)
+        map_labels = colleges.values_list('latitude', 'longitude', 'id', 'slug', 'name', 'city', 'state__name',
+                                          'undergrad_students', 'locale__description',
+                                          'ownership__description').exclude(latitude=None)
         return list(map(list, map_labels))
 
     @classmethod
