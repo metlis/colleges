@@ -63,13 +63,18 @@ function getMapLabels(url) {
                     initFilterMap();
                 }
                 var markers = mapLabels.map(function (label, i) {
-                    return new google.maps.Marker({
+                    var marker = new google.maps.Marker({
                         position: {
                             lat: Number(label[0]),
                             lng: Number(label[1])
                         },
-                        title: label[2] + '\n' + label[3] + ', ' + label[4]
+                        url: '/institution/' + label[2] + '/' + label[3] + '/',
+                        title: label[4] + '\n' + label[5] + ', ' + label[6]
                     });
+                    google.maps.event.addListener(marker, 'click', function () {
+                        window.location.href = this.url;
+                    });
+                    return marker;
                 });
                 var markerCluster = new MarkerClusterer(map, markers,
                     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
