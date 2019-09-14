@@ -62,20 +62,17 @@ function getMapLabels(url) {
                 } else {
                     initFilterMap();
                 }
-                for (var i = 0; i < mapLabels.length; i++) {
-                    var lat = Number(mapLabels[i][0]);
-                    var lng = Number(mapLabels[i][1]);
-                    mapLabels[i][1] = Number(mapLabels[i][1]);
-                    var maker = new google.maps.Marker({
+                var markers = mapLabels.map(function (label, i) {
+                    return new google.maps.Marker({
                         position: {
-                            lat: lat,
-                            lng: lng
+                            lat: Number(label[0]),
+                            lng: Number(label[1])
                         },
-                        map: window.map,
-                        title: mapLabels[i][2] + '\n' + mapLabels[i][3] + ', ' + mapLabels[i][4]
+                        title: label[2] + '\n' + label[3] + ', ' + label[4]
                     });
-                }
-
+                });
+                var markerCluster = new MarkerClusterer(map, markers,
+                    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
             }
         })
         .catch(function (error) {

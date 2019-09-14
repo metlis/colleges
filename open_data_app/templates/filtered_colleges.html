@@ -746,6 +746,7 @@
     {% if not error %}
         <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap"
                 async defer></script>
+        <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
         <script>
             function initMap() {
                getMapLabels("{{ api_call|safe }}");
