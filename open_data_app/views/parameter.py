@@ -51,6 +51,11 @@ def filter_values(request, param_name, param_value):
     except ValueError:
         raise Http404()
 
+    # ids of favourite colleges
+    favourite_colleges = []
+    if 'favourite_colleges' in request.session:
+        favourite_colleges = request.session['favourite_colleges']
+
     if colleges.count() > 0:
 
         # parameter's text value and page link
@@ -90,11 +95,6 @@ def filter_values(request, param_name, param_value):
         # string for api call
         api_call = '{}={}&{}'.format(param_name, param_value, req_str)
 
-        # ids of favourite colleges
-        favourite_colleges = []
-        if 'favourite_colleges' in request.session:
-            favourite_colleges = request.session['favourite_colleges']
-
         context = {'colleges': colleges,
                    'is_multiple': is_multiple,
                    # seo
@@ -129,4 +129,5 @@ def filter_values(request, param_name, param_value):
             'error': True,
             'seo_title': 'Results',
             'noindex': True,
+            'favourite_colleges': favourite_colleges,
         })

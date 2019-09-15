@@ -161,6 +161,11 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
     except ValueError:
         raise Http404()
 
+    # ids of favourite colleges
+    favourite_colleges = []
+    if 'favourite_colleges' in request.session:
+        favourite_colleges = request.session['favourite_colleges']
+
     if colleges.count() > 0:
         if geo_name == 'region':
             seo_name, region_slug, region_states = geo_obj.get_region_data()
@@ -208,11 +213,6 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
 
         # string for an api call
         api_call = '{}={}&{}={}&{}'.format(geo_name, geo_obj.id, param_name, param_value, req_str)
-
-        # ids of favourite colleges
-        favourite_colleges = []
-        if 'favourite_colleges' in request.session:
-            favourite_colleges = request.session['favourite_colleges']
 
         context = {
                    'colleges': colleges,
@@ -270,6 +270,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
             'error': True,
             'seo_title': 'Results',
             'noindex': True,
+            'favourite_colleges': favourite_colleges,
         })
 
 

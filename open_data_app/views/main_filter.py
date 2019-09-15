@@ -18,6 +18,11 @@ def main_filter(request):
     # a url for pagination first page
     base_url = reverse('college_app:main_filter')
 
+    # ids of favourite colleges
+    favourite_colleges = []
+    if 'favourite_colleges' in request.session:
+        favourite_colleges = request.session['favourite_colleges']
+
     if len(params) > 0:
         # filtered colleges, request string for rendering links, readable values of applied filters and
         # dictionary of applied filters and their values
@@ -79,6 +84,7 @@ def main_filter(request):
                 'error': True,
                 'seo_title': 'Results',
                 'noindex': True,
+                'favourite_colleges': favourite_colleges,
             })
     else:
         colleges = College.objects.all()
@@ -104,11 +110,6 @@ def main_filter(request):
 
         # pagination
         colleges = handle_pagination(request, colleges)
-
-        # ids of favourite colleges
-        favourite_colleges = []
-        if 'favourite_colleges' in request.session:
-            favourite_colleges = request.session['favourite_colleges']
 
         context = {'colleges': colleges,
                    'is_multiple': is_multiple,

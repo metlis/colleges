@@ -24,6 +24,11 @@ def index(request):
     seo_title = Seo.generate_title('index', '', '')
     seo_description = Seo.generate_description('index', '', '')
 
+    # ids of favourite colleges
+    favourite_colleges = []
+    if 'favourite_colleges' in request.session:
+        favourite_colleges = request.session['favourite_colleges']
+
     context = {'states': states,
                'regions': regions,
                'ownership': ownership,
@@ -35,6 +40,7 @@ def index(request):
                'disciplines': academics,
                'seo_title': seo_title,
                'seo_description': seo_description,
+               'favourite_colleges': favourite_colleges,
                }
 
     context.update(filters)

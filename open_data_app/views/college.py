@@ -57,6 +57,11 @@ def get_college(request, college_id, college_slug):
             # college's categories tags
             tags = []
 
+            # ids of favourite colleges
+            favourite_colleges = []
+            if 'favourite_colleges' in request.session:
+                favourite_colleges = request.session['favourite_colleges']
+
             try:
                 region = Region.objects.get(id=college.region_id)
                 tags.append([region.name, reverse('college_app:geo', kwargs={
@@ -136,6 +141,7 @@ def get_college(request, college_id, college_slug):
                                                     'seo_description': seo_description,
                                                     'is_favourite': is_favourite,
                                                     'maps_key': GOOGLE_MAPS_API,
+                                                    'favourite_colleges': favourite_colleges,
                                                     'referer': referer,
                                                     'tags': tags,
                                                     })

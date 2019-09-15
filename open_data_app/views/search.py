@@ -33,6 +33,11 @@ def search(request):
         except ValueError:
             raise Http404()
 
+        # ids of favourite colleges
+        favourite_colleges = []
+        if 'favourite_colleges' in request.session:
+            favourite_colleges = request.session['favourite_colleges']
+
         if colleges.count() > 0:
 
             canonical = reverse('college_app:search')
@@ -60,11 +65,6 @@ def search(request):
 
             # string for api call
             api_call = 'text={}&{}'.format(query, req_str)
-
-            # ids of favourite colleges
-            favourite_colleges = []
-            if 'favourite_colleges' in request.session:
-                favourite_colleges = request.session['favourite_colleges']
 
             context = {'colleges': colleges,
                        'is_multiple': is_multiple,
@@ -97,4 +97,5 @@ def search(request):
                 'error': True,
                 'seo_title': 'Results',
                 'noindex': True,
+                'favourite_colleges': favourite_colleges,
             })
