@@ -124,7 +124,9 @@ function initCollegeMap(college) {
 function modifyFavourites(el, collegeId) {
     axios.get('/api/modify_favourites/?college_id=' + collegeId)
         .then(function (response) {
+            var favBadge = document.getElementById('favourite-badge');
             if (response.data && response.data == 'Added') {
+                favBadge.innerText =  Number(favBadge.innerText) + 1;
                 el.classList.remove('far');
                 el.classList.add('fas');
                 if (el.parentNode.className == 'card-header') {
@@ -132,8 +134,9 @@ function modifyFavourites(el, collegeId) {
                     el.parentNode.parentNode.classList.add('card-favourite');
                 }
             } else if (response.data && response.data == 'Removed') {
+                favBadge.innerText = Number(favBadge.innerText) - 1;
                 el.classList.remove('fas');
-                el.classList.add('far');
+                el.classList.add('far')
                 if (el.parentNode.className == 'card-header') {
                     el.parentNode.parentNode.classList.remove('card-favourite');
                     el.parentNode.parentNode.classList.add('card');
