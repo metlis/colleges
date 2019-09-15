@@ -1,24 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
+{% extends "inner_page.html" %}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta property="og:type" content="website">
+{% load static %}
+
+{% block robots %}
     <meta name="robots" content="noindex, follow">
+{% endblock %}
 
+{% block description %}
+    <meta name="description" content="Favourite colleges">
+{% endblock %}
+
+{% block title %}
     <title>Favourite colleges</title>
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <noscript>
       <strong>We're sorry but this site doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
-</body>
-{% if debug %}
-    <script src="{% static 'open_data_app/js/build/dev.bundle.js' %}"></script>
-{% else %}
-    <script src="{% static 'open_data_app/dist/prod.bundle.js' %}"></script>
-{% endif %}
-</html>
+{% endblock %}
+
+{% block scripts %}
+    {% if debug %}
+        <script src="{% static 'open_data_app/js/build/dev.bundle.js' %}"></script>
+    {% else %}
+        <script src="{% static 'open_data_app/dist/prod.bundle.js' %}"></script>
+    {% endif %}
+{% endblock %}
