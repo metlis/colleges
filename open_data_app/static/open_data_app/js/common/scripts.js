@@ -33,7 +33,7 @@ function updateURLParameter(url, param, paramVal) {
 
 function initFilterMap(center, zoom) {
     var mapCenter = center || {
-        lat: 46.589931,
+        lat: 39.589931,
         lng: -95.009003
     };
     var mapZoom = zoom || 3;
