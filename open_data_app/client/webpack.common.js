@@ -1,6 +1,7 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 
 module.exports = {
   entry: {
@@ -26,7 +27,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.styl(us)?$/,
+        test: /\.(styl(us)?|css)$/,
         use: [
           'vue-style-loader',
           {
@@ -36,10 +37,28 @@ module.exports = {
           'stylus-loader',
         ],
       },
+      {
+        test: /\.s(c|a)ss$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+              sassOptions: {
+                fiber: require('fibers'),
+                indentedSyntax: true,
+              },
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new VueLoaderPlugin(),
+    new VuetifyLoaderPlugin(),
   ],
 };
