@@ -8,7 +8,10 @@ def get_favourites(request):
     college_ids = request.session.get('favourite_colleges')
 
     if college_ids is not None:
-        colleges = College.objects.filter(id__in=college_ids).values()
+        college_fields = [f.name for f in College._meta.get_fields()]
+        college_fields += ['state__name', 'carnegie__description', 'degree__description', 'level__description',
+                           'locale__description', 'ownership__description', 'region__name', 'religion__name']
+        colleges = College.objects.filter(id__in=college_ids).values(*college_fields)
     else:
         colleges = []
 
