@@ -17,7 +17,8 @@ def modify_favourites(request):
         favourite_colleges = session['favourite_colleges']
 
         if college_id in favourite_colleges:
-            session['favourite_colleges'] = favourite_colleges.remove(college_id)
+            favourite_colleges.remove(college_id)
+            session['favourite_colleges'] = favourite_colleges
             message = 'Removed'
         else:
             session['favourite_colleges'] = list(set(favourite_colleges + [college_id]))

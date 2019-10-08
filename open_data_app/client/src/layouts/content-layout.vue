@@ -7,7 +7,7 @@
           <v-row>
             <v-col cols="6" v-for="college in localColleges" :key="college.id">
               <v-card>
-                <v-card-title>{{college.name}}</v-card-title>
+                <v-card-title style="word-break: normal !important">{{college.name}}</v-card-title>
                 <v-card-text>
                   <span @click="openCollegeUrl(college.url)" style="cursor: pointer">
                     {{college.url}}
@@ -112,11 +112,21 @@ export default {
   },
   methods: {
     removeCollege(id) {
-      this.localColleges.forEach((col, index, obj) => {
-        if (col.id === id) {
-          obj.splice(index, 1);
-        }
-      });
+      fetch(`/api/modify_favourites/?college_id=${id}`)
+        .then(response => response.text())
+        .then((data) => {
+          if (data === 'Removed') {
+            this.localColleges.forEach((col, index, obj) => {
+              if (col.id === id) {
+                obj.splice(index, 1);
+                const favBadge = document.getElementById('favourite-badge');
+                favBadge.innerText = String(Number(favBadge.innerText) - 1);
+              }
+            });
+          }
+        }).catch((err) => {
+          console.error(err);
+        });
     },
     openCollegePage(id, slug) {
       const url = `/institution/${id}/${slug}`;
