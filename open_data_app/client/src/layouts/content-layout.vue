@@ -33,7 +33,60 @@
                 <v-expand-transition>
                   <div v-show="cardsStates[college.id]">
                     <v-card-text>
-                      I'm a thing. But, like most politicians, he promised more.
+                      <div>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <span :class="$style.container" v-on="on"><v-icon>mdi-map-marker
+                            </v-icon></span>
+                          </template>
+                          <span>Location</span>
+                        </v-tooltip>
+                        <span :class="$style.description"> {{college.city}}, {{college.state__name}}
+                        </span><br>
+                      </div>
+                      <div v-if="college.carnegie__description">
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <span :class="$style.container" v-on="on"><v-icon>mdi-city
+                            </v-icon></span>
+                          </template>
+                          <span>Locale</span>
+                        </v-tooltip>
+                        <span :class="$style.description"> {{college.locale__description}}</span>
+                        <br>
+                      </div>
+                      <div v-if="college.undergrad_students">
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <span :class="$style.container" v-on="on"><v-icon>mdi-school
+                            </v-icon></span>
+                          </template>
+                          <span>Undergraduate students</span>
+                        </v-tooltip>
+                        <span :class="$style.description"> {{college.undergrad_students}}</span>
+                        <br>
+                      </div>
+                      <div v-if="college.religion__name">
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <span :class="$style.container" v-on="on"><v-icon>mdi-church
+                            </v-icon></span>
+                          </template>
+                          <span>Religious affiliation</span>
+                        </v-tooltip>
+                        <span :class="$style.description"> {{college.religion__name}}</span><br>
+                      </div>
+                      <div v-if="college.ownership__description">
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <span :class="$style.container" v-on="on"><v-icon>mdi-cash
+                            </v-icon></span>
+                          </template>
+                          <span>Ownership</span>
+                        </v-tooltip>
+                        <span :class="$style.description"> {{college.ownership__description}}</span>
+                        <br>
+                      </div>
                     </v-card-text>
                   </div>
                 </v-expand-transition>
@@ -86,6 +139,13 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style lang="stylus" module>
+  .container
+    display inline-block
+    width 25px
+    float left
+    margin-right 5px
+  .description
+    display block
+    overflow hidden
 </style>
