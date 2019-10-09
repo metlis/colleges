@@ -5,7 +5,7 @@
         <v-col cols="2" style="padding: 0px">
           <menu-left />
         </v-col>
-        <v-col cols="8">
+        <v-col cols="7">
           <v-row>
             <v-col cols="4" v-for="college in localColleges" :key="college.id">
               <v-card>
@@ -97,7 +97,9 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="2"></v-col>
+        <v-col cols="2" offset="1" style="padding: 0px">
+          <menu-right-colleges />
+        </v-col>
       </v-row>
     </v-container>
   </v-content>
@@ -105,10 +107,11 @@
 
 <script>
 import MenuLeft from '../components/menus/menu-left.vue';
+import MenuRightColleges from '../components/menus/menu-right-colleges.vue';
 
 export default {
   name: 'content-layout',
-  components: { MenuLeft },
+  components: { MenuLeft, MenuRightColleges },
   props: ['colleges'],
   data() {
     return {
