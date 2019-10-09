@@ -1,18 +1,18 @@
 <template>
   <v-app>
-    <content-layout v-if="colleges.length > 0 && !isFetching" :colleges="colleges" />
-    <empty-layout v-if="colleges.length === 0 && !isFetching" />
-    <progress-layout v-if="isFetching" />
+    <layout-content v-if="colleges.length > 0 && !isFetching" :colleges="colleges" />
+    <layout-empty v-if="colleges.length === 0 && !isFetching" />
+    <layout-progress v-if="isFetching" />
   </v-app>
 </template>
 
 <script>
-import ContentLayout from './layouts/content-layout.vue';
-import EmptyLayout from './layouts/empty-layout.vue';
-import ProgressLayout from './layouts/progress-layout.vue';
+import LayoutContent from './layouts/layout-content.vue';
+import LayoutEmpty from './layouts/layout-empty.vue';
+import LayoutProgress from './layouts/layout-progress.vue';
 
 export default {
-  components: { ContentLayout, EmptyLayout, ProgressLayout },
+  components: { LayoutContent, LayoutEmpty, LayoutProgress },
   data() {
     return {
       isFetching: true,
@@ -24,7 +24,6 @@ export default {
       .then(response => response.json())
       .then((data) => {
         this.colleges = data.data;
-        console.log(data.data);
       }).catch((err) => {
         console.error(err);
       })

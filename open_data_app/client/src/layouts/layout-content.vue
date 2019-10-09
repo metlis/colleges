@@ -1,11 +1,13 @@
 <template>
   <v-content>
-    <v-container fluid>
+    <v-container fluid style="padding: 0px">
       <v-row>
-        <v-col cols="3"></v-col>
-        <v-col cols="7">
+        <v-col cols="2" style="padding: 0px">
+          <menu-left />
+        </v-col>
+        <v-col cols="8">
           <v-row>
-            <v-col cols="6" v-for="college in localColleges" :key="college.id">
+            <v-col cols="4" v-for="college in localColleges" :key="college.id">
               <v-card>
                 <v-card-title style="word-break: normal !important">{{college.name}}</v-card-title>
                 <v-card-text>
@@ -33,6 +35,7 @@
                 <v-expand-transition>
                   <div v-show="cardsStates[college.id]">
                     <v-card-text>
+                      <v-divider />
                       <div>
                         <v-tooltip bottom>
                           <template v-slot:activator="{ on }">
@@ -58,7 +61,7 @@
                       <div v-if="college.undergrad_students">
                         <v-tooltip bottom>
                           <template v-slot:activator="{ on }">
-                            <span :class="$style.container" v-on="on"><v-icon>mdi-school
+                            <span :class="$style.container" v-on="on"><v-icon>mdi-account-multiple
                             </v-icon></span>
                           </template>
                           <span>Undergraduate students</span>
@@ -101,8 +104,11 @@
 </template>
 
 <script>
+import MenuLeft from '../components/menus/menu-left.vue';
+
 export default {
   name: 'content-layout',
+  components: { MenuLeft },
   props: ['colleges'],
   data() {
     return {

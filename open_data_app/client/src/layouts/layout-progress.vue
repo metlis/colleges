@@ -2,6 +2,7 @@
   <v-content>
     <v-container fluid>
       <v-row
+        style="height: 80vh"
         align="center"
         justify="center"
       >
