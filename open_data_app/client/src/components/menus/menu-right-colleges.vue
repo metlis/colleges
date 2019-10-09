@@ -1,15 +1,24 @@
 <template>
   <v-navigation-drawer right dense>
     <v-list nav dense>
-        <v-subheader>Sort</v-subheader>
-        <v-list-item-group>
-          <v-list-item v-for="icon in Object.keys(iconsNames)" :key="icon" link>
-            <v-list-item-icon>
-              <v-icon>{{icon}}</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>{{iconsNames[icon]}}</v-list-item-title>
-          </v-list-item>
-        </v-list-item-group>
+      <v-subheader>Sort</v-subheader>
+      <v-list-item-group>
+        <v-list-item
+          v-for="icon in Object.keys(iconsNames)"
+          :key="icon"
+          @click="$emit('sortClick', icon)"
+          link
+          dense
+        >
+          <v-list-item-icon>
+            <v-icon>{{icon}}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>
+            {{iconsNames[icon]}}
+          </v-list-item-title>
+        </v-list-item>
+      </v-list-item-group>
+
         <v-subheader>Filter</v-subheader>
         <v-list-item-group>
             <v-list-item>

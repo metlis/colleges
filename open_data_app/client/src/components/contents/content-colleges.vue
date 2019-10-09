@@ -94,11 +94,12 @@
 <script>
 export default {
   name: 'content-colleges',
-  props: ['colleges'],
+  props: ['colleges', 'activeSortButton', 'prevSortButton'],
   data() {
     return {
       localColleges: [],
       cardsStates: {},
+      reverseSort: false,
     };
   },
   methods: {
@@ -133,9 +134,35 @@ export default {
         this.cardsStates[id] = !this.cardsStates[id];
       }
     },
+    sortColleges() {
+      switch (this.activeSortButton) {
+      case 'mdi-alphabetical':
+        if (this.prevSortButton === this.activeSortButton) this.reverseSort = !this.reverseSort;
+        this.sortAlphabetically();
+        break;
+      default:
+        break;
+      }
+    },
+    sortAlphabetically() {
+      this.localColleges.sort((a, b) => {
+        if (a.name.toLowerCase() < b.name.toLowerCase()) {
+          if (!this.reverseSort) return -1;
+          return 1;
+        }
+        if (a.name.toLowerCase() > b.name.toLowerCase()) {
+          if (!this.reverseSort) return 1;
+          return -1;
+        }
+        return 0;
+      });
+    },
   },
   created() {
     this.localColleges = this.colleges;
+    this.$root.$on('sort-click', () => {
+      this.sortColleges();
+    });
   },
 };
 </script>

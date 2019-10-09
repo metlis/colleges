@@ -3,17 +3,20 @@
     <v-container fluid style="padding: 0px">
       <v-row>
         <v-col cols="2" style="padding: 0px">
-          <menu-left @buttonClick="changeView" />
+          <menu-left @navigationClick="changeNavButton" />
         </v-col>
         <v-col cols="7">
           <content-colleges
+             v-if="activeNavButton === 'mdi-school'"
             :colleges="colleges"
-             v-if="activeButton === 'mdi-school'"
+            :activeSortButton="activeSortButton"
+            :prevSortButton="prevSortButton"
           />
         </v-col>
         <v-col cols="2" offset="1" style="padding: 0px">
           <menu-right-colleges
-            v-if="activeButton === 'mdi-school'"
+            v-if="activeNavButton === 'mdi-school'"
+            @sortClick="changeSortButton"
           />
         </v-col>
       </v-row>
@@ -32,12 +35,21 @@ export default {
   props: ['colleges'],
   data() {
     return {
-      activeButton: 'mdi-school',
+      activeNavButton: 'mdi-school',
+      activeSortButton: '',
+      prevSortButton: '',
     };
   },
   methods: {
-    changeView(val) {
-      this.activeButton = val;
+    changeNavButton(val) {
+      this.activeNavButton = val;
+    },
+    changeSortButton(val) {
+      if (this.activeSortButton) this.prevSortButton = this.activeSortButton;
+      this.activeSortButton = val;
+      setTimeout(() => {
+        this.$root.$emit('sort-click');
+      }, 0);
     },
   },
 };

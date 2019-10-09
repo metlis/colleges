@@ -5,7 +5,7 @@
         <v-list-item
           v-for="icon in Object.keys(iconsNames)"
           :key="icon"
-          @click="$emit('buttonClick', icon)"
+          @click="$emit('navigationClick', icon)"
           link
         >
           <v-list-item-icon>
