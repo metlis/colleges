@@ -8,9 +8,15 @@
             {{college.url}}
           </span>
           <!-- Sort values -->
-          <div class="text--primary" v-if="activeSortButton === 'Cost'">
+          <div class="text--primary" v-if="college.average_sort && activeSortButton === 'Cost'">
             <v-chip>
-              {{addCommas(college.average_sort)}}$
+              {{addCommas(Math.floor(college.average_sort))}}$
+            </v-chip>
+          </div>
+          <div class="text--primary"
+               v-if="college.monthly_payments && activeSortButton === 'Payments'">
+            <v-chip>
+              {{addCommas(Math.floor(college.monthly_payments))}}$
             </v-chip>
           </div>
         </v-card-text>
@@ -154,13 +160,20 @@ export default {
       case 'Cost':
         this.sortCost();
         break;
+      case 'Payments':
+        this.sortPayments();
+        break;
       default:
         break;
       }
     },
     // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
     addCommas(num) {
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      try {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      } catch (e) {
+        return '';
+      }
     },
     sortAlphabetically() {
       this.localColleges.sort((a, b) => {
@@ -187,8 +200,18 @@ export default {
         }
       });
       this.localColleges.sort((a, b) => {
+        if (a.average_sort === null || a.average_sort === '') return 1;
+        if (b.average_sort === null || b.average_sort === '') return -1;
         if (!this.reverseSort) return Number(a.average_sort) - Number(b.average_sort);
         return Number(b.average_sort) - Number(a.average_sort);
+      });
+    },
+    sortPayments() {
+      this.localColleges.sort((a, b) => {
+        if (a.monthly_payments === null || a.monthly_payments === '') return 1;
+        if (b.monthly_payments === null || b.monthly_payments === '') return -1;
+        if (!this.reverseSort) return Number(a.monthly_payments) - Number(b.monthly_payments);
+        return Number(b.monthly_payments) - Number(a.monthly_payments);
       });
     },
   },
