@@ -19,6 +19,18 @@
               {{addCommas(Math.floor(college.monthly_payments))}}$
             </v-chip>
           </div>
+          <div class="text--primary"
+               v-if="college.admission_rate && activeSortButton === 'Admission'">
+            <v-chip>
+              {{college.admission_rate * 100}}%
+            </v-chip>
+          </div>
+          <div class="text--primary"
+               v-if="college.median_earnings && activeSortButton === 'Earnings'">
+            <v-chip>
+              {{addCommas(college.median_earnings)}}$
+            </v-chip>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-btn icon>
@@ -161,7 +173,13 @@ export default {
         this.sortCost();
         break;
       case 'Payments':
-        this.sortPayments();
+        this.sortNumeric('monthly_payments');
+        break;
+      case 'Admission':
+        this.sortNumeric('admission_rate');
+        break;
+      case 'Earnings':
+        this.sortNumeric('median_earnings');
         break;
       default:
         break;
@@ -199,19 +217,15 @@ export default {
           college.average_sort = college.average_net_price_public;
         }
       });
-      this.localColleges.sort((a, b) => {
-        if (a.average_sort === null || a.average_sort === '') return 1;
-        if (b.average_sort === null || b.average_sort === '') return -1;
-        if (!this.reverseSort) return Number(a.average_sort) - Number(b.average_sort);
-        return Number(b.average_sort) - Number(a.average_sort);
-      });
+      this.sortNumeric('average_sort');
     },
-    sortPayments() {
+    sortNumeric(param) {
       this.localColleges.sort((a, b) => {
-        if (a.monthly_payments === null || a.monthly_payments === '') return 1;
-        if (b.monthly_payments === null || b.monthly_payments === '') return -1;
-        if (!this.reverseSort) return Number(a.monthly_payments) - Number(b.monthly_payments);
-        return Number(b.monthly_payments) - Number(a.monthly_payments);
+        const [first, second] = [a[param], b[param]];
+        if (first === null || first === '') return 1;
+        if (second === null || second === '') return -1;
+        if (!this.reverseSort) return Number(first) - Number(second);
+        return Number(second) - Number(first);
       });
     },
   },
