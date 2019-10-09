@@ -9,27 +9,47 @@
           </span>
           <!-- Sort values -->
           <div class="text--primary" v-if="college.average_sort && activeSortButton === 'Cost'">
-            <v-chip>
-              {{addCommas(Math.floor(college.average_sort))}}$
-            </v-chip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-chip v-on="on">
+                  {{addCommas(Math.floor(college.average_sort))}}$
+                </v-chip>
+              </template>
+              <span>Average cost</span>
+            </v-tooltip>
           </div>
           <div class="text--primary"
                v-if="college.monthly_payments && activeSortButton === 'Payments'">
-            <v-chip>
-              {{addCommas(Math.floor(college.monthly_payments))}}$
-            </v-chip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-chip v-on="on">
+                  {{addCommas(Math.floor(college.monthly_payments))}}$
+                </v-chip>
+              </template>
+              <span>Monthly payments</span>
+            </v-tooltip>
           </div>
           <div class="text--primary"
                v-if="college.admission_rate && activeSortButton === 'Admission'">
-            <v-chip>
-              {{college.admission_rate * 100}}%
-            </v-chip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-chip v-on="on">
+                  {{college.admission_rate * 100}}%
+                </v-chip>
+              </template>
+              <span>Admission rate</span>
+            </v-tooltip>
           </div>
           <div class="text--primary"
                v-if="college.median_earnings && activeSortButton === 'Earnings'">
-            <v-chip>
-              {{addCommas(college.median_earnings)}}$
-            </v-chip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-chip v-on="on">
+                  {{addCommas(college.median_earnings)}}$
+                </v-chip>
+              </template>
+              <span>Earnings after graduation</span>
+            </v-tooltip>
           </div>
         </v-card-text>
         <v-card-actions>
