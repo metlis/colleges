@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer right dense>
-    <v-list nav dense>
+    <v-list nav dense flat>
       <v-subheader>Sort</v-subheader>
       <v-list-item-group>
         <v-list-item
