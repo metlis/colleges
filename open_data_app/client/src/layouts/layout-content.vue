@@ -3,13 +3,18 @@
     <v-container fluid style="padding: 0px">
       <v-row>
         <v-col cols="2" style="padding: 0px">
-          <menu-left />
+          <menu-left @buttonClick="changeView" />
         </v-col>
         <v-col cols="7">
-          <content-colleges :colleges="colleges" />
+          <content-colleges
+            :colleges="colleges"
+             v-if="activeButton === 'mdi-school'"
+          />
         </v-col>
         <v-col cols="2" offset="1" style="padding: 0px">
-          <menu-right-colleges />
+          <menu-right-colleges
+            v-if="activeButton === 'mdi-school'"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -25,6 +30,16 @@ export default {
   name: 'content-layout',
   components: { MenuLeft, MenuRightColleges, ContentColleges },
   props: ['colleges'],
+  data() {
+    return {
+      activeButton: 'mdi-school',
+    };
+  },
+  methods: {
+    changeView(val) {
+      this.activeButton = val;
+    },
+  },
 };
 </script>
 
