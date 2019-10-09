@@ -1,41 +1,11 @@
 <template>
   <v-navigation-drawer expand-on-hover permanent>
     <v-list nav dense>
-      <v-list-item link>
+      <v-list-item v-for="icon in Object.keys(iconsNames)" :key="icon" link>
         <v-list-item-icon>
-          <v-icon>mdi-school</v-icon>
+          <v-icon>{{icon}}</v-icon>
         </v-list-item-icon>
-        <v-list-item-title>My colleges</v-list-item-title>
-      </v-list-item>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-google-maps</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Map</v-list-item-title>
-      </v-list-item>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-compare</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Compare</v-list-item-title>
-      </v-list-item>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-history</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Analyze history</v-list-item-title>
-      </v-list-item>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-eye-plus</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Similar colleges</v-list-item-title>
-      </v-list-item>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-file-search</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Search history</v-list-item-title>
+        <v-list-item-title>{{iconsNames[icon]}}</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
@@ -44,6 +14,18 @@
 <script>
 export default {
   name: 'menu-left',
+  data() {
+    return {
+      iconsNames: {
+        'mdi-school': 'My colleges',
+        'mdi-google-maps': 'Map',
+        'mdi-compare': 'Compare',
+        'mdi-history': 'Analyze history',
+        'mdi-eye-plus': 'Similar colleges',
+        'mdi-file-search': 'Search history',
+      },
+    };
+  },
 };
 </script>
 
