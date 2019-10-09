@@ -6,7 +6,7 @@
         <v-list-item
           v-for="icon in Object.keys(iconsNames)"
           :key="icon"
-          @click="$emit('sortClick', icon)"
+          @click="$emit('sortClick', iconsNames[icon])"
           link
           dense
         >

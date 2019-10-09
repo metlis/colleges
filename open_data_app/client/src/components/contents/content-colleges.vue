@@ -8,7 +8,7 @@
             {{college.url}}
           </span>
           <!-- Sort values -->
-          <div class="text--primary" v-if="activeSortButton === 'mdi-currency-usd'">
+          <div class="text--primary" v-if="activeSortButton === 'Cost'">
             <v-chip>
               {{addCommas(college.average_sort)}}$
             </v-chip>
@@ -148,10 +148,10 @@ export default {
         this.reverseSort = false;
       }
       switch (this.activeSortButton) {
-      case 'mdi-alphabetical':
+      case 'Name':
         this.sortAlphabetically();
         break;
-      case 'mdi-currency-usd':
+      case 'Cost':
         this.sortCost();
         break;
       default:

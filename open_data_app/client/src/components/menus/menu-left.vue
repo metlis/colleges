@@ -5,7 +5,7 @@
         <v-list-item
           v-for="icon in Object.keys(iconsNames)"
           :key="icon"
-          @click="$emit('navigationClick', icon)"
+          @click="$emit('navigationClick', iconsNames[icon])"
           link
         >
           <v-list-item-icon>
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       iconsNames: {
-        'mdi-school': 'My colleges',
+        'mdi-school': 'Colleges',
         'mdi-google-maps': 'Map',
         'mdi-compare': 'Compare',
         'mdi-history': 'Analyze history',

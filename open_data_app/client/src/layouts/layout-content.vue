@@ -7,7 +7,7 @@
         </v-col>
         <v-col cols="7">
           <content-colleges
-             v-if="activeNavButton === 'mdi-school'"
+             v-if="activeNavButton === 'Colleges'"
             :colleges="colleges"
             :activeSortButton="activeSortButton"
             :prevSortButton="prevSortButton"
@@ -15,7 +15,7 @@
         </v-col>
         <v-col cols="2" offset="1" style="padding: 0px">
           <menu-right-colleges
-            v-if="activeNavButton === 'mdi-school'"
+            v-if="activeNavButton === 'Colleges'"
             @sortClick="changeSortButton"
           />
         </v-col>
@@ -35,7 +35,7 @@ export default {
   props: ['colleges'],
   data() {
     return {
-      activeNavButton: 'mdi-school',
+      activeNavButton: 'Colleges',
       activeSortButton: '',
       prevSortButton: '',
     };
