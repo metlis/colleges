@@ -79,7 +79,7 @@ export default {
     return {
       iconsNames: {
         'mdi-alphabetical': 'Name',
-        'mdi-currency-usd': 'Tuition',
+        'mdi-currency-usd': 'Cost',
         'mdi-credit-card-outline': 'Payments',
         'mdi-percent': 'Admission',
         'mdi-cash': 'Earnings',

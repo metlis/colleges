@@ -7,6 +7,12 @@
           <span @click="openCollegeUrl(college.url)" style="cursor: pointer">
             {{college.url}}
           </span>
+          <!-- Sort values -->
+          <div class="text--primary" v-if="activeSortButton === 'mdi-currency-usd'">
+            <v-chip>
+              {{addCommas(college.average_sort)}}$
+            </v-chip>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-btn icon>
@@ -59,7 +65,7 @@
                   </template>
                   <span>Undergraduate students</span>
                 </v-tooltip>
-                <span :class="$style.description"> {{college.undergrad_students}}</span>
+                <span :class="$style.description"> {{addCommas(college.undergrad_students)}}</span>
                 <br>
               </div>
               <div v-if="college.religion__name">
@@ -135,14 +141,26 @@ export default {
       }
     },
     sortColleges() {
+      // set reverse sort variable upon the same button click
+      if (this.prevSortButton === this.activeSortButton) {
+        this.reverseSort = !this.reverseSort;
+      } else {
+        this.reverseSort = false;
+      }
       switch (this.activeSortButton) {
       case 'mdi-alphabetical':
-        if (this.prevSortButton === this.activeSortButton) this.reverseSort = !this.reverseSort;
         this.sortAlphabetically();
+        break;
+      case 'mdi-currency-usd':
+        this.sortCost();
         break;
       default:
         break;
       }
+    },
+    // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+    addCommas(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
     sortAlphabetically() {
       this.localColleges.sort((a, b) => {
@@ -155,6 +173,22 @@ export default {
           return -1;
         }
         return 0;
+      });
+    },
+    sortCost() {
+      this.localColleges.forEach((college) => {
+        if (!college.average_net_price_public) {
+          // eslint-disable-next-line no-param-reassign
+          college.average_sort = college.average_net_price_private;
+        }
+        if (!college.average_net_price_private) {
+          // eslint-disable-next-line no-param-reassign
+          college.average_sort = college.average_net_price_public;
+        }
+      });
+      this.localColleges.sort((a, b) => {
+        if (!this.reverseSort) return Number(a.average_sort) - Number(b.average_sort);
+        return Number(b.average_sort) - Number(a.average_sort);
       });
     },
   },
