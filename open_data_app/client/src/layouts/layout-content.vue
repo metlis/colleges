@@ -12,6 +12,7 @@
             :activeSortButton="activeSortButton"
             :prevSortButton="prevSortButton"
             :checkboxFilters="checkboxFilters"
+            :statesFilters="statesFilters"
           />
         </v-col>
         <v-col cols="2" offset="1" style="padding: 0px">
@@ -19,6 +20,8 @@
             v-if="activeNavButton === 'Colleges'"
             @sortClick="changeSortButton"
             @checkboxFilterChanged="updateCheckboxFilters"
+            @statesFilterChanged="updateStatesFilters"
+            :colleges="colleges"
           />
         </v-col>
       </v-row>
@@ -41,6 +44,7 @@ export default {
       activeSortButton: '',
       prevSortButton: '',
       checkboxFilters: '',
+      statesFilters: '',
     };
   },
   methods: {
@@ -58,6 +62,12 @@ export default {
       this.checkboxFilters = val;
       setTimeout(() => {
         this.$root.$emit('checkbox-click');
+      }, 0);
+    },
+    updateStatesFilters(val) {
+      this.statesFilters = val;
+      setTimeout(() => {
+        this.$root.$emit('state-click');
       }, 0);
     },
   },

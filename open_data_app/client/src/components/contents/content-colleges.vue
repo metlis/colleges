@@ -155,7 +155,7 @@
 <script>
 export default {
   name: 'content-colleges',
-  props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters'],
+  props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters'],
   data() {
     return {
       filteredColleges: '',
@@ -166,12 +166,18 @@ export default {
   },
   methods: {
     getColleges() {
-      if (this.checkboxFilters) {
+      if (this.checkboxFilters || this.statesFilters) {
         const filteredColleges = this.colleges.filter((college) => {
           let isFiltered = true;
-          Object.values(this.checkboxFilters).forEach((filter) => {
-            if (filter.value && college[filter.name] === 0) isFiltered = false;
-          });
+          if (this.checkboxFilters) {
+            Object.values(this.checkboxFilters).forEach((filter) => {
+              if (filter.value && college[filter.name] === 0) isFiltered = false;
+            });
+          }
+          if (this.statesFilters && this.statesFilters.length > 0
+             && !this.statesFilters.some(state => state === college.state__name)) {
+            isFiltered = false;
+          }
           return isFiltered;
         });
         return filteredColleges;
@@ -279,6 +285,10 @@ export default {
         return Number(second) - Number(first);
       });
     },
+    updateFilteredCollegesList() {
+      this.filteredColleges = this.getColleges();
+      this.isSorted = false;
+    },
   },
   created() {
     this.filteredColleges = this.getColleges();
@@ -287,8 +297,10 @@ export default {
       this.isSorted = true;
     });
     this.$root.$on('checkbox-click', () => {
-      this.filteredColleges = this.getColleges();
-      this.isSorted = false;
+      this.updateFilteredCollegesList();
+    });
+    this.$root.$on('state-click', () => {
+      this.updateFilteredCollegesList();
     });
   },
 };

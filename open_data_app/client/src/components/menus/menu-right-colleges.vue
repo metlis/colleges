@@ -36,23 +36,28 @@
               </v-list-item-content>
             </template>
           </v-list-item>
+          <v-list-item>
+            <v-list-item-action>
+              <v-select
+                v-model="statesSelected"
+                @change="$emit('statesFilterChanged', statesSelected)"
+                label="State"
+                :items="collegesStates"
+                color="blue-grey darken-4"
+                item-color="blue-grey darken-4"
+                chips
+                deletable-chips
+                dense
+                multiple
+                flat
+                outlined
+              ></v-select>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>State</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
 
-            <v-list-item>
-                <v-list-item-action>
-                  <v-select
-                    v-model="value"
-                    :items="states"
-                    attach
-                    chips
-                    dense
-                    label="State"
-                    multiple
-                  ></v-select>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>State</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
             <v-list-item>
                 <v-list-item-action>
                   <v-text-field
@@ -77,6 +82,7 @@
 <script>
 export default {
   name: 'menu-right-colleges',
+  props: ['colleges'],
   data() {
     return {
       iconsNames: {
@@ -112,8 +118,7 @@ export default {
           name: 'hispanic',
         },
       },
-      states: ['New Yourk', 'North Carolina'],
-      value: [],
+      statesSelected: [],
       slider: '',
     };
   },
@@ -121,6 +126,20 @@ export default {
     tickCheckbox(filter) {
       this.checkboxFilters[filter].value = !this.checkboxFilters[filter].value;
       this.$emit('checkboxFilterChanged', this.checkboxFilters);
+    },
+  },
+  computed: {
+    collegesStates() {
+      const states = [];
+      this.colleges.forEach((college) => {
+        if (!states.some(state => state === college.state__name)) states.push(college.state__name);
+        states.sort((a, b) => {
+          if (a.toLowerCase() < b.toLowerCase()) return -1;
+          if (a.toLowerCase() > b.toLowerCase()) return 1;
+          return 0;
+        });
+      });
+      return states;
     },
   },
 };
