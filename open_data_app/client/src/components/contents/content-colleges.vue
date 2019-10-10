@@ -1,6 +1,22 @@
 <template>
   <v-row>
-    <v-col cols="4" v-for="college in localColleges" :key="college.id">
+    <v-col
+      cols="12"
+      v-if="filteredColleges.length === 0"
+    >
+      <v-alert
+        type="info"
+        border="left"
+      >
+        There are no colleges that match these filters
+      </v-alert>
+    </v-col>
+    <v-col
+      cols="4"
+      v-if="filteredColleges.length > 0"
+      v-for="college in filteredColleges"
+      :key="college.id"
+    >
       <v-card>
         <v-card-title style="word-break: normal !important">{{college.name}}</v-card-title>
         <v-card-text>
@@ -8,7 +24,8 @@
             {{college.url}}
           </span>
           <!-- Sort values -->
-          <div class="text--primary" v-if="college.average_sort && activeSortButton === 'Cost'">
+          <div class="text--primary"
+             v-if="college.average_sort && activeSortButton === 'Cost' && isSorted">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip v-on="on">
@@ -19,7 +36,7 @@
             </v-tooltip>
           </div>
           <div class="text--primary"
-               v-if="college.monthly_payments && activeSortButton === 'Payments'">
+               v-if="college.monthly_payments && activeSortButton === 'Payments' && isSorted">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip v-on="on">
@@ -30,7 +47,7 @@
             </v-tooltip>
           </div>
           <div class="text--primary"
-               v-if="college.admission_rate && activeSortButton === 'Admission'">
+               v-if="college.admission_rate && activeSortButton === 'Admission' && isSorted">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip v-on="on">
@@ -41,7 +58,7 @@
             </v-tooltip>
           </div>
           <div class="text--primary"
-               v-if="college.median_earnings && activeSortButton === 'Earnings'">
+               v-if="college.median_earnings && activeSortButton === 'Earnings' && isSorted">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip v-on="on">
@@ -138,15 +155,29 @@
 <script>
 export default {
   name: 'content-colleges',
-  props: ['colleges', 'activeSortButton', 'prevSortButton'],
+  props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters'],
   data() {
     return {
-      localColleges: [],
+      filteredColleges: '',
       cardsStates: {},
       reverseSort: false,
+      isSorted: false,
     };
   },
   methods: {
+    getColleges() {
+      if (this.checkboxFilters) {
+        const filteredColleges = this.colleges.filter((college) => {
+          let isFiltered = true;
+          Object.values(this.checkboxFilters).forEach((filter) => {
+            if (filter.value && college[filter.name] === 0) isFiltered = false;
+          });
+          return isFiltered;
+        });
+        return filteredColleges;
+      }
+      return this.colleges;
+    },
     removeCollege(id) {
       fetch(`/api/modify_favourites/?college_id=${id}`)
         .then(response => response.text())
@@ -214,7 +245,7 @@ export default {
       }
     },
     sortAlphabetically() {
-      this.localColleges.sort((a, b) => {
+      this.filteredColleges.sort((a, b) => {
         if (a.name.toLowerCase() < b.name.toLowerCase()) {
           if (!this.reverseSort) return -1;
           return 1;
@@ -227,7 +258,7 @@ export default {
       });
     },
     sortCost() {
-      this.localColleges.forEach((college) => {
+      this.filteredColleges.forEach((college) => {
         if (!college.average_net_price_public) {
           // eslint-disable-next-line no-param-reassign
           college.average_sort = college.average_net_price_private;
@@ -240,7 +271,7 @@ export default {
       this.sortNumeric('average_sort');
     },
     sortNumeric(param) {
-      this.localColleges.sort((a, b) => {
+      this.filteredColleges.sort((a, b) => {
         const [first, second] = [a[param], b[param]];
         if (first === null || first === '') return 1;
         if (second === null || second === '') return -1;
@@ -250,9 +281,14 @@ export default {
     },
   },
   created() {
-    this.localColleges = this.colleges;
+    this.filteredColleges = this.getColleges();
     this.$root.$on('sort-click', () => {
       this.sortColleges();
+      this.isSorted = true;
+    });
+    this.$root.$on('checkbox-click', () => {
+      this.filteredColleges = this.getColleges();
+      this.isSorted = false;
     });
   },
 };

@@ -3,7 +3,10 @@
     <v-container fluid>
       <v-row>
         <v-col cols="12">
-          <v-alert type="info">
+          <v-alert
+            type="info"
+            border="left"
+          >
             Add some colleges to favourites
           </v-alert>
         </v-col>
