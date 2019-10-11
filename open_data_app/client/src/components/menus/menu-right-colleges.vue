@@ -1,12 +1,14 @@
 <template>
   <v-navigation-drawer right dense>
     <v-list nav dense flat>
+      <!-- Sort block -->
       <v-subheader>Sort</v-subheader>
-      <v-list-item-group>
+      <v-list-item-group class="mr-1">
         <v-list-item
           v-for="icon in Object.keys(iconsNames)"
           :key="icon"
           @click="$emit('sortClick', iconsNames[icon])"
+          class="mt-1 mb-0"
         >
           <v-list-item-icon>
             <v-icon>{{icon}}</v-icon>
@@ -17,8 +19,9 @@
         </v-list-item>
       </v-list-item-group>
       <v-divider />
+      <!-- State filter block -->
       <v-subheader>Filter</v-subheader>
-        <v-list-item-group>
+        <v-list-item-group class="mr-1">
           <v-list-item>
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
@@ -28,7 +31,7 @@
               </template>
               <span>State</span>
             </v-tooltip>
-            <v-list-item-action class="ml-0">
+            <v-list-item-action class="ml-0 mt-1 mb-0">
               <v-select
                 v-model="statesSelected"
                 @change="$emit('statesFilterChanged', statesSelected)"
@@ -44,6 +47,7 @@
             </v-list-item-action>
           </v-list-item>
           <v-divider />
+          <!-- Range filters block -->
           <v-subheader>Finance</v-subheader>
           <template
             v-for="filter in Object.keys(rangeFilters)"
@@ -64,7 +68,7 @@
                 <span>{{rangeFilters[filter].title}}</span>
               </v-tooltip>
               <v-list-item-action
-                class="d-flex flex-row align-center ml-0"
+                class="d-flex flex-row align-center ml-0 mt-1 mb-0"
               >
                 <v-text-field
                   v-model="rangeFilters[filter].min"
@@ -92,13 +96,15 @@
             </v-list-item>
           </template>
           <v-divider />
+          <!-- Other filters block -->
           <v-subheader>Other</v-subheader>
           <v-list-item
             v-for="filter in Object.keys(checkboxFilters)"
             :key="filter"
+             class="mr-1"
           >
             <template v-slot:default="{ active, toggle }">
-              <v-list-item-action>
+              <v-list-item-action class="mt-1 mb-0">
                 <v-checkbox
                   @change="$emit('checkboxFilterChanged', checkboxFilters)"
                   v-model="checkboxFilters[filter].value"
