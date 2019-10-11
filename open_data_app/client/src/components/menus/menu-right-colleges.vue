@@ -54,14 +54,14 @@
                 {{rangeFilters[filter].subheader}}
               </v-subheader>
             </template>
-            <v-list-item :key="filter"v-if="filter.indexOf('divider') === -1">
+            <v-list-item :key="filter" v-if="filter.indexOf('divider') === -1">
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                   <v-list-item-icon>
                     <v-icon v-on="on">{{rangeFilters[filter].icon}}</v-icon>
                   </v-list-item-icon>
                 </template>
-                <span>{{filter}}</span>
+                <span>{{rangeFilters[filter].title}}</span>
               </v-tooltip>
               <v-list-item-action
                 class="d-flex flex-row align-center ml-0"
@@ -157,107 +157,122 @@ export default {
       },
       statesSelected: [],
       rangeFilters: {
-        'Cost $': {
+        cost: {
           min: '',
           max: '',
           icon: 'mdi-currency-usd',
           name: 'average_price',
+          title: 'Cost $',
         },
-        'Monthly payments $': {
+        payments: {
           min: '',
           max: '',
           icon: 'mdi-credit-card-outline',
           name: 'monthly_payments',
+          title: 'Monthly payments $',
         },
-        'Debt after completion $': {
+        debt: {
           min: '',
           max: '',
           icon: 'mdi-sack-percent',
           name: 'debt_completed_median',
+          title: 'Debt after completion $',
         },
-        'Earnings after attending $': {
+        earnings: {
           min: '',
           max: '',
           icon: 'mdi-cash',
           name: 'median_earnings',
+          title: 'Earnings after attending $',
         },
         'divider-1': {
           subheader: 'Aid',
         },
-        'Pell grant recipients %': {
+        pell: {
           min: '',
           max: '',
           icon: 'mdi-cash-100',
           name: 'pell_grand',
+          title: 'Pell grant recipients %',
         },
-        'Federal loan recipients %': {
+        loan: {
           min: '',
           max: '',
           icon: 'mdi-bank',
           name: 'federal_loan',
+          title: 'Federal loan recipients %',
         },
         'divider-2': {
           subheader: 'Study',
         },
-        'Admission rate %': {
+        admission: {
           min: '',
           max: '',
           icon: 'mdi-school',
           name: 'admission_rate',
+          title: 'Admission rate %',
         },
-        'Completion rate %': {
+        completion: {
           min: '',
           max: '',
           icon: 'mdi-certificate',
           name: 'completion_rate_four_year_pooled',
+          title: 'Completion rate %',
         },
-        'Retention rate %': {
+        retention: {
           min: '',
           max: '',
           icon: 'mdi-account-heart',
           name: 'retention_rate_four_year_pooled',
+          title: 'Retention rate %',
         },
         'divider-3': {
           subheader: 'Tests',
         },
-        'ACT cumulative': {
+        act: {
           min: '',
           max: '',
           icon: 'mdi-grease-pencil',
           name: 'act_cumulative',
+          title: 'ACT cumulative',
         },
-        'SAT average': {
+        sat: {
           min: '',
           max: '',
           icon: 'mdi-lead-pencil',
           name: 'sat_average',
+          title: 'SAT average',
         },
         'divider-4': {
           subheader: 'Students',
         },
-        'Number of undergraduates': {
+        undergraduates: {
           min: '',
           max: '',
           icon: 'mdi-account-multiple',
           name: 'undergrad_students',
+          title: 'Number of undergraduates',
         },
-        'Full-time students %': {
+        fullTime: {
           min: '',
           max: '',
           icon: 'mdi-account-clock',
           name: 'students_part_time',
+          title: 'Full-time students %',
         },
-        'Female students %': {
+        female: {
           min: '',
           max: '',
           icon: 'mdi-human-female',
           name: 'students_female',
+          title: 'Female students %',
         },
-        'Male students %': {
+        male: {
           min: '',
           max: '',
           icon: 'mdi-human-male',
           name: 'students_female',
+          title: 'Male students %',
         },
       },
     };
@@ -269,15 +284,15 @@ export default {
     },
     emitRangeInput() {
       const copy = JSON.parse(JSON.stringify(this.rangeFilters));
-      Object.assign(copy['Admission rate %'], this.calculatePercent(copy['Admission rate %']));
-      Object.assign(copy['Completion rate %'], this.calculatePercent(copy['Completion rate %']));
-      Object.assign(copy['Retention rate %'], this.calculatePercent(copy['Retention rate %']));
-      Object.assign(copy['Pell grant recipients %'], this.calculatePercent(copy['Pell grant recipients %']));
-      Object.assign(copy['Federal loan recipients %'], this.calculatePercent(copy['Federal loan recipients %']));
-      Object.assign(copy['Female students %'], this.calculatePercent(copy['Female students %']));
+      Object.assign(copy.admission, this.calculatePercent(copy.admission));
+      Object.assign(copy.completion, this.calculatePercent(copy.completion));
+      Object.assign(copy.retention, this.calculatePercent(copy.retention));
+      Object.assign(copy.pell, this.calculatePercent(copy.pell));
+      Object.assign(copy.loan, this.calculatePercent(copy.loan));
+      Object.assign(copy.female, this.calculatePercent(copy.female));
       // calculating values of "mirrored" filters
-      Object.assign(copy['Full-time students %'], this.calculateMirrorValues(copy['Full-time students %']));
-      Object.assign(copy['Male students %'], this.calculateMirrorValues(copy['Male students %']));
+      Object.assign(copy.fullTime, this.calculateMirrorValues(copy.fullTime));
+      Object.assign(copy.male, this.calculateMirrorValues(copy.male));
       // deleting dividers
       Object.keys(copy).forEach((key) => {
         if (key.indexOf('divider') > -1) delete copy[key];
