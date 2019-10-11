@@ -183,12 +183,12 @@ export default {
               this.createUnifiedPriceParam();
             }
             Object.values(this.rangeFilters).forEach((filter) => {
-              if ((filter.min && !college[filter.name])
-                  || (filter.min && college[filter.name] < +filter.min)) {
+              if ((+filter.min && !college[filter.name])
+                  || (+filter.min && college[filter.name] < +filter.min)) {
                 isFiltered = false;
               }
-              if ((filter.max && !college[filter.name])
-                  || (filter.max && college[filter.name] > +filter.max)) {
+              if ((+filter.max && !college[filter.name])
+                  || (+filter.max && college[filter.name] > +filter.max)) {
                 isFiltered = false;
               }
             });
