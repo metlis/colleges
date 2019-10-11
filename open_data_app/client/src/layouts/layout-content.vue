@@ -13,6 +13,7 @@
             :prevSortButton="prevSortButton"
             :checkboxFilters="checkboxFilters"
             :statesFilters="statesFilters"
+            :rangeFilters="rangeFilters"
           />
         </v-col>
         <v-col cols="2" offset="1" style="padding: 0px">
@@ -21,6 +22,7 @@
             @sortClick="changeSortButton"
             @checkboxFilterChanged="updateCheckboxFilters"
             @statesFilterChanged="updateStatesFilters"
+            @rangeFilterChanged="updateRangeFilters"
             :colleges="colleges"
           />
         </v-col>
@@ -45,6 +47,7 @@ export default {
       prevSortButton: '',
       checkboxFilters: '',
       statesFilters: '',
+      rangeFilters: '',
     };
   },
   methods: {
@@ -68,6 +71,12 @@ export default {
       this.statesFilters = val;
       setTimeout(() => {
         this.$root.$emit('state-click');
+      }, 0);
+    },
+    updateRangeFilters(val) {
+      this.rangeFilters = val;
+      setTimeout(() => {
+        this.$root.$emit('range-input');
       }, 0);
     },
   },

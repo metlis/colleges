@@ -16,8 +16,74 @@
           </v-list-item-title>
         </v-list-item>
       </v-list-item-group>
+      <v-divider></v-divider>
       <v-subheader>Filter</v-subheader>
         <v-list-item-group>
+          <v-list-item>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-list-item-icon>
+                  <v-icon v-on="on">mdi-map</v-icon>
+                </v-list-item-icon>
+              </template>
+              <span>State</span>
+            </v-tooltip>
+            <v-list-item-action class="ml-0">
+              <v-select
+                v-model="statesSelected"
+                @change="$emit('statesFilterChanged', statesSelected)"
+                label="State"
+                :items="collegesStates"
+                color="blue-grey darken-4"
+                item-color="blue-grey darken-4"
+                chips
+                dense
+                multiple
+                flat
+              ></v-select>
+            </v-list-item-action>
+          </v-list-item>
+          <v-list-item
+            v-for="filter in Object.keys(rangeFilters)"
+            :key="filter"
+          >
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-list-item-icon>
+                  <v-icon v-on="on">{{rangeFilters[filter].icon}}</v-icon>
+                </v-list-item-icon>
+              </template>
+              <span>{{filter}}</span>
+            </v-tooltip>
+            <v-list-item-action
+              class="d-flex flex-row ml-0"
+            >
+              <v-text-field
+                v-model="rangeFilters[filter].min"
+                @change="emitRangeInput"
+                label="min"
+                type="number"
+                min="0"
+                class="mr-1"
+                color="blue-grey darken-4"
+                placeholder=" "
+                dense
+                flat
+              ></v-text-field>
+              <v-text-field
+                v-model="rangeFilters[filter].max"
+                @change="emitRangeInput"
+                label="max"
+                type="number"
+                min="0"
+                color="blue-grey darken-4"
+                placeholder=" "
+                dense
+                flat
+              ></v-text-field>
+            </v-list-item-action>
+          </v-list-item>
+          <v-divider></v-divider>
           <v-list-item
             v-for="filter in Object.keys(checkboxFilters)"
             :key="filter"
@@ -36,44 +102,6 @@
               </v-list-item-content>
             </template>
           </v-list-item>
-          <v-list-item>
-            <v-list-item-action>
-              <v-select
-                v-model="statesSelected"
-                @change="$emit('statesFilterChanged', statesSelected)"
-                label="State"
-                :items="collegesStates"
-                color="blue-grey darken-4"
-                item-color="blue-grey darken-4"
-                chips
-                deletable-chips
-                dense
-                multiple
-                flat
-                outlined
-              ></v-select>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>State</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-            <v-list-item>
-                <v-list-item-action>
-                  <v-text-field
-                    v-model="slider"
-                    placeholder="Tuition"
-                    class="mt-0 pt-0"
-                    single-line
-                    type="number"
-                    min="0"
-                    dense
-                  ></v-text-field>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>Tuition</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
         </v-list-item-group>
     </v-list>
   </v-navigation-drawer>
@@ -119,13 +147,45 @@ export default {
         },
       },
       statesSelected: [],
-      slider: '',
+      rangeFilters: {
+        Cost: {
+          min: '',
+          max: '',
+          icon: 'mdi-currency-usd',
+          name: 'average_price',
+        },
+        'Monthly payments': {
+          min: '',
+          max: '',
+          icon: 'mdi-credit-card-outline',
+          name: 'monthly_payments',
+        },
+        'Admission rate (%)': {
+          min: '',
+          max: '',
+          icon: 'mdi-percent',
+          name: 'admission_rate',
+        },
+        'Earnings after attending': {
+          min: '',
+          max: '',
+          icon: 'mdi-cash',
+          name: 'median_earnings',
+        },
+      },
     };
   },
   methods: {
     tickCheckbox(filter) {
       this.checkboxFilters[filter].value = !this.checkboxFilters[filter].value;
       this.$emit('checkboxFilterChanged', this.checkboxFilters);
+    },
+    emitRangeInput() {
+      const copy = JSON.parse(JSON.stringify(this.rangeFilters));
+      const admission = copy['Admission rate (%)'];
+      admission.min = +admission.min / 100;
+      admission.max = +admission.max / 100;
+      this.$emit('rangeFilterChanged', copy);
     },
   },
   computed: {

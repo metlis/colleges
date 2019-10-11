@@ -25,11 +25,11 @@
           </span>
           <!-- Sort values -->
           <div class="text--primary"
-             v-if="college.average_sort && activeSortButton === 'Cost' && isSorted">
+             v-if="college.average_price && activeSortButton === 'Cost' && isSorted">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip v-on="on">
-                  {{addCommas(Math.floor(college.average_sort))}}$
+                  {{addCommas(Math.floor(college.average_price))}}$
                 </v-chip>
               </template>
               <span>Average cost</span>
@@ -155,7 +155,7 @@
 <script>
 export default {
   name: 'content-colleges',
-  props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters'],
+  props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters', 'rangeFilters'],
   data() {
     return {
       filteredColleges: '',
@@ -166,7 +166,7 @@ export default {
   },
   methods: {
     getColleges() {
-      if (this.checkboxFilters || this.statesFilters) {
+      if (this.checkboxFilters || this.statesFilters || this.rangeFilters) {
         const filteredColleges = this.colleges.filter((college) => {
           let isFiltered = true;
           if (this.checkboxFilters) {
@@ -177,6 +177,21 @@ export default {
           if (this.statesFilters && this.statesFilters.length > 0
              && !this.statesFilters.some(state => state === college.state__name)) {
             isFiltered = false;
+          }
+          if (this.rangeFilters) {
+            if (!Object.prototype.hasOwnProperty.call(college, 'average_price')) {
+              this.createUnifiedPriceParam();
+            }
+            Object.values(this.rangeFilters).forEach((filter) => {
+              if ((filter.min && !college[filter.name])
+                  || (filter.min && college[filter.name] < +filter.min)) {
+                isFiltered = false;
+              }
+              if ((filter.max && !college[filter.name])
+                  || (filter.max && college[filter.name] > +filter.max)) {
+                isFiltered = false;
+              }
+            });
           }
           return isFiltered;
         });
@@ -264,17 +279,20 @@ export default {
       });
     },
     sortCost() {
+      this.createUnifiedPriceParam();
+      this.sortNumeric('average_price');
+    },
+    createUnifiedPriceParam() {
       this.filteredColleges.forEach((college) => {
         if (!college.average_net_price_public) {
           // eslint-disable-next-line no-param-reassign
-          college.average_sort = college.average_net_price_private;
+          college.average_price = college.average_net_price_private;
         }
         if (!college.average_net_price_private) {
           // eslint-disable-next-line no-param-reassign
-          college.average_sort = college.average_net_price_public;
+          college.average_price = college.average_net_price_public;
         }
       });
-      this.sortNumeric('average_sort');
     },
     sortNumeric(param) {
       this.filteredColleges.sort((a, b) => {
@@ -300,6 +318,9 @@ export default {
       this.updateFilteredCollegesList();
     });
     this.$root.$on('state-click', () => {
+      this.updateFilteredCollegesList();
+    });
+    this.$root.$on('range-input', () => {
       this.updateFilteredCollegesList();
     });
   },
