@@ -25,23 +25,98 @@
           </span>
           <!-- Sort values -->
           <div
-             v-for="i in Object.keys(chipsSort)"
+             v-for="i in Object.keys(sortVals)"
              :key="i"
              class="text--primary"
-             v-if="college[chipsSort[i].prop]
-             && activeSortButton === chipsSort[i].activeBtn && isSorted">
+             v-if="college[sortVals[i].prop]
+             && activeSortButton === sortVals[i].activeBtn && isSorted
+             && !filtersApplied.rangeFilters.some(filter => filter.name === sortVals[i].prop)">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-chip v-on="on">
-                  <template v-if="chipsSort[i].prop === 'admission_rate'">
-                    {{(college.admission_rate * 100)}}%
+                <v-chip
+                  v-on="on"
+                  outlined
+                >
+                  <template v-if="sortVals[i].prop === 'admission_rate'">
+                    {{college.admission_rate * 100}}%
                   </template>
                   <template v-else>
-                    {{addCommas(Math.floor(college[chipsSort[i].prop]))}}$
+                    {{addCommas(Math.floor(college[sortVals[i].prop]))}}$
                   </template>
                 </v-chip>
               </template>
-              <span>{{chipsSort[i].tooltip}}</span>
+              <span>
+                {{sortVals[i].tooltip}}
+              </span>
+            </v-tooltip>
+          </div>
+          <!-- Range filter values -->
+          <div
+             v-for="filter in filtersApplied.rangeFilters"
+             v-if="college[filter.name]"
+             :key="filter"
+             class="text--primary">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-chip
+                  v-on="on"
+                  class="ma-1"
+                  outlined
+                >
+                  <template v-if="filter.title.indexOf('%') > -1">
+                    {{Math.round(college[filter.name] * 100)}}%
+                  </template>
+                  <template v-else>
+                    {{addCommas(Math.floor(college[filter.name]))}}<span
+                      v-if="filter.title.indexOf('$') > -1">$</span>
+                  </template>
+                </v-chip>
+              </template>
+              <span>
+                  {{filter.title}}
+              </span>
+            </v-tooltip>
+          </div>
+          <!-- Checkbox filter values -->
+          <div
+             v-for="filter in filtersApplied.checkboxFilters"
+             v-if="college[filter.name]"
+             :key="filter"
+             class="text--primary">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-chip
+                  v-on="on"
+                  class="ma-1"
+                  outlined
+                >
+                  {{filter.title}}
+                </v-chip>
+              </template>
+              <span>
+                  {{filter.title}}
+              </span>
+            </v-tooltip>
+          </div>
+          <!-- State filter values -->
+          <div
+             v-for="filter in statesFilters"
+             v-if="statesFilters && college.state__name === filter"
+             :key="filter"
+             class="text--primary">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-chip
+                  v-on="on"
+                  class="ma-1"
+                  outlined
+                >
+                  {{filter}}
+                </v-chip>
+              </template>
+              <span>
+                  State
+              </span>
             </v-tooltip>
           </div>
         </v-card-text>
@@ -133,7 +208,7 @@ export default {
           props: ['ownership__description'],
         },
       },
-      chipsSort: {
+      sortVals: {
         cost: {
           tooltip: 'Average cost',
           prop: 'average_price',
@@ -238,13 +313,13 @@ export default {
         this.sortCost();
         break;
       case 'payments':
-        this.sortNumeric('monthly_payments');
+        this.sortNumeric(this.sortVals.payments.prop);
         break;
       case 'admission':
-        this.sortNumeric('admission_rate');
+        this.sortNumeric(this.sortVals.admission.prop);
         break;
       case 'earnings':
-        this.sortNumeric('median_earnings');
+        this.sortNumeric(this.sortVals.earnings.prop);
         break;
       default:
         break;
@@ -273,7 +348,7 @@ export default {
     },
     sortCost() {
       this.createUnifiedPriceParam();
-      this.sortNumeric('average_price');
+      this.sortNumeric(this.sortVals.cost.prop);
     },
     createUnifiedPriceParam() {
       this.filteredColleges.forEach((college) => {
@@ -299,6 +374,23 @@ export default {
     updateFilteredCollegesList() {
       this.filteredColleges = this.getColleges();
       this.isSorted = false;
+    },
+  },
+  computed: {
+    filtersApplied() {
+      const rangeFilters = [];
+      const checkboxFilters = [];
+      if (this.rangeFilters) {
+        Object.values(this.rangeFilters).forEach((filter) => {
+          if (filter.min || filter.max) rangeFilters.push(filter);
+        });
+      }
+      if (this.checkboxFilters) {
+        Object.values(this.checkboxFilters).forEach((filter) => {
+          if (filter.value) checkboxFilters.push(filter);
+        });
+      }
+      return { rangeFilters, checkboxFilters };
     },
   },
   created() {

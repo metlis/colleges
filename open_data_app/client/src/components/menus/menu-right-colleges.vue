@@ -5,16 +5,16 @@
       <v-subheader>Sort</v-subheader>
       <v-list-item-group class="mr-1">
         <v-list-item
-          v-for="icon in Object.keys(iconsNames)"
+          v-for="icon in Object.keys(sortNames)"
           :key="icon"
           @click="$emit('sortClick', icon)"
           class="mt-1 mb-0"
         >
           <v-list-item-icon>
-            <v-icon>{{iconsNames[icon].icon}}</v-icon>
+            <v-icon>{{sortNames[icon].icon}}</v-icon>
           </v-list-item-icon>
           <v-list-item-title>
-            {{iconsNames[icon].title}}
+            {{sortNames[icon].title}}
           </v-list-item-title>
         </v-list-item>
       </v-list-item-group>
@@ -166,7 +166,7 @@ export default {
   props: ['colleges'],
   data() {
     return {
-      iconsNames: {
+      sortNames: {
         name: {
           icon: 'mdi-alphabetical',
           title: 'Name',
@@ -363,7 +363,6 @@ export default {
           flattened[key2] = copy[key][key2];
         });
       });
-      console.log(flattened);
       this.$emit('rangeFilterChanged', flattened);
     },
     calculateMirrorValues(obj) {
