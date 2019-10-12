@@ -37,7 +37,7 @@
               <v-list-item class="px-0">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-list-item-icon>
+                <v-list-item-icon class="mr-4">
                   <v-icon v-on="on">mdi-map</v-icon>
                 </v-list-item-icon>
               </template>
@@ -47,11 +47,9 @@
               <v-select
                 v-model="statesSelected"
                 @change="$emit('statesFilterChanged', statesSelected)"
-                label="State"
                 :items="collegesStates"
                 color="blue-grey darken-4"
                 item-color="blue-grey darken-4"
-                chips
                 dense
                 multiple
                 flat
