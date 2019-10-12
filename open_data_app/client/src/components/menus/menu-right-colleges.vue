@@ -113,7 +113,7 @@
               </v-list-item-action>
               <v-list-item-content
                 @click="tickCheckbox(filter)">
-                <v-list-item-title>{{filter}}</v-list-item-title>
+                <v-list-item-title>{{checkboxFilters[filter].title}}</v-list-item-title>
               </v-list-item-content>
             </template>
           </v-list-item>
@@ -151,29 +151,35 @@ export default {
         },
       },
       checkboxFilters: {
-        Operating: {
+        operating: {
           value: false,
           name: 'cur_operating',
+          title: 'Operating',
         },
-        'Online-only': {
+        online: {
           value: false,
           name: 'online_only',
+          title: 'Online-only',
         },
-        'Men-only': {
+        men: {
           value: false,
           name: 'men_only',
+          title: 'Men-only',
         },
-        'Women-only': {
+        women: {
           value: false,
           name: 'women_only',
+          title: 'Women-only',
         },
-        'Predominantly black': {
+        black: {
           value: false,
           name: 'predom_black',
+          title: 'Predominantly black',
         },
-        'Predominantly hispanic': {
+        hispanic: {
           value: false,
           name: 'hispanic',
+          title: 'Predominantly hispanic',
         },
       },
       statesSelected: [],
