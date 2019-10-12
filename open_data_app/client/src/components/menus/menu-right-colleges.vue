@@ -70,46 +70,52 @@
               {{key}}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <v-list-item
-                v-for="filter in Object.keys(rangeFilters[key])"
-                :key="filter"
-                class="px-0"
-              >
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-list-item-icon>
-                      <v-icon v-on="on">
-                        {{rangeFilters[key][filter].icon}}
-                      </v-icon>
-                    </v-list-item-icon>
-                  </template>
-                  <span>{{rangeFilters[key][filter].title}}</span>
-                </v-tooltip>
-                <v-list-item-action
-                  class="d-flex flex-row align-center ml-0 mt-1 mb-0"
+              <template v-for="filter in Object.keys(rangeFilters[key])">
+                <subheader
+                  inset
+                  :class="$style.subheader"
+                  :key="filter">{{rangeFilters[key][filter].title}}
+                </subheader>
+                <v-list-item
+                  :key="filter"
+                  class="px-0"
                 >
-                  <v-text-field
-                    v-model="rangeFilters[key][filter].min"
-                    @input="emitRangeInput"
-                    type="number"
-                    min="0"
-                    color="blue-grey darken-4"
-                    placeholder=" "
-                    dense
-                    flat
-                  ></v-text-field>
-                  <div class="mr-1">-</div>
-                  <v-text-field
-                    v-model="rangeFilters[key][filter].max"
-                    @input="emitRangeInput"
-                    type="number"
-                    min="0"
-                    color="blue-grey darken-4"
-                    dense
-                    flat
-                  ></v-text-field>
-                </v-list-item-action>
-              </v-list-item>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-list-item-icon>
+                        <v-icon v-on="on">
+                          {{rangeFilters[key][filter].icon}}
+                        </v-icon>
+                      </v-list-item-icon>
+                    </template>
+                    <span>{{rangeFilters[key][filter].title}}</span>
+                  </v-tooltip>
+                  <v-list-item-action
+                    class="d-flex flex-row align-center ml-0 mt-1 mb-0"
+                  >
+                    <v-text-field
+                      v-model="rangeFilters[key][filter].min"
+                      @input="emitRangeInput"
+                      type="number"
+                      min="0"
+                      color="blue-grey darken-4"
+                      placeholder=" "
+                      dense
+                      flat
+                    ></v-text-field>
+                    <div class="mr-1">-</div>
+                    <v-text-field
+                      v-model="rangeFilters[key][filter].max"
+                      @input="emitRangeInput"
+                      type="number"
+                      min="0"
+                      color="blue-grey darken-4"
+                      dense
+                      flat
+                    ></v-text-field>
+                  </v-list-item-action>
+                </v-list-item>
+              </template>
             </v-expansion-panel-content>
           </v-expansion-panel>
           <v-expansion-panel
@@ -409,4 +415,6 @@ export default {
 <style lang="stylus" module>
   .panel
     border 2px solid white
+  .subheader
+    font-size 12px
 </style>
