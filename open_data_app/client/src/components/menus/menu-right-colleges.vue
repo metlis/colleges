@@ -118,6 +118,15 @@
             </template>
           </v-list-item>
         </v-list-item-group>
+        <v-divider />
+        <div class="my-2 text-center">
+          <v-btn
+           text
+           @click="resetFilters"
+          >
+            Reset
+          </v-btn>
+        </div>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -339,6 +348,16 @@ export default {
         min: obj.min / 100,
         max: obj.max / 100,
       };
+    },
+    resetFilters() {
+      this.statesSelected = [];
+      Object.keys(this.checkboxFilters).forEach((key) => {
+        this.checkboxFilters[key].value = false;
+      });
+      Object.keys(this.rangeFilters).forEach((key) => {
+        Object.assign(this.rangeFilters[key], { min: '', max: '' });
+      });
+      this.$emit('resetFilters');
     },
   },
   computed: {

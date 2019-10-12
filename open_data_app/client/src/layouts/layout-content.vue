@@ -7,13 +7,14 @@
         </v-col>
         <v-col cols="7">
           <content-colleges
-             v-if="activeNavButton === 'Colleges'"
+            v-if="activeNavButton === 'Colleges'"
             :colleges="colleges"
             :activeSortButton="activeSortButton"
             :prevSortButton="prevSortButton"
             :checkboxFilters="checkboxFilters"
             :statesFilters="statesFilters"
             :rangeFilters="rangeFilters"
+            ref="colleges"
           />
         </v-col>
         <v-col cols="2" offset="1" style="padding: 0px">
@@ -23,6 +24,7 @@
             @checkboxFilterChanged="updateCheckboxFilters"
             @statesFilterChanged="updateStatesFilters"
             @rangeFilterChanged="updateRangeFilters"
+            @resetFilters="resetFilters"
             :colleges="colleges"
           />
         </v-col>
@@ -32,6 +34,7 @@
 </template>
 
 <script>
+import goTo from 'vuetify/es5/services/goto';
 import MenuLeft from '../components/menus/menu-left.vue';
 import MenuRightColleges from '../components/menus/menu-right-colleges.vue';
 import ContentColleges from '../components/contents/content-colleges.vue';
@@ -77,6 +80,17 @@ export default {
       this.rangeFilters = val;
       setTimeout(() => {
         this.$root.$emit('range-input');
+      }, 0);
+    },
+    resetFilters() {
+      this.activeSortButton = '';
+      this.prevSortButton = '';
+      this.checkboxFilters = '';
+      this.statesFilters = '';
+      this.rangeFilters = '';
+      goTo(this.$refs.colleges);
+      setTimeout(() => {
+        this.$root.$emit('reset-filters');
       }, 0);
     },
   },

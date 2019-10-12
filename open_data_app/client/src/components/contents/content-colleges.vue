@@ -323,6 +323,11 @@ export default {
     this.$root.$on('range-input', () => {
       this.updateFilteredCollegesList();
     });
+    this.$root.$on('reset-filters', () => {
+      this.reverseSort = false;
+      this.updateFilteredCollegesList();
+      this.sortAlphabetically();
+    });
   },
 };
 </script>
