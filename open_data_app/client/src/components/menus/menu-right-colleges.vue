@@ -21,8 +21,20 @@
       <v-divider />
       <!-- State filter block -->
       <v-subheader>Filter</v-subheader>
-        <v-list-item-group class="mr-1">
-          <v-list-item>
+      <v-expansion-panels accordion class="mx-0 px-0">
+        <v-list-item-group
+          style="width: 100%;"
+          class="mr-2 ml-0"
+        >
+          <v-expansion-panel
+            class="mt-0"
+            :class="$style.panel"
+          >
+            <v-expansion-panel-header class="px-3">
+              State
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-list-item class="px-0">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-list-item-icon>
@@ -46,63 +58,73 @@
               ></v-select>
             </v-list-item-action>
           </v-list-item>
-          <v-divider />
-          <!-- Range filters block -->
-          <v-subheader>Finance</v-subheader>
-          <template
-            v-for="filter in Object.keys(rangeFilters)"
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+          <v-expansion-panel
+            v-for="key in Object.keys(rangeFilters)"
+            :key="key"
+            class="mt-0"
+            :class="$style.panel"
           >
-            <template v-if="filter.indexOf('divider') > -1">
-              <v-divider />
-              <v-subheader :key="filter">
-                {{rangeFilters[filter].subheader}}
-              </v-subheader>
-            </template>
-            <v-list-item :key="filter" v-if="filter.indexOf('divider') === -1">
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                  <v-list-item-icon>
-                    <v-icon v-on="on">{{rangeFilters[filter].icon}}</v-icon>
-                  </v-list-item-icon>
-                </template>
-                <span>{{rangeFilters[filter].title}}</span>
-              </v-tooltip>
-              <v-list-item-action
-                class="d-flex flex-row align-center ml-0 mt-1 mb-0"
+            <v-expansion-panel-header class="px-3">
+              {{key}}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-list-item
+                v-for="filter in Object.keys(rangeFilters[key])"
+                :key="filter"
+                class="px-0"
               >
-                <v-text-field
-                  v-model="rangeFilters[filter].min"
-                  @input="emitRangeInput"
-                  type="number"
-                  min="0"
-                  class="mr-1"
-                  color="blue-grey darken-4"
-                  placeholder=" "
-                  dense
-                  flat
-                ></v-text-field>
-                <div class="mr-1">—</div>
-                <v-text-field
-                  v-model="rangeFilters[filter].max"
-                  @input="emitRangeInput"
-                  type="number"
-                  min="0"
-                  color="blue-grey darken-4"
-                  placeholder=" "
-                  dense
-                  flat
-                ></v-text-field>
-              </v-list-item-action>
-            </v-list-item>
-          </template>
-          <v-divider />
-          <!-- Other filters block -->
-          <v-subheader>Other</v-subheader>
-          <v-list-item
-            v-for="filter in Object.keys(checkboxFilters)"
-            :key="filter"
-             class="mr-1"
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-list-item-icon>
+                      <v-icon v-on="on">
+                        {{rangeFilters[key][filter].icon}}
+                      </v-icon>
+                    </v-list-item-icon>
+                  </template>
+                  <span>{{rangeFilters[key][filter].title}}</span>
+                </v-tooltip>
+                <v-list-item-action
+                  class="d-flex flex-row align-center ml-0 mt-1 mb-0"
+                >
+                  <v-text-field
+                    v-model="rangeFilters[key][filter].min"
+                    @input="emitRangeInput"
+                    type="number"
+                    min="0"
+                    color="blue-grey darken-4"
+                    placeholder=" "
+                    dense
+                    flat
+                  ></v-text-field>
+                  <div class="mr-1">-</div>
+                  <v-text-field
+                    v-model="rangeFilters[key][filter].max"
+                    @input="emitRangeInput"
+                    type="number"
+                    min="0"
+                    color="blue-grey darken-4"
+                    dense
+                    flat
+                  ></v-text-field>
+                </v-list-item-action>
+              </v-list-item>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+          <v-expansion-panel
+            class="mt-0"
+            :class="$style.panel"
           >
+            <v-expansion-panel-header class="px-3">
+              Other
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-list-item
+                v-for="filter in Object.keys(checkboxFilters)"
+                :key="filter"
+                 class="mx-0 px-0"
+              >
             <template v-slot:default="{ active, toggle }">
               <v-list-item-action class="mt-1 mb-0">
                 <v-checkbox
@@ -117,16 +139,19 @@
               </v-list-item-content>
             </template>
           </v-list-item>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
         </v-list-item-group>
-        <v-divider />
-        <div class="my-2 text-center">
-          <v-btn
-           text
-           @click="resetFilters"
-          >
-            Reset
-          </v-btn>
-        </div>
+      </v-expansion-panels>
+      <br>
+      <div class="my-2 text-center">
+        <v-btn
+         text
+         @click="resetFilters"
+        >
+          Reset
+        </v-btn>
+      </div>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -183,132 +208,130 @@ export default {
         black: {
           value: false,
           name: 'predom_black',
-          title: 'Predominantly black',
+          title: 'Black',
         },
         hispanic: {
           value: false,
           name: 'hispanic',
-          title: 'Predominantly hispanic',
+          title: 'Hispanic',
         },
       },
       statesSelected: [],
       rangeFilters: {
-        cost: {
-          min: '',
-          max: '',
-          icon: 'mdi-currency-usd',
-          name: 'average_price',
-          title: 'Cost $',
+        Finance: {
+          cost: {
+            min: '',
+            max: '',
+            icon: 'mdi-currency-usd',
+            name: 'average_price',
+            title: 'Cost $',
+          },
+          payments: {
+            min: '',
+            max: '',
+            icon: 'mdi-credit-card-outline',
+            name: 'monthly_payments',
+            title: 'Monthly payments $',
+          },
+          debt: {
+            min: '',
+            max: '',
+            icon: 'mdi-sack-percent',
+            name: 'debt_completed_median',
+            title: 'Debt after completion $',
+          },
+          earnings: {
+            min: '',
+            max: '',
+            icon: 'mdi-cash',
+            name: 'median_earnings',
+            title: 'Earnings after attending $',
+          },
         },
-        payments: {
-          min: '',
-          max: '',
-          icon: 'mdi-credit-card-outline',
-          name: 'monthly_payments',
-          title: 'Monthly payments $',
+        Aid: {
+          pell: {
+            min: '',
+            max: '',
+            icon: 'mdi-cash-100',
+            name: 'pell_grand',
+            title: 'Pell grant recipients %',
+          },
+          loan: {
+            min: '',
+            max: '',
+            icon: 'mdi-bank',
+            name: 'federal_loan',
+            title: 'Federal loan recipients %',
+          },
         },
-        debt: {
-          min: '',
-          max: '',
-          icon: 'mdi-sack-percent',
-          name: 'debt_completed_median',
-          title: 'Debt after completion $',
+        Study: {
+          admission: {
+            min: '',
+            max: '',
+            icon: 'mdi-school',
+            name: 'admission_rate',
+            title: 'Admission rate %',
+          },
+          completion: {
+            min: '',
+            max: '',
+            icon: 'mdi-certificate',
+            name: 'completion_rate_four_year_pooled',
+            title: 'Completion rate %',
+          },
+          retention: {
+            min: '',
+            max: '',
+            icon: 'mdi-account-heart',
+            name: 'retention_rate_four_year_pooled',
+            title: 'Retention rate %',
+          },
         },
-        earnings: {
-          min: '',
-          max: '',
-          icon: 'mdi-cash',
-          name: 'median_earnings',
-          title: 'Earnings after attending $',
+        Tests: {
+          act: {
+            min: '',
+            max: '',
+            icon: 'mdi-grease-pencil',
+            name: 'act_cumulative',
+            title: 'ACT cumulative',
+          },
+          sat: {
+            min: '',
+            max: '',
+            icon: 'mdi-lead-pencil',
+            name: 'sat_average',
+            title: 'SAT average',
+          },
         },
-        'divider-1': {
-          subheader: 'Aid',
-        },
-        pell: {
-          min: '',
-          max: '',
-          icon: 'mdi-cash-100',
-          name: 'pell_grand',
-          title: 'Pell grant recipients %',
-        },
-        loan: {
-          min: '',
-          max: '',
-          icon: 'mdi-bank',
-          name: 'federal_loan',
-          title: 'Federal loan recipients %',
-        },
-        'divider-2': {
-          subheader: 'Study',
-        },
-        admission: {
-          min: '',
-          max: '',
-          icon: 'mdi-school',
-          name: 'admission_rate',
-          title: 'Admission rate %',
-        },
-        completion: {
-          min: '',
-          max: '',
-          icon: 'mdi-certificate',
-          name: 'completion_rate_four_year_pooled',
-          title: 'Completion rate %',
-        },
-        retention: {
-          min: '',
-          max: '',
-          icon: 'mdi-account-heart',
-          name: 'retention_rate_four_year_pooled',
-          title: 'Retention rate %',
-        },
-        'divider-3': {
-          subheader: 'Tests',
-        },
-        act: {
-          min: '',
-          max: '',
-          icon: 'mdi-grease-pencil',
-          name: 'act_cumulative',
-          title: 'ACT cumulative',
-        },
-        sat: {
-          min: '',
-          max: '',
-          icon: 'mdi-lead-pencil',
-          name: 'sat_average',
-          title: 'SAT average',
-        },
-        'divider-4': {
-          subheader: 'Students',
-        },
-        undergraduates: {
-          min: '',
-          max: '',
-          icon: 'mdi-account-multiple',
-          name: 'undergrad_students',
-          title: 'Number of undergraduates',
-        },
-        fullTime: {
-          min: '',
-          max: '',
-          icon: 'mdi-account-clock',
-          name: 'students_part_time',
-          title: 'Full-time students %',
-        },
-        female: {
-          min: '',
-          max: '',
-          icon: 'mdi-human-female',
-          name: 'students_female',
-          title: 'Female students %',
-        },
-        male: {
-          min: '',
-          max: '',
-          icon: 'mdi-human-male',
-          name: 'students_female',
-          title: 'Male students %',
+        Students: {
+          undergraduates: {
+            min: '',
+            max: '',
+            icon: 'mdi-account-multiple',
+            name: 'undergrad_students',
+            title: 'Number of undergraduates',
+          },
+          fullTime: {
+            min: '',
+            max: '',
+            icon: 'mdi-account-clock',
+            name: 'students_part_time',
+            title: 'Full-time students %',
+          },
+          female: {
+            min: '',
+            max: '',
+            icon: 'mdi-human-female',
+            name: 'students_female',
+            title: 'Female students %',
+          },
+          male: {
+            min: '',
+            max: '',
+            icon: 'mdi-human-male',
+            name: 'students_female',
+            title: 'Male students %',
+          },
         },
       },
     };
@@ -320,20 +343,24 @@ export default {
     },
     emitRangeInput() {
       const copy = JSON.parse(JSON.stringify(this.rangeFilters));
-      Object.assign(copy.admission, this.calculatePercent(copy.admission));
-      Object.assign(copy.completion, this.calculatePercent(copy.completion));
-      Object.assign(copy.retention, this.calculatePercent(copy.retention));
-      Object.assign(copy.pell, this.calculatePercent(copy.pell));
-      Object.assign(copy.loan, this.calculatePercent(copy.loan));
-      Object.assign(copy.female, this.calculatePercent(copy.female));
+      Object.assign(copy.Study.admission, this.calculatePercent(copy.Study.admission));
+      Object.assign(copy.Study.completion, this.calculatePercent(copy.Study.completion));
+      Object.assign(copy.Study.retention, this.calculatePercent(copy.Study.retention));
+      Object.assign(copy.Aid.pell, this.calculatePercent(copy.Aid.pell));
+      Object.assign(copy.Aid.loan, this.calculatePercent(copy.Aid.loan));
+      Object.assign(copy.Students.female, this.calculatePercent(copy.Students.female));
       // calculating values of "mirrored" filters
-      Object.assign(copy.fullTime, this.calculateMirrorValues(copy.fullTime));
-      Object.assign(copy.male, this.calculateMirrorValues(copy.male));
-      // deleting dividers
+      Object.assign(copy.Students.fullTime, this.calculateMirrorValues(copy.Students.fullTime));
+      Object.assign(copy.Students.male, this.calculateMirrorValues(copy.Students.male));
+      // flattened object
+      const flattened = {};
       Object.keys(copy).forEach((key) => {
-        if (key.indexOf('divider') > -1) delete copy[key];
+        Object.keys(copy[key]).forEach((key2) => {
+          flattened[key2] = copy[key][key2];
+        });
       });
-      this.$emit('rangeFilterChanged', copy);
+      console.log(flattened);
+      this.$emit('rangeFilterChanged', flattened);
     },
     calculateMirrorValues(obj) {
       const propMin = +obj.max ? 1 - obj.max / 100 : 0;
@@ -355,7 +382,9 @@ export default {
         this.checkboxFilters[key].value = false;
       });
       Object.keys(this.rangeFilters).forEach((key) => {
-        Object.assign(this.rangeFilters[key], { min: '', max: '' });
+        Object.keys(this.rangeFilters[key]).forEach((key2) => {
+          Object.assign(this.rangeFilters[key][key2], { min: '', max: '' });
+        });
       });
       this.$emit('resetFilters');
     },
@@ -377,6 +406,7 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style lang="stylus" module>
+  .panel
+    border 2px solid white
 </style>
