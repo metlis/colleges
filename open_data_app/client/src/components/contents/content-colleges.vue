@@ -24,48 +24,24 @@
             {{college.url}}
           </span>
           <!-- Sort values -->
-          <div class="text--primary"
-             v-if="college.average_price && activeSortButton === 'cost' && isSorted">
+          <div
+             v-for="i in Object.keys(chipsSort)"
+             :key="i"
+             class="text--primary"
+             v-if="college[chipsSort[i].prop]
+             && activeSortButton === chipsSort[i].activeBtn && isSorted">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip v-on="on">
-                  {{addCommas(Math.floor(college.average_price))}}$
+                  <template v-if="chipsSort[i].prop === 'admission_rate'">
+                    {{(college.admission_rate * 100)}}%
+                  </template>
+                  <template v-else>
+                    {{addCommas(Math.floor(college[chipsSort[i].prop]))}}$
+                  </template>
                 </v-chip>
               </template>
-              <span>Average cost</span>
-            </v-tooltip>
-          </div>
-          <div class="text--primary"
-               v-if="college.monthly_payments && activeSortButton === 'payments' && isSorted">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-chip v-on="on">
-                  {{addCommas(Math.floor(college.monthly_payments))}}$
-                </v-chip>
-              </template>
-              <span>Monthly payments</span>
-            </v-tooltip>
-          </div>
-          <div class="text--primary"
-               v-if="college.admission_rate && activeSortButton === 'admission' && isSorted">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-chip v-on="on">
-                  {{college.admission_rate * 100}}%
-                </v-chip>
-              </template>
-              <span>Admission rate</span>
-            </v-tooltip>
-          </div>
-          <div class="text--primary"
-               v-if="college.median_earnings && activeSortButton === 'earnings' && isSorted">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-chip v-on="on">
-                  {{addCommas(college.median_earnings)}}$
-                </v-chip>
-              </template>
-              <span>Earnings after graduation</span>
+              <span>{{chipsSort[i].tooltip}}</span>
             </v-tooltip>
           </div>
         </v-card-text>
@@ -155,6 +131,28 @@ export default {
           icon: 'mdi-briefcase',
           title: 'Ownership',
           props: ['ownership__description'],
+        },
+      },
+      chipsSort: {
+        cost: {
+          tooltip: 'Average cost',
+          prop: 'average_price',
+          activeBtn: 'cost',
+        },
+        payments: {
+          tooltip: 'Monthly payments',
+          prop: 'monthly_payments',
+          activeBtn: 'payments',
+        },
+        admission: {
+          tooltip: 'Admission rate',
+          prop: 'admission_rate',
+          activeBtn: 'admission',
+        },
+        earnings: {
+          tooltip: 'Earnings after graduation',
+          prop: 'median_earnings',
+          activeBtn: 'earnings',
         },
       },
     };
