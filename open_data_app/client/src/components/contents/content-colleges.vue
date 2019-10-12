@@ -25,7 +25,7 @@
           </span>
           <!-- Sort values -->
           <div class="text--primary"
-             v-if="college.average_price && activeSortButton === 'Cost' && isSorted">
+             v-if="college.average_price && activeSortButton === 'cost' && isSorted">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip v-on="on">
@@ -36,7 +36,7 @@
             </v-tooltip>
           </div>
           <div class="text--primary"
-               v-if="college.monthly_payments && activeSortButton === 'Payments' && isSorted">
+               v-if="college.monthly_payments && activeSortButton === 'payments' && isSorted">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip v-on="on">
@@ -47,7 +47,7 @@
             </v-tooltip>
           </div>
           <div class="text--primary"
-               v-if="college.admission_rate && activeSortButton === 'Admission' && isSorted">
+               v-if="college.admission_rate && activeSortButton === 'admission' && isSorted">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip v-on="on">
@@ -58,7 +58,7 @@
             </v-tooltip>
           </div>
           <div class="text--primary"
-               v-if="college.median_earnings && activeSortButton === 'Earnings' && isSorted">
+               v-if="college.median_earnings && activeSortButton === 'earnings' && isSorted">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip v-on="on">
@@ -238,19 +238,19 @@ export default {
         this.reverseSort = false;
       }
       switch (this.activeSortButton) {
-      case 'Name':
+      case 'name':
         this.sortAlphabetically();
         break;
-      case 'Cost':
+      case 'cost':
         this.sortCost();
         break;
-      case 'Payments':
+      case 'payments':
         this.sortNumeric('monthly_payments');
         break;
-      case 'Admission':
+      case 'admission':
         this.sortNumeric('admission_rate');
         break;
-      case 'Earnings':
+      case 'earnings':
         this.sortNumeric('median_earnings');
         break;
       default:

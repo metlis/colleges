@@ -7,14 +7,14 @@
         <v-list-item
           v-for="icon in Object.keys(iconsNames)"
           :key="icon"
-          @click="$emit('sortClick', iconsNames[icon])"
+          @click="$emit('sortClick', icon)"
           class="mt-1 mb-0"
         >
           <v-list-item-icon>
-            <v-icon>{{icon}}</v-icon>
+            <v-icon>{{iconsNames[icon].icon}}</v-icon>
           </v-list-item-icon>
           <v-list-item-title>
-            {{iconsNames[icon]}}
+            {{iconsNames[icon].title}}
           </v-list-item-title>
         </v-list-item>
       </v-list-item-group>
@@ -129,11 +129,26 @@ export default {
   data() {
     return {
       iconsNames: {
-        'mdi-alphabetical': 'Name',
-        'mdi-currency-usd': 'Cost',
-        'mdi-credit-card-outline': 'Payments',
-        'mdi-percent': 'Admission',
-        'mdi-cash': 'Earnings',
+        name: {
+          icon: 'mdi-alphabetical',
+          title: 'Name',
+        },
+        cost: {
+          icon: 'mdi-currency-usd',
+          title: 'Cost',
+        },
+        payments: {
+          icon: 'mdi-credit-card-outline',
+          title: 'Payments',
+        },
+        admission: {
+          icon: 'mdi-percent',
+          title: 'Admission',
+        },
+        earnings: {
+          icon: 'mdi-cash',
+          title: 'Earnings',
+        },
       },
       checkboxFilters: {
         Operating: {
