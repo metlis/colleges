@@ -90,59 +90,27 @@
           <div v-show="cardsStates[college.id]">
             <v-card-text>
               <v-divider />
-              <div>
+              <div
+                v-for="i in Object.keys(items)"
+                v-if="college[items[i].props[0]]"
+                :key="i"
+              >
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
-                    <span :class="$style.container" v-on="on"><v-icon>mdi-map-marker
+                    <span
+                      :class="$style.container"
+                      v-on="on"
+                    >
+                      <v-icon>{{items[i].icon}}
                     </v-icon></span>
                   </template>
-                  <span>Location</span>
+                  <span>{{items[i].title}}</span>
                 </v-tooltip>
-                <span :class="$style.description"> {{college.city}}, {{college.state__name}}
+                <span :class="$style.description"> {{college[items[i].props[0]]}}
+                  <template v-if="college[items[i].props[1]]">
+                    , {{college[items[i].props[1]]}}
+                  </template>
                 </span><br>
-              </div>
-              <div v-if="college.carnegie__description">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <span :class="$style.container" v-on="on"><v-icon>mdi-city
-                    </v-icon></span>
-                  </template>
-                  <span>Locale</span>
-                </v-tooltip>
-                <span :class="$style.description"> {{college.locale__description}}</span>
-                <br>
-              </div>
-              <div v-if="college.undergrad_students">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <span :class="$style.container" v-on="on"><v-icon>mdi-account-multiple
-                    </v-icon></span>
-                  </template>
-                  <span>Undergraduate students</span>
-                </v-tooltip>
-                <span :class="$style.description"> {{addCommas(college.undergrad_students)}}</span>
-                <br>
-              </div>
-              <div v-if="college.religion__name">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <span :class="$style.container" v-on="on"><v-icon>mdi-church
-                    </v-icon></span>
-                  </template>
-                  <span>Religious affiliation</span>
-                </v-tooltip>
-                <span :class="$style.description"> {{college.religion__name}}</span><br>
-              </div>
-              <div v-if="college.ownership__description">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <span :class="$style.container" v-on="on"><v-icon>mdi-cash
-                    </v-icon></span>
-                  </template>
-                  <span>Ownership</span>
-                </v-tooltip>
-                <span :class="$style.description"> {{college.ownership__description}}</span>
-                <br>
               </div>
             </v-card-text>
           </div>
@@ -162,6 +130,33 @@ export default {
       cardsStates: {},
       reverseSort: false,
       isSorted: false,
+      items: {
+        location: {
+          icon: 'mdi-map-marker',
+          title: 'Location',
+          props: ['city', 'state__name'],
+        },
+        locale: {
+          icon: 'mdi-city',
+          title: 'Locale',
+          props: ['locale__description'],
+        },
+        carnegie: {
+          icon: 'mdi-book-search',
+          title: 'Carnegie classification',
+          props: ['carnegie__description'],
+        },
+        religion: {
+          icon: 'mdi-church',
+          title: 'Religious affiliation',
+          props: ['religion__name'],
+        },
+        ownership: {
+          icon: 'mdi-briefcase',
+          title: 'Ownership',
+          props: ['ownership__description'],
+        },
+      },
     };
   },
   methods: {
