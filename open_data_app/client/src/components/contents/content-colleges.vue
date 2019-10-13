@@ -8,7 +8,8 @@
         type="info"
         border="left"
       >
-        There are no colleges that match these filters
+        There are no colleges that match these filters.
+        You can start your search <a href="/main/">here</a>
       </v-alert>
     </v-col>
     <v-col
