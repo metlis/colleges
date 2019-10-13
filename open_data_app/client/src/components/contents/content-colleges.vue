@@ -26,7 +26,9 @@
           <!-- Sort value -->
           <div
              class="text--primary"
-             v-if="college[activeSortButton.name] && activeSortButton.name !== 'name'"
+             v-if="activeSortButton && college[activeSortButton.name] !== ''
+             && college[activeSortButton.name] !== null
+             && activeSortButton.name !== 'name'"
           >
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
@@ -34,11 +36,24 @@
                   v-on="on"
                   outlined
                 >
-                  <template v-if="activeSortButton.name === 'admission_rate'">
-                    {{college.admission_rate * 100}}%
+                  <v-icon size="1rem">
+                    {{activeSortButton.icon}}
+                  </v-icon>
+                  <template v-if="activeSortButton.name === 'admission_rate'
+                  || activeSortButton.name === 'federal_loan'">
+                    <span class="pl-1">
+                      {{Math.round(college[activeSortButton.name] * 100)}}%
+                    </span>
+                  </template>
+                  <template v-else-if="activeSortButton.name === 'undergrad_students'">
+                    <span class="pl-1">
+                      {{addCommas(college[activeSortButton.name])}}
+                    </span>
                   </template>
                   <template v-else>
-                    {{addCommas(Math.floor(college[activeSortButton.name]))}}$
+                    <span class="pl-1">
+                      {{addCommas(Math.round(college[activeSortButton.name]))}}$
+                    </span>
                   </template>
                 </v-chip>
               </template>
@@ -287,9 +302,9 @@ export default {
       case 'average_price':
         this.sortCost();
         break;
-      case 'monthly_payments':
+      case 'federal_loan':
       case 'admission_rate':
-      case 'median_earnings':
+      case 'undergrad_students':
         this.sortNumeric(this.activeSortButton.name);
         break;
       default:

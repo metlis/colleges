@@ -173,24 +173,24 @@ export default {
           name: 'name',
         },
         cost: {
-          icon: 'mdi-currency-usd',
-          title: 'Cost',
+          icon: 'mdi-cash',
+          title: 'Average cost',
           name: 'average_price',
         },
-        payments: {
-          icon: 'mdi-credit-card-outline',
-          title: 'Payments',
-          name: 'monthly_payments',
+        loan: {
+          icon: 'mdi-bank',
+          title: 'Loan recipients',
+          name: 'federal_loan',
         },
         admission: {
-          icon: 'mdi-percent',
-          title: 'Admission',
+          icon: 'mdi-certificate',
+          title: 'Admission rate',
           name: 'admission_rate',
         },
-        earnings: {
-          icon: 'mdi-cash',
-          title: 'Earnings',
-          name: 'median_earnings',
+        undergraduates: {
+          icon: 'mdi-account-multiple',
+          title: 'Undergraduates',
+          name: 'undergrad_students',
         },
       },
       checkboxFilters: {
@@ -231,7 +231,7 @@ export default {
           cost: {
             min: '',
             max: '',
-            icon: 'mdi-currency-usd',
+            icon: 'mdi-cash',
             name: 'average_price',
             title: 'Cost $',
           },
@@ -252,7 +252,7 @@ export default {
           earnings: {
             min: '',
             max: '',
-            icon: 'mdi-cash',
+            icon: 'mdi-currency-usd',
             name: 'median_earnings',
             title: 'Earnings after attending $',
           },
@@ -277,14 +277,14 @@ export default {
           admission: {
             min: '',
             max: '',
-            icon: 'mdi-school',
+            icon: 'mdi-certificate',
             name: 'admission_rate',
             title: 'Admission rate %',
           },
           completion: {
             min: '',
             max: '',
-            icon: 'mdi-certificate',
+            icon: 'mdi-school',
             name: 'completion_rate_four_year_pooled',
             title: 'Completion rate %',
           },
