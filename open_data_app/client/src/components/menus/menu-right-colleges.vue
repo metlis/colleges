@@ -5,16 +5,16 @@
       <v-subheader>Sort</v-subheader>
       <v-list-item-group class="mr-1">
         <v-list-item
-          v-for="icon in Object.keys(sortNames)"
-          :key="icon"
-          @click="$emit('sortClick', icon)"
+          v-for="item in Object.keys(sortNames)"
+          :key="item"
+          @click="$emit('sortClick', sortNames[item])"
           class="mt-1 mb-0"
         >
           <v-list-item-icon>
-            <v-icon>{{sortNames[icon].icon}}</v-icon>
+            <v-icon>{{sortNames[item].icon}}</v-icon>
           </v-list-item-icon>
           <v-list-item-title>
-            {{sortNames[icon].title}}
+            {{sortNames[item].title}}
           </v-list-item-title>
         </v-list-item>
       </v-list-item-group>
@@ -170,22 +170,27 @@ export default {
         name: {
           icon: 'mdi-alphabetical',
           title: 'Name',
+          name: 'name',
         },
         cost: {
           icon: 'mdi-currency-usd',
           title: 'Cost',
+          name: 'average_price',
         },
         payments: {
           icon: 'mdi-credit-card-outline',
           title: 'Payments',
+          name: 'monthly_payments',
         },
         admission: {
           icon: 'mdi-percent',
           title: 'Admission',
+          name: 'admission_rate',
         },
         earnings: {
           icon: 'mdi-cash',
           title: 'Earnings',
+          name: 'median_earnings',
         },
       },
       checkboxFilters: {

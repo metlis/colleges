@@ -23,30 +23,27 @@
           <span @click="openCollegeUrl(college.url)" style="cursor: pointer">
             {{college.url}}
           </span>
-          <!-- Sort values -->
+          <!-- Sort value -->
           <div
-             v-for="i in Object.keys(sortVals)"
-             :key="i"
              class="text--primary"
-             v-if="college[sortVals[i].prop]
-             && activeSortButton === sortVals[i].activeBtn && isSorted
-             && !filtersApplied.rangeFilters.some(filter => filter.name === sortVals[i].prop)">
+             v-if="college[activeSortButton.name] && activeSortButton.name !== 'name'"
+          >
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-chip
                   v-on="on"
                   outlined
                 >
-                  <template v-if="sortVals[i].prop === 'admission_rate'">
+                  <template v-if="activeSortButton.name === 'admission_rate'">
                     {{college.admission_rate * 100}}%
                   </template>
                   <template v-else>
-                    {{addCommas(Math.floor(college[sortVals[i].prop]))}}$
+                    {{addCommas(Math.floor(college[activeSortButton.name]))}}$
                   </template>
                 </v-chip>
               </template>
               <span>
-                {{sortVals[i].tooltip}}
+                {{activeSortButton.title}}
               </span>
             </v-tooltip>
           </div>
@@ -208,28 +205,6 @@ export default {
           props: ['ownership__description'],
         },
       },
-      sortVals: {
-        cost: {
-          tooltip: 'Average cost',
-          prop: 'average_price',
-          activeBtn: 'cost',
-        },
-        payments: {
-          tooltip: 'Monthly payments',
-          prop: 'monthly_payments',
-          activeBtn: 'payments',
-        },
-        admission: {
-          tooltip: 'Admission rate',
-          prop: 'admission_rate',
-          activeBtn: 'admission',
-        },
-        earnings: {
-          tooltip: 'Earnings after graduation',
-          prop: 'median_earnings',
-          activeBtn: 'earnings',
-        },
-      },
     };
   },
   methods: {
@@ -300,26 +275,22 @@ export default {
     },
     sortColleges() {
       // set reverse sort variable upon the same button click
-      if (this.prevSortButton === this.activeSortButton) {
+      if (this.prevSortButton.name === this.activeSortButton.name) {
         this.reverseSort = !this.reverseSort;
       } else {
         this.reverseSort = false;
       }
-      switch (this.activeSortButton) {
+      switch (this.activeSortButton.name) {
       case 'name':
         this.sortAlphabetically();
         break;
-      case 'cost':
+      case 'average_price':
         this.sortCost();
         break;
-      case 'payments':
-        this.sortNumeric(this.sortVals.payments.prop);
-        break;
-      case 'admission':
-        this.sortNumeric(this.sortVals.admission.prop);
-        break;
-      case 'earnings':
-        this.sortNumeric(this.sortVals.earnings.prop);
+      case 'monthly_payments':
+      case 'admission_rate':
+      case 'median_earnings':
+        this.sortNumeric(this.activeSortButton.name);
         break;
       default:
         break;
@@ -348,7 +319,7 @@ export default {
     },
     sortCost() {
       this.createUnifiedPriceParam();
-      this.sortNumeric(this.sortVals.cost.prop);
+      this.sortNumeric(this.activeSortButton.name);
     },
     createUnifiedPriceParam() {
       this.filteredColleges.forEach((college) => {
