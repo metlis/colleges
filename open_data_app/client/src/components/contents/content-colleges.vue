@@ -23,113 +23,129 @@
           <span @click="openCollegeUrl(college.url)" style="cursor: pointer">
             {{college.url}}
           </span>
-          <!-- Sort value -->
-          <div
-             class="text--primary"
-             v-if="activeSortButton && college[activeSortButton.name] !== ''
-             && college[activeSortButton.name] !== null
-             && activeSortButton.name !== 'name'"
-          >
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-chip
-                  v-on="on"
-                  outlined
-                >
-                  <v-icon size="1rem">
-                    {{activeSortButton.icon}}
-                  </v-icon>
-                  <template v-if="activeSortButton.name === 'admission_rate'
-                  || activeSortButton.name === 'federal_loan'">
-                    <span class="pl-1">
-                      {{Math.round(college[activeSortButton.name] * 100)}}%
-                    </span>
-                  </template>
-                  <template v-else-if="activeSortButton.name === 'undergrad_students'">
-                    <span class="pl-1">
-                      {{addCommas(college[activeSortButton.name])}}
-                    </span>
-                  </template>
-                  <template v-else>
-                    <span class="pl-1">
-                      {{addCommas(Math.round(college[activeSortButton.name]))}}$
-                    </span>
-                  </template>
-                </v-chip>
-              </template>
-              <span>
-                {{activeSortButton.title}}
-              </span>
-            </v-tooltip>
-          </div>
-          <!-- Range filter values -->
-          <div
-             v-for="filter in filtersApplied.rangeFilters"
-             v-if="college[filter.name]"
-             :key="filter"
-             class="text--primary">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-chip
-                  v-on="on"
-                  class="ma-1"
-                  outlined
-                >
-                  <template v-if="filter.title.indexOf('%') > -1">
-                    {{Math.round(college[filter.name] * 100)}}%
-                  </template>
-                  <template v-else>
-                    {{addCommas(Math.floor(college[filter.name]))}}<span
-                      v-if="filter.title.indexOf('$') > -1">$</span>
-                  </template>
-                </v-chip>
-              </template>
-              <span>
-                  {{filter.title}}
-              </span>
-            </v-tooltip>
-          </div>
-          <!-- Checkbox filter values -->
-          <div
-             v-for="filter in filtersApplied.checkboxFilters"
-             v-if="college[filter.name]"
-             :key="filter"
-             class="text--primary">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-chip
-                  v-on="on"
-                  class="ma-1"
-                  outlined
-                >
-                  {{filter.title}}
-                </v-chip>
-              </template>
-              <span>
-                  {{filter.title}}
-              </span>
-            </v-tooltip>
-          </div>
-          <!-- State filter values -->
-          <div
-             v-for="filter in statesFilters"
-             v-if="statesFilters && college.state__name === filter"
-             :key="filter"
-             class="text--primary">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-chip
-                  v-on="on"
-                  class="ma-1"
-                  outlined
-                >
-                  {{filter}}
-                </v-chip>
-              </template>
-              <span>
-                  State
-              </span>
-            </v-tooltip>
+          <div>
+            <!-- Sort value -->
+            <div
+               class="text--primary"
+               :class="$style.chip"
+               v-if="activeSortButton && college[activeSortButton.name] !== ''
+               && college[activeSortButton.name] !== null
+               && activeSortButton.name !== 'name'"
+            >
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-chip
+                    v-on="on"
+                    color="grey lighten-3"
+                  >
+                    <v-icon size="1rem">
+                      {{activeSortButton.icon}}
+                    </v-icon>
+                    <template v-if="activeSortButton.name === 'admission_rate'
+                    || activeSortButton.name === 'federal_loan'">
+                      <span class="pl-1">
+                        {{Math.round(college[activeSortButton.name] * 100)}}%
+                      </span>
+                    </template>
+                    <template v-else-if="activeSortButton.name === 'undergrad_students'">
+                      <span class="pl-1">
+                        {{addCommas(college[activeSortButton.name])}}
+                      </span>
+                    </template>
+                    <template v-else>
+                      <span class="pl-1">
+                        {{addCommas(Math.round(college[activeSortButton.name]))}}$
+                      </span>
+                    </template>
+                  </v-chip>
+                </template>
+                <span>
+                  {{activeSortButton.tooltip}}
+                </span>
+              </v-tooltip>
+            </div>
+            <!-- Range filter values -->
+            <div
+               v-for="filter in filtersApplied.rangeFilters"
+               v-if="filtersApplied && college[filter.name] !== ''
+               && college[filter.name] !== null
+               && filter.name !== activeSortButton.name"
+               :key="filter"
+               :class="$style.chip"
+               class="text--primary">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-chip
+                    v-on="on"
+                    class="ma-1"
+                    outlined
+                  >
+                    <v-icon size="1rem">
+                      {{filter.icon}}
+                    </v-icon>
+                    <template v-if="filter.title.indexOf('%') > -1">
+                      <span class="pl-1">
+                        {{Math.round(college[filter.name] * 100)}}%
+                      </span>
+                    </template>
+                    <template v-else>
+                      <span class="pl-1">
+                        {{addCommas(Math.floor(college[filter.name]))}}
+                      </span>
+                      <span v-if="filter.title.indexOf('$') > -1">$</span>
+                    </template>
+                  </v-chip>
+                </template>
+                <span>
+                    {{filter.title}}
+                </span>
+              </v-tooltip>
+            </div>
+            <!-- Checkbox filter values -->
+            <div
+               v-for="filter in filtersApplied.checkboxFilters"
+               v-if="filtersApplied && college[filter.name] !== ''
+               && college[filter.name] !== null"
+               :key="filter"
+               style="display: inline"
+               :class="$style.chip">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-chip
+                    v-on="on"
+                    class="ma-1"
+                    outlined
+                  >
+                    {{filter.title}}
+                  </v-chip>
+                </template>
+                <span>
+                    {{filter.title}}
+                </span>
+              </v-tooltip>
+            </div>
+            <!-- State filter values -->
+            <div
+               v-for="filter in statesFilters"
+               v-if="statesFilters && college.state__name === filter"
+               :key="filter"
+               :class="$style.chip"
+               class="text--primary">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-chip
+                    v-on="on"
+                    class="ma-1"
+                    outlined
+                  >
+                    {{filter}}
+                  </v-chip>
+                </template>
+                <span>
+                    State
+                </span>
+              </v-tooltip>
+            </div>
           </div>
         </v-card-text>
         <v-card-actions>
@@ -412,4 +428,6 @@ export default {
   .description
     display block
     overflow hidden
+  .chip
+    display inline
 </style>
