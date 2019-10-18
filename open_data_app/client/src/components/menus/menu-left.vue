@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer expand-on-hover permanent>
+  <v-navigation-drawer expand-on-hover dense permanent>
     <v-list nav dense>
       <v-list-item-group v-model="activeItem">
         <v-list-item

@@ -1,5 +1,6 @@
 <template>
-  <v-row>
+  <v-row dense>
+    <!-- A message for no results   -->
     <v-col
       cols="12"
       v-if="filteredColleges.length === 0"
@@ -12,14 +13,21 @@
         You can start your search <a href="/main/">here</a>
       </v-alert>
     </v-col>
+    <!--  Result content  -->
     <v-col
-      cols="4"
+      cols="12"
+      xs="12"
+      sm="12"
+      md="4"
       v-if="filteredColleges.length > 0"
       v-for="college in filteredColleges"
       :key="college.id"
+      class="pr-0"
     >
       <v-card>
-        <v-card-title style="word-break: normal !important">{{college.name}}</v-card-title>
+        <v-card-title style="word-break: normal !important">
+          {{college.name}}
+        </v-card-title>
         <v-card-text>
           <span @click="openCollegeUrl(college.url)" style="cursor: pointer">
             {{college.url}}
@@ -71,7 +79,7 @@
                v-if="filtersApplied && college[filter.name] !== ''
                && college[filter.name] !== null
                && filter.name !== activeSortButton.name"
-               :key="filter"
+               :key="filter.title"
                :class="$style.chip"
                class="text--primary">
               <v-tooltip bottom>
@@ -107,7 +115,7 @@
                v-for="filter in filtersApplied.checkboxFilters"
                v-if="filtersApplied && college[filter.name] !== ''
                && college[filter.name] !== null"
-               :key="filter"
+               :key="filter.title"
                style="display: inline"
                :class="$style.chip">
               <v-tooltip bottom>
@@ -306,6 +314,7 @@ export default {
       }
     },
     sortColleges() {
+      if (!this.filteredColleges) this.filteredColleges = this.getColleges();
       // set reverse sort variable upon the same button click
       if (this.prevSortButton.name === this.activeSortButton.name) {
         this.reverseSort = !this.reverseSort;

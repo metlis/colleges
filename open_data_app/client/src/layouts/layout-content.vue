@@ -1,11 +1,23 @@
 <template>
-  <v-content>
-    <v-container fluid style="padding: 0px">
-      <v-row>
-        <v-col cols="2" style="padding: 0px">
-          <menu-left @navigationClick="changeNavButton" />
-        </v-col>
-        <v-col cols="7">
+  <v-row class="mx-0">
+    <v-col
+      v-if="!rightMobileMenu"
+      :class="classes.leftMenu"
+      xs="12"
+      sm="12"
+      md="2"
+      style="padding: 0px"
+    >
+      <menu-left @navigationClick="changeNavButton" />
+    </v-col>
+    <v-col
+      v-show="!rightMobileMenu"
+      xs="12"
+      sm="12"
+      md="7"
+    >
+      <v-content>
+        <v-container fluid style="padding: 0px">
           <content-colleges
             v-if="activeNavButton === 'Colleges'"
             :colleges="colleges"
@@ -16,21 +28,40 @@
             :rangeFilters="rangeFilters"
             ref="colleges"
           />
-        </v-col>
-        <v-col cols="2" offset="1" style="padding: 0px">
-          <menu-right-colleges
-            v-if="activeNavButton === 'Colleges'"
-            @sortClick="changeSortButton"
-            @checkboxFilterChanged="updateCheckboxFilters"
-            @statesFilterChanged="updateStatesFilters"
-            @rangeFilterChanged="updateRangeFilters"
-            @resetFilters="resetFilters"
-            :colleges="colleges"
-          />
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-content>
+        </v-container>
+      </v-content>
+    </v-col>
+    <v-col
+      :class="classes.rightMenu"
+      xs="12"
+      sm="12"
+      offset-md="1"
+      md="2"
+      ref="rightMenu"
+    >
+      <menu-right-colleges
+        v-if="activeNavButton === 'Colleges'"
+        @sortClick="changeSortButton"
+        @checkboxFilterChanged="updateCheckboxFilters"
+        @statesFilterChanged="updateStatesFilters"
+        @rangeFilterChanged="updateRangeFilters"
+        @resetFilters="resetFilters"
+        :colleges="colleges"
+      />
+    </v-col>
+    <!--  Filter button  -->
+    <v-btn
+      fixed
+      fab
+      bottom
+      right
+      color="grey lighten-1"
+      class="d-inline-block d-md-none"
+      @click="showRightMenu"
+    >
+      <v-icon>mdi-filter</v-icon>
+    </v-btn>
+  </v-row>
 </template>
 
 <script>
@@ -51,6 +82,11 @@ export default {
       checkboxFilters: '',
       statesFilters: '',
       rangeFilters: '',
+      classes: {
+        leftMenu: 'd-none d-md-block',
+        rightMenu: 'd-none d-md-block',
+      },
+      rightMobileMenu: false,
     };
   },
   methods: {
@@ -92,6 +128,16 @@ export default {
       setTimeout(() => {
         this.$root.$emit('reset-filters');
       }, 0);
+    },
+    showRightMenu() {
+      if (this.classes.rightMenu.indexOf('d-none') > -1) {
+        this.classes.rightMenu = 'd-block';
+        this.rightMobileMenu = true;
+        goTo(this.$refs.rightMenu);
+      } else {
+        this.classes.rightMenu = 'd-none d-md-block';
+        this.rightMobileMenu = false;
+      }
     },
   },
 };

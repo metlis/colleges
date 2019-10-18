@@ -1,12 +1,18 @@
 <template>
-  <v-navigation-drawer right dense>
+  <v-navigation-drawer
+    right
+    dense
+    absolute
+    :class="$style.rightMenu"
+    width="100%"
+  >
     <v-list nav dense flat>
       <!-- Sort block -->
       <v-subheader>Sort</v-subheader>
       <v-list-item-group class="mr-1">
         <v-list-item
           v-for="item in Object.keys(sortNames)"
-          :key="item"
+          :key="sortNames[item].title"
           @click="$emit('sortClick', sortNames[item])"
           class="mt-1 mb-0"
         >
@@ -69,11 +75,12 @@
             </v-expansion-panel-header>
             <v-expansion-panel-content>
               <template v-for="filter in Object.keys(rangeFilters[key])">
-                <subheader
+                <v-subheader
                   inset
                   :class="$style.subheader"
-                  :key="filter">{{rangeFilters[key][filter].title}}
-                </subheader>
+                  :key="rangeFilters[key][filter].title"
+                >{{rangeFilters[key][filter].title}}
+                </v-subheader>
                 <v-list-item
                   :key="filter"
                   class="px-0"
@@ -424,4 +431,8 @@ export default {
     border 2px solid white
   .subheader
     font-size 12px
+  .rightMenu
+    transform translateX(0%) !important
+    left 0px
+    top 0px
 </style>
