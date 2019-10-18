@@ -50,16 +50,54 @@
       />
     </v-col>
     <!--  Filter button  -->
-    <v-btn
+    <v-speed-dial
+      v-if="!fabClose"
+      v-model="fab"
       fixed
-      fab
       bottom
       right
-      color="grey lighten-1"
+      direction="top"
+      transition="slide-y-reverse-transition"
       class="d-inline-block d-md-none"
-      @click="showRightMenu"
     >
-      <v-icon>mdi-filter</v-icon>
+      <template v-slot:activator>
+        <v-btn
+          v-model="fab"
+          color="blue darken-2"
+          dark
+          fab
+        >
+          <v-icon v-if="fab">mdi-close</v-icon>
+          <v-icon v-else >mdi-tools</v-icon>
+        </v-btn>
+      </template>
+      <v-btn
+        fab
+        dark
+        small
+        color="green"
+      >
+        <v-icon @click="showRightMenu">mdi-filter</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        dark
+        small
+        color="indigo"
+      >
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+    </v-speed-dial>
+    <!--  Close button  -->
+    <v-btn
+      v-if="fabClose"
+      fab
+      fixed
+      bottom
+      right
+      color="red"
+    >
+      <v-icon @click="showRightMenu">mdi-close</v-icon>
     </v-btn>
   </v-row>
 </template>
@@ -87,6 +125,8 @@ export default {
         rightMenu: 'd-none d-md-block',
       },
       rightMobileMenu: false,
+      fab: false,
+      fabClose: false,
     };
   },
   methods: {
@@ -133,10 +173,13 @@ export default {
       if (this.classes.rightMenu.indexOf('d-none') > -1) {
         this.classes.rightMenu = 'd-block';
         this.rightMobileMenu = true;
+        this.fabClose = true;
         goTo(this.$refs.rightMenu);
       } else {
         this.classes.rightMenu = 'd-none d-md-block';
         this.rightMobileMenu = false;
+        this.fab = false;
+        this.fabClose = false;
       }
     },
   },
