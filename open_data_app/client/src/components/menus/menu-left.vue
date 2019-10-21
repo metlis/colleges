@@ -1,5 +1,9 @@
 <template>
-  <v-navigation-drawer expand-on-hover dense permanent>
+  <v-navigation-drawer
+    dense
+    :class="$style.leftMenu"
+    width="100%"
+  >
     <v-list nav dense>
       <v-list-item-group v-model="activeItem">
         <v-list-item
@@ -41,6 +45,7 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style lang="stylus" module>
+  .leftMenu
+    transform translateX(0%) !important
 </style>

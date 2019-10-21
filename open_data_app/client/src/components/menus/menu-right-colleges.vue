@@ -54,16 +54,17 @@
                 v-model="statesSelected"
                 @change="$emit('statesFilterChanged', statesSelected)"
                 :items="collegesStates"
-                color="blue-grey darken-4"
-                item-color="blue-grey darken-4"
                 dense
                 multiple
                 flat
+                color="blue-grey darken-4"
+                item-color="blue-grey darken-4"
               ></v-select>
             </v-list-item-action>
           </v-list-item>
             </v-expansion-panel-content>
           </v-expansion-panel>
+          <!--  Range filters  -->
           <v-expansion-panel
             v-for="key in Object.keys(rangeFilters)"
             :key="key"
@@ -101,28 +102,29 @@
                     <v-text-field
                       v-model="rangeFilters[key][filter].min"
                       @input="emitRangeInput"
+                      dense
+                      flat
                       type="number"
                       min="0"
                       color="blue-grey darken-4"
                       placeholder=" "
-                      dense
-                      flat
                     ></v-text-field>
                     <div class="mr-1">-</div>
                     <v-text-field
                       v-model="rangeFilters[key][filter].max"
                       @input="emitRangeInput"
+                      dense
+                      flat
                       type="number"
                       min="0"
                       color="blue-grey darken-4"
-                      dense
-                      flat
                     ></v-text-field>
                   </v-list-item-action>
                 </v-list-item>
               </template>
             </v-expansion-panel-content>
           </v-expansion-panel>
+          <!--  Checkbox filters  -->
           <v-expansion-panel
             class="mt-0"
             :class="$style.panel"
@@ -155,6 +157,7 @@
         </v-list-item-group>
       </v-expansion-panels>
       <br>
+      <!--  Reset button  -->
       <div class="my-2 text-center">
         <v-btn
          text

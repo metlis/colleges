@@ -1,24 +1,28 @@
 <template>
-  <v-row class="mx-0">
+  <v-row class="mx-0" ref="top">
+    <!--  Left Navigation Menu  -->
     <v-col
-      v-if="!rightMobileMenu"
       :class="classes.leftMenu"
+      class="pa-0"
       xs="12"
       sm="12"
       md="2"
-      style="padding: 0px"
     >
       <menu-left @navigationClick="changeNavButton" />
     </v-col>
+    <!--  Content Area  -->
     <v-col
-      v-show="!rightMobileMenu"
+      v-show="!mobileMenu"
+      class="px-md-12"
       xs="12"
       sm="12"
-      md="7"
+      md="8"
     >
       <v-content>
         <v-container fluid style="padding: 0px">
+          <!-- Colleges list -->
           <content-colleges
+            ref="colleges"
             v-if="activeNavButton === 'Colleges'"
             :colleges="colleges"
             :activeSortButton="activeSortButton"
@@ -26,30 +30,29 @@
             :checkboxFilters="checkboxFilters"
             :statesFilters="statesFilters"
             :rangeFilters="rangeFilters"
-            ref="colleges"
           />
         </v-container>
       </v-content>
     </v-col>
+    <!--  Right Menu  -->
     <v-col
       :class="classes.rightMenu"
       xs="12"
       sm="12"
-      offset-md="1"
       md="2"
-      ref="rightMenu"
     >
+      <!--  Right Sort/Filter Menu  -->
       <menu-right-colleges
         v-if="activeNavButton === 'Colleges'"
+        :colleges="colleges"
         @sortClick="changeSortButton"
         @checkboxFilterChanged="updateCheckboxFilters"
         @statesFilterChanged="updateStatesFilters"
         @rangeFilterChanged="updateRangeFilters"
         @resetFilters="resetFilters"
-        :colleges="colleges"
       />
     </v-col>
-    <!--  Filter button  -->
+    <!--  Mobile button for the menus  -->
     <v-speed-dial
       v-if="!fabClose"
       v-model="fab"
@@ -63,9 +66,8 @@
       <template v-slot:activator>
         <v-btn
           v-model="fab"
-          color="blue darken-2"
-          dark
           fab
+          color="blue darken-2"
         >
           <v-icon v-if="fab">mdi-close</v-icon>
           <v-icon v-else >mdi-tools</v-icon>
@@ -77,7 +79,7 @@
         small
         color="green"
       >
-        <v-icon @click="showRightMenu">mdi-filter</v-icon>
+        <v-icon @click="showMenu('rightMenu')">mdi-pencil</v-icon>
       </v-btn>
       <v-btn
         fab
@@ -85,7 +87,7 @@
         small
         color="indigo"
       >
-        <v-icon>mdi-menu</v-icon>
+        <v-icon @click="showMenu('leftMenu')">mdi-menu</v-icon>
       </v-btn>
     </v-speed-dial>
     <!--  Close button  -->
@@ -97,7 +99,7 @@
       right
       color="red"
     >
-      <v-icon @click="showRightMenu">mdi-close</v-icon>
+      <v-icon @click="hideMenu">mdi-close</v-icon>
     </v-btn>
   </v-row>
 </template>
@@ -124,7 +126,7 @@ export default {
         leftMenu: 'd-none d-md-block',
         rightMenu: 'd-none d-md-block',
       },
-      rightMobileMenu: false,
+      mobileMenu: false,
       fab: false,
       fabClose: false,
     };
@@ -169,18 +171,22 @@ export default {
         this.$root.$emit('reset-filters');
       }, 0);
     },
-    showRightMenu() {
-      if (this.classes.rightMenu.indexOf('d-none') > -1) {
-        this.classes.rightMenu = 'd-block';
-        this.rightMobileMenu = true;
+    showMenu(menu) {
+      if (menu && this.classes[menu] && this.classes[menu].indexOf('d-none') > -1) {
+        this.classes[menu] = 'd-block';
+        this.mobileMenu = true;
         this.fabClose = true;
-        goTo(this.$refs.rightMenu);
+        goTo(this.$refs.top);
       } else {
-        this.classes.rightMenu = 'd-none d-md-block';
-        this.rightMobileMenu = false;
-        this.fab = false;
-        this.fabClose = false;
+        this.hideMenu();
       }
+    },
+    hideMenu() {
+      this.classes.rightMenu = 'd-none d-md-block';
+      this.classes.leftMenu = 'd-none d-md-block';
+      this.mobileMenu = false;
+      this.fab = false;
+      this.fabClose = false;
     },
   },
 };
