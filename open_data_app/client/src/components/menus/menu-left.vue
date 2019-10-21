@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       iconsNames: {
-        'mdi-school': 'Colleges',
+        'mdi-home': 'Colleges',
         'mdi-google-maps': 'Map',
         'mdi-compare': 'Compare',
         'mdi-history': 'Analyze history',
