@@ -13,7 +13,8 @@
         <v-list-item
           v-for="item in Object.keys(sortNames)"
           :key="sortNames[item].title"
-          @click="$emit('sortClick', sortNames[item])"
+          :ref="item"
+          @click="handleSortClick(item)"
           class="mt-1 mb-0"
         >
           <v-list-item-icon>
@@ -410,6 +411,13 @@ export default {
         });
       });
       this.$emit('resetFilters');
+    },
+    handleSortClick(item) {
+      this.$emit('sortClick', this.sortNames[item]);
+      setTimeout(() => {
+        this.$refs[item][0].isActive = true;
+        this.$refs[item][0].inactive = false;
+      }, 0);
     },
   },
   computed: {
