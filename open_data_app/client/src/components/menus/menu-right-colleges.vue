@@ -79,6 +79,7 @@
               <template v-for="filter in Object.keys(rangeFilters[key])">
                 <v-subheader
                   inset
+                  class="pl-0"
                   :class="$style.subheader"
                   :key="rangeFilters[key][filter].title"
                 >{{rangeFilters[key][filter].title}}
