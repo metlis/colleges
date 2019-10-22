@@ -25,14 +25,7 @@
       />
       <br>
       <!--  Reset button  -->
-      <div class="my-2 text-center">
-        <v-btn
-         text
-         @click="reset"
-        >
-          Reset
-        </v-btn>
-      </div>
+      <button-reset @reset="reset" />
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -40,10 +33,11 @@
 <script>
 import BlockSort from '../reusable-components/block-sort.vue';
 import BlockFilter from '../reusable-components/block-filter.vue';
+import ButtonReset from '../reusable-components/button-reset.vue';
 
 export default {
   name: 'menu-right-colleges',
-  components: { BlockSort, BlockFilter },
+  components: { BlockSort, BlockFilter, ButtonReset },
   props: ['colleges'],
   data() {
     return {
