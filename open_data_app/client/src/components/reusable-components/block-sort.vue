@@ -77,9 +77,7 @@ export default {
   watch: {
     reset(val) {
       this.sortIsActive = !val;
-    },
-    sortIsActive(val) {
-      if (!val) this.resetSort();
+      if (!this.sortIsActive) this.resetSort();
     },
   },
 };
