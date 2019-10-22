@@ -166,7 +166,7 @@ export default {
       this.checkboxFilters = '';
       this.statesFilters = '';
       this.rangeFilters = '';
-      goTo(this.$refs.colleges);
+      goTo(this.$refs.top);
       setTimeout(() => {
         this.$root.$emit('reset-filters');
       }, 0);
