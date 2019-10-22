@@ -9,22 +9,10 @@
     <v-list nav dense flat>
       <!-- Sort block -->
       <v-subheader>Sort</v-subheader>
-      <v-list-item-group class="mr-1">
-        <v-list-item
-          v-for="(item, name) in sortNames"
-          :key="item.title"
-          :ref="name"
-          @click="handleSortClick(name)"
-          class="mt-1 mb-0"
-        >
-          <v-list-item-icon>
-            <v-icon>{{item.icon}}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>
-            {{item.title}}
-          </v-list-item-title>
-        </v-list-item>
-      </v-list-item-group>
+      <block-sort
+        :reset="resetSort"
+        @sortClick="handleSort"
+      />
       <v-divider />
       <!-- State filter block -->
       <v-subheader>Filter</v-subheader>
@@ -173,43 +161,14 @@
 </template>
 
 <script>
+import BlockSort from '../reusable-components/block-sort.vue';
+
 export default {
   name: 'menu-right-colleges',
+  components: { BlockSort },
   props: ['colleges'],
   data() {
     return {
-      sortNames: {
-        name: {
-          icon: 'mdi-alphabetical',
-          title: 'Name',
-          tooltip: 'Name',
-          name: 'name',
-        },
-        cost: {
-          icon: 'mdi-cash',
-          title: 'Cost',
-          tooltip: 'Average cost $',
-          name: 'average_price',
-        },
-        loan: {
-          icon: 'mdi-bank',
-          title: 'Loan',
-          tooltip: 'Federal loan recipients %',
-          name: 'federal_loan',
-        },
-        admission: {
-          icon: 'mdi-certificate',
-          title: 'Admission',
-          tooltip: 'Admission rate %',
-          name: 'admission_rate',
-        },
-        undergraduates: {
-          icon: 'mdi-account-multiple',
-          title: 'Undergraduates',
-          tooltip: 'Number of undergraduate students',
-          name: 'undergrad_students',
-        },
-      },
       checkboxFilters: {
         operating: {
           value: false,
@@ -360,6 +319,7 @@ export default {
           },
         },
       },
+      resetSort: false,
     };
   },
   methods: {
@@ -411,14 +371,12 @@ export default {
           Object.assign(this.rangeFilters[key][key2], { min: '', max: '' });
         });
       });
+      this.resetSort = true;
       this.$emit('resetFilters');
     },
-    handleSortClick(item) {
-      this.$emit('sortClick', this.sortNames[item]);
-      setTimeout(() => {
-        this.$refs[item][0].isActive = true;
-        this.$refs[item][0].inactive = false;
-      }, 0);
+    handleSort(payload) {
+      this.$emit('sortClick', payload);
+      this.resetSort = false;
     },
   },
   computed: {

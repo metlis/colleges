@@ -119,8 +119,9 @@
                v-if="filtersApplied && college[filter.name] !== ''
                && college[filter.name] !== null"
                :key="filter.title"
-               style="display: inline"
-               :class="$style.chip">
+               :class="$style.chip"
+               class="d-inline"
+            >
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                   <v-chip
