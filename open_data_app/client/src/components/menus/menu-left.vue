@@ -7,18 +7,18 @@
     <v-list nav dense>
       <v-list-item-group v-model="activeItem">
         <v-list-item
-          v-for="icon in Object.keys(iconsNames)"
-          :key="icon"
-          @click="$emit('navigationClick', iconsNames[icon])"
+          v-for="(icon, name) in iconsNames"
+          :key="name"
+          @click="$emit('navigationClick', icon)"
           link
         >
           <v-list-item-icon>
             <v-icon>
-              {{icon}}
+              {{name}}
             </v-icon>
           </v-list-item-icon>
           <v-list-item-title>
-            {{iconsNames[icon]}}
+            {{icon}}
           </v-list-item-title>
         </v-list-item>
       </v-list-item-group>

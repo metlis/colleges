@@ -11,17 +11,17 @@
       <v-subheader>Sort</v-subheader>
       <v-list-item-group class="mr-1">
         <v-list-item
-          v-for="item in Object.keys(sortNames)"
-          :key="sortNames[item].title"
-          :ref="item"
-          @click="handleSortClick(item)"
+          v-for="(item, name) in sortNames"
+          :key="item.title"
+          :ref="name"
+          @click="handleSortClick(name)"
           class="mt-1 mb-0"
         >
           <v-list-item-icon>
-            <v-icon>{{sortNames[item].icon}}</v-icon>
+            <v-icon>{{item.icon}}</v-icon>
           </v-list-item-icon>
           <v-list-item-title>
-            {{sortNames[item].title}}
+            {{item.title}}
           </v-list-item-title>
         </v-list-item>
       </v-list-item-group>
@@ -67,7 +67,7 @@
           </v-expansion-panel>
           <!--  Range filters  -->
           <v-expansion-panel
-            v-for="key in Object.keys(rangeFilters)"
+            v-for="(value, key) in rangeFilters"
             :key="key"
             class="mt-0"
             :class="$style.panel"
@@ -76,33 +76,33 @@
               {{key}}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <template v-for="filter in Object.keys(rangeFilters[key])">
+              <template v-for="(filter, name) in value">
                 <v-subheader
                   inset
                   class="pl-0"
                   :class="$style.subheader"
-                  :key="rangeFilters[key][filter].title"
-                >{{rangeFilters[key][filter].title}}
+                  :key="filter.title"
+                >{{filter.title}}
                 </v-subheader>
                 <v-list-item
-                  :key="filter"
+                  :key="name"
                   class="px-0"
                 >
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
                       <v-list-item-icon>
                         <v-icon v-on="on">
-                          {{rangeFilters[key][filter].icon}}
+                          {{filter.icon}}
                         </v-icon>
                       </v-list-item-icon>
                     </template>
-                    <span>{{rangeFilters[key][filter].title}}</span>
+                    <span>{{filter.title}}</span>
                   </v-tooltip>
                   <v-list-item-action
                     class="d-flex flex-row align-center ml-0 mt-1 mb-0"
                   >
                     <v-text-field
-                      v-model="rangeFilters[key][filter].min"
+                      v-model="filter.min"
                       @input="emitRangeInput"
                       dense
                       flat
@@ -113,7 +113,7 @@
                     ></v-text-field>
                     <div class="mr-1">-</div>
                     <v-text-field
-                      v-model="rangeFilters[key][filter].max"
+                      v-model="filter.max"
                       @input="emitRangeInput"
                       dense
                       flat
@@ -136,21 +136,21 @@
             </v-expansion-panel-header>
             <v-expansion-panel-content>
               <v-list-item
-                v-for="filter in Object.keys(checkboxFilters)"
-                :key="filter"
+                v-for="(filter, key) in checkboxFilters"
+                :key="key"
                  class="mx-0 px-0"
               >
             <template v-slot:default="{ active, toggle }">
               <v-list-item-action class="mt-1 mb-0">
                 <v-checkbox
                   @change="$emit('checkboxFilterChanged', checkboxFilters)"
-                  v-model="checkboxFilters[filter].value"
+                  v-model="filter.value"
                   color="blue-grey darken-4"
                 ></v-checkbox>
               </v-list-item-action>
               <v-list-item-content
-                @click="tickCheckbox(filter)">
-                <v-list-item-title>{{checkboxFilters[filter].title}}</v-list-item-title>
+                @click="tickCheckbox(key)">
+                <v-list-item-title>{{filter.title}}</v-list-item-title>
               </v-list-item-content>
             </template>
           </v-list-item>

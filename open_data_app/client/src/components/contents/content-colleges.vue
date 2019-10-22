@@ -29,7 +29,10 @@
           {{college.name}}
         </v-card-title>
         <v-card-text>
-          <span @click="openCollegeUrl(college.url)" style="cursor: pointer">
+          <span
+            @click="openCollegeUrl(college.url)"
+            style="cursor: pointer"
+          >
             {{college.url}}
           </span>
           <div>
@@ -179,9 +182,9 @@
             <v-card-text>
               <v-divider />
               <div
-                v-for="i in Object.keys(items)"
-                v-if="college[items[i].props[0]]"
-                :key="i"
+                v-for="(item, name) in items"
+                v-if="college[item.props[0]]"
+                :key="name"
               >
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
@@ -189,14 +192,14 @@
                       :class="$style.container"
                       v-on="on"
                     >
-                      <v-icon>{{items[i].icon}}
+                      <v-icon>{{item.icon}}
                     </v-icon></span>
                   </template>
-                  <span>{{items[i].title}}</span>
+                  <span>{{item.title}}</span>
                 </v-tooltip>
-                <span :class="$style.description"> {{college[items[i].props[0]]}}
-                  <template v-if="college[items[i].props[1]]">
-                    , {{college[items[i].props[1]]}}
+                <span :class="$style.description"> {{college[item.props[0]]}}
+                  <template v-if="college[item.props[1]]">
+                    , {{college[item.props[1]]}}
                   </template>
                 </span><br>
               </div>
