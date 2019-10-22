@@ -49,7 +49,7 @@
         @checkboxFilterChanged="updateCheckboxFilters"
         @statesFilterChanged="updateStatesFilters"
         @rangeFilterChanged="updateRangeFilters"
-        @resetFilters="resetFilters"
+        @reset="resetFilters"
       />
     </v-col>
     <!--  Mobile button for the menus  -->
