@@ -213,13 +213,17 @@
 </template>
 
 <script>
+import {
+  filterColleges, createUnifiedPriceParam, sortNumeric, addCommas, sortAlphabetically,
+} from '../../utils/helpers';
+
 export default {
   name: 'content-colleges',
   props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters',
     'rangeFilters', 'reset'],
   data() {
     return {
-      filteredColleges: '',
+      filteredColleges: this.colleges,
       cardsStates: {},
       reverseSort: false,
       isSorted: false,
@@ -254,45 +258,18 @@ export default {
   },
   methods: {
     getColleges() {
-      if (this.checkboxFilters || this.statesFilters || this.rangeFilters) {
-        const filteredColleges = this.colleges.filter((college) => {
-          let isFiltered = true;
-          if (this.checkboxFilters) {
-            Object.values(this.checkboxFilters).forEach((filter) => {
-              if (filter.value && college[filter.name] === 0) isFiltered = false;
-            });
-          }
-          if (this.statesFilters && this.statesFilters.length > 0
-             && !this.statesFilters.some(state => state === college.state__name)) {
-            isFiltered = false;
-          }
-          if (this.rangeFilters) {
-            if (!Object.prototype.hasOwnProperty.call(college, 'average_price')) {
-              this.createUnifiedPriceParam();
-            }
-            Object.values(this.rangeFilters).forEach((filter) => {
-              if ((+filter.min && !college[filter.name])
-                  || (+filter.min && college[filter.name] < +filter.min)) {
-                isFiltered = false;
-              }
-              if ((+filter.max && !college[filter.name])
-                  || (+filter.max && college[filter.name] > +filter.max)) {
-                isFiltered = false;
-              }
-            });
-          }
-          return isFiltered;
-        });
-        return filteredColleges;
-      }
-      return this.colleges;
+      return filterColleges(this.filteredColleges, {
+        checkboxFilters: this.checkboxFilters,
+        statesFilters: this.statesFilters,
+        rangeFilters: this.rangeFilters,
+      });
     },
     removeCollege(id) {
       fetch(`/api/modify_favourites/?college_id=${id}`)
         .then(response => response.text())
         .then((data) => {
           if (data === 'Removed') {
-            this.localColleges.forEach((col, index, obj) => {
+            this.filteredColleges.forEach((col, index, obj) => {
               if (col.id === id) {
                 obj.splice(index, 1);
                 const favBadge = document.getElementById('favourite-badge');
@@ -328,7 +305,7 @@ export default {
       }
       switch (this.activeSortButton.name) {
       case 'name':
-        this.sortAlphabetically();
+        sortAlphabetically(this.filteredColleges, this.reverseSort);
         break;
       case 'average_price':
         this.sortCost();
@@ -336,57 +313,18 @@ export default {
       case 'federal_loan':
       case 'admission_rate':
       case 'undergrad_students':
-        this.sortNumeric(this.activeSortButton.name);
+        sortNumeric(this.filteredColleges, this.activeSortButton.name, this.reverseSort);
         break;
       default:
         break;
       }
     },
-    // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
     addCommas(num) {
-      try {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      } catch (e) {
-        return '';
-      }
-    },
-    sortAlphabetically() {
-      this.filteredColleges.sort((a, b) => {
-        if (a.name.toLowerCase() < b.name.toLowerCase()) {
-          if (!this.reverseSort) return -1;
-          return 1;
-        }
-        if (a.name.toLowerCase() > b.name.toLowerCase()) {
-          if (!this.reverseSort) return 1;
-          return -1;
-        }
-        return 0;
-      });
+      return addCommas(num);
     },
     sortCost() {
-      this.createUnifiedPriceParam();
-      this.sortNumeric(this.activeSortButton.name);
-    },
-    createUnifiedPriceParam() {
-      this.filteredColleges.forEach((college) => {
-        if (!college.average_net_price_public) {
-          // eslint-disable-next-line no-param-reassign
-          college.average_price = college.average_net_price_private;
-        }
-        if (!college.average_net_price_private) {
-          // eslint-disable-next-line no-param-reassign
-          college.average_price = college.average_net_price_public;
-        }
-      });
-    },
-    sortNumeric(param) {
-      this.filteredColleges.sort((a, b) => {
-        const [first, second] = [a[param], b[param]];
-        if (first === null || first === '') return 1;
-        if (second === null || second === '') return -1;
-        if (!this.reverseSort) return Number(first) - Number(second);
-        return Number(second) - Number(first);
-      });
+      createUnifiedPriceParam(this.filteredColleges);
+      sortNumeric(this.filteredColleges, this.activeSortButton.name, this.reverseSort);
     },
     updateFilteredCollegesList() {
       this.filteredColleges = this.getColleges();
@@ -414,13 +352,13 @@ export default {
     reset(val) {
       if (val) {
         this.reverseSort = false;
-        this.updateFilteredCollegesList();
-        this.sortAlphabetically();
+        this.isSorted = false;
+        this.filteredColleges = this.colleges;
+        sortAlphabetically(this.filteredColleges, this.reverseSort);
       }
     },
   },
   created() {
-    this.filteredColleges = this.getColleges();
     this.$root.$on('colleges-sort-click', () => {
       this.sortColleges();
       this.isSorted = true;

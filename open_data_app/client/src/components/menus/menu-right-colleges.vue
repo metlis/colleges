@@ -34,7 +34,7 @@
 import BlockSort from '../reusable-components/block-sort.vue';
 import BlockFilter from '../reusable-components/block-filter.vue';
 import ButtonReset from '../reusable-components/button-reset.vue';
-import getCollegesStates from '../../utils/helpers';
+import { getCollegesStates } from '../../utils/helpers';
 
 export default {
   name: 'menu-right-colleges',
