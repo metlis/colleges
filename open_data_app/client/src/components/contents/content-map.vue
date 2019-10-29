@@ -7,7 +7,7 @@ import gmapsInit from '../../utils/gmaps';
 
 export default {
   name: 'content-map',
-  props: ['colleges'],
+  props: ['colleges', 'checkboxFilters', 'statesFilters', 'rangeFilters', 'reset'],
   data() {
     return {
       key: '',
@@ -38,6 +38,17 @@ export default {
     } catch (error) {
       console.error(error);
     }
+  },
+  created() {
+    this.$root.$on('map-checkbox-click', () => {
+      console.log(this.checkboxFilters);
+    });
+    this.$root.$on('map-state-click', () => {
+      console.log(this.statesFilters);
+    });
+    this.$root.$on('map-range-input', () => {
+      console.log(this.rangeFilters);
+    });
   },
 };
 </script>

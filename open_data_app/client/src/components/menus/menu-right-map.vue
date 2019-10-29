@@ -7,13 +7,6 @@
     width="100%"
   >
     <v-list nav dense flat>
-      <!-- Sort block -->
-      <v-subheader>Sort</v-subheader>
-      <block-sort
-        :reset="resetSort"
-        @sortClick="handleSort"
-      />
-      <v-divider />
       <!-- Filter block -->
       <v-subheader>Filter</v-subheader>
       <block-filter
@@ -31,30 +24,23 @@
 </template>
 
 <script>
-import BlockSort from '../reusable-components/block-sort.vue';
 import BlockFilter from '../reusable-components/block-filter.vue';
 import ButtonReset from '../reusable-components/button-reset.vue';
 import getCollegesStates from '../../utils/helpers';
 
 export default {
-  name: 'menu-right-colleges',
-  components: { BlockSort, BlockFilter, ButtonReset },
+  name: 'menu-right-map',
   props: ['colleges'],
+  components: { BlockFilter, ButtonReset },
   data() {
     return {
-      resetSort: false,
       resetFilter: false,
     };
   },
   methods: {
     reset() {
-      this.resetSort = true;
       this.resetFilter = true;
       this.$emit('reset');
-    },
-    handleSort(payload) {
-      this.$emit('sortClick', payload);
-      this.resetSort = false;
     },
     handleFilter(eventName, payload) {
       this.$emit(eventName, payload);

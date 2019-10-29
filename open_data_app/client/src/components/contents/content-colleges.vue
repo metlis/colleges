@@ -215,7 +215,8 @@
 <script>
 export default {
   name: 'content-colleges',
-  props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters', 'rangeFilters'],
+  props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters',
+    'rangeFilters', 'reset'],
   data() {
     return {
       filteredColleges: '',
@@ -409,25 +410,29 @@ export default {
       return { rangeFilters, checkboxFilters };
     },
   },
+  watch: {
+    reset(val) {
+      if (val) {
+        this.reverseSort = false;
+        this.updateFilteredCollegesList();
+        this.sortAlphabetically();
+      }
+    },
+  },
   created() {
     this.filteredColleges = this.getColleges();
-    this.$root.$on('sort-click', () => {
+    this.$root.$on('colleges-sort-click', () => {
       this.sortColleges();
       this.isSorted = true;
     });
-    this.$root.$on('checkbox-click', () => {
+    this.$root.$on('colleges-checkbox-click', () => {
       this.updateFilteredCollegesList();
     });
-    this.$root.$on('state-click', () => {
+    this.$root.$on('colleges-state-click', () => {
       this.updateFilteredCollegesList();
     });
-    this.$root.$on('range-input', () => {
+    this.$root.$on('colleges-range-input', () => {
       this.updateFilteredCollegesList();
-    });
-    this.$root.$on('reset-filters', () => {
-      this.reverseSort = false;
-      this.updateFilteredCollegesList();
-      this.sortAlphabetically();
     });
   },
 };

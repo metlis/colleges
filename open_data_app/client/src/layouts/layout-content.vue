@@ -20,7 +20,7 @@
     >
       <v-content>
         <v-container fluid class="pa-0">
-          <!-- Colleges list -->
+          <!-- A list of colleges -->
           <content-colleges
             ref="colleges"
             v-if="activeNavButton === 'Colleges'"
@@ -30,10 +30,17 @@
             :checkboxFilters="contentColleges.checkboxFilters"
             :statesFilters="contentColleges.statesFilters"
             :rangeFilters="contentColleges.rangeFilters"
+            :reset="contentColleges.reset"
           />
+          <!-- A map with colleges -->
           <content-map
-            :colleges="colleges"
+            ref="map"
             v-if="activeNavButton === 'Map'"
+            :colleges="colleges"
+            :checkboxFilters="contentMap.checkboxFilters"
+            :statesFilters="contentMap.statesFilters"
+            :rangeFilters="contentMap.rangeFilters"
+            :reset="contentMap.reset"
           />
         </v-container>
       </v-content>
@@ -45,20 +52,30 @@
       sm="12"
       md="2"
     >
-      <!--  Right Sort/Filter Menu Colleges  -->
+      <!--  Right Sort/Filter Menu for Colleges  -->
       <menu-right-colleges
         v-if="activeNavButton === 'Colleges'"
         :colleges="colleges"
-        @sortClick="changeCollegesSortButton"
-        @checkboxFilterChanged="updateCollegesCheckboxFilters"
-        @statesFilterChanged="updateCollegesStatesFilters"
-        @rangeFilterChanged="updateCollegesRangeFilters"
-        @reset="resetFilters"
+        @sortClick="changeSortButton('contentColleges', 'colleges-sort-click', $event)"
+        @checkboxFilterChanged=
+          "updateFilters('contentColleges', 'checkboxFilters', 'colleges-checkbox-click', $event)"
+        @statesFilterChanged=
+          "updateFilters('contentColleges', 'statesFilters', 'colleges-state-click', $event)"
+        @rangeFilterChanged=
+          "updateFilters('contentColleges', 'rangeFilters', 'colleges-range-input', $event)"
+        @reset="resetFilters('contentColleges')"
       />
-      <!--  Right Sort/Filter Menu Map  -->
-      <menu-right-colleges
+      <!--  Right Filter Menu for Map  -->
+      <menu-right-map
         v-if="activeNavButton === 'Map'"
         :colleges="colleges"
+        @checkboxFilterChanged=
+          "updateFilters('contentMap', 'checkboxFilters', 'map-checkbox-click', $event)"
+        @statesFilterChanged=
+          "updateFilters('contentMap', 'statesFilters', 'map-state-click', $event)"
+        @rangeFilterChanged=
+          "updateFilters('contentMap', 'rangeFilters', 'map-range-input', $event)"
+        @reset="resetFilters('contentMap')"
       />
     </v-col>
     <!--  Mobile button for the menus  -->
@@ -117,13 +134,14 @@
 import goTo from 'vuetify/es5/services/goto';
 import MenuLeft from '../components/menus/menu-left.vue';
 import MenuRightColleges from '../components/menus/menu-right-colleges.vue';
+import MenuRightMap from '../components/menus/menu-right-map.vue';
 import ContentColleges from '../components/contents/content-colleges.vue';
 import ContentMap from '../components/contents/content-map.vue';
 
 export default {
   name: 'content-layout',
   components: {
-    MenuLeft, MenuRightColleges, ContentColleges, ContentMap,
+    MenuLeft, MenuRightColleges, MenuRightMap, ContentColleges, ContentMap,
   },
   props: ['colleges'],
   data() {
@@ -142,6 +160,15 @@ export default {
         checkboxFilters: '',
         statesFilters: '',
         rangeFilters: '',
+        reset: false,
+      },
+      contentMap: {
+        activeSortButton: '',
+        prevSortButton: '',
+        checkboxFilters: '',
+        statesFilters: '',
+        rangeFilters: '',
+        reset: false,
       },
     };
   },
@@ -149,45 +176,32 @@ export default {
     changeNavButton(val) {
       this.activeNavButton = val;
     },
-    changeCollegesSortButton(val) {
-      if (this.contentColleges.activeSortButton) {
-        this.contentColleges.prevSortButton = this.contentColleges.activeSortButton;
+    changeSortButton(page, event, val) {
+      if (this[page].activeSortButton) {
+        this[page].prevSortButton = this[page].activeSortButton;
       }
-      this.contentColleges.activeSortButton = val;
+      this[page].activeSortButton = val;
       setTimeout(() => {
-        this.$root.$emit('sort-click');
+        this.$root.$emit(event);
       }, 0);
     },
-    updateCollegesCheckboxFilters(val) {
-      this.contentColleges.checkboxFilters = val;
+    updateFilters(page, filter, event, val) {
+      this[page][filter] = val;
+      this[page].reset = false;
       setTimeout(() => {
-        this.$root.$emit('checkbox-click');
+        this.$root.$emit(event);
       }, 0);
     },
-    updateCollegesStatesFilters(val) {
-      this.contentColleges.statesFilters = val;
-      setTimeout(() => {
-        this.$root.$emit('state-click');
-      }, 0);
-    },
-    updateCollegesRangeFilters(val) {
-      this.contentColleges.rangeFilters = val;
-      setTimeout(() => {
-        this.$root.$emit('range-input');
-      }, 0);
-    },
-    resetFilters() {
-      this.contentColleges = Object.assign({}, this.contentColleges, {
+    resetFilters(page) {
+      this[page] = Object.assign({}, this[page], {
         activeSortButton: '',
         prevSortButton: '',
         checkboxFilters: '',
         statesFilters: '',
         rangeFilters: '',
+        reset: true,
       });
       goTo(this.$refs.top);
-      setTimeout(() => {
-        this.$root.$emit('reset-filters');
-      }, 0);
     },
     showMenu(menu) {
       if (menu && this.classes[menu] && this.classes[menu].indexOf('d-none') > -1) {
