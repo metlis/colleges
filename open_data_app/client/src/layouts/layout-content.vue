@@ -32,6 +32,7 @@
             :rangeFilters="contentColleges.rangeFilters"
           />
           <content-map
+            :colleges="colleges"
             v-if="activeNavButton === 'Map'"
           />
         </v-container>
