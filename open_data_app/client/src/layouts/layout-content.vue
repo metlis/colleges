@@ -19,7 +19,7 @@
       md="8"
     >
       <v-content>
-        <v-container fluid style="padding: 0px">
+        <v-container fluid class="pa-0">
           <!-- Colleges list -->
           <content-colleges
             ref="colleges"
@@ -31,6 +31,9 @@
             :statesFilters="contentColleges.statesFilters"
             :rangeFilters="contentColleges.rangeFilters"
           />
+          <content-map
+            v-if="activeNavButton === 'Map'"
+          />
         </v-container>
       </v-content>
     </v-col>
@@ -41,7 +44,7 @@
       sm="12"
       md="2"
     >
-      <!--  Right Sort/Filter Menu  -->
+      <!--  Right Sort/Filter Menu Colleges  -->
       <menu-right-colleges
         v-if="activeNavButton === 'Colleges'"
         :colleges="colleges"
@@ -50,6 +53,11 @@
         @statesFilterChanged="updateCollegesStatesFilters"
         @rangeFilterChanged="updateCollegesRangeFilters"
         @reset="resetFilters"
+      />
+      <!--  Right Sort/Filter Menu Map  -->
+      <menu-right-colleges
+        v-if="activeNavButton === 'Map'"
+        :colleges="colleges"
       />
     </v-col>
     <!--  Mobile button for the menus  -->
@@ -109,10 +117,13 @@ import goTo from 'vuetify/es5/services/goto';
 import MenuLeft from '../components/menus/menu-left.vue';
 import MenuRightColleges from '../components/menus/menu-right-colleges.vue';
 import ContentColleges from '../components/contents/content-colleges.vue';
+import ContentMap from '../components/contents/content-map.vue';
 
 export default {
   name: 'content-layout',
-  components: { MenuLeft, MenuRightColleges, ContentColleges },
+  components: {
+    MenuLeft, MenuRightColleges, ContentColleges, ContentMap,
+  },
   props: ['colleges'],
   data() {
     return {
