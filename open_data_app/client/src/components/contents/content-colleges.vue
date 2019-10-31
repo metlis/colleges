@@ -1,5 +1,8 @@
 <template>
-  <v-row dense>
+  <v-row
+    :class="$style.content"
+    dense
+  >
     <!-- A message for no results   -->
     <v-col
       cols="12"
@@ -388,4 +391,7 @@ export default {
     overflow hidden
   .chip
     display inline
+  .content
+    min-height 120vh
+    align-content flex-start
 </style>

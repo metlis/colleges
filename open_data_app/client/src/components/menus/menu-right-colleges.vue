@@ -74,4 +74,6 @@ export default {
     transform translateX(0%) !important
     left 0px
     top 0px
+    ::-webkit-scrollbar
+      display none
 </style>
