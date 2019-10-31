@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     getColleges() {
-      return filterColleges(this.filteredColleges, {
+      return filterColleges(this.colleges, {
         checkboxFilters: this.checkboxFilters,
         statesFilters: this.statesFilters,
         rangeFilters: this.rangeFilters,

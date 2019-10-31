@@ -258,7 +258,7 @@ export default {
   },
   methods: {
     getColleges() {
-      return filterColleges(this.filteredColleges, {
+      return filterColleges(this.colleges, {
         checkboxFilters: this.checkboxFilters,
         statesFilters: this.statesFilters,
         rangeFilters: this.rangeFilters,
@@ -364,6 +364,7 @@ export default {
       this.isSorted = true;
     });
     this.$root.$on('colleges-checkbox-click', () => {
+      console.log('here');
       this.updateFilteredCollegesList();
     });
     this.$root.$on('colleges-state-click', () => {
