@@ -1,12 +1,16 @@
-$green = #41B3A3
+$green = #81C784
 $grey = #676060
-$blue = rgba(0, 165, 217, 0.5)
-$blue-top = rgba(0, 165, 217, 0.05)
-$blue-bottom = rgba(0, 165, 217, 0.1)
+$black = #212529
+$blue = #CFD8DC
+$blue-link = #0277BD
+$blue-link-hover = #01579B
+$blue-top = #ECEFF1
+$blue-dark = #37474F
 $red = #EC7556
 $brown = #EDA875
 $velvet = #CA829A
 $black = #212529
+$yellow = #FFCA28
 
 body
   position relative
@@ -23,8 +27,17 @@ h3
 h4
   font-size 110%
 
+a
+  color $blue-link
+  :hover
+    color $blue-link-hover
+
+.active
+  color $black !important
+
 .navbar
   background-color $blue-top !important
+  box-shadow 1px 1px 0px $blue
 
 .card
   margin 10px 0px 10px 0px
@@ -190,7 +203,6 @@ h4
 .icon
   cursor pointer
 
-
 footer
   width 100%
   height 10%
@@ -210,7 +222,7 @@ footer
   justify-content space-between
 
 .favourite-button
-  color orange
+  color $yellow
   cursor pointer
   font-size 25px
 
@@ -218,6 +230,14 @@ footer
   display inline-block
   width 100%
   text-align center
+  border-color $blue-dark
+  a
+    color $black !important
+  a:hover
+    color white !important
+
+.results-back-page a:hover
+  background-color $blue-dark !important
 
 .badge-link
   text-decoration none !important

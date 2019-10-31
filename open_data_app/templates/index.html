@@ -45,7 +45,6 @@
     {% endblock %}
 
     {% block styles %}
-        <link rel="stylesheet" href="{% static 'open_data_app/css/dropdown.css' %}">
         <link rel="stylesheet" href="{% static 'open_data_app/css/index.css' %}">
     {% endblock %}
 
@@ -109,7 +108,7 @@
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}" autocomplete="off">
                     <input class="form-control search mr-sm-2" type="search" name="text" placeholder="Search">
-                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
         </nav>
@@ -354,7 +353,7 @@
                             </div>
                         </div>
                         <div class="submit-button-container">
-                            <button type="submit" class="btn btn-outline-info submit-button">Find colleges</button>
+                            <button type="submit" class="btn btn-outline-secondary submit-button">Find colleges</button>
                         </div>
                     </form>
                 </div>

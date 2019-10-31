@@ -15,8 +15,15 @@ h3 {
 h4 {
   font-size: 110%;
 }
+a {
+  color: #0277bd;
+}
+a :hover {
+  color: #01579b;
+}
 .navbar {
-  background-color: rgba(0,165,217,0.05) !important;
+  background-color: #eceff1 !important;
+  box-shadow: 1px 1px 0px #cfd8dc;
 }
 .dropdown-toggle::after {
   border: 0px;
@@ -27,7 +34,7 @@ h4 {
 .form-container {
   display: block;
   margin: 15px 15px 15px 15px;
-  border: 1px solid rgba(0,165,217,0.5);
+  border: 1px solid #cfd8dc;
   border-radius: 5px;
   padding: 20px;
 }
@@ -40,7 +47,7 @@ h4 {
   opacity: 0.9;
 }
 .card {
-  border: 1px solid rgba(0,165,217,0.5);
+  border: 1px solid #cfd8dc;
   margin-bottom: 5px;
 }
 .card-header {
@@ -81,6 +88,15 @@ h4 {
 }
 .submit-button {
   width: 175px;
+  color: #37474f !important;
+}
+.btn-outline-secondary {
+  border-color: #cfd8dc;
+  color: rgba(0,0,0,0.5);
+}
+.btn-outline-secondary:hover {
+  color: #fff !important;
+  background-color: #37474f !important;
 }
 .icon {
   cursor: pointer;
@@ -105,7 +121,7 @@ footer .container p {
   opacity: 0.9;
 }
 .search {
-  border: 1px solid rgba(0,165,217,0.5);
+  border: 1px solid #cfd8dc;
 }
 .text-container {
   margin-top: 15px;
@@ -118,7 +134,7 @@ footer .container p {
 .checkbox .cr {
   position: relative;
   display: inline-block;
-  border: 1px solid rgba(0,165,217,0.5);
+  border: 1px solid #cfd8dc;
   border-radius: 0.25em;
   width: 1.3em;
   height: 1.3em;

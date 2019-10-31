@@ -1,7 +1,9 @@
 $green = #41B3A3
-$blue = rgba(0, 165, 217, 0.5)
-$blue-top = rgba(0, 165, 217, 0.05)
-$blue-bottom = rgba(0, 165, 217, 0.1)
+$blue = #CFD8DC
+$blue-link = #0277BD
+$blue-link-hover = #01579B
+$blue-top = #ECEFF1
+$blue-dark = #37474F
 $red = #EC7556
 $brown = #EDA875
 $velvet = #CA829A
@@ -23,8 +25,14 @@ h3
 h4
   font-size 110%
 
+a
+  color $blue-link
+  :hover
+    color $blue-link-hover
+
 .navbar
   background-color $blue-top !important
+  box-shadow 1px 1px 0px $blue
 
 .dropdown-toggle::after
   border 0px
@@ -84,6 +92,15 @@ h4
 
 .submit-button
   width 175px
+  color $blue-dark !important
+
+.btn-outline-secondary
+  border-color $blue
+  color rgba(0,0,0,.5)
+
+.btn-outline-secondary:hover
+  color white !important
+  background-color $blue-dark !important
 
 .icon
   cursor pointer
