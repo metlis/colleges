@@ -23,7 +23,7 @@
           <!-- A list of colleges -->
           <content-colleges
             ref="colleges"
-            v-if="activeNavButton === 'Colleges'"
+            v-show="activeNavButton === 'Colleges'"
             :colleges="colleges"
             :activeSortButton="contentColleges.activeSortButton"
             :prevSortButton="contentColleges.prevSortButton"
