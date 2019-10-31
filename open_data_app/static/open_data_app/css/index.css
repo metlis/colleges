@@ -24,40 +24,6 @@ h4 {
 .navbar-nav {
   margin-right: 0px;
 }
-.dropdown-submenu li:active {
-  background-color: rgba(0,165,217,0.05) !important;
-}
-.dropdown-submenu .dropdown-menu {
-  max-height: 200px;
-  overflow-y: auto;
-}
-.dropdown-submenu .dropdown-menu a {
-  white-space: normal;
-}
-.dropdown-submenu .dropdown-menu .dropdown-item {
-  padding: 8px 4px 8px 12px;
-  border-bottom: 1px solid rgba(0,165,217,0.1);
-}
-.dropdown-menu .dropdown-toggle:active {
-  background-color: transparent !important;
-}
-.dropdown-menu .dropdown-submenu .dropdown-menu li a:active {
-  background-color: transparent !important;
-}
-.dropdown-menu {
-  padding-top: 0px;
-}
-.dropdown-menu li:hover {
-  background-color: rgba(0,165,217,0.05) !important;
-}
-.dropdown-menu li:active {
-  background-color: rgba(0,165,217,0.5) !important;
-}
-.dropdown-menu .dropdown-submenu {
-  border-bottom: 1px solid rgba(0,165,217,0.1);
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
 .form-container {
   display: block;
   margin: 15px 15px 15px 15px;

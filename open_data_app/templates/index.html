@@ -101,54 +101,10 @@
 
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav ml-auto mr-3 mt-2 mt-lg-0">
-                    <li class="nav-item dropdown">
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'college_app:show_favourite' %}">
                             Favourite <span id="favourite-badge" class="badge badge-warning">{{ favourite_colleges|length }}</span>
                         </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Categories
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Program</a>
-                                <ul class="dropdown-menu">
-                                    {% for discipline in disciplines %}
-                                        <li><a class="dropdown-item"
-                                               href="{% url 'college_app:filter_no_values' discipline.0 %}">{{ discipline.1 }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                            {% for key, val in multi_val_filters.items %}
-                                {% if val.0|length > 1 and key != 'city_slug' %}
-                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">{{ val.1 }}</a>
-                                        <ul class="dropdown-menu">
-                                            {% for v in val.0 %}
-                                                <li><a class="dropdown-item"
-                                                        {% if key == 'region' or key == 'state' %}
-                                                            href="{% url 'college_app:geo' key v.1 %}">{{ v.0 }}
-                                                        {% else %}
-                                                            href="{% url 'college_app:filter_values' key v.1 %}">{{ v.0 }}
-                                                        {% endif %}</a>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Other</a>
-                                <ul class="dropdown-menu">
-                                    {% for key, val in binary_filters.items %}
-                                        {% if val.0|length > 1 %}
-                                            <li><a class="dropdown-item"
-                                                   href="{% url 'college_app:filter_values' key 1 %}">{{ val.1 }}</a></li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        </ul>
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}" autocomplete="off">
