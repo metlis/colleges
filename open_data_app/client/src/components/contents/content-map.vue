@@ -88,7 +88,7 @@ export default {
     reset(val) {
       if (val) {
         this.filteredColleges = this.colleges;
-        this.createMarkers();
+        this.updateColleges();
       }
     },
   },
