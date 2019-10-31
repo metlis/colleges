@@ -35,7 +35,7 @@
           <!-- A map with colleges -->
           <content-map
             ref="map"
-            v-if="activeNavButton === 'Map'"
+            v-show="activeNavButton === 'Map'"
             :colleges="colleges"
             :checkboxFilters="contentMap.checkboxFilters"
             :statesFilters="contentMap.statesFilters"
