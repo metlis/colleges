@@ -34,10 +34,10 @@ export default {
       iconsNames: {
         'mdi-home': 'Colleges',
         'mdi-google-maps': 'Map',
-        'mdi-compare': 'Compare',
-        'mdi-history': 'Analyze history',
-        'mdi-eye-plus': 'Similar colleges',
-        'mdi-file-search': 'Search history',
+        // 'mdi-compare': 'Compare',
+        // 'mdi-history': 'Analyze history',
+        // 'mdi-eye-plus': 'Similar colleges',
+        // 'mdi-file-search': 'Search history',
       },
       activeItem: 0,
     };
