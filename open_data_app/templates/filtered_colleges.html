@@ -70,7 +70,7 @@
 
         {# breadscrumbs start #}
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 top-info">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
                         <li class="breadcrumb-item" itemprop="itemListElement" itemscope
@@ -133,7 +133,7 @@
         {# breadscrumbs end #}
 
         <div class="row">
-            <div class="col-sm-12 col-md-9 filters-applied">
+            <div class="col-sm-12 col-md-9 filters-applied top-info">
                 <p class="colleges-count">Colleges found:
                     <strong>
                         {% if colleges.paginator %}
@@ -203,7 +203,7 @@
                             {% if active_sort_param_name %}
                                 <span>{{ active_sort_param_name }}</span>
                             {% else %}
-                                <span>Sort colleges</span>
+                                <span>Sort</span>
                             {% endif %}
                         </div>
                         <div class="dropdown-menu">
@@ -222,8 +222,8 @@
         <div class="row">
             {# sidebar filters start #}
             <div class="col-sm-12 col-md-2">
-                <a href="{% url 'college_app:main_filter' %}">
-                    <button class="btn btn-outline-secondary reset-button">Reset</button>
+                <a href="{% url 'college_app:main_filter' %}" style="text-decoration: none">
+                    <button class="v-btn v-btn--depressed theme--light v-size--default reset-button">Reset</button>
                 </a>
                 {% if is_multiple %}
                     {# initial region/state filter page #}

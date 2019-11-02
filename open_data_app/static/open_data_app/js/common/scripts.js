@@ -170,3 +170,8 @@ $('.favourite-button').on('click', function(e) {
     var id = this.getAttribute('data-college-id');
     if (id) modifyFavourites(this, id);
 });
+
+$(".card-header").click(function () {
+    var icon =  $(this).find(".rotate");
+    $(icon).toggleClass('down');
+});

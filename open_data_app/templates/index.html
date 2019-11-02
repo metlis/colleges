@@ -41,6 +41,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
               integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
               crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}">
     {% endblock %}
 
@@ -89,10 +90,9 @@
 
     {% block top_navigation %}
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <img src="{% static 'open_data_app/img/icon.png' %}" onclick="window.location.href='/'" width="7%"
-                 height="7%"
-                 class="icon"/>
-            <a class="navbar-brand" href="/">USA COLLEGES</a>
+            <a class="navbar-brand" href="/">
+              <span class="title-colleges">COLLEGES</span><span class="title-usa">USA</span>
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
                     aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -102,14 +102,10 @@
                 <ul class="navbar-nav ml-auto mr-3 mt-2 mt-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'college_app:show_favourite' %}">
-                            Favourite <span id="favourite-badge" class="badge badge-warning">{{ favourite_colleges|length }}</span>
+                            Favourite <span id="favourite-badge" class="badge">{{ favourite_colleges|length }}</span>
                         </a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0" action="{% url 'college_app:search' %}" autocomplete="off">
-                    <input class="form-control search mr-sm-2" type="search" name="text" placeholder="Search">
-                    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
-                </form>
             </div>
         </nav>
     {% endblock %}
@@ -117,19 +113,34 @@
     {% block content %}
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-12 header">
-                    <h1>American colleges and universities database</h1>
+                <div class="col-12 header">
+                    <h1>A complete database of American colleges</h1>
                 </div>
-                <div class="col-sm-12 col-md-4 form-container">
-                    <form action="{% url 'college_app:main_filter' %}">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-12 text">
+                            <p>This web site uses the data set from the <a href="https://collegescorecard.ed.gov/data/"
+                                                                              target="_blank" rel="nofollow">College
+                                Scorecard</a> which "is designed to help students and their families to compare how well
+                                different institutions of post-secondary education are preparing their students to be
+                                successful".</p>
+                        </div>
+                    </div>
+                    <hr role="separator" aria-orientation="horizontal" class="v-divider v-divider--inset theme--light">
+                </div>
+                <div class="col-12" style="padding-top: 0px">
+                    <div class="row">
+                        <div class="col-sm-4 offset-sm-4">
+                            <div class="form-container">
+                                <form action="{% url 'college_app:main_filter' %}">
                         <div class="form-header">
-                            <h2>Find your college now!</h2>
+                            <h2>Find your college!</h2>
                         </div>
                         <div class="card">
                             <div class="card-header" data-toggle="collapse" data-target="#discipline"
                                  aria-expanded="true"
                                  aria-controls="level">
-                                <h3>Disciplines</h3><i class="fas fa-plus"></i>
+                                <h3>Disciplines</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="card-body collapse" id="discipline">
                                 <div class="sub-container">
@@ -149,7 +160,7 @@
                             <div class="card-header" data-toggle="collapse" data-target="#degree"
                                  aria-expanded="true"
                                  aria-controls="degree">
-                                <h3>Highest degree</h3><i class="fas fa-plus"></i>
+                                <h3>Highest degree</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="card-body collapse" id="degree">
                                 <div class="sub-container">
@@ -169,7 +180,7 @@
                             <div class="card-header" data-toggle="collapse" data-target="#location"
                                  aria-expanded="true"
                                  aria-controls="location">
-                                <h3>Location</h3><i class="fas fa-plus"></i>
+                                <h3>Location</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="card-body collapse" id="location">
                                 <h4>Region</h4>
@@ -217,7 +228,7 @@
                             <div class="card-header" data-toggle="collapse" data-target="#ownership"
                                  aria-expanded="true"
                                  aria-controls="ownership">
-                                <h3>Type of institution</h3><i class="fas fa-plus"></i>
+                                <h3>Type of institution</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="card-body collapse" id="ownership">
                                 <h4>Ownership</h4>
@@ -262,7 +273,7 @@
                             <div class="card-header" data-toggle="collapse" data-target="#religion"
                                  aria-expanded="true"
                                  aria-controls="religion">
-                                <h3>Religious affiliation</h3><i class="fas fa-plus"></i>
+                                <h3>Religious affiliation</h3><i class="v-icon notranslate mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="card-body collapse" id="religion">
                                 <div class="sub-container">
@@ -282,7 +293,7 @@
                             <div class="card-header" data-toggle="collapse" data-target="#other"
                                  aria-expanded="true"
                                  aria-controls="other">
-                                <h3>Other</h3><i class="fas fa-plus"></i>
+                                <h3>Other</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="card-body collapse" id="other">
                                 <h4>Gender</h4>
@@ -353,36 +364,40 @@
                             </div>
                         </div>
                         <div class="submit-button-container">
-                            <button type="submit" class="btn btn-outline-secondary submit-button">Find colleges</button>
+                            <button type="submit" class="v-btn v-btn--depressed theme--light v-size--default">Find colleges</button>
                         </div>
                     </form>
-                </div>
-                <div class="col-sm-12 col-md-7">
-                    <div class="text-container">
-                        <p>This web site is based on the data set from <a href="https://collegescorecard.ed.gov/data/"
-                                                                          target="_blank" rel="nofollow">College
-                            Scorecard</a> which "is designed to help students and their families to compare how well
-                            different institutions of post-secondary education are preparing their students to be
-                            successful".</p>
-                        <p>Quick access is provided to some of the data in which users may be most interested:
-                        <ul>
-                            <li>average cost</li>
-                            <li>acceptance rate</li>
-                            <li>graduation rate</li>
-                            <li>financial aid</li>
-                            <li>salaries after graduation</li>
-                            <li>and more</li>
-                        </ul>
-                        <p>The catalog of american colleges and universities contains the information about <strong>7,150
-                            institutions</strong> which provide educational programs in <strong>38 fields of
-                            study</strong>. You can choose between colleges that are located in one of <strong>50 states
-                            or outlying US territories</strong>.</p>
-                        <p>To navigate this site you can use the filters on the left of this page or jump straight to
-                            some of its categories by clicking on the top menu.</p>
-                        <p>Good luck in your search!</p>
+                            </div>
+                        </div>
                     </div>
-                    </ul>
-                    </p>
+                    <hr role="separator" aria-orientation="horizontal" class="v-divider v-divider--inset theme--light">
+                </div>
+                <div class="col-12 text">
+                    <div class="row">
+                        <div class="col-xs-10 offset-xs-1 col-md-6 offset-md-3">
+                            <h2>Need info about some particular college?</h2>
+                            <br>
+                            <form class="form-inline search-form" action="{% url 'college_app:search' %}" autocomplete="off">
+                                <input class="form-control search mr-2" type="search" name="text" placeholder="Search by name">
+                                <button class="v-btn v-btn--depressed theme--light v-size--default" type="submit">Search</button>
+                            </form>
+                            <br>
+                        </div>
+                    </div>
+                    <hr role="separator" aria-orientation="horizontal" class="v-divider v-divider--inset theme--light">
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-xs-10 offset-xs-1 col-md-6 offset-md-3">
+                            <div class="text">
+                                <h2>Some statistics</h2><br>
+                                <p>The catalog of american colleges and universities contains the information about <strong>7,150
+                                    institutions</strong> which provide educational programs in <strong>38 fields of
+                                    study</strong>. You can choose between colleges that are located in one of <strong>50 states
+                                    or outlying US territories</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

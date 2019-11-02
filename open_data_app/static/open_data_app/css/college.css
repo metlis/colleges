@@ -1,17 +1,10 @@
-body {
+html {
   position: relative;
+  min-height: 100%;
 }
-.container-fluid {
-  margin-top: 20px;
-}
-h2 {
-  font-size: 150%;
-}
-h3 {
-  font-size: 130%;
-}
-h4 {
-  font-size: 110%;
+body {
+  padding: 0px;
+  margin: 0px;
 }
 a {
   color: #0277bd;
@@ -19,21 +12,89 @@ a {
 a :hover {
   color: #01579b;
 }
+h1 {
+  font-size: 190%;
+  color: #424242;
+}
+h2 {
+  font-size: 150%;
+  color: #424242;
+}
+h3 {
+  font-size: 110%;
+  color: #424242;
+}
+h4 {
+  font-size: 100%;
+  color: #424242;
+}
+.navbar {
+  background-color: #fff !important;
+  box-shadow: 1px 1px 0px #eceff1;
+}
+.navbar-nav {
+  margin-right: 0px;
+}
+.title-usa {
+  color: #ec7556;
+}
+.title-usa:hover {
+  color: #ec7556;
+}
+.title-colleges {
+  color: #212529;
+}
+.title-colleges:hover {
+  color: #212529;
+}
+footer {
+  width: 100%;
+  background-color: #263238;
+  color: #fff;
+  align-items: center;
+  display: flex;
+  flex: 0 1 auto !important;
+  flex-wrap: wrap;
+  padding: 6px 16px;
+  position: relative;
+  transition-duration: 0.2s;
+  transition-property: background-color, left, right;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 1px -1px 0px #eceff1;
+}
+footer .container {
+  margin: 0px auto 0px auto;
+  text-align: center;
+  width: 100%;
+}
+footer .container p {
+  font-size: 12px;
+  margin-bottom: 0px;
+}
+footer a {
+  color: #fff;
+  font-weight: bold;
+}
+footer a:hover {
+  color: #eceff1;
+}
+#favourite-badge {
+  background-color: #ffe082;
+}
+body {
+  position: relative;
+}
 .active {
   color: #212529 !important;
 }
-.navbar {
-  background-color: #eceff1 !important;
-  box-shadow: 1px 1px 0px #cfd8dc;
-}
 .card {
   margin: 10px 0px 10px 0px;
-  border: 1px solid #cfd8dc;
+  border: 1px solid #eceff1;
 }
 .card-header {
   cursor: pointer;
   background-color: #eceff1;
-  border-bottom: 1px solid #cfd8dc;
+  border-bottom: 1px solid #eceff1;
 }
 .card-header h2 {
   display: inline;
@@ -188,33 +249,17 @@ a :hover {
   top: 20px;
 }
 .list-group .active {
-  background-color: #cfd8dc;
-  border-color: #cfd8dc;
+  background-color: #eceff1;
+  border-color: #eceff1;
 }
 .list-group :hover {
   background-color: #eceff1;
 }
 .list-group-item {
-  border: 1px solid #cfd8dc;
+  border: 1px solid #eceff1;
 }
 .icon {
   cursor: pointer;
-}
-footer {
-  width: 100%;
-  height: 10%;
-}
-footer .container {
-  margin: 15px auto 0px auto;
-  text-align: center;
-  width: 100%;
-}
-footer .container p {
-  font-size: 12px;
-  margin-bottom: 0px;
-}
-.search {
-  border: 1px solid #cfd8dc;
 }
 .buttons-container {
   display: flex;
@@ -231,14 +276,9 @@ footer .container p {
   text-align: center;
   border-color: #37474f;
 }
-.results-back-page a {
-  color: #212529 !important;
-}
-.results-back-page a:hover {
-  color: #fff !important;
-}
-.results-back-page a:hover {
-  background-color: #37474f !important;
+.results-back-page button {
+  display: inline-block;
+  width: 100%;
 }
 .badge-link {
   text-decoration: none !important;
@@ -248,7 +288,10 @@ footer .container p {
   color: #212529;
 }
 .discipline-link :hover {
-  color: #676060 !important;
+  color: $grey !important;
+}
+.top-info {
+  padding-top: 0px;
 }
 @media (max-width: 767.98px) {
   .gender-header {
