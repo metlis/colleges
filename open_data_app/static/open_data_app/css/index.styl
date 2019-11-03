@@ -22,6 +22,14 @@ ul
 .card
   border none
   border-bottom 1px solid lightgrey
+  ::-webkit-scrollbar
+    width 10px
+  ::-webkit-scrollbar-track
+    background $blue
+  ::-webkit-scrollbar-thumb
+    background $blue-bar
+  ::-webkit-scrollbar-thumb:hover
+    background $blue-dark
 
 .card-header
   height 50px
@@ -93,9 +101,45 @@ ul
   padding 0px 20px 0px 20px
 
 .search-form
-  display block
+  display flex
   text-align center
   width 100%
   input
     display inline-block
-    width 100%
+  button
+    display inline-block
+
+.stat-icon
+  font-size 45px
+  color $blue-dark
+  opacity 0.4
+.stat-icon:hover
+  opacity 0.2
+
+.stat-icons-container
+  display flex
+  justify-content space-around
+
+.stat-icon-container
+  min-width 33.33%
+  max-width 33.33%
+
+.block-header
+  text-align center
+  margin-bottom 24px
+
+.checkbox-text
+  display block
+  overflow hidden
+  padding-right 15px
+
+.favourite-button
+  color $yellow
+  font-size 25px
+  padding 10px 0px
+
+.navbar-toggler
+  border none !important
+
+button:focus
+  outline none

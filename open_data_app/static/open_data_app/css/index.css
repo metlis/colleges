@@ -1,6 +1,7 @@
 html {
   position: relative;
   min-height: 100%;
+  font-family: Roboto;
 }
 body {
   padding: 0px;
@@ -79,7 +80,7 @@ footer a:hover {
   color: #eceff1;
 }
 #favourite-badge {
-  background-color: #ffe082;
+  background-color: #cfd8dc;
 }
 .checkbox label:after {
   content: '';
@@ -136,6 +137,18 @@ ul {
 .card {
   border: none;
   border-bottom: 1px solid #d3d3d3;
+}
+.card ::-webkit-scrollbar {
+  width: 10px;
+}
+.card ::-webkit-scrollbar-track {
+  background: #eceff1;
+}
+.card ::-webkit-scrollbar-thumb {
+  background: #cfd8dc;
+}
+.card ::-webkit-scrollbar-thumb:hover {
+  background: #37474f;
 }
 .card-header {
   height: 50px;
@@ -212,11 +225,49 @@ ul {
   padding: 0px 20px 0px 20px;
 }
 .search-form {
-  display: block;
+  display: flex;
   text-align: center;
   width: 100%;
 }
 .search-form input {
   display: inline-block;
-  width: 100%;
+}
+.search-form button {
+  display: inline-block;
+}
+.stat-icon {
+  font-size: 45px;
+  color: #37474f;
+  opacity: 0.4;
+}
+.stat-icon:hover {
+  opacity: 0.2;
+}
+.stat-icons-container {
+  display: flex;
+  justify-content: space-around;
+}
+.stat-icon-container {
+  min-width: 33.33%;
+  max-width: 33.33%;
+}
+.block-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.checkbox-text {
+  display: block;
+  overflow: hidden;
+  padding-right: 15px;
+}
+.favourite-button {
+  color: #ffca28;
+  font-size: 25px;
+  padding: 10px 0px;
+}
+.navbar-toggler {
+  border: none !important;
+}
+button:focus {
+  outline: none;
 }

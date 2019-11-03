@@ -42,7 +42,6 @@
               integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
               crossorigin="anonymous">
         <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}">
     {% endblock %}
 
     {% block styles %}
@@ -93,12 +92,12 @@
             <a class="navbar-brand" href="/">
               <span class="title-colleges">COLLEGES</span><span class="title-usa">USA</span>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-                    aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+                    aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="mdi mdi-dots-vertical"></i></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <div class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav ml-auto mr-3 mt-2 mt-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'college_app:show_favourite' %}">
@@ -114,288 +113,302 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 header">
-                    <h1>A complete database of American colleges</h1>
+                    <h1>A complete database of colleges in the USA</h1>
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-12 pb-0">
                     <div class="row">
-                        <div class="col-sm-12 text">
+                        <div class="col-sm-12 text pb-2">
                             <p>This web site uses the data set from the <a href="https://collegescorecard.ed.gov/data/"
                                                                               target="_blank" rel="nofollow">College
                                 Scorecard</a> which "is designed to help students and their families to compare how well
                                 different institutions of post-secondary education are preparing their students to be
-                                successful".</p>
+                                successful"</p>
                         </div>
                     </div>
-                    <hr role="separator" aria-orientation="horizontal" class="v-divider v-divider--inset theme--light">
+                    <hr>
+                </div>
+                <div class="col-12 pt-0">
+                    <div class="row">
+                        <div class="col-xs-10 offset-xs-1 col-md-6 offset-md-3">
+                            <div class="text stat-icons-container">
+                                <div class="stat-icon-container">
+                                    <i class="mdi mdi-bank stat-icon"></i>
+                                    <p><strong>7,150</strong><br>institutions</p>
+                                </div>
+                                <div class="stat-icon-container">
+                                    <i class="mdi mdi-script-text stat-icon"></i>
+                                    <p><strong>38</strong><br>fields of study</p>
+                                </div>
+                                <div class="stat-icon-container">
+                                    <i class="mdi mdi-map-marker stat-icon"></i>
+                                    <p><strong>50</strong><br>territories</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-12" style="padding-top: 0px">
                     <div class="row">
                         <div class="col-sm-4 offset-sm-4">
+                            <h2 class="block-header">Find your college!</h2>
                             <div class="form-container">
                                 <form action="{% url 'college_app:main_filter' %}">
-                        <div class="form-header">
-                            <h2>Find your college!</h2>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" data-toggle="collapse" data-target="#discipline"
-                                 aria-expanded="true"
-                                 aria-controls="level">
-                                <h3>Disciplines</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
-                            </div>
-                            <div class="card-body collapse" id="discipline">
-                                <div class="sub-container">
-                                    {% for discipline in disciplines %}
-                                        <div class="checkbox">
-                                            <label>
-                                                <input name="{{ discipline.0 }}" value="0" type="checkbox">
-                                                <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ discipline.1 }}
-                                            </label>
+                                    <div class="card">
+                                        <div class="card-header" data-toggle="collapse" data-target="#discipline"
+                                             aria-expanded="true"
+                                             aria-controls="level">
+                                            <h3>Disciplines</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                                         </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" data-toggle="collapse" data-target="#degree"
-                                 aria-expanded="true"
-                                 aria-controls="degree">
-                                <h3>Highest degree</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
-                            </div>
-                            <div class="card-body collapse" id="degree">
-                                <div class="sub-container">
-                                    {% for d in degrees %}
-                                        <div class="checkbox">
-                                            <label>
-                                                <input name="degree" value="{{ d.1 }}" type="checkbox">
-                                                <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ d.0 }}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" data-toggle="collapse" data-target="#location"
-                                 aria-expanded="true"
-                                 aria-controls="location">
-                                <h3>Location</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
-                            </div>
-                            <div class="card-body collapse" id="location">
-                                <h4>Region</h4>
-                                <div class="sub-container">
-                                    {% for region in regions %}
-                                        {% if region.id > 0 %}
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input name="region" value="{{ region.slug }}"
-                                                           type="checkbox">
-                                                    <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                    {{ region.name }}
-                                                </label>
+                                        <div class="card-body collapse" id="discipline">
+                                            <div class="sub-container">
+                                                {% for discipline in disciplines %}
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="{{ discipline.0 }}" value="0" type="checkbox">
+                                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                            <span class="checkbox-text">{{ discipline.1 }}</span>
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
                                             </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                                <h4>State</h4>
-                                <div class="sub-container">
-                                    {% for state in states %}
-                                        <div class="checkbox">
-                                            <label>
-                                                <input name="state" value="{{ state.slug }}" type="checkbox">
-                                                <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ state.name }}
-                                            </label>
                                         </div>
-                                    {% endfor %}
-                                </div>
-                                <h4>Locale</h4>
-                                <div class="sub-container">
-                                    {% for l in locales %}
-                                        <div class="checkbox">
-                                            <label>
-                                                <input name="locale" value="{{ l.1 }}" type="checkbox">
-                                                <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ l.0 }}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" data-toggle="collapse" data-target="#ownership"
-                                 aria-expanded="true"
-                                 aria-controls="ownership">
-                                <h3>Type of institution</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
-                            </div>
-                            <div class="card-body collapse" id="ownership">
-                                <h4>Ownership</h4>
-                                <div class="sub-container">
-                                    {% for o in ownership %}
-                                        <div class="checkbox">
-                                            <label>
-                                                <input name="ownership" value="{{ o.1 }}" type="checkbox">
-                                                <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ o.0 }}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <h4>Institution's level</h4>
-                                <div class="sub-container">
-                                    {% for l in levels %}
-                                        <div class="checkbox">
-                                            <label>
-                                                <input name="level" value="{{ l.1 }}" type="checkbox">
-                                                <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ l.0 }}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <h4>Carnegie classification</h4>
-                                <div class="sub-container">
-                                    {% for c in carnegie %}
-                                        <div class="checkbox">
-                                            <label>
-                                                <input name="carnegie" value="{{ c.1 }}" type="checkbox">
-                                                <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ c.0 }}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" data-toggle="collapse" data-target="#religion"
-                                 aria-expanded="true"
-                                 aria-controls="religion">
-                                <h3>Religious affiliation</h3><i class="v-icon notranslate mdi mdi-chevron-down theme--light rotate"></i>
-                            </div>
-                            <div class="card-body collapse" id="religion">
-                                <div class="sub-container">
-                                    {% for r in religions %}
-                                        <div class="checkbox">
-                                            <label>
-                                                <input name="religion" value="{{ r.1 }}" type="checkbox">
-                                                <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                                {{ r.0 }}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" data-toggle="collapse" data-target="#other"
-                                 aria-expanded="true"
-                                 aria-controls="other">
-                                <h3>Other</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
-                            </div>
-                            <div class="card-body collapse" id="other">
-                                <h4>Gender</h4>
-                                <div class="sub-container">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="men_only" value="1" type="checkbox">
-                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                            Men-only
-                                        </label>
                                     </div>
-                                    <div class="checkbox">
-                                        <label>
+                                    <div class="card">
+                                        <div class="card-header" data-toggle="collapse" data-target="#degree"
+                                             aria-expanded="true"
+                                             aria-controls="degree">
+                                            <h3>Highest degree</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
+                                        </div>
+                                        <div class="card-body collapse" id="degree">
+                                            <div class="sub-container">
+                                                {% for d in degrees %}
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="degree" value="{{ d.1 }}" type="checkbox">
+                                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                            <span class="checkbox-text">{{ d.0 }}</span>
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" data-toggle="collapse" data-target="#location"
+                                             aria-expanded="true"
+                                             aria-controls="location">
+                                            <h3>Location</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
+                                        </div>
+                                        <div class="card-body collapse" id="location">
+                                            <h4>Region</h4>
+                                            <div class="sub-container">
+                                                {% for region in regions %}
+                                                    {% if region.id > 0 %}
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="region" value="{{ region.slug }}"
+                                                                       type="checkbox">
+                                                                <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                                <span class="checkbox-text">{{ region.name }}</span>
+                                                            </label>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <h4>State</h4>
+                                            <div class="sub-container">
+                                                {% for state in states %}
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="state" value="{{ state.slug }}" type="checkbox">
+                                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                            <span class="checkbox-text">{{ state.name }}</span>
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <h4>Locale</h4>
+                                            <div class="sub-container">
+                                                {% for l in locales %}
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="locale" value="{{ l.1 }}" type="checkbox">
+                                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                            <span class="checkbox-text">{{ l.0 }}</span>
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" data-toggle="collapse" data-target="#ownership"
+                                             aria-expanded="true"
+                                             aria-controls="ownership">
+                                            <h3>Type of institution</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
+                                        </div>
+                                        <div class="card-body collapse" id="ownership">
+                                            <h4>Ownership</h4>
+                                            <div class="sub-container">
+                                                {% for o in ownership %}
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="ownership" value="{{ o.1 }}" type="checkbox">
+                                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                            <span class="checkbox-text">{{ o.0 }}</span>
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <h4>Institution's level</h4>
+                                            <div class="sub-container">
+                                                {% for l in levels %}
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="level" value="{{ l.1 }}" type="checkbox">
+                                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                            <span class="checkbox-text">{{ l.0 }}</span>
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <h4>Carnegie classification</h4>
+                                            <div class="sub-container">
+                                                {% for c in carnegie %}
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="carnegie" value="{{ c.1 }}" type="checkbox">
+                                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                            <span class="checkbox-text">{{ c.0 }}</span>
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" data-toggle="collapse" data-target="#religion"
+                                             aria-expanded="true"
+                                             aria-controls="religion">
+                                            <h3>Religious affiliation</h3><i class="v-icon notranslate mdi mdi-chevron-down theme--light rotate"></i>
+                                        </div>
+                                        <div class="card-body collapse" id="religion">
+                                            <div class="sub-container">
+                                                {% for r in religions %}
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="religion" value="{{ r.1 }}" type="checkbox">
+                                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                            <span class="checkbox-text">{{ r.0 }}</span>
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" data-toggle="collapse" data-target="#other"
+                                             aria-expanded="true"
+                                             aria-controls="other">
+                                            <h3>Other</h3><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
+                                        </div>
+                                        <div class="card-body collapse" id="other">
+                                            <h4>Gender</h4>
+                                            <div class="sub-container">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="men_only" value="1" type="checkbox">
+                                                        <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                        <span class="checkbox-text">Men-only</span>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
 
-                                            <input name="women_only" value="1" type="checkbox">
-                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                            Women-only</label>
+                                                        <input name="women_only" value="1" type="checkbox">
+                                                        <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                        <span class="checkbox-text">Women-only</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <h4>Operation</h4>
+                                            <div class="sub-container">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="cur_operating" value="1" type="checkbox">
+                                                        <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                        <span class="checkbox-text">Currently operating</span>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="cur_operating" value="0" type="checkbox">
+                                                        <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                        <span class="checkbox-text">Currently closed</span>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="online_only" value="1" type="checkbox">
+                                                        <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                        <span class="checkbox-text">Online-only</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <h4>Race/ethnicity</h4>
+                                            <div class="sub-container">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="hist_black" value="1" type="checkbox">
+                                                        <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                        <span class="checkbox-text">Historically black</span>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="predom_black" value="1" type="checkbox">
+                                                        <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                        <span class="checkbox-text">Predominantly black</span>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="hispanic" value="1" type="checkbox">
+                                                        <span class="cr"><i class="cr-icon fas fa-check"></i></span>
+                                                        <span class="checkbox-text">Hispanic</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <h4>Operation</h4>
-                                <div class="sub-container">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="cur_operating" value="1" type="checkbox">
-                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                            Currently operating
-                                        </label>
+                                    <div class="submit-button-container">
+                                        <button type="submit" class="v-btn v-btn--depressed theme--light v-size--default">Find colleges</button>
                                     </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="cur_operating" value="0" type="checkbox">
-                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                            Currently closed
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="online_only" value="1" type="checkbox">
-                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                            Online-only
-                                        </label>
-                                    </div>
-                                </div>
-                                <h4>Race/ethnicity</h4>
-                                <div class="sub-container">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="hist_black" value="1" type="checkbox">
-                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                            Historically black
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="predom_black" value="1" type="checkbox">
-                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                            Predominantly black
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="hispanic" value="1" type="checkbox">
-                                            <span class="cr"><i class="cr-icon fas fa-check"></i></span>
-                                            Hispanic
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="submit-button-container">
-                            <button type="submit" class="v-btn v-btn--depressed theme--light v-size--default">Find colleges</button>
-                        </div>
-                    </form>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <hr role="separator" aria-orientation="horizontal" class="v-divider v-divider--inset theme--light">
                 </div>
                 <div class="col-12 text">
                     <div class="row">
-                        <div class="col-xs-10 offset-xs-1 col-md-6 offset-md-3">
-                            <h2>Need info about some particular college?</h2>
-                            <br>
-                            <form class="form-inline search-form" action="{% url 'college_app:search' %}" autocomplete="off">
+                        <div class="col-xs-10 offset-xs-1 col-md-6 offset-md-3 pb-4">
+                            <h2 class="block-header">Looking for a specific college?</h2>
+                            <form class="search-form mb-2" action="{% url 'college_app:search' %}" autocomplete="off">
                                 <input class="form-control search mr-2" type="search" name="text" placeholder="Search by name">
                                 <button class="v-btn v-btn--depressed theme--light v-size--default" type="submit">Search</button>
                             </form>
-                            <br>
                         </div>
                     </div>
-                    <hr role="separator" aria-orientation="horizontal" class="v-divider v-divider--inset theme--light">
+                    <hr>
                 </div>
-                <div class="col-12">
+                <div class="col-12 text mt-2">
                     <div class="row">
                         <div class="col-xs-10 offset-xs-1 col-md-6 offset-md-3">
-                            <div class="text">
-                                <h2>Some statistics</h2><br>
-                                <p>The catalog of american colleges and universities contains the information about <strong>7,150
-                                    institutions</strong> which provide educational programs in <strong>38 fields of
-                                    study</strong>. You can choose between colleges that are located in one of <strong>50 states
-                                    or outlying US territories</strong>.</p>
-                            </div>
+                            <h2 class="block-header">Explore and analyze</h2>
+                            <p>Add a college to favourites by pressing<br>
+                               <span><i class="far fa-star favourite-button"></i></span><br>
+                              Then you can use our powerful <a href="/favourite/">analytical tools</a> to analyze colleges of your choice even deeper
+                            </p>
                         </div>
                     </div>
                 </div>
