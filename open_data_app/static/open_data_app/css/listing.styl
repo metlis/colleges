@@ -49,9 +49,6 @@ h1
     background-color $gold
 
 .list-group
-  position sticky
-  position -webkit-sticky
-  top 20px
   z-index 9999
 
 .list-group-item
@@ -66,7 +63,6 @@ h1
       background-color white !important
   :active
     background-color $blue
-    color white
 
 .dropdown-menu
   .dropdown-item:hover
@@ -167,6 +163,7 @@ h1
   white-space word-break
   overflow hidden
   text-overflow ellipsis
+  font-weight 300 !important
 
 .dropdown-item:active
   background-color $blue
@@ -239,8 +236,12 @@ h1
 @media (max-width: 767.98px)
   .sort
     margin-bottom 15px
-  .dropdown-menu
-    width 105%
+  .list-group-item
+    .dropdown-menu
+      width 100% !important
+      left 0px !important
+      top 40px !important
+      transform translate3d(0px, 0px, 0px) !important
   #list-menu
     margin-bottom 15px
   .aggr-meta
@@ -248,3 +249,9 @@ h1
     margin-top 10px
   .hor-bars-block
     margin-top 15px
+
+@media (min-width 768px)
+  .list-group
+    position sticky
+    position -webkit-sticky
+    top 20px
