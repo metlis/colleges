@@ -82,6 +82,16 @@ footer a:hover {
 #favourite-badge {
   background-color: #cfd8dc;
 }
+.rotate {
+  -moz-transition: all 0.5s linear;
+  -webkit-transition: all 0.5s linear;
+  transition: all 0.5s linear;
+}
+.rotate.down {
+  -moz-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
 .checkbox label:after {
   content: '';
   display: table;
@@ -209,16 +219,6 @@ ul {
 }
 .text-container {
   margin-top: 15px;
-}
-.rotate {
-  -moz-transition: all 0.5s linear;
-  -webkit-transition: all 0.5s linear;
-  transition: all 0.5s linear;
-}
-.rotate.down {
-  -moz-transform: rotate(180deg);
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
 }
 .text {
   text-align: center;

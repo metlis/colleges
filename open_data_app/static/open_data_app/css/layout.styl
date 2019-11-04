@@ -2,7 +2,6 @@ html
   position relative
   min-height 100%
   font-family Roboto
-
 body
   padding 0px
   margin 0px
@@ -74,3 +73,13 @@ footer
 
 #favourite-badge
   background-color $blue-bar
+
+.rotate
+    -moz-transition all .5s linear
+    -webkit-transition all .5s linear
+    transition all .5s linear
+
+.rotate.down
+    -moz-transform rotate(180deg)
+    -webkit-transform rotate(180deg)
+    transform rotate(180deg)

@@ -50,11 +50,16 @@
     <link rel="stylesheet" href="{% static 'open_data_app/css/listing.css' %}">
 {% endblock %}
 
+{% block external_styles %}
+  {{ block.super }}
+   <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}">
+{% endblock %}
+
 {% block content %}
     <div class="container-fluid">
         {# h1 header start #}
         {% if geo %}
-            <h1>Colleges of {{ geo }}: {{ init_filter_val }}</h1>
+            <h1 class="mb-2">Colleges of {{ geo }}: {{ init_filter_val }}</h1>
         {% elif init_filter_val %}
             <h1>Colleges: {{ init_filter_val }}</h1>
         {% elif serach_query %}
@@ -72,10 +77,10 @@
         <div class="row">
             <div class="col-12 top-info">
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+                    <ul class="v-breadcrumbs theme--light py-0 pl-0" itemscope itemtype="http://schema.org/BreadcrumbList">
                         <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                             itemtype="http://schema.org/ListItem"><a href="{% url 'college_app:index' %}"
-                                                                     itemprop="item"><span
+                                                                     class="v-breadcrumbs__item" itemprop="item"><span
                                 itemprop="name">Home</span></a>
                             <meta itemprop="position" content="1"/>
                         </li>
@@ -83,6 +88,7 @@
                         {% if state_view or state_init %}
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem"><a
+                                    class="v-breadcrumbs__item"
                                     href="{% url 'college_app:geo' 'state' slug %}" itemprop="item"><span
                                     itemprop="name">{{ state_name }}</span></a>
                                 <meta itemprop="position" content="2"/>
@@ -91,6 +97,7 @@
                         {% elif geo or region_init %}
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem"><a
+                                    class="v-breadcrumbs__item"
                                     href="{% url 'college_app:geo' 'region' slug %}" itemprop="item"><span
                                     itemprop="name">{{ region_name }}</span></a>
                                 <meta itemprop="position" content="2"/>
@@ -99,6 +106,7 @@
                         {% elif init_param and init_param_value %}
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem"><a
+                                    class="v-breadcrumbs__item"
                                     href="{% url 'college_app:filter_values' init_param init_param_value %}"
                                     itemprop="item"><span itemprop="name">{{ init_filter_val }}</span></a>
                                 <meta itemprop="position" content="2"/>
@@ -107,6 +115,7 @@
                         {% elif init_param %}
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem"><a
+                                    class="v-breadcrumbs__item"
                                     href="{% url 'college_app:filter_no_values' init_param %}" itemprop="item"><span
                                     itemprop="name">{{ init_filter_val }}</span></a>
                                 <meta itemprop="position" content="2"/>
@@ -115,6 +124,7 @@
                         {% elif serach_query or main_filter %}
                             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                                 itemtype="http://schema.org/ListItem" itemprop="item"><span
+                                    class="v-breadcrumbs__item"
                                     itemprop="name">Search</span>
                                 <meta itemprop="position" content="2"/>
                             </li>
@@ -126,27 +136,17 @@
                                     itemprop="name">{{ init_filter_val }}</span></a></li>
                             <meta itemprop="position" content="3"/>
                         {% endif %}
-                    </ol>
+                    </ul>
                 </nav>
             </div>
         </div>
         {# breadscrumbs end #}
 
         <div class="row">
-            <div class="col-sm-12 col-md-9 filters-applied top-info">
-                <p class="colleges-count">Colleges found:
-                    <strong>
-                        {% if colleges.paginator %}
-                            {{ colleges.paginator.count }}
-                        {% elif colleges.count %}
-                            {{ colleges.count }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    </strong></p>
+            <div class="col-sm-12 col-md-10 filters-applied top-info pb-0 mb-0">
                 {# applied filters list start #}
                 {% if not error %}
-                    <span>Filters applied:</span>
+                    <span class="meta-text">Filters applied:</span>
                     {% if filters_vals|length > 0 or init_filter_val or state_init or region_init or serach_query %}
                         {#                       {# state/region bage with a link for parameter page #}
                         {% if geo %}
@@ -194,28 +194,6 @@
                 {% endif %}
                 {# applied filters list end #}
             </div>
-            {% if is_multiple %}
-                {# sort list start #}
-                <div class="col-sm-12 col-md-3">
-                    <div class="dropdown">
-                        <div class="dropdown-toggle sort" data-toggle="dropdown" aria-haspopup="true"
-                             aria-expanded="false">
-                            {% if active_sort_param_name %}
-                                <span>{{ active_sort_param_name }}</span>
-                            {% else %}
-                                <span>Sort</span>
-                            {% endif %}
-                        </div>
-                        <div class="dropdown-menu">
-                            {% for key, val in sort_params.items %}
-                                <a class="dropdown-item"
-                                   onclick="addParam('sort={{ key }}')">{{ val }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                {# sort list end #}
-            {% endif %}
         </div>
 
 
@@ -352,7 +330,7 @@
                 <div class="row">
 
                     {% if not error %}
-                        <div class="col-sm-12" style="display: flex; justify-content: flex-end; margin-bottom: 23px">
+                        <div class="col-sm-12 add-to-any pt-0">
                             <!-- AddToAny BEGIN -->
                             <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
                                 <a class="a2a_button_facebook"></a>
@@ -373,6 +351,44 @@
                         </div>
                     {% endif %}
                     {# google map end #}
+
+                    <div class="col-sm-12 col-md-9">
+                        <p class="colleges-count pt-2"><span class="meta-text">Colleges found:</span>
+                            <span class="badge badge-light">
+                                {% if colleges.paginator %}
+                                    {{ colleges.paginator.count }}
+                                {% elif colleges.count %}
+                                    {{ colleges.count }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </span>
+                        </p>
+                    </div>
+
+                    {# sort list start #}
+                    {% if is_multiple %}
+                        <div class="col-sm-12 col-md-3">
+                            <div class="dropdown">
+                                <div class="dropdown-toggle sort pt-2" data-toggle="dropdown" aria-haspopup="true"
+                                     aria-expanded="false">
+                                    {% if active_sort_param_name %}
+                                        <span>{{ active_sort_param_name }}</span>
+                                    {% else %}
+                                        <span>Sort</span>
+                                        <i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="dropdown-menu">
+                                    {% for key, val in sort_params.items %}
+                                        <a class="dropdown-item"
+                                           onclick="addParam('sort={{ key }}')">{{ val }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {# sort list end #}
 
                     {# aggregate data start #}
                     {% if is_multiple %}

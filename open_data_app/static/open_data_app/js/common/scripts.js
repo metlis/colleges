@@ -171,7 +171,7 @@ $('.favourite-button').on('click', function(e) {
     if (id) modifyFavourites(this, id);
 });
 
-$(".card-header").click(function () {
+$(".card-header, .sort").click(function () {
     var icon =  $(this).find(".rotate");
     $(icon).toggleClass('down');
 });

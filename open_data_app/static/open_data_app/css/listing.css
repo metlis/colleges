@@ -82,7 +82,16 @@ footer a:hover {
 #favourite-badge {
   background-color: #cfd8dc;
 }
-@import 'circle.css';
+.rotate {
+  -moz-transition: all 0.5s linear;
+  -webkit-transition: all 0.5s linear;
+  transition: all 0.5s linear;
+}
+.rotate.down {
+  -moz-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
 h1 {
   margin-top: 15px;
   margin-bottom: 15px;
@@ -106,12 +115,16 @@ h1 {
   height: 30px;
   margin-bottom: 10px;
 }
+.progress:hover {
+  font-weight: bold;
+}
 .progress-bar {
   color: #212529;
   background-color: #cfd8dc;
 }
 .card {
   border: 1px solid #eceff1;
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
 }
 .card-header {
   border-bottom: 1px solid #eceff1;
@@ -124,16 +137,24 @@ h1 {
 .card-favourite {
   border: 1px solid #eceff1;
   border-radius: 0.25rem;
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
 }
 .card-favourite .card-header {
   border-bottom: 1px solid #eceff1;
   background-color: #fff8e1;
+}
+.list-group {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 20px;
+  z-index: 9999;
 }
 .list-group-item {
   display: inline-block;
   cursor: pointer;
   padding: 0px;
   border: 1px solid #eceff1;
+  font-size: 15px;
 }
 .list-group-item :hover {
   background-color: #eceff1;
@@ -151,6 +172,9 @@ h1 {
 .dropright .dropdown-toggle::after {
   border: none;
 }
+.dropdown-toggle::after {
+  border: none;
+}
 .dropdown-menu {
   width: 100%;
   max-height: 300px;
@@ -160,21 +184,37 @@ h1 {
   padding-top: 0px;
   padding-bottom: 0px;
   border: 1px solid #eceff1;
+  font-size: 15px;
 }
 .dropdown-menu a {
   white-space: normal;
   cursor: pointer;
 }
+.list-group-item .dropdown-menu {
+  width: 120%;
+}
+.show ::-webkit-scrollbar {
+  width: 10px;
+}
+.show ::-webkit-scrollbar-track {
+  background: #eceff1;
+}
+.show ::-webkit-scrollbar-thumb {
+  background: #cfd8dc;
+}
+.show ::-webkit-scrollbar-thumb:hover {
+  background: #37474f;
+}
 .dropdown-toggle {
   width: 100%;
-  height: 100%;
+  height: 40px;
   background-color: #fff;
-  z-index: 9999;
+  z-index: 9999 !important;
 }
 .item-name {
   position: relative;
-  top: 12px;
-  text-align: center;
+  top: 8px;
+  padding-left: 10px;
 }
 .item-name:hover {
   background-color: transparent !important;
@@ -188,18 +228,20 @@ h1 {
 }
 .colleges-count {
   margin-bottom: 0px;
+  font-size: 1rem;
+}
+.meta-text {
+  font-size: 0.75rem;
 }
 .sort {
   width: 100%;
   border: 1px solid #eceff1;
   border-radius: 3px;
   padding: 5px;
+  font-size: 15px;
 }
-.sort.dropdown-toggle::after {
-  margin: 0px;
-  position: absolute;
-  right: 10px;
-  top: 15px;
+.sort .rotate {
+  float: right;
 }
 .breadcrumb {
   background-color: #fff;
@@ -227,8 +269,11 @@ h1 {
 }
 .dropdown-item {
   border-bottom: 1px solid #eceff1;
-  min-height: 48px;
-  padding-top: 12px;
+  min-height: 40px;
+  padding-top: 8px;
+  white-space: word-break;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .dropdown-item:active {
   background-color: #eceff1;
@@ -248,6 +293,13 @@ h1 {
   width: 100%;
   text-align: center;
   margin-bottom: 10px;
+  font-size: 15px;
+}
+.pagination a {
+  color: #37474f;
+}
+.pagination a:hover {
+  color: #37474f;
 }
 .icon {
   cursor: pointer;
@@ -284,6 +336,11 @@ h1 {
 }
 .top-info {
   padding-top: 0px;
+}
+.add-to-any {
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0.7;
 }
 @media (max-width: 767.98px) {
   .sort {

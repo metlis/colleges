@@ -1,6 +1,7 @@
 @import 'variables.styl'
 @import 'layout.styl'
 @import 'checkbox.styl'
+@import 'mixins.styl'
 
 ul
   list-style-type none
@@ -22,14 +23,7 @@ ul
 .card
   border none
   border-bottom 1px solid lightgrey
-  ::-webkit-scrollbar
-    width 10px
-  ::-webkit-scrollbar-track
-    background $blue
-  ::-webkit-scrollbar-thumb
-    background $blue-bar
-  ::-webkit-scrollbar-thumb:hover
-    background $blue-dark
+  scroll-custom()
 
 .card-header
   height 50px
@@ -85,16 +79,6 @@ ul
 
 .text-container
   margin-top 15px
-
-.rotate
-    -moz-transition all .5s linear
-    -webkit-transition all .5s linear
-    transition all .5s linear
-
-.rotate.down
-    -moz-transform rotate(180deg)
-    -webkit-transform rotate(180deg)
-    transform rotate(180deg)
 
 .text
   text-align center
