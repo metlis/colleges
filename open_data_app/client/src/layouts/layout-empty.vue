@@ -6,6 +6,7 @@
           <v-alert
             type="info"
             border="left"
+            color="#FFAB91"
           >
             Add some colleges to favourites
           </v-alert>

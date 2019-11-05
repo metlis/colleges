@@ -11,6 +11,7 @@
       <v-alert
         type="info"
         border="left"
+        color="#FFAB91"
       >
         There are no colleges that match these filters.
         You can start your search <a href="/main/">here</a>
@@ -367,7 +368,6 @@ export default {
       this.isSorted = true;
     });
     this.$root.$on('colleges-checkbox-click', () => {
-      console.log('here');
       this.updateFilteredCollegesList();
     });
     this.$root.$on('colleges-state-click', () => {

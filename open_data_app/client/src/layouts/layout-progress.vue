@@ -10,7 +10,7 @@
           <div style="text-align: center">
             <v-progress-circular
               :size="50"
-              color="primary"
+              color="#CFD8DC"
               indeterminate />
           </div>
         </v-col>
