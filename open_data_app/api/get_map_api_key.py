@@ -3,4 +3,7 @@ from django.http import HttpResponse
 
 
 def get_map_api_key(request):
-    return HttpResponse(GOOGLE_MAPS_API)
+    response = HttpResponse(GOOGLE_MAPS_API)
+
+    response['X-Robots-Tag'] = 'noindex'
+    return response

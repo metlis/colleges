@@ -26,4 +26,7 @@ def modify_favourites(request):
 
         return HttpResponse(message)
 
-    return HttpResponse('No college data')
+    response = HttpResponse('No college data')
+
+    response['X-Robots-Tag'] = 'noindex'
+    return response

@@ -15,9 +15,12 @@ def get_favourites(request):
     else:
         colleges = []
 
-    return HttpResponse(
+    response = HttpResponse(
         json.dumps(
             {
                 'data': list(colleges)
             }
         ), content_type="application/json")
+
+    response['X-Robots-Tag'] = 'noindex'
+    return response
