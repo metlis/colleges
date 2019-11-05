@@ -22,6 +22,7 @@
 {% endblock %}
 
 {% block scripts %}
+    {{ block.super }}
     {% if debug %}
         <script src="{% static 'open_data_app/js/build/dev.bundle.js' %}"></script>
     {% else %}
