@@ -100,8 +100,9 @@
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav ml-auto mr-3 mt-2 mt-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'college_app:show_favourite' %}">
-                            Favourite <span id="favourite-badge" class="badge">{{ favourite_colleges|length }}</span>
+                        <a class="nav-link v-badge" href="{% url 'college_app:show_favourite' %}">
+                            <i class="fas fa-star favourite-button"></i>
+                            <span id="favourite-badge" class="v-badge__badge">{{ favourite_colleges|length }}</span>
                         </a>
                     </li>
                 </ul>

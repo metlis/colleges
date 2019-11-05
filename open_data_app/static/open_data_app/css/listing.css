@@ -89,8 +89,21 @@ footer a {
 footer a:hover {
   color: #eceff1;
 }
+.favourite-button {
+  color: #ffca28;
+  cursor: pointer;
+  font-size: 25px;
+}
 #favourite-badge {
-  background-color: #cfd8dc;
+  background-color: #ffab91;
+}
+.nav-item:hover #favourite-badge {
+  color: #fff;
+  opacity: 0.8;
+}
+.nav-item:hover .favourite-button {
+  color: #ffca28;
+  opacity: 0.8;
 }
 .rotate {
   -moz-transition: all 0.5s linear;
@@ -115,6 +128,12 @@ button:focus {
   display: flex;
   justify-content: flex-end;
   opacity: 0.7;
+}
+.nav-link {
+  padding: 0px !important;
+}
+.nav-link .favourite-button {
+  padding: 0px !important;
 }
 h1 {
   margin-top: 15px;
@@ -335,9 +354,7 @@ i {
 .search {
   border: 1px solid #eceff1;
 }
-.favourite-button {
-  color: #ffca28;
-  cursor: pointer;
+.card-header > .favourite-button {
   font-size: 20px;
   display: inline-block;
   position: absolute;

@@ -89,8 +89,21 @@ footer a {
 footer a:hover {
   color: #eceff1;
 }
+.favourite-button {
+  color: #ffca28;
+  cursor: pointer;
+  font-size: 25px;
+}
 #favourite-badge {
-  background-color: #cfd8dc;
+  background-color: #ffab91;
+}
+.nav-item:hover #favourite-badge {
+  color: #fff;
+  opacity: 0.8;
+}
+.nav-item:hover .favourite-button {
+  color: #ffca28;
+  opacity: 0.8;
 }
 .rotate {
   -moz-transition: all 0.5s linear;
@@ -115,6 +128,12 @@ button:focus {
   display: flex;
   justify-content: flex-end;
   opacity: 0.7;
+}
+.nav-link {
+  padding: 0px !important;
+}
+.nav-link .favourite-button {
+  padding: 0px !important;
 }
 body {
   position: relative;
@@ -325,11 +344,6 @@ th {
 .buttons-container {
   display: flex;
   justify-content: space-between;
-}
-.favourite-button {
-  color: #ffca28;
-  cursor: pointer;
-  font-size: 25px;
 }
 .results-back-page {
   display: inline-block;

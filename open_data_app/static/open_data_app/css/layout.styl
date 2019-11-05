@@ -77,8 +77,21 @@ footer
   a:hover
     color $blue
 
+.favourite-button
+  color $yellow
+  cursor pointer
+  font-size 25px
+
 #favourite-badge
-  background-color $blue-bar
+  background-color $red-light
+
+.nav-item:hover
+  #favourite-badge
+    color white
+    opacity 0.8
+  .favourite-button
+    color $yellow
+    opacity 0.8
 
 .rotate
     -moz-transition all .5s linear
@@ -103,3 +116,8 @@ button:focus
   display flex
   justify-content flex-end
   opacity 0.7
+
+.nav-link
+  padding 0px !important
+  .favourite-button
+    padding 0px !important

@@ -89,8 +89,21 @@ footer a {
 footer a:hover {
   color: #eceff1;
 }
+.favourite-button {
+  color: #ffca28;
+  cursor: pointer;
+  font-size: 25px;
+}
 #favourite-badge {
-  background-color: #cfd8dc;
+  background-color: #ffab91;
+}
+.nav-item:hover #favourite-badge {
+  color: #fff;
+  opacity: 0.8;
+}
+.nav-item:hover .favourite-button {
+  color: #ffca28;
+  opacity: 0.8;
 }
 .rotate {
   -moz-transition: all 0.5s linear;
@@ -115,6 +128,12 @@ button:focus {
   display: flex;
   justify-content: flex-end;
   opacity: 0.7;
+}
+.nav-link {
+  padding: 0px !important;
+}
+.nav-link .favourite-button {
+  padding: 0px !important;
 }
 .checkbox label:after {
   content: '';
@@ -284,8 +303,7 @@ ul {
   overflow: hidden;
   padding-right: 15px;
 }
-.favourite-button {
-  color: #ffca28;
-  font-size: 25px;
+p .favourite-button {
   padding: 10px 0px;
+  cursor: initial;
 }
