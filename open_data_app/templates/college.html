@@ -26,6 +26,11 @@
     <link rel="stylesheet" href="{% static 'open_data_app/css/college.css' %}">
 {% endblock %}
 
+{% block external_styles %}
+  {{ block.super }}
+   <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}">
+{% endblock %}
+
 {% block canonical %}
     <link rel="canonical" href="{{ request.path }}">
 {% endblock %}
@@ -33,6 +38,11 @@
 {% block content %}
     <div class="container-fluid" itemscope
          itemtype="http://schema.org/CollegeOrUniversity">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 itemprop="name">{{ college.name }}</h1>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-12 col-md-2">
                 {% if referer %}
@@ -60,18 +70,13 @@
             </div>
             <div class="col-sm-12 col-md-10">
                 <div class="row">
-                    <div class="col-sm-12 top-info">
-                        <h1 itemprop="name">{{ college.name }}</h1>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-sm-12 buttons-container top-info">
                         <div>
                             <i class="{% if is_favourite %}fas{% else %}far{% endif %} fa-star favourite-button"
                                title="Add to favourite" data-college-id="{{ college.id }}"></i>
                         </div>
                         <!-- AddToAny BEGIN -->
-                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style add-to-any">
                             <a class="a2a_button_facebook"></a>
                             <a class="a2a_button_twitter"></a>
                             <a class="a2a_button_pinterest"></a>
@@ -166,7 +171,7 @@
                             <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#academics"
                                  aria-expanded="false"
                                  aria-controls="academics">
-                                <h2 id="academics-anchor">Academics</h2><i class="fas fa-plus"></i>
+                                <h2 id="academics-anchor">Academics</h2><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="col-sm-12 card-body collapse show" id="academics">
                                 {% if college.degree or college.level %}
@@ -207,7 +212,7 @@
                             <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#disciplines"
                                  aria-expanded="true"
                                  aria-controls="disciplines">
-                                <h2 id="disciplines-anchor">Disciplines</h2><i class="fas fa-plus"></i>
+                                <h2 id="disciplines-anchor">Disciplines</h2><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="col-sm-12 card-body collapse show" id="disciplines">
                                 <div class="row">
@@ -270,7 +275,7 @@
                             <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#admissions"
                                  aria-expanded="true"
                                  aria-controls="admissios">
-                                <h2 id="admissions-anchor">Acceptance</h2><i class="fas fa-plus"></i>
+                                <h2 id="admissions-anchor">Acceptance</h2><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="col-sm-12 card-body collapse show" id="admissions">
                                 <div class="row">
@@ -433,7 +438,7 @@
                             <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#completion"
                                  aria-expanded="true"
                                  aria-controls="completion">
-                                <h2 id="completion-anchor">Completion</h2><i class="fas fa-plus"></i>
+                                <h2 id="completion-anchor">Completion</h2><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="col-sm-12 card-body collapse show" id="completion">
                                 <div class="row">
@@ -569,7 +574,7 @@
                             <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#demography"
                                  aria-expanded="true"
                                  aria-controls="demography">
-                                <h2 id="demography-anchor">Student body</h2><i class="fas fa-plus"></i>
+                                <h2 id="demography-anchor">Student body</h2><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="col-sm-12 card-body collapse show" id="demography">
                                 <div class="row">
@@ -788,7 +793,7 @@
                             <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#aid"
                                  aria-expanded="true"
                                  aria-controls="aid">
-                                <h2 id="aid-anchor">Aid and Debt</h2><i class="fas fa-plus"></i>
+                                <h2 id="aid-anchor">Aid and Debt</h2><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="col-sm-12 card-body collapse show" id="aid">
                                 <div class="row">
@@ -886,7 +891,7 @@
                             <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#cost"
                                  aria-expanded="true"
                                  aria-controls="cost">
-                                <h2 id="cost-anchor">Cost</h2><i class="fas fa-plus"></i>
+                                <h2 id="cost-anchor">Cost</h2><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="col-sm-12 card-body collapse show" id="cost">
                                 <div class="row">
@@ -1053,7 +1058,7 @@
                             <div class="col-sm-12 card-header" data-toggle="collapse" data-target="#earnings"
                                  aria-expanded="true"
                                  aria-controls="earnings">
-                                <h2 id="earnings-anchor">Earnings</h2>
+                                <h2 id="earnings-anchor">Earnings</h2><i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
                             </div>
                             <div class="col-sm-12 card-body collapse show" id="earnings">
                                 <h3>Salary after attending <i class="fas fa-info-circle" data-toggle="tooltip"
