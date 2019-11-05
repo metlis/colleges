@@ -285,7 +285,7 @@
                                                               title="The ratio of the number of students who are admitted to the number of total applicants (2019 College Scorecard data)"></i>
                                         </h3>
                                     </div>
-                                    {% if college.admission_rate %}
+                                    {% if college.admission_rate != None %}
                                         <div class="col-sm-12 admission-circle">
                                             <div class="c100 green big p{{ college.admission_rate|mul:100|floatformat:"0" }}">
                                                 <span>{{ college.admission_rate|mul:100|floatformat:"0" }}%</span>
@@ -318,7 +318,7 @@
                                                  style="width: {{ college.sat_average|floatformat:"0"|bar_percent:'1600' }}%;"
                                                  aria-valuenow="{{ college.sat_average|floatformat:"0"|bar_percent:'1600' }}"
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                {% if college.sat_average %}
+                                                {% if college.sat_average != None %}
                                                     {{ college.sat_average|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
                                                     data</span>{% endif %}
@@ -332,7 +332,7 @@
                                                  style="width: {{ college.sat_math|floatformat:"0"|bar_percent:'800' }}%;"
                                                  aria-valuenow="{{ college.sat_math|floatformat:"0"|bar_percent:'800' }}"
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                {% if college.sat_math %}
+                                                {% if college.sat_math != None %}
                                                     {{ college.sat_math|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
                                                     data</span>{% endif %}
@@ -346,7 +346,7 @@
                                                  style="width: {{ college.sat_reading|floatformat:"0"|bar_percent:'800' }}%;"
                                                  aria-valuenow="{{ college.sat_reading|floatformat:"0"|bar_percent:'800' }}"
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                {% if college.sat_reading %}
+                                                {% if college.sat_reading != None %}
                                                     {{ college.sat_reading|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
                                                     data</span>{% endif %}
@@ -360,7 +360,7 @@
                                                  style="width: {{ college.sat_writing|floatformat:"0"|bar_percent:'800' }}%;"
                                                  aria-valuenow="{{ college.sat_writing|floatformat:"0"|bar_percent:'800' }}"
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                {% if college.sat_writing %}
+                                                {% if college.sat_writing != None %}
                                                     {{ college.sat_writing|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
                                                     data</span>{% endif %}
@@ -377,7 +377,7 @@
                                                  style="width: {{ college.act_cumulative|floatformat:"0"|bar_percent:'36' }}%;"
                                                  aria-valuenow="{{ college.act_cumulative|floatformat:"0"|bar_percent:'36' }}"
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                {% if college.act_cumulative %}
+                                                {% if college.act_cumulative != None %}
                                                     {{ college.act_cumulative|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
                                                     data</span>{% endif %}
@@ -391,7 +391,7 @@
                                                  style="width: {{ college.act_math|floatformat:"0"|bar_percent:'36' }}%;"
                                                  aria-valuenow="{{ college.act_math|floatformat:"0"|bar_percent:'36' }}"
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                {% if college.act_math %}
+                                                {% if college.act_math != None %}
                                                     {{ college.act_math|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
                                                     data</span>{% endif %}
@@ -405,7 +405,7 @@
                                                  style="width: {{ college.act_english|floatformat:"0"|bar_percent:'36' }}%;"
                                                  aria-valuenow="{{ college.act_english|floatformat:"0"|bar_percent:'36' }}"
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                {% if college.act_english %}
+                                                {% if college.act_english != None %}
                                                     {{ college.act_english|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
                                                     data</span>{% endif %}
@@ -419,7 +419,7 @@
                                                  style="width: {{ college.act_writing|floatformat:"0"|bar_percent:'36' }}%;"
                                                  aria-valuenow="{{ college.act_writing|floatformat:"0"|bar_percent:'36' }}"
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                {% if college.act_writing %}
+                                                {% if college.act_writing != None %}
                                                     {{ college.act_writing|floatformat:"0" }}{% else %}
                                                     <span class="no-data">No
                                                     data</span>{% endif %}
@@ -443,7 +443,7 @@
                             <div class="col-sm-12 card-body collapse show" id="completion">
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
-                                        {% if college.completion_rate_four_year_pooled %}
+                                        {% if college.completion_rate_four_year_pooled != None %}
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <h3>Completion rate: 4-year programs <i class="fas fa-info-circle"
@@ -462,7 +462,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        {% elif college.completion_rate_less_four_year_pooled %}
+                                        {% elif college.completion_rate_less_four_year_pooled != None %}
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <h3>Completion rate: less-than-4-year programs <i
@@ -503,7 +503,7 @@
                                         {% endif %}
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                        {% if college.retention_rate_four_year_pooled %}
+                                        {% if college.retention_rate_four_year_pooled != None %}
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <h3>Retention rate: 4-year programs <i class="fas fa-info-circle"
@@ -522,7 +522,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        {% elif college.retention_rate_less_four_year_pooled %}
+                                        {% elif college.retention_rate_less_four_year_pooled != None %}
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <h3>Retention rate: less-than-4-year programs <i
@@ -693,7 +693,7 @@
                                                                             title="Share of female and male students (2019 College Scorecard data)"></i>
                                         </h3>
                                         <div class="row">
-                                            {% if college.students_female %}
+                                            {% if college.students_female != None %}
                                                 <div class="col-sm-6 female">
                                                     <h4>Female</h4>
                                                     <div class="c100 orange p{{ college.students_female|mul:100|floatformat:"0" }}">
@@ -750,7 +750,7 @@
                                                                           data-placement="top"
                                                                           title="Share of undergraduate, degree-/certificate-seeking students who are full-time (2019 College Scorecard data)"></i>
                                                 </h3>
-                                                {% if college.students_part_time %}
+                                                {% if college.students_part_time != None %}
                                                     <div class="c100 p{{ college.students_part_time|sub:1|mul:-100|floatformat:"0" }}">
                                                         <span>{{ college.students_part_time|sub:1|mul:-100|floatformat:"2"|intcomma }}%</span>
                                                         <div class="slice">
@@ -773,7 +773,7 @@
                                                                      data-placement="top"
                                                                      title="Average family income of dependent students in real 2015 dollars (2019 College Scorecard data)"></i>
                                                 </h3>
-                                                {% if college.students_family_income %}
+                                                {% if college.students_family_income != None %}
                                                     <p class="single-value">{{ college.students_family_income|floatformat:"0"|intcomma }}$</p>
                                                 {% else %}
                                                     <p style="text-align: center">No data available</p>
@@ -804,7 +804,7 @@
                                                                   data-placement="top"
                                                                   title="Percentage of undergraduates who receive a Pell Grant (2019 College Scorecard data)"></i>
                                                 </h3>
-                                                {% if college.pell_grand %}
+                                                {% if college.pell_grand != None %}
                                                     <div class="c100 orange p{{ college.pell_grand|mul:100|floatformat:"0" }}">
                                                         <span>{{ college.pell_grand|mul:100|floatformat:"0" }}%</span>
                                                         <div class="slice">
@@ -827,7 +827,7 @@
                                                                     data-placement="top"
                                                                     title="Percent of all undergraduate students receiving a federal student loan (2019 College Scorecard data)"></i>
                                                 </h3>
-                                                {% if college.federal_loan %}
+                                                {% if college.federal_loan != None %}
                                                     <div class="c100 green p{{ college.federal_loan|mul:100|floatformat:"0" }}">
                                                         <span>{{ college.federal_loan|mul:100|floatformat:"0" }}%</span>
                                                         <div class="slice">
@@ -863,7 +863,7 @@
                                                                         data-placement="top"
                                                                         title="The median debt for students who have completed (2019 College Scorecard data)"></i>
                                         </h3>
-                                        {% if college.debt_completed_median %}
+                                        {% if college.debt_completed_median != None %}
                                             <p class="single-value">{{ college.debt_completed_median|floatformat:"0"|intcomma }}$</p>
                                         {% else %}
                                             <p style="text-align: center">No data available</p>
@@ -872,7 +872,7 @@
                                                                 data-placement="top"
                                                                 title="Median loan debt of completers in monthly payments (2019 College Scorecard data)"></i>
                                         </h3>
-                                        {% if college.monthly_payments %}
+                                        {% if college.monthly_payments != None %}
                                             <p class="single-value">{{ college.monthly_payments|floatformat:"0"|intcomma }}$</p>
                                         {% else %}
                                             <p style="text-align: center">No data available</p>
@@ -903,9 +903,9 @@
                                                                          data-placement="top"
                                                                          title="The average annual total cost of attendance, including tuition and fees, books and supplies, and living expenses, minus the average grant/scholarship aid (2019 College Scorecard data)"></i>
                                                 </h3>
-                                                {% if college.average_net_price_public %}
+                                                {% if college.average_net_price_public != None %}
                                                     <p class="single-value">{{ college.average_net_price_public|floatformat:"0"|intcomma }}$</p>
-                                                {% elif college.average_net_price_private %}
+                                                {% elif college.average_net_price_private != None %}
                                                     <p class="single-value">{{ college.average_net_price_private|floatformat:"0"|intcomma }}$</p>
                                                 {% elif not college.average_net_price_private and not college.average_net_price_public %}
                                                     <p style="text-align: center">No data available</p>
@@ -915,7 +915,7 @@
                                                 <h3>In-state tuition <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                         data-placement="top"
                                                                         title="In-state tuition and fees (2019 College Scorecard data)"></i></h3>
-                                                {% if college.in_state_tuition %}
+                                                {% if college.in_state_tuition != None %}
                                                     <p class="single-value">{{ college.in_state_tuition|floatformat:"0"|intcomma }}$</p>
                                                 {% else %}
                                                     <p style="text-align: center">No data available</p>
@@ -926,7 +926,7 @@
                                                                          data-toggle="tooltip"
                                                                          data-placement="top"
                                                                          title="Out-of-state tuition and fees (2019 College Scorecard data)"></i></h3>
-                                                {% if college.out_state_tuition %}
+                                                {% if college.out_state_tuition != None %}
                                                     <p class="single-value">{{ college.out_state_tuition|floatformat:"0"|intcomma }}$</p>
                                                 {% else %}
                                                     <p style="text-align: center">No data available</p>
@@ -952,7 +952,7 @@
                                                 <tbody>
                                                 <tr>
                                                     <td>0$ - 30,000$</td>
-                                                    {% if college.average_net_price_priv_30 %}
+                                                    {% if college.average_net_price_priv_30 != None %}
                                                         <td>{{ college.average_net_price_priv_30|floatformat:"0"|intcomma }}$</td>
                                                     {% else %}
                                                         <td>No data</td>
@@ -960,7 +960,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>30,001$ - 48,000$</td>
-                                                    {% if college.average_net_price_priv_48 %}
+                                                    {% if college.average_net_price_priv_48 != None %}
                                                         <td>{{ college.average_net_price_priv_48|floatformat:"0"|intcomma }}$</td>
                                                     {% else %}
                                                         <td>No data</td>
@@ -968,7 +968,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>48,001$ - 75,000$</td>
-                                                    {% if college.average_net_price_priv_75 %}
+                                                    {% if college.average_net_price_priv_75 != None %}
                                                         <td>{{ college.average_net_price_priv_75|floatformat:"0"|intcomma }}$</td>
                                                     {% else %}
                                                         <td>No data</td>
@@ -976,7 +976,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>75,001$ - 110,000$</td>
-                                                    {% if college.average_net_price_priv_110 %}
+                                                    {% if college.average_net_price_priv_110 != None %}
                                                         <td>{{ college.average_net_price_priv_110|floatformat:"0"|intcomma }}$</td>
                                                     {% else %}
                                                         <td>No data</td>
@@ -984,7 +984,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>110,001$+</td>
-                                                    {% if college.average_net_price_priv_110_plus %}
+                                                    {% if college.average_net_price_priv_110_plus != None %}
                                                         <td>{{ college.average_net_price_priv_110_plus|floatformat:"0"|intcomma }}$</td>
                                                     {% else %}
                                                         <td>No data</td>
@@ -1004,7 +1004,7 @@
                                                 <tbody>
                                                 <tr>
                                                     <td>$0 - $30,000</td>
-                                                    {% if college.average_net_price_pub_30 %}
+                                                    {% if college.average_net_price_pub_30 != None %}
                                                         <td>{{ college.average_net_price_pub_30|floatformat:"0"|intcomma }}$</td>
                                                     {% else %}
                                                         <td>No data</td>
@@ -1012,7 +1012,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>$30,001 - $48,000</td>
-                                                    {% if college.average_net_price_pub_48 %}
+                                                    {% if college.average_net_price_pub_48 != None %}
                                                         <td>{{ college.average_net_price_pub_48|floatformat:"0"|intcomma }}$</td>
                                                     {% else %}
                                                         <td>No data</td>
@@ -1020,7 +1020,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>$48,001 - $75,000</td>
-                                                    {% if college.average_net_price_pub_75 %}
+                                                    {% if college.average_net_price_pub_75 != None %}
                                                         <td>{{ college.average_net_price_pub_75|floatformat:"0"|intcomma }}$</td>
                                                     {% else %}
                                                         <td>No data</td>
@@ -1028,7 +1028,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>$75,001 - $110,000</td>
-                                                    {% if college.average_net_price_pub_110 %}
+                                                    {% if college.average_net_price_pub_110 != None %}
                                                         <td>{{ college.average_net_price_pub_110|floatformat:"0"|intcomma }}$</td>
                                                     {% else %}
                                                         <td>No data</td>
@@ -1036,7 +1036,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>$110,001+</td>
-                                                    {% if college.average_net_price_pub_110_plus %}
+                                                    {% if college.average_net_price_pub_110_plus != None %}
                                                         <td>{{ college.average_net_price_pub_110_plus|floatformat:"0"|intcomma }}$</td>
                                                     {% else %}
                                                         <td>No data</td>
@@ -1065,7 +1065,7 @@
                                                               data-placement="top"
                                                               title="Median earnings of students working and not enrolled 10 years after entry (2019 College Scorecard data)"></i>
                                 </h3>
-                                {% if college.median_earnings %}
+                                {% if college.median_earnings != None %}
                                     <p class="single-value">{{ college.median_earnings|floatformat:"0"|intcomma }}$</p>
                                 {% else %}
                                     <p style="text-align: center">No data available</p>

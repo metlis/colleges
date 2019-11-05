@@ -407,7 +407,7 @@
                                         </h4>
                                         <div>
                                             <p>
-                                                {% if average_tuition %}
+                                                {% if average_tuition != None %}
                                                     {{ average_tuition|floatformat:"0"|intcomma }}$
                                                 {% else %}
                                                     No data
@@ -416,7 +416,7 @@
                                         </div>
                                         <div>
                                             <p>
-                                                {% if max_tuition %}
+                                                {% if max_tuition != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#maxTuition" aria-expanded="false"
                                                             aria-controls="maxTuition">
@@ -427,7 +427,7 @@
                                                 {% endif %}
                                             </p>
                                         </div>
-                                        {% if max_tuition %}
+                                        {% if max_tuition != None %}
                                             <div id="maxTuition" class="collapse">
                                                 {% for college in max_tuition_colleges %}
                                                     <p>
@@ -438,7 +438,7 @@
                                         {% endif %}
                                         <div>
                                             <p>
-                                                {% if min_tuition %}
+                                                {% if min_tuition != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#minTuition" aria-expanded="false"
                                                             aria-controls="minTuition">
@@ -449,7 +449,7 @@
                                                 {% endif %}
                                             </p>
                                         </div>
-                                        {% if min_tuition %}
+                                        {% if min_tuition != None %}
                                             <div id="minTuition" class="collapse">
                                                 {% for college in min_tuition_colleges %}
                                                     <p>
@@ -466,7 +466,7 @@
                                         </h4>
                                         <div>
                                             <p>
-                                                {% if average_payments %}
+                                                {% if average_payments != None %}
                                                     {{ average_payments|floatformat:"0"|intcomma }}$
                                                 {% else %}
                                                     No data
@@ -475,7 +475,7 @@
                                         </div>
                                         <div>
                                             <p>
-                                                {% if max_payments %}
+                                                {% if max_payments != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#maxPayments" aria-expanded="false"
                                                             aria-controls="maxPayments">
@@ -486,7 +486,7 @@
                                                 {% endif %}
                                             </p>
                                         </div>
-                                        {% if max_payments %}
+                                        {% if max_payments != None %}
                                             <div id="maxPayments" class="collapse">
                                                 {% for college in max_payments_colleges %}
                                                     <p>
@@ -497,7 +497,7 @@
                                         {% endif %}
                                         <div>
                                             <p>
-                                                {% if min_payments %}
+                                                {% if min_payments != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#minPayments" aria-expanded="false"
                                                             aria-controls="minPayments">
@@ -508,7 +508,7 @@
                                                 {% endif %}
                                             </p>
                                         </div>
-                                        {% if min_payments %}
+                                        {% if min_payments != None %}
                                             <div id="minPayments" class="collapse">
                                                 {% for college in min_payments_colleges %}
                                                     <p>
@@ -525,7 +525,7 @@
                                         </h4>
                                         <div>
                                             <p>
-                                                {% if average_payments %}
+                                                {% if average_payments != None %}
                                                     {{ average_earnings|floatformat:"0"|intcomma }}$
                                                 {% else %}
                                                     No data
@@ -534,7 +534,7 @@
                                         </div>
                                         <div>
                                             <p>
-                                                {% if max_earnings %}
+                                                {% if max_earnings != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#maxEarnings" aria-expanded="false"
                                                             aria-controls="maxEarnings">{{ max_earnings|floatformat:"0"|intcomma }}$
@@ -544,7 +544,7 @@
                                                 {% endif %}
                                             </p>
                                         </div>
-                                        {% if max_earnings %}
+                                        {% if max_earnings != None %}
                                             <div id="maxEarnings" class="collapse">
                                                 {% for college in max_earnings_colleges %}
                                                     <p>
@@ -555,7 +555,7 @@
                                         {% endif %}
                                         <div>
                                             <p>
-                                                {% if min_earnings %}
+                                                {% if min_earnings != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#minEarnings" aria-expanded="false"
                                                             aria-controls="minEarnings">
@@ -566,7 +566,7 @@
                                                 {% endif %}
                                             </p>
                                         </div>
-                                        {% if min_earnings %}
+                                        {% if min_earnings != None %}
                                             <div id="minEarnings" class="collapse">
                                                 {% for college in min_earnings_colleges %}
                                                     <p>
