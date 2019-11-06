@@ -66,6 +66,10 @@ def get_geo(request, geo_name, geo_slug):
     if 'favourite_colleges' in request.session:
         favourite_colleges = request.session['favourite_colleges']
 
+    cookie_agreement = ''
+    if 'cookie_agreement' in request.session:
+        cookie_agreement = True
+
     context = {
                'colleges': colleges,
                'is_multiple': is_multiple,
@@ -87,6 +91,7 @@ def get_geo(request, geo_name, geo_slug):
                'sort_params': sort_params,
                'active_sort_param_name': active_sort_param_name,
                'params': active_sort_param_val,
+               'cookie_agreement': cookie_agreement,
                }
 
     if geo_name == 'region':
@@ -166,6 +171,10 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
     if 'favourite_colleges' in request.session:
         favourite_colleges = request.session['favourite_colleges']
 
+    cookie_agreement = ''
+    if 'cookie_agreement' in request.session:
+        cookie_agreement = True
+
     if colleges.count() > 0:
         if geo_name == 'region':
             seo_name, region_slug, region_states = geo_obj.get_region_data()
@@ -242,6 +251,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
                    'api_call': api_call,
                    'maps_key': GOOGLE_MAPS_API,
                    'favourite_colleges': favourite_colleges,
+                   'cookie_agreement': cookie_agreement,
                    }
 
         if geo_name == 'region':
@@ -271,6 +281,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
             'seo_title': 'Results',
             'noindex': True,
             'favourite_colleges': favourite_colleges,
+            'cookie_agreement': cookie_agreement,
         })
 
 

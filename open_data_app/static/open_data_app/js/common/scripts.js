@@ -175,3 +175,13 @@ $(".card-header, .sort").click(function () {
     var icon =  $(this).find(".rotate");
     $(icon).toggleClass('down');
 });
+
+$('.cookie-agreement').on('click', function(e) {
+    axios.get('/api/agree_on_cookies/')
+        .then(function (response) {
+            $('.v-snack').css('display', 'none');
+        })
+        .catch(function (error) {
+            console.log(error);
+    })
+});

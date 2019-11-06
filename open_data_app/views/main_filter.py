@@ -23,6 +23,10 @@ def main_filter(request):
     if 'favourite_colleges' in request.session:
         favourite_colleges = request.session['favourite_colleges']
 
+    cookie_agreement = ''
+    if 'cookie_agreement' in request.session:
+        cookie_agreement = True
+
     if len(params) > 0:
         # filtered colleges, request string for rendering links, readable values of applied filters and
         # dictionary of applied filters and their values
@@ -50,11 +54,6 @@ def main_filter(request):
             # pagination
             colleges = handle_pagination(request, colleges)
 
-            # ids of favourite colleges
-            favourite_colleges = []
-            if 'favourite_colleges' in request.session:
-                favourite_colleges = request.session['favourite_colleges']
-
             context = {'colleges': colleges,
                        'is_multiple': is_multiple,
                        # seo
@@ -71,6 +70,7 @@ def main_filter(request):
                        'api_call': req_str + '&main_filter=1',
                        'maps_key': GOOGLE_MAPS_API,
                        'favourite_colleges': favourite_colleges,
+                       'cookie_agreement': cookie_agreement,
                        # sort parameters
                        'sort_params': sort_params,
                        'active_sort_param_name': active_sort_param_name,
@@ -85,6 +85,7 @@ def main_filter(request):
                 'seo_title': 'Results',
                 'noindex': True,
                 'favourite_colleges': favourite_colleges,
+                'cookie_agreement': cookie_agreement,
             })
     else:
         colleges = College.objects.all()
@@ -123,6 +124,7 @@ def main_filter(request):
                    'maps_key': GOOGLE_MAPS_API,
                    'api_call': 'main_filter=1',
                    'favourite_colleges': favourite_colleges,
+                   'cookie_agreement': cookie_agreement,
                    # filter
                    'state_filter': True,
                    # sort parameters

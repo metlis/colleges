@@ -29,6 +29,10 @@ def index(request):
     if 'favourite_colleges' in request.session:
         favourite_colleges = request.session['favourite_colleges']
 
+    cookie_agreement = ''
+    if 'cookie_agreement' in request.session:
+        cookie_agreement = True
+
     context = {'states': states,
                'regions': regions,
                'ownership': ownership,
@@ -41,6 +45,7 @@ def index(request):
                'seo_title': seo_title,
                'seo_description': seo_description,
                'favourite_colleges': favourite_colleges,
+               'cookie_agreement': cookie_agreement,
                }
 
     context.update(filters)

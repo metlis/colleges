@@ -56,6 +56,10 @@ def filter_values(request, param_name, param_value):
     if 'favourite_colleges' in request.session:
         favourite_colleges = request.session['favourite_colleges']
 
+    cookie_agreement = ''
+    if 'cookie_agreement' in request.session:
+        cookie_agreement = True
+
     if colleges.count() > 0:
 
         # parameter's text value and page link
@@ -119,6 +123,7 @@ def filter_values(request, param_name, param_value):
                    'api_call': api_call,
                    'maps_key': GOOGLE_MAPS_API,
                    'favourite_colleges': favourite_colleges,
+                   'cookie_agreement': cookie_agreement,
                    }
         context.update(filters)
         context.update(aggregate_data)
@@ -130,4 +135,5 @@ def filter_values(request, param_name, param_value):
             'seo_title': 'Results',
             'noindex': True,
             'favourite_colleges': favourite_colleges,
+            'cookie_agreement': cookie_agreement,
         })

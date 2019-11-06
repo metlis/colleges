@@ -38,6 +38,10 @@ def search(request):
         if 'favourite_colleges' in request.session:
             favourite_colleges = request.session['favourite_colleges']
 
+        cookie_agreement = ''
+        if 'cookie_agreement' in request.session:
+            cookie_agreement = True
+
         if colleges.count() > 0:
 
             canonical = reverse('college_app:search')
@@ -86,6 +90,7 @@ def search(request):
                        # sort parameters
                        'sort_params': sort_params,
                        'active_sort_param_name': active_sort_param_name,
+                       'cookie_agreement': cookie_agreement,
                        }
 
             context.update(aggregate_data)
@@ -98,4 +103,5 @@ def search(request):
                 'seo_title': 'Results',
                 'noindex': True,
                 'favourite_colleges': favourite_colleges,
+                'cookie_agreement': cookie_agreement,
             })

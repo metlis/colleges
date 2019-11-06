@@ -134,6 +134,10 @@ def get_college(request, college_id, college_slug):
                 print(e)
                 pass
 
+            cookie_agreement = ''
+            if 'cookie_agreement' in request.session:
+                cookie_agreement = True
+
             return render(request, 'college.html', {'college': college,
                                                     'top_disciplines': top_disciplines[:5],
                                                     'college_disciplines': disciplines_vals,
@@ -144,6 +148,7 @@ def get_college(request, college_id, college_slug):
                                                     'favourite_colleges': favourite_colleges,
                                                     'referer': referer,
                                                     'tags': tags,
+                                                    'cookie_agreement': cookie_agreement,
                                                     })
     else:
         raise Http404()
