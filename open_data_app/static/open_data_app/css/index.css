@@ -312,3 +312,10 @@ p .favourite-button {
   padding: 10px 0px;
   cursor: initial;
 }
+.content-none {
+  text-align: center;
+  min-height: calc(100vh - 53px - 72px);
+}
+#app {
+  min-height: calc(100vh - 53px);
+}
