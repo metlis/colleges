@@ -125,6 +125,7 @@ USE_TZ = True
 
 SITE_ID = 1
 
+SESSION_COOKIE_AGE = 31536000
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
