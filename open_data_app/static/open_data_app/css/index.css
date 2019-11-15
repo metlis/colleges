@@ -85,6 +85,7 @@ footer .container p {
 footer a {
   color: #fff;
   font-weight: bold;
+  padding-left: 10px;
 }
 footer a:hover {
   color: #eceff1;

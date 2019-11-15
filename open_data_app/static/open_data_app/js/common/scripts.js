@@ -185,3 +185,6 @@ $('.cookie-agreement').on('click', function(e) {
             console.log(error);
     })
 });
+$('.cookie-policy').on('click', function(e) {
+    window.location.href = '/cookie-policy/';
+});
