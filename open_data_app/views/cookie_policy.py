@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from settings import DOMAIN
+from settings import *
 
 
 def cookie_policy(request):
@@ -10,4 +10,5 @@ def cookie_policy(request):
     return render(request, 'cookie-policy.html', {
         'domain': DOMAIN,
         'cookie_agreement': cookie_agreement,
+        'version': STATIC_VERSION,
     })

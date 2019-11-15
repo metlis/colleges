@@ -24,8 +24,8 @@
 {% block scripts %}
     {{ block.super }}
     {% if debug %}
-        <script src="{% static 'open_data_app/js/build/dev.bundle.js' %}"></script>
+        <script src="{% static 'open_data_app/js/build/dev.bundle.js' %}?v={{ version }}"></script>
     {% else %}
-        <script src="{% static 'open_data_app/dist/prod.bundle.js' %}"></script>
+        <script src="{% static 'open_data_app/dist/prod.bundle.js' %}?v={{ version }}"></script>
     {% endif %}
 {% endblock %}

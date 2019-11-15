@@ -149,6 +149,7 @@ def get_college(request, college_id, college_slug):
                                                     'referer': referer,
                                                     'tags': tags,
                                                     'cookie_agreement': cookie_agreement,
+                                                    'version': STATIC_VERSION,
                                                     })
     else:
         raise Http404()

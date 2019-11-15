@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from settings import DOMAIN
+from settings import *
 
 
 def disclaimer(request):
@@ -10,4 +10,5 @@ def disclaimer(request):
     return render(request, 'disclaimer.html', {
         'domain': DOMAIN,
         'cookie_agreement': cookie_agreement,
+        'version': STATIC_VERSION,
     })

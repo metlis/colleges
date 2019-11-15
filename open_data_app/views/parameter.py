@@ -101,6 +101,7 @@ def filter_values(request, param_name, param_value):
 
         context = {'colleges': colleges,
                    'is_multiple': is_multiple,
+                   'version': STATIC_VERSION,
                    # seo
                    'seo_title': seo_title,
                    'seo_description': seo_description,
@@ -136,4 +137,5 @@ def filter_values(request, param_name, param_value):
             'noindex': True,
             'favourite_colleges': favourite_colleges,
             'cookie_agreement': cookie_agreement,
+            'version': STATIC_VERSION,
         })

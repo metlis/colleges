@@ -56,6 +56,7 @@ def main_filter(request):
 
             context = {'colleges': colleges,
                        'is_multiple': is_multiple,
+                       'version': STATIC_VERSION,
                        # seo
                        'seo_title': 'Results',
                        'canonical': canonical,
@@ -86,6 +87,7 @@ def main_filter(request):
                 'noindex': True,
                 'favourite_colleges': favourite_colleges,
                 'cookie_agreement': cookie_agreement,
+                'version': STATIC_VERSION,
             })
     else:
         colleges = College.objects.all()
@@ -114,6 +116,7 @@ def main_filter(request):
 
         context = {'colleges': colleges,
                    'is_multiple': is_multiple,
+                   'version': STATIC_VERSION,
                    # seo
                    'seo_title': seo_title,
                    'seo_description': seo_description,

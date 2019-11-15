@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from settings import *
 
 
 def page_not_found(request):
@@ -14,4 +15,5 @@ def page_not_found(request):
     return render(request, '404.html', {
         'favourite_colleges': favourite_colleges,
         'cookie_agreement': cookie_agreement,
+        'version': STATIC_VERSION,
     })

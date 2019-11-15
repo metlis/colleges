@@ -47,12 +47,12 @@
 {% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{% static 'open_data_app/css/listing.css' %}">
+    <link rel="stylesheet" href="{% static 'open_data_app/css/listing.css' %}?v={{ version }}">
 {% endblock %}
 
 {% block external_styles %}
   {{ block.super }}
-   <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}">
+   <link rel="stylesheet" href="{% static 'open_data_app/css/circle.css' %}?v={{ version }}">
 {% endblock %}
 
 {% block content %}

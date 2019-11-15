@@ -72,6 +72,7 @@ def search(request):
 
             context = {'colleges': colleges,
                        'is_multiple': is_multiple,
+                       'version': STATIC_VERSION,
                        # seo
                        'canonical': canonical,
                        'seo_title': 'Search',
@@ -104,4 +105,5 @@ def search(request):
                 'noindex': True,
                 'favourite_colleges': favourite_colleges,
                 'cookie_agreement': cookie_agreement,
+                'version': STATIC_VERSION,
             })

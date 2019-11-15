@@ -73,6 +73,7 @@ def get_geo(request, geo_name, geo_slug):
     context = {
                'colleges': colleges,
                'is_multiple': is_multiple,
+               'version': STATIC_VERSION,
                # state data
                'slug': geo_slug,
                'view_name': 'college_app:geo_param',
@@ -226,6 +227,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
         context = {
                    'colleges': colleges,
                    'is_multiple': is_multiple,
+                   'version': STATIC_VERSION,
                    # seo
                    'seo_title': seo_title,
                    'seo_description': seo_description,
@@ -282,6 +284,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
             'noindex': True,
             'favourite_colleges': favourite_colleges,
             'cookie_agreement': cookie_agreement,
+            'version': STATIC_VERSION,
         })
 
 

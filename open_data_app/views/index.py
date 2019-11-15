@@ -46,6 +46,7 @@ def index(request):
                'seo_description': seo_description,
                'favourite_colleges': favourite_colleges,
                'cookie_agreement': cookie_agreement,
+               'version': STATIC_VERSION,
                }
 
     context.update(filters)
