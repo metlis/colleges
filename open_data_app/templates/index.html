@@ -422,15 +422,13 @@
             <div class="v-snack v-snack--active v-snack--bottom">
                 <div class="v-snack__wrapper agreement">
                     <div class="v-snack__content">
-                      We use cookies to ensure that we give you the best experience on our wibsite.
+                      <p class="mb-0">We use cookies <a href="{% url 'college_app:cookie_policy' %}" class="cookie-policy">Cookie policy</a>
+                      The information contained in this website is for general information purposes only
+                      <a href="{% url 'college_app:disclaimer' %}" class="disclaimer-link">Disclaimer</a>
+                      </p>
                           <button type="button" class="v-btn v-btn--flat v-btn--text theme--dark v-size--default">
                               <span class="v-btn__content cookie-agreement">
                                   I agree
-                              </span>
-                          </button>
-                          <button type="button" class="v-btn v-btn--flat v-btn--text theme--dark v-size--default">
-                              <span class="v-btn__content cookie-policy">
-                                  Read more
                               </span>
                           </button>
                     </div>
@@ -446,6 +444,7 @@
                 <p>
                     <a href="mailto:info@colleges-us.com">Contact us</a>
                     <a href="{% url 'college_app:cookie_policy' %}">Cookie policy</a>
+                    <a href="{% url 'college_app:disclaimer' %}">Disclaimer</a>
                 </p>
             </div>
         </footer>
