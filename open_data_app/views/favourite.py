@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from settings import *
 
 
 def show_favourite(request):
@@ -14,4 +15,5 @@ def show_favourite(request):
     return render(request, 'favourite.html', {
         'favourite_colleges': favourite_colleges,
         'cookie_agreement': cookie_agreement,
+        'version': STATIC_VERSION,
     })
