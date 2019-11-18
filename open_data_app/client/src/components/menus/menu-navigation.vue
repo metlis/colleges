@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
     dense
-    :class="$style.leftMenu"
+    :class="$style.navigationMenu"
     width="100%"
   >
     <v-list nav dense>
@@ -46,6 +46,6 @@ export default {
 </script>
 
 <style lang="stylus" module>
-  .leftMenu
+  .navigationMenu
     transform translateX(0%) !important
 </style>

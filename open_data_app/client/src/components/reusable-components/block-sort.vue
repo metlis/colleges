@@ -4,7 +4,7 @@
       v-for="(item, name) in sortNames"
       :key="item.title"
       :ref="name"
-      @click="handleSortClick(name)"
+      @click="emitSortEvent(name)"
       class="mt-1 mb-0"
     >
       <v-list-item-icon>
@@ -20,7 +20,7 @@
 <script>
 export default {
   name: 'block-sort',
-  props: ['reset'],
+  props: ['restore'],
   data() {
     return {
       sortNames: {
@@ -55,19 +55,19 @@ export default {
           name: 'undergrad_students',
         },
       },
-      sortIsActive: false,
+      toggleSort: false,
     };
   },
   methods: {
-    handleSortClick(item) {
-      this.sortIsActive = true;
+    emitSortEvent(item) {
+      this.toggleSort = true;
       this.$emit('sortClick', this.sortNames[item]);
       setTimeout(() => {
         this.$refs[item][0].isActive = true;
         this.$refs[item][0].inactive = false;
       }, 0);
     },
-    resetSort() {
+    clearSort() {
       Object.keys(this.$refs).forEach((key) => {
         const item = this.$refs[key][0];
         if (item.isActive) item.isActive = false;
@@ -75,9 +75,9 @@ export default {
     },
   },
   watch: {
-    reset(val) {
-      this.sortIsActive = !val;
-      if (!this.sortIsActive) this.resetSort();
+    restore(val) {
+      this.toggleSort = !val;
+      if (!this.toggleSort) this.clearSort();
     },
   },
 };

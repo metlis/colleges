@@ -2,13 +2,13 @@
   <v-row class="mx-0" ref="top">
     <!--  Left Navigation Menu  -->
     <v-col
-      :class="classes.leftMenu"
+      :class="classes.navigationMenu"
       class="pa-0"
       xs="12"
       sm="12"
       md="2"
     >
-      <menu-left @navigationClick="changeNavButton" />
+      <menu-navigation @navigationClick="changeNavButton" />
     </v-col>
     <!--  Content Area  -->
     <v-col
@@ -30,7 +30,7 @@
             :checkboxFilters="contentColleges.checkboxFilters"
             :statesFilters="contentColleges.statesFilters"
             :rangeFilters="contentColleges.rangeFilters"
-            :reset="contentColleges.reset"
+            :restore="contentColleges.restore"
           />
           <!-- A map with colleges -->
           <content-map
@@ -40,42 +40,43 @@
             :checkboxFilters="contentMap.checkboxFilters"
             :statesFilters="contentMap.statesFilters"
             :rangeFilters="contentMap.rangeFilters"
-            :reset="contentMap.reset"
+            :restore="contentMap.restore"
           />
         </v-container>
       </v-content>
     </v-col>
-    <!--  Right Menu  -->
+    <!--  Right Filter Menu  -->
     <v-col
-      :class="classes.rightMenu"
+      :class="classes.filterMenu"
       xs="12"
       sm="12"
       md="2"
     >
       <!--  Right Sort/Filter Menu for Colleges  -->
-      <menu-right-colleges
+      <menu-filter-colleges
         v-if="activeNavButton === 'Colleges'"
         :colleges="colleges"
         @sortClick="changeSortButton('contentColleges', 'colleges-sort-click', $event)"
         @checkboxFilterChanged=
-          "updateFilters('contentColleges', 'checkboxFilters', 'colleges-checkbox-click', $event)"
+          "updateFiltersValues('contentColleges', 'checkboxFilters', 'colleges-checkbox-click',
+          $event)"
         @statesFilterChanged=
-          "updateFilters('contentColleges', 'statesFilters', 'colleges-state-click', $event)"
+          "updateFiltersValues('contentColleges', 'statesFilters', 'colleges-state-click', $event)"
         @rangeFilterChanged=
-          "updateFilters('contentColleges', 'rangeFilters', 'colleges-range-input', $event)"
-        @reset="resetFilters('contentColleges')"
+          "updateFiltersValues('contentColleges', 'rangeFilters', 'colleges-range-input', $event)"
+        @restore="clearFilters('contentColleges')"
       />
       <!--  Right Filter Menu for Map  -->
-      <menu-right-map
+      <menu-filter-map
         v-if="activeNavButton === 'Map'"
         :colleges="colleges"
         @checkboxFilterChanged=
-          "updateFilters('contentMap', 'checkboxFilters', 'map-checkbox-click', $event)"
+          "updateFiltersValues('contentMap', 'checkboxFilters', 'map-checkbox-click', $event)"
         @statesFilterChanged=
-          "updateFilters('contentMap', 'statesFilters', 'map-state-click', $event)"
+          "updateFiltersValues('contentMap', 'statesFilters', 'map-state-click', $event)"
         @rangeFilterChanged=
-          "updateFilters('contentMap', 'rangeFilters', 'map-range-input', $event)"
-        @reset="resetFilters('contentMap')"
+          "updateFiltersValues('contentMap', 'rangeFilters', 'map-range-input', $event)"
+        @restore="clearFilters('contentMap')"
       />
     </v-col>
     <!--  Mobile button for the menus  -->
@@ -105,7 +106,7 @@
         small
         color="green"
       >
-        <v-icon @click="showMenu('rightMenu')">mdi-pencil</v-icon>
+        <v-icon @click="showMenu('filterMenu')">mdi-pencil</v-icon>
       </v-btn>
       <v-btn
         fab
@@ -113,7 +114,7 @@
         small
         color="indigo"
       >
-        <v-icon @click="showMenu('leftMenu')">mdi-menu</v-icon>
+        <v-icon @click="showMenu('navigationMenu')">mdi-menu</v-icon>
       </v-btn>
     </v-speed-dial>
     <!--  Close button  -->
@@ -132,24 +133,24 @@
 
 <script>
 import goTo from 'vuetify/es5/services/goto';
-import MenuLeft from '../components/menus/menu-left.vue';
-import MenuRightColleges from '../components/menus/menu-right-colleges.vue';
-import MenuRightMap from '../components/menus/menu-right-map.vue';
+import MenuNavigation from '../components/menus/menu-navigation.vue';
+import MenuFilterColleges from '../components/menus/menu-filter-colleges.vue';
+import MenuFilterMap from '../components/menus/menu-filter-map.vue';
 import ContentColleges from '../components/contents/content-colleges.vue';
 import ContentMap from '../components/contents/content-map.vue';
 
 export default {
   name: 'content-layout',
   components: {
-    MenuLeft, MenuRightColleges, MenuRightMap, ContentColleges, ContentMap,
+    MenuNavigation, MenuFilterColleges, MenuFilterMap, ContentColleges, ContentMap,
   },
   props: ['colleges'],
   data() {
     return {
       activeNavButton: 'Colleges',
       classes: {
-        leftMenu: 'd-none d-md-block',
-        rightMenu: 'd-none d-md-block',
+        navigationMenu: 'd-none d-md-block',
+        filterMenu: 'd-none d-md-block',
       },
       mobileMenu: false,
       fab: false,
@@ -160,7 +161,7 @@ export default {
         checkboxFilters: '',
         statesFilters: '',
         rangeFilters: '',
-        reset: false,
+        restore: false,
       },
       contentMap: {
         activeSortButton: '',
@@ -168,7 +169,7 @@ export default {
         checkboxFilters: '',
         statesFilters: '',
         rangeFilters: '',
-        reset: false,
+        restore: false,
       },
     };
   },
@@ -185,21 +186,21 @@ export default {
         this.$root.$emit(event);
       }, 0);
     },
-    updateFilters(page, filter, event, val) {
+    updateFiltersValues(page, filter, event, val) {
       this[page][filter] = val;
-      this[page].reset = false;
+      this[page].restore = false;
       setTimeout(() => {
         this.$root.$emit(event);
       }, 0);
     },
-    resetFilters(page) {
+    clearFilters(page) {
       this[page] = Object.assign({}, this[page], {
         activeSortButton: '',
         prevSortButton: '',
         checkboxFilters: '',
         statesFilters: '',
         rangeFilters: '',
-        reset: true,
+        restore: true,
       });
       goTo(this.$refs.top);
     },
@@ -214,8 +215,8 @@ export default {
       }
     },
     hideMenu() {
-      this.classes.rightMenu = 'd-none d-md-block';
-      this.classes.leftMenu = 'd-none d-md-block';
+      this.classes.filterMenu = 'd-none d-md-block';
+      this.classes.navigationMenu = 'd-none d-md-block';
       this.mobileMenu = false;
       this.fab = false;
       this.fabClose = false;

@@ -3,29 +3,29 @@
     right
     dense
     absolute
-    :class="$style.rightMenu"
+    :class="$style.filterMenu"
     width="100%"
   >
     <v-list nav dense flat>
       <!-- Sort block -->
       <v-subheader>Sort</v-subheader>
       <block-sort
-        :reset="resetSort"
-        @sortClick="handleSort"
+        :restore="toggleSort"
+        @sortClick="emitSortEvent"
       />
       <v-divider />
       <!-- Filter block -->
       <v-subheader>Filter</v-subheader>
       <block-filter
-        :states="collegesStates"
-        :reset="resetFilter"
-        @statesFilterChanged="handleFilter('statesFilterChanged', $event)"
-        @rangeFilterChanged="handleFilter('rangeFilterChanged', $event)"
-        @checkboxFilterChanged="handleFilter('checkboxFilterChanged', $event)"
+        :states="collegesStatesNames"
+        :restore="toggleFilter"
+        @statesFilterChanged="emitFilterEvent('statesFilterChanged', $event)"
+        @rangeFilterChanged="emitFilterEvent('rangeFilterChanged', $event)"
+        @checkboxFilterChanged="emitFilterEvent('checkboxFilterChanged', $event)"
       />
       <br>
       <!--  Reset button  -->
-      <button-reset @reset="reset" />
+      <button-reset @reset="restoreInitialCollegesList" />
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -34,7 +34,7 @@
 import BlockSort from '../reusable-components/block-sort.vue';
 import BlockFilter from '../reusable-components/block-filter.vue';
 import ButtonReset from '../reusable-components/button-reset.vue';
-import { getCollegesStates } from '../../utils/helpers';
+import { getCollegesStatesNames } from '../../utils/helpers';
 
 export default {
   name: 'menu-right-colleges',
@@ -42,35 +42,35 @@ export default {
   props: ['colleges'],
   data() {
     return {
-      resetSort: false,
-      resetFilter: false,
+      toggleSort: false,
+      toggleFilter: false,
     };
   },
   methods: {
-    reset() {
-      this.resetSort = true;
-      this.resetFilter = true;
-      this.$emit('reset');
+    restoreInitialCollegesList() {
+      this.toggleSort = true;
+      this.toggleFilter = true;
+      this.$emit('restore');
     },
-    handleSort(payload) {
+    emitSortEvent(payload) {
       this.$emit('sortClick', payload);
-      this.resetSort = false;
+      this.toggleSort = false;
     },
-    handleFilter(eventName, payload) {
+    emitFilterEvent(eventName, payload) {
       this.$emit(eventName, payload);
-      this.resetFilter = false;
+      this.toggleFilter = false;
     },
   },
   computed: {
-    collegesStates() {
-      return getCollegesStates(this.colleges);
+    collegesStatesNames() {
+      return getCollegesStatesNames(this.colleges);
     },
   },
 };
 </script>
 
 <style lang="stylus" module>
-  .rightMenu
+  .filterMenu
     transform translateX(0%) !important
     left 0px
     top 0px

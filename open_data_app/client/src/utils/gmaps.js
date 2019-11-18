@@ -1,6 +1,6 @@
 // https://markus.oberlehner.net/blog/using-the-google-maps-api-with-vue/
 
-const getApiKey = async () => {
+const fetchApiKey = async () => {
   await fetch('/api/get_map_api_key')
     .then(response => response.text())
     .then((data) => {
@@ -14,7 +14,7 @@ const getApiKey = async () => {
 let API_KEY = '';
 const CALLBACK_NAME = 'gmapsCallback';
 
-getApiKey();
+fetchApiKey();
 
 let initialized = !!window.google;
 let resolveInitPromise;

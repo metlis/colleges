@@ -1,41 +1,41 @@
 <template>
-  <div ref="map" style="width: 100%; height: 100vh"></div>
+  <div ref="map" :class="$style.map"></div>
 </template>
 
 <script>
 import gmapsInit from '../../utils/gmaps';
-import { filterColleges } from '../../utils/helpers';
+import { selectColleges, addCommas } from '../../utils/helpers';
 
 export default {
   name: 'content-map',
-  props: ['colleges', 'checkboxFilters', 'statesFilters', 'rangeFilters', 'reset'],
+  props: ['colleges', 'checkboxFilters', 'statesFilters', 'rangeFilters', 'restore'],
   data() {
     return {
       google: '',
       key: '',
       markers: '',
       map: '',
-      filteredColleges: this.colleges,
+      selectedColleges: this.colleges,
     };
   },
   methods: {
-    getColleges() {
-      return filterColleges(this.colleges, {
+    getCollegesList() {
+      return selectColleges(this.colleges, {
         checkboxFilters: this.checkboxFilters,
         statesFilters: this.statesFilters,
         rangeFilters: this.rangeFilters,
       });
     },
-    createMarkers() {
+    createGmapMarkers() {
       const { google } = this;
-      this.markers = this.filteredColleges.map((college) => {
+      this.markers = this.selectedColleges.map((college) => {
         const contentString = `
             <div class="mapInfo">
             <h4>${college.name}</h4>
             <p><span class="icon-container"><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top"></i></span>: <a href="/institution/${college.id}/${college.slug}">College page</a></p>
             <p><span class="icon-container"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top"></i></span>: ${college.city}, ${college.state__name}</p>
             <p><span class="icon-container"><i class="fas fa-city" data-toggle="tooltip" data-placement="top"></i></span>: ${college.locale__description}</p>
-            <p><span class="icon-container"><i class="fas fa-user-graduate" data-toggle="tooltip" data-placement="top"></i></span>: ${college.undergrad_students}</p>
+            <p><span class="icon-container"><i class="fas fa-user-graduate" data-toggle="tooltip" data-placement="top"></i></span>: ${addCommas(college.undergrad_students)}</p>
             <p><span class="icon-container"><i class="fas fa-home" data-toggle="tooltip" data-placement="top"></i></span>: ${college.ownership__description}</p>
             </div>
         `;
@@ -56,15 +56,18 @@ export default {
         return marker;
       });
     },
-    deleteMarkers() {
+    deleteGmapMarkers() {
       this.markers.forEach((marker) => {
         marker.setMap(null);
       });
     },
-    updateColleges() {
-      this.filteredColleges = this.getColleges();
-      this.deleteMarkers();
-      this.createMarkers();
+    updateCollegesList() {
+      this.selectedColleges = this.getCollegesList();
+      this.deleteGmapMarkers();
+      this.createGmapMarkers();
+    },
+    addCommas(num) {
+      return addCommas(num);
     },
   },
   async mounted() {
@@ -79,33 +82,35 @@ export default {
         center: mapCenter,
         zoom: 3,
       });
-      this.createMarkers();
+      this.createGmapMarkers();
     } catch (error) {
       console.error(error);
     }
   },
   watch: {
-    reset(val) {
+    restore(val) {
       if (val) {
-        this.filteredColleges = this.colleges;
-        this.updateColleges();
+        this.selectedColleges = this.colleges;
+        this.updateCollegesList();
       }
     },
   },
   created() {
     this.$root.$on('map-checkbox-click', () => {
-      this.updateColleges();
+      this.updateCollegesList();
     });
     this.$root.$on('map-state-click', () => {
-      this.updateColleges();
+      this.updateCollegesList();
     });
     this.$root.$on('map-range-input', () => {
-      this.updateColleges();
+      this.updateCollegesList();
     });
   },
 };
 </script>
 
-<style scoped>
-
+<style lang="stylus" module>
+  .map
+    width 100%
+    height 100vh
 </style>

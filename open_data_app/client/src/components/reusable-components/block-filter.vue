@@ -75,7 +75,7 @@
               >
                 <v-text-field
                   v-model="filter.min"
-                  @input="emitRangeInput"
+                  @input="emitRangeInputEvent"
                   dense
                   flat
                   type="number"
@@ -85,7 +85,7 @@
                 <div class="mr-1">-</div>
                 <v-text-field
                   v-model="filter.max"
-                  @input="emitRangeInput"
+                  @input="emitRangeInputEvent"
                   dense
                   flat
                   type="number"
@@ -120,7 +120,7 @@
             ></v-checkbox>
           </v-list-item-action>
           <v-list-item-content
-            @click="tickCheckbox(key)">
+            @click="emitCheckboxEvent(key)">
             <v-list-item-title>{{filter.title}}</v-list-item-title>
           </v-list-item-content>
         </template>
@@ -134,7 +134,7 @@
 <script>
 export default {
   name: 'block-filter',
-  props: ['states', 'reset'],
+  props: ['states', 'restore'],
   data() {
     return {
       checkboxFilters: {
@@ -287,15 +287,15 @@ export default {
         },
       },
       statesSelected: [],
-      filterIsActive: false,
+      toggleFilter: false,
     };
   },
   methods: {
-    tickCheckbox(filter) {
+    emitCheckboxEvent(filter) {
       this.checkboxFilters[filter].value = !this.checkboxFilters[filter].value;
       this.$emit('checkboxFilterChanged', this.checkboxFilters);
     },
-    emitRangeInput() {
+    emitRangeInputEvent() {
       const copy = JSON.parse(JSON.stringify(this.rangeFilters));
       Object.assign(copy.Study.admission, this.calculatePercent(copy.Study.admission));
       Object.assign(copy.Study.completion, this.calculatePercent(copy.Study.completion));
@@ -315,6 +315,9 @@ export default {
       });
       this.$emit('rangeFilterChanged', flattened);
     },
+    // We use this method if we need to calculate a value for binary properties.
+    // For example, we don't have a separate property for the percent of male students,
+    // so we calculate its value by using the percent of female students.
     calculateMirrorValues(obj) {
       const propMin = +obj.max ? 1 - obj.max / 100 : 0;
       const propMax = +obj.min ? 1 - obj.min / 100 : 0;
@@ -329,7 +332,7 @@ export default {
         max: obj.max / 100,
       };
     },
-    resetFilters() {
+    clearFilters() {
       this.statesSelected = [];
       Object.keys(this.checkboxFilters).forEach((key) => {
         this.checkboxFilters[key].value = false;
@@ -342,9 +345,9 @@ export default {
     },
   },
   watch: {
-    reset(val) {
-      this.filterIsActive = !val;
-      if (!this.filterIsActive) this.resetFilters();
+    restore(val) {
+      this.toggleFilter = !val;
+      if (!this.toggleFilter) this.clearFilters();
     },
   },
 };

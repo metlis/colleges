@@ -6,7 +6,7 @@
     <!-- A message for no results   -->
     <v-col
       cols="12"
-      v-if="filteredColleges.length === 0"
+      v-if="selectedColleges.length === 0"
     >
       <v-alert
         type="info"
@@ -23,8 +23,8 @@
       xs="12"
       sm="12"
       md="4"
-      v-if="filteredColleges.length > 0"
-      v-for="college in filteredColleges"
+      v-if="selectedColleges.length > 0"
+      v-for="college in selectedColleges"
       :key="college.id"
       class="pr-0"
     >
@@ -167,7 +167,7 @@
         </v-card-text>
         <v-card-actions>
           <v-btn icon>
-            <v-icon color="amber" @click="removeCollege(college.id)">mdi-heart</v-icon>
+            <v-icon color="amber" @click="removeCollegeFromSelected(college.id)">mdi-heart</v-icon>
           </v-btn>
           <v-btn outlined text @click="openCollegePage(college.id, college.slug)">
             Page
@@ -175,15 +175,15 @@
           <div class="flex-grow-1"></div>
           <v-btn
             icon
-            @click="handleChevronClick(college.id)"
+            @click="toggleChevron(college.id)"
           >
             <v-icon>
-              {{ cardsStates[college.id] ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+              {{ cardsExpanded[college.id] ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
             </v-icon>
           </v-btn>
         </v-card-actions>
         <v-expand-transition>
-          <div v-show="cardsStates[college.id]">
+          <div v-show="cardsExpanded[college.id]">
             <v-card-text>
               <v-divider />
               <div
@@ -218,18 +218,18 @@
 
 <script>
 import {
-  filterColleges, createUnifiedPriceParam, sortNumeric, addCommas, sortAlphabetically,
+  selectColleges, addUnifiedPriceParam, sortByNumValue, addCommas, sortСollegesAlphabetically,
 } from '../../utils/helpers';
 
 export default {
   name: 'content-colleges',
   props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters',
-    'rangeFilters', 'reset'],
+    'rangeFilters', 'restore'],
   data() {
     return {
-      filteredColleges: this.colleges,
-      cardsStates: {},
-      reverseSort: false,
+      selectedColleges: this.colleges,
+      cardsExpanded: {},
+      isReverseSort: false,
       isSorted: false,
       items: {
         location: {
@@ -261,19 +261,19 @@ export default {
     };
   },
   methods: {
-    getColleges() {
-      return filterColleges(this.colleges, {
+    getCollegesList() {
+      return selectColleges(this.colleges, {
         checkboxFilters: this.checkboxFilters,
         statesFilters: this.statesFilters,
         rangeFilters: this.rangeFilters,
       });
     },
-    removeCollege(id) {
+    removeCollegeFromSelected(id) {
       fetch(`/api/modify_favourites/?college_id=${id}`)
         .then(response => response.text())
         .then((data) => {
           if (data === 'Removed') {
-            this.filteredColleges.forEach((col, index, obj) => {
+            this.selectedColleges.forEach((col, index, obj) => {
               if (col.id === id) {
                 obj.splice(index, 1);
                 const favBadge = document.getElementById('favourite-badge');
@@ -292,32 +292,32 @@ export default {
     openCollegeUrl(url) {
       window.open(`//${url}`, '_self');
     },
-    handleChevronClick(id) {
-      if (!this.cardsStates[id]) {
-        this.$set(this.cardsStates, id, true);
+    toggleChevron(id) {
+      if (!this.cardsExpanded[id]) {
+        this.$set(this.cardsExpanded, id, true);
       } else {
-        this.cardsStates[id] = !this.cardsStates[id];
+        this.cardsExpanded[id] = !this.cardsExpanded[id];
       }
     },
     sortColleges() {
-      if (!this.filteredColleges) this.filteredColleges = this.getColleges();
-      // set reverse sort variable upon the same button click
+      if (!this.selectedColleges) this.selectedColleges = this.getCollegesList();
+      // set isReverseSort variable to true on the same button click
       if (this.prevSortButton.name === this.activeSortButton.name) {
-        this.reverseSort = !this.reverseSort;
+        this.isReverseSort = !this.isReverseSort;
       } else {
-        this.reverseSort = false;
+        this.isReverseSort = false;
       }
       switch (this.activeSortButton.name) {
       case 'name':
-        sortAlphabetically(this.filteredColleges, this.reverseSort);
+        sortСollegesAlphabetically(this.selectedColleges, this.isReverseSort);
         break;
       case 'average_price':
-        this.sortCost();
+        this.sortByCost();
         break;
       case 'federal_loan':
       case 'admission_rate':
       case 'undergrad_students':
-        sortNumeric(this.filteredColleges, this.activeSortButton.name, this.reverseSort);
+        sortByNumValue(this.selectedColleges, this.activeSortButton.name, this.isReverseSort);
         break;
       default:
         break;
@@ -326,12 +326,12 @@ export default {
     addCommas(num) {
       return addCommas(num);
     },
-    sortCost() {
-      createUnifiedPriceParam(this.filteredColleges);
-      sortNumeric(this.filteredColleges, this.activeSortButton.name, this.reverseSort);
+    sortByCost() {
+      addUnifiedPriceParam(this.selectedColleges);
+      sortByNumValue(this.selectedColleges, this.activeSortButton.name, this.isReverseSort);
     },
     updateFilteredCollegesList() {
-      this.filteredColleges = this.getColleges();
+      this.selectedColleges = this.getCollegesList();
       this.isSorted = false;
     },
   },
@@ -353,12 +353,12 @@ export default {
     },
   },
   watch: {
-    reset(val) {
+    restore(val) {
       if (val) {
-        this.reverseSort = false;
+        this.isReverseSort = false;
         this.isSorted = false;
-        this.filteredColleges = this.colleges;
-        sortAlphabetically(this.filteredColleges, this.reverseSort);
+        this.selectedColleges = this.colleges;
+        sortСollegesAlphabetically(this.selectedColleges, this.isReverseSort);
       }
     },
   },
