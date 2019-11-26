@@ -37,7 +37,7 @@ import ButtonReset from '../reusable-components/button-reset.vue';
 import { getCollegesStatesNames } from '../../utils/helpers';
 
 export default {
-  name: 'menu-right-colleges',
+  name: 'menu-right-colleges-favourite',
   components: { BlockSort, BlockFilter, ButtonReset },
   props: ['colleges'],
   data() {

@@ -217,7 +217,7 @@ import {
 } from '../../utils/helpers';
 
 export default {
-  name: 'content-colleges',
+  name: 'content-colleges-favourite',
   props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters',
     'rangeFilters', 'restore'],
   data() {

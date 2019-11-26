@@ -21,7 +21,7 @@
       <v-content>
         <v-container fluid class="pa-0">
           <!-- A list of colleges -->
-          <content-colleges
+          <content-colleges-favourite
             ref="colleges"
             v-show="activeNavButton === 'Colleges'"
             :colleges="colleges"
@@ -53,7 +53,7 @@
       md="2"
     >
       <!--  Right Sort/Filter Menu for Colleges  -->
-      <menu-filter-colleges
+      <menu-filter-colleges-favourite
         v-if="activeNavButton === 'Colleges'"
         :colleges="colleges"
         @sortClick="changeSortButton('contentColleges', 'colleges-sort-click', $event)"
@@ -134,15 +134,19 @@
 <script>
 import goTo from 'vuetify/es5/services/goto';
 import MenuNavigation from '../components/menus/menu-navigation.vue';
-import MenuFilterColleges from '../components/menus/menu-filter-colleges.vue';
+import MenuFilterCollegesFavourite from '../components/menus/menu-filter-colleges-favourite.vue';
 import MenuFilterMap from '../components/menus/menu-filter-map.vue';
-import ContentColleges from '../components/contents/content-colleges.vue';
+import ContentCollegesFavourite from '../components/contents/content-colleges-favourite.vue';
 import ContentMap from '../components/contents/content-map.vue';
 
 export default {
   name: 'content-layout',
   components: {
-    MenuNavigation, MenuFilterColleges, MenuFilterMap, ContentColleges, ContentMap,
+    MenuNavigation,
+    MenuFilterCollegesFavourite,
+    MenuFilterMap,
+    ContentCollegesFavourite,
+    ContentMap,
   },
   props: ['colleges'],
   data() {
