@@ -210,16 +210,20 @@ export default {
       this.activeNavButton = val;
     },
     changeSortButton(event) {
-      const copy = JSON.parse(JSON.stringify(this[event.menu]));
-      if (copy.activeSortButton) copy.prevSortButton = copy.activeSortButton;
-      copy.activeSortButton = event.value;
-      this.$set(this, event.menu, copy);
+      const menu = this[event.menu];
+      if (menu.activeSortButton && menu.prevSortButton) {
+        this.$set(menu, 'prevSortButton', '');
+        this.$set(menu, 'activeSortButton', '');
+      }
+      if (menu.activeSortButton) {
+        this.$set(menu, 'prevSortButton', menu.activeSortButton);
+      }
+      this.$set(menu, 'activeSortButton', event.value);
     },
     updateFiltersValues(event) {
-      const copy = JSON.parse(JSON.stringify(this[event.menu]));
-      copy[event.filters] = event.value;
-      copy.restore = false;
-      this.$set(this, event.menu, copy);
+      const menu = this[event.menu];
+      this.$set(menu, 'restore', false);
+      this.$set(menu, event.filters, event.value);
     },
     clearFilters(page) {
       this[page] = Object.assign({}, this[page], {
