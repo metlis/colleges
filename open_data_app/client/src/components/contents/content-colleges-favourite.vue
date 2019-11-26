@@ -271,10 +271,13 @@ export default {
             this.selectedColleges.forEach((col, index, obj) => {
               if (col.id === id) {
                 obj.splice(index, 1);
+                // updating the number of colleges on the menu badge
                 const favBadge = document.getElementById('favourite-badge');
                 favBadge.innerText = String(Number(favBadge.innerText) - 1);
               }
             });
+            // update colleges in the parent component
+            this.$emit('update:colleges', this.selectedColleges);
           }
         }).catch((err) => {
           console.error(err);

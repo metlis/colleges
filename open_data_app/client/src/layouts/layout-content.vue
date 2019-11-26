@@ -20,11 +20,11 @@
     >
       <v-content>
         <v-container fluid class="pa-0">
-          <!-- A list of colleges -->
+          <!-- A list of favourite colleges -->
           <content-colleges-favourite
-            ref="colleges"
+            ref="colleges-favourite"
             v-show="activeNavButton === 'Colleges'"
-            :colleges="colleges"
+            :colleges.sync="fetchedColleges"
             :activeSortButton="contentColleges.activeSortButton"
             :prevSortButton="contentColleges.prevSortButton"
             :checkboxFilters="contentColleges.checkboxFilters"
@@ -36,7 +36,7 @@
           <content-map
             ref="map"
             v-show="activeNavButton === 'Map'"
-            :colleges="colleges"
+            :colleges="fetchedColleges"
             :checkboxFilters="contentMap.checkboxFilters"
             :statesFilters="contentMap.statesFilters"
             :rangeFilters="contentMap.rangeFilters"
@@ -55,7 +55,7 @@
       <!--  Right Sort/Filter Menu for Colleges  -->
       <menu-filter-colleges-favourite
         v-if="activeNavButton === 'Colleges'"
-        :colleges="colleges"
+        :colleges="fetchedColleges"
         @sortClick="changeSortButton('contentColleges', 'colleges-sort-click', $event)"
         @checkboxFilterChanged=
           "updateFiltersValues('contentColleges', 'checkboxFilters', 'colleges-checkbox-click',
@@ -69,7 +69,7 @@
       <!--  Right Filter Menu for Map  -->
       <menu-filter-map
         v-if="activeNavButton === 'Map'"
-        :colleges="colleges"
+        :colleges="fetchedColleges"
         @checkboxFilterChanged=
           "updateFiltersValues('contentMap', 'checkboxFilters', 'map-checkbox-click', $event)"
         @statesFilterChanged=
@@ -151,6 +151,7 @@ export default {
   props: ['colleges'],
   data() {
     return {
+      fetchedColleges: this.colleges,
       activeNavButton: 'Colleges',
       classes: {
         navigationMenu: 'd-none d-md-block',

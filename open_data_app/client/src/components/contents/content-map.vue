@@ -94,6 +94,9 @@ export default {
         this.updateCollegesList();
       }
     },
+    colleges() {
+      this.updateCollegesList();
+    },
   },
   created() {
     this.$root.$on('map-checkbox-click', () => {
