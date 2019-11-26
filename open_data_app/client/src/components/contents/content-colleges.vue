@@ -44,9 +44,7 @@
             <div
                class="text--primary"
                :class="$style.chip"
-               v-if="activeSortButton && college[activeSortButton.name] !== ''
-               && college[activeSortButton.name] !== null
-               && activeSortButton.name !== 'name'"
+               v-if="activeSortButton && collegeSortValueExists(college)"
             >
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
@@ -83,9 +81,7 @@
             <!-- Range filter values -->
             <div
                v-for="filter in filtersApplied.rangeFilters"
-               v-if="filtersApplied && college[filter.name] !== ''
-               && college[filter.name] !== null
-               && filter.name !== activeSortButton.name"
+               v-if="filtersApplied && collegeFilterValueExists(filter, college)"
                :key="filter.title"
                :class="$style.chip"
                class="text--primary">
@@ -120,8 +116,7 @@
             <!-- Checkbox filter values -->
             <div
                v-for="filter in filtersApplied.checkboxFilters"
-               v-if="filtersApplied && college[filter.name] !== ''
-               && college[filter.name] !== null"
+               v-if="filtersApplied && collegeFilterValueExists(filter, college)"
                :key="filter.title"
                :class="$style.chip"
                class="d-inline"
@@ -333,6 +328,17 @@ export default {
     updateFilteredCollegesList() {
       this.selectedColleges = this.getCollegesList();
       this.isSorted = false;
+    },
+    collegeSortValueExists(college) {
+      const sortButton = this.activeSortButton;
+      return college[sortButton.name] !== ''
+             && college[sortButton.name] !== null
+             && sortButton.name !== 'name';
+    },
+    collegeFilterValueExists(filter, college) {
+      return college[filter.name] !== ''
+             && college[filter.name] !== null
+             && filter.name !== this.activeSortButton.name;
     },
   },
   computed: {
