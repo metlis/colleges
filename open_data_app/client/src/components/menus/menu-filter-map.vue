@@ -12,9 +12,9 @@
       <block-filter
         :states="collegesStatesNames"
         :restore="toggleFilter"
-        @statesFilterChanged="emitFilterEvent('statesFilterChanged', $event)"
-        @rangeFilterChanged="emitFilterEvent('rangeFilterChanged', $event)"
-        @checkboxFilterChanged="emitFilterEvent('checkboxFilterChanged', $event)"
+        @statesFilterChanged="emitFilterEvent('statesFilterChanged', 'statesFilters', $event)"
+        @rangeFilterChanged="emitFilterEvent('rangeFilterChanged', 'rangeFilters', $event)"
+        @checkboxFilterChanged="emitFilterEvent('checkboxFilterChanged', 'checkboxFilters', $event)"
       />
       <br>
       <!--  Reset button  -->
@@ -30,7 +30,7 @@ import { getCollegesStatesNames } from '../../utils/helpers';
 
 export default {
   name: 'menu-right-map',
-  props: ['colleges'],
+  props: ['colleges', 'name'],
   components: { BlockFilter, ButtonReset },
   data() {
     return {
@@ -42,8 +42,8 @@ export default {
       this.toggleFilter = true;
       this.$emit('restore');
     },
-    emitFilterEvent(eventName, payload) {
-      this.$emit(eventName, payload);
+    emitFilterEvent(eventName, filters, payload) {
+      this.$emit(eventName, { value: payload, menu: this.name, filters });
       this.toggleFilter = false;
     },
   },

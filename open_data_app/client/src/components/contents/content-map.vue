@@ -97,17 +97,15 @@ export default {
     colleges() {
       this.updateCollegesList();
     },
-  },
-  created() {
-    this.$root.$on('map-checkbox-click', () => {
+    checkboxFilters() {
       this.updateCollegesList();
-    });
-    this.$root.$on('map-state-click', () => {
+    },
+    statesFilters() {
       this.updateCollegesList();
-    });
-    this.$root.$on('map-range-input', () => {
+    },
+    rangeFilters() {
       this.updateCollegesList();
-    });
+    },
   },
 };
 </script>

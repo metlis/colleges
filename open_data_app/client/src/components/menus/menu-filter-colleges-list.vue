@@ -19,9 +19,9 @@
       <block-filter
         :states="collegesStatesNames"
         :restore="toggleFilter"
-        @statesFilterChanged="emitFilterEvent('statesFilterChanged', $event)"
-        @rangeFilterChanged="emitFilterEvent('rangeFilterChanged', $event)"
-        @checkboxFilterChanged="emitFilterEvent('checkboxFilterChanged', $event)"
+        @statesFilterChanged="emitFilterEvent('statesFilterChanged', 'statesFilters', $event)"
+        @rangeFilterChanged="emitFilterEvent('rangeFilterChanged', 'rangeFilters', $event)"
+        @checkboxFilterChanged="emitFilterEvent('checkboxFilterChanged', 'checkboxFilters', $event)"
       />
       <br>
       <!--  Reset button  -->
@@ -37,9 +37,9 @@ import ButtonReset from '../reusable-components/button-reset.vue';
 import { getCollegesStatesNames } from '../../utils/helpers';
 
 export default {
-  name: 'menu-right-colleges-favourite',
+  name: 'menu-filter-colleges-list',
   components: { BlockSort, BlockFilter, ButtonReset },
-  props: ['colleges'],
+  props: ['colleges', 'name'],
   data() {
     return {
       toggleSort: false,
@@ -53,11 +53,11 @@ export default {
       this.$emit('restore');
     },
     emitSortEvent(payload) {
-      this.$emit('sortClick', payload);
+      this.$emit('sortClick', { value: payload, menu: this.name });
       this.toggleSort = false;
     },
-    emitFilterEvent(eventName, payload) {
-      this.$emit(eventName, payload);
+    emitFilterEvent(eventName, filters, payload) {
+      this.$emit(eventName, { value: payload, menu: this.name, filters });
       this.toggleFilter = false;
     },
   },

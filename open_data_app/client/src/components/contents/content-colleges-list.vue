@@ -217,7 +217,7 @@ import {
 } from '../../utils/helpers';
 
 export default {
-  name: 'content-colleges-favourite',
+  name: 'content-colleges-list',
   props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters',
     'rangeFilters', 'restore'],
   data() {
@@ -225,7 +225,6 @@ export default {
       selectedColleges: this.colleges,
       cardsExpanded: {},
       isReverseSort: false,
-      isSorted: false,
       items: {
         location: {
           icon: 'mdi-map-marker',
@@ -330,7 +329,6 @@ export default {
     },
     updateFilteredCollegesList() {
       this.selectedColleges = this.getCollegesList();
-      this.isSorted = false;
     },
     collegeSortValueExists(college) {
       const sortButton = this.activeSortButton;
@@ -365,26 +363,25 @@ export default {
     restore(val) {
       if (val) {
         this.isReverseSort = false;
-        this.isSorted = false;
         this.selectedColleges = this.colleges;
         sortСollegesAlphabetically(this.selectedColleges, this.isReverseSort);
       }
     },
-  },
-  created() {
-    this.$root.$on('colleges-sort-click', () => {
+    activeSortButton() {
       this.sortColleges();
-      this.isSorted = true;
-    });
-    this.$root.$on('colleges-checkbox-click', () => {
+    },
+    prevSortButton() {
+      this.sortColleges();
+    },
+    checkboxFilters() {
       this.updateFilteredCollegesList();
-    });
-    this.$root.$on('colleges-state-click', () => {
+    },
+    statesFilters() {
       this.updateFilteredCollegesList();
-    });
-    this.$root.$on('colleges-range-input', () => {
+    },
+    rangeFilters() {
       this.updateFilteredCollegesList();
-    });
+    },
   },
 };
 </script>

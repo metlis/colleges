@@ -1,7 +1,7 @@
 // https://markus.oberlehner.net/blog/using-the-google-maps-api-with-vue/
 
 const fetchApiKey = async () => {
-  await fetch('/api/get_map_api_key')
+  await fetch('/api/get_map_api_key/')
     .then(response => response.text())
     .then((data) => {
       API_KEY = data;

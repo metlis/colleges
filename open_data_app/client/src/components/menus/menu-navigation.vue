@@ -37,7 +37,7 @@ export default {
         // 'mdi-compare': 'Compare',
         // 'mdi-history': 'Analyze history',
         // 'mdi-eye-plus': 'Similar colleges',
-        // 'mdi-file-search': 'Search history',
+        'mdi-file-search': 'Visited',
       },
       activeItem: 0,
     };

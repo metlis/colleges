@@ -21,16 +21,28 @@
       <v-content>
         <v-container fluid class="pa-0">
           <!-- A list of favourite colleges -->
-          <content-colleges-favourite
+          <content-colleges-list
             ref="colleges-favourite"
             v-show="activeNavButton === 'Colleges'"
             :colleges.sync="favouriteColleges"
-            :activeSortButton="contentColleges.activeSortButton"
-            :prevSortButton="contentColleges.prevSortButton"
-            :checkboxFilters="contentColleges.checkboxFilters"
-            :statesFilters="contentColleges.statesFilters"
-            :rangeFilters="contentColleges.rangeFilters"
-            :restore="contentColleges.restore"
+            :activeSortButton="contentCollegesFavourite.activeSortButton"
+            :prevSortButton="contentCollegesFavourite.prevSortButton"
+            :checkboxFilters="contentCollegesFavourite.checkboxFilters"
+            :statesFilters="contentCollegesFavourite.statesFilters"
+            :rangeFilters="contentCollegesFavourite.rangeFilters"
+            :restore="contentCollegesFavourite.restore"
+          />
+          <!-- A list of visited colleges -->
+          <content-colleges-list
+            ref="colleges-visited"
+            v-show="activeNavButton === 'Visited'"
+            :colleges="visitedColleges"
+            :activeSortButton="contentCollegesVisited.activeSortButton"
+            :prevSortButton="contentCollegesVisited.prevSortButton"
+            :checkboxFilters="contentCollegesVisited.checkboxFilters"
+            :statesFilters="contentCollegesVisited.statesFilters"
+            :rangeFilters="contentCollegesVisited.rangeFilters"
+            :restore="contentCollegesVisited.restore"
           />
           <!-- A map with colleges -->
           <content-map
@@ -52,30 +64,36 @@
       sm="12"
       md="2"
     >
-      <!--  Right Sort/Filter Menu for Colleges  -->
-      <menu-filter-colleges-favourite
-        v-if="activeNavButton === 'Colleges'"
+      <!--  Right Sort/Filter Menu for Favourite Colleges  -->
+      <menu-filter-colleges-list
+        v-show="activeNavButton === 'Colleges'"
         :colleges="favouriteColleges"
-        @sortClick="changeSortButton('contentColleges', 'colleges-sort-click', $event)"
-        @checkboxFilterChanged=
-          "updateFiltersValues('contentColleges', 'checkboxFilters', 'colleges-checkbox-click',
-          $event)"
-        @statesFilterChanged=
-          "updateFiltersValues('contentColleges', 'statesFilters', 'colleges-state-click', $event)"
-        @rangeFilterChanged=
-          "updateFiltersValues('contentColleges', 'rangeFilters', 'colleges-range-input', $event)"
-        @restore="clearFilters('contentColleges')"
+        name="contentCollegesFavourite"
+        @sortClick="changeSortButton($event)"
+        @checkboxFilterChanged="updateFiltersValues($event)"
+        @statesFilterChanged="updateFiltersValues($event)"
+        @rangeFilterChanged="updateFiltersValues($event)"
+        @restore="clearFilters('contentCollegesFavourite')"
+      />
+      <!--  Right Sort/Filter Menu for Visited Colleges  -->
+      <menu-filter-colleges-list
+        v-show="activeNavButton === 'Visited'"
+        :colleges="visitedColleges"
+        name="contentCollegesVisited"
+        @sortClick="changeSortButton($event)"
+        @checkboxFilterChanged="updateFiltersValues($event)"
+        @statesFilterChanged="updateFiltersValues($event)"
+        @rangeFilterChanged="updateFiltersValues($event)"
+        @restore="clearFilters('contentCollegesVisited')"
       />
       <!--  Right Filter Menu for Map  -->
       <menu-filter-map
-        v-if="activeNavButton === 'Map'"
+        v-show="activeNavButton === 'Map'"
         :colleges="favouriteColleges"
-        @checkboxFilterChanged=
-          "updateFiltersValues('contentMap', 'checkboxFilters', 'map-checkbox-click', $event)"
-        @statesFilterChanged=
-          "updateFiltersValues('contentMap', 'statesFilters', 'map-state-click', $event)"
-        @rangeFilterChanged=
-          "updateFiltersValues('contentMap', 'rangeFilters', 'map-range-input', $event)"
+        name="contentMap"
+        @checkboxFilterChanged="updateFiltersValues($event)"
+        @statesFilterChanged="updateFiltersValues($event)"
+        @rangeFilterChanged="updateFiltersValues($event)"
         @restore="clearFilters('contentMap')"
       />
     </v-col>
@@ -134,18 +152,18 @@
 <script>
 import goTo from 'vuetify/es5/services/goto';
 import MenuNavigation from '../components/menus/menu-navigation.vue';
-import MenuFilterCollegesFavourite from '../components/menus/menu-filter-colleges-favourite.vue';
+import MenuFilterCollegesList from '../components/menus/menu-filter-colleges-list.vue';
 import MenuFilterMap from '../components/menus/menu-filter-map.vue';
-import ContentCollegesFavourite from '../components/contents/content-colleges-favourite.vue';
+import ContentCollegesList from '../components/contents/content-colleges-list.vue';
 import ContentMap from '../components/contents/content-map.vue';
 
 export default {
   name: 'content-layout',
   components: {
     MenuNavigation,
-    MenuFilterCollegesFavourite,
+    MenuFilterCollegesList,
     MenuFilterMap,
-    ContentCollegesFavourite,
+    ContentCollegesList,
     ContentMap,
   },
   props: ['favourites', 'visited'],
@@ -161,7 +179,15 @@ export default {
       mobileMenu: false,
       fab: false,
       fabClose: false,
-      contentColleges: {
+      contentCollegesFavourite: {
+        activeSortButton: '',
+        prevSortButton: '',
+        checkboxFilters: '',
+        statesFilters: '',
+        rangeFilters: '',
+        restore: false,
+      },
+      contentCollegesVisited: {
         activeSortButton: '',
         prevSortButton: '',
         checkboxFilters: '',
@@ -183,21 +209,17 @@ export default {
     changeNavButton(val) {
       this.activeNavButton = val;
     },
-    changeSortButton(page, event, val) {
-      if (this[page].activeSortButton) {
-        this[page].prevSortButton = this[page].activeSortButton;
-      }
-      this[page].activeSortButton = val;
-      setTimeout(() => {
-        this.$root.$emit(event);
-      }, 0);
+    changeSortButton(event) {
+      const copy = JSON.parse(JSON.stringify(this[event.menu]));
+      if (copy.activeSortButton) copy.prevSortButton = copy.activeSortButton;
+      copy.activeSortButton = event.value;
+      this.$set(this, event.menu, copy);
     },
-    updateFiltersValues(page, filter, event, val) {
-      this[page][filter] = val;
-      this[page].restore = false;
-      setTimeout(() => {
-        this.$root.$emit(event);
-      }, 0);
+    updateFiltersValues(event) {
+      const copy = JSON.parse(JSON.stringify(this[event.menu]));
+      copy[event.filters] = event.value;
+      copy.restore = false;
+      this.$set(this, event.menu, copy);
     },
     clearFilters(page) {
       this[page] = Object.assign({}, this[page], {
