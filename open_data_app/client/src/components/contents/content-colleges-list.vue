@@ -162,7 +162,12 @@
         </v-card-text>
         <v-card-actions>
           <v-btn icon>
-            <v-icon color="amber" @click="removeCollegeFromSelected(college.id)">mdi-heart</v-icon>
+            <v-icon
+              :color="isFavourite(college.id) ? 'amber' : 'grey'"
+              @click="removeCollegeFromSelected(college.id)"
+            >
+              mdi-heart
+            </v-icon>
           </v-btn>
           <v-btn outlined text @click="openCollegePage(college.id, college.slug)">
             Page
@@ -219,7 +224,7 @@ import {
 export default {
   name: 'content-colleges-list',
   props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters',
-    'rangeFilters', 'restore'],
+    'rangeFilters', 'restore', 'favourites'],
   data() {
     return {
       selectedColleges: this.colleges,
@@ -340,6 +345,10 @@ export default {
       return college[filter.name] !== ''
              && college[filter.name] !== null
              && filter.name !== this.activeSortButton.name;
+    },
+    isFavourite(id) {
+      if (!this.favourites) return false;
+      return this.favourites.some(college => college.id === id);
     },
   },
   computed: {
