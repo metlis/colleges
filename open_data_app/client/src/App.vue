@@ -1,7 +1,11 @@
 <template>
   <v-app>
-    <layout-content v-if="colleges.length > 0 && !isFetching" :colleges="colleges" />
-    <layout-empty v-if="colleges.length === 0 && !isFetching" />
+    <layout-content
+      v-if="hasColleges && !isFetching"
+      :favourites="favouriteColleges"
+      :visited="visitedColleges"
+    />
+    <layout-empty v-if="!hasColleges && !isFetching" />
     <layout-progress v-if="isFetching" />
   </v-app>
 </template>
@@ -16,14 +20,22 @@ export default {
   data() {
     return {
       isFetching: true,
-      colleges: [],
+      favouriteColleges: [],
+      visitedColleges: [],
     };
   },
+  computed: {
+    hasColleges() {
+      return this.favouriteColleges.length > 0 || this.visitedColleges.length > 0;
+    },
+  },
   created() {
-    fetch('/api/get_favourites')
+    fetch('/api/request_user_colleges/')
       .then(response => response.json())
       .then((data) => {
-        this.colleges = data.data;
+        const colleges = data.data;
+        this.favouriteColleges = colleges.favourite;
+        this.visitedColleges = colleges.visited;
       }).catch((err) => {
         console.error(err);
       })

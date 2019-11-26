@@ -24,7 +24,7 @@
           <content-colleges-favourite
             ref="colleges-favourite"
             v-show="activeNavButton === 'Colleges'"
-            :colleges.sync="fetchedColleges"
+            :colleges.sync="favouriteColleges"
             :activeSortButton="contentColleges.activeSortButton"
             :prevSortButton="contentColleges.prevSortButton"
             :checkboxFilters="contentColleges.checkboxFilters"
@@ -36,7 +36,7 @@
           <content-map
             ref="map"
             v-show="activeNavButton === 'Map'"
-            :colleges="fetchedColleges"
+            :colleges="favouriteColleges"
             :checkboxFilters="contentMap.checkboxFilters"
             :statesFilters="contentMap.statesFilters"
             :rangeFilters="contentMap.rangeFilters"
@@ -55,7 +55,7 @@
       <!--  Right Sort/Filter Menu for Colleges  -->
       <menu-filter-colleges-favourite
         v-if="activeNavButton === 'Colleges'"
-        :colleges="fetchedColleges"
+        :colleges="favouriteColleges"
         @sortClick="changeSortButton('contentColleges', 'colleges-sort-click', $event)"
         @checkboxFilterChanged=
           "updateFiltersValues('contentColleges', 'checkboxFilters', 'colleges-checkbox-click',
@@ -69,7 +69,7 @@
       <!--  Right Filter Menu for Map  -->
       <menu-filter-map
         v-if="activeNavButton === 'Map'"
-        :colleges="fetchedColleges"
+        :colleges="favouriteColleges"
         @checkboxFilterChanged=
           "updateFiltersValues('contentMap', 'checkboxFilters', 'map-checkbox-click', $event)"
         @statesFilterChanged=
@@ -148,10 +148,11 @@ export default {
     ContentCollegesFavourite,
     ContentMap,
   },
-  props: ['colleges'],
+  props: ['favourites', 'visited'],
   data() {
     return {
-      fetchedColleges: this.colleges,
+      favouriteColleges: this.favourites,
+      visitedColleges: this.visited,
       activeNavButton: 'Colleges',
       classes: {
         navigationMenu: 'd-none d-md-block',
