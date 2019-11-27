@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 
 
-def modify_favourites(request):
+def toggle_favourite(request):
     params = request.GET
 
     try:

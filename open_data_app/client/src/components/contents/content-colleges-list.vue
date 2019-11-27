@@ -164,7 +164,7 @@
           <v-btn icon>
             <v-icon
               :color="isFavourite(college.id) ? 'amber' : 'grey'"
-              @click="removeCollegeFromSelected(college.id)"
+              @click="toggleFavourite(college.id)"
             >
               mdi-heart
             </v-icon>
@@ -228,6 +228,7 @@ export default {
   data() {
     return {
       selectedColleges: this.colleges,
+      favouriteColleges: this.favourites,
       cardsExpanded: {},
       isReverseSort: false,
       items: {
@@ -267,22 +268,29 @@ export default {
         rangeFilters: this.rangeFilters,
       });
     },
-    removeCollegeFromSelected(id) {
-      fetch(`/api/modify_favourites/?college_id=${id}`)
+    toggleFavourite(id) {
+      fetch(`/api/toggle_favourite/?college_id=${id}`)
         .then(response => response.text())
         .then((data) => {
+          const favBadge = document.getElementById('favourite-badge');
           if (data === 'Removed') {
-            this.selectedColleges.forEach((col, index, obj) => {
+            this.favouriteColleges.forEach((col, index, obj) => {
               if (col.id === id) {
                 obj.splice(index, 1);
-                // updating the number of colleges on the menu badge
-                const favBadge = document.getElementById('favourite-badge');
+                // updating the menu badge
                 favBadge.innerText = String(Number(favBadge.innerText) - 1);
               }
             });
-            // update colleges in the parent component
-            this.$emit('update:colleges', this.selectedColleges);
+          } else if (data === 'Added') {
+            const college = this.selectedColleges.find(c => c.id === id);
+            if (college) {
+              this.favouriteColleges.push(college);
+              // update the menu badge
+              favBadge.innerText = String(Number(favBadge.innerText) + 1);
+            }
           }
+          // update the list of favourite colleges in the parent component
+          this.$emit('update:favourites', this.favouriteColleges);
         }).catch((err) => {
           console.error(err);
         });
@@ -302,7 +310,7 @@ export default {
       }
     },
     sortColleges() {
-      if (!this.selectedColleges) this.selectedColleges = this.getCollegesList();
+      if (!this.selectedColleges) this.updateFilteredCollegesList();
       // set isReverseSort variable to true on the same button click
       if (this.prevSortButton.name === this.activeSortButton.name) {
         this.isReverseSort = !this.isReverseSort;
@@ -347,8 +355,8 @@ export default {
              && filter.name !== this.activeSortButton.name;
     },
     isFavourite(id) {
-      if (!this.favourites) return false;
-      return this.favourites.some(college => college.id === id);
+      if (!this.favouriteColleges) return false;
+      return this.favouriteColleges.some(college => college.id === id);
     },
   },
   computed: {
@@ -390,6 +398,10 @@ export default {
     },
     rangeFilters() {
       this.updateFilteredCollegesList();
+    },
+    colleges() {
+      this.updateFilteredCollegesList();
+      this.sortColleges();
     },
   },
 };
