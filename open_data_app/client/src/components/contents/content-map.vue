@@ -8,7 +8,7 @@ import { selectColleges, addCommas } from '../../utils/helpers';
 
 export default {
   name: 'content-map',
-  props: ['colleges', 'checkboxFilters', 'statesFilters', 'rangeFilters', 'restore'],
+  props: ['colleges', 'menu', 'restore'],
   data() {
     return {
       google: '',
@@ -21,9 +21,9 @@ export default {
   methods: {
     getCollegesList() {
       return selectColleges(this.colleges, {
-        checkboxFilters: this.checkboxFilters,
-        statesFilters: this.statesFilters,
-        rangeFilters: this.rangeFilters,
+        checkboxFilters: this.menu.checkboxFilters,
+        statesFilters: this.menu.statesFilters,
+        rangeFilters: this.menu.rangeFilters,
       });
     },
     createGmapMarkers() {
@@ -97,13 +97,13 @@ export default {
     colleges() {
       this.updateCollegesList();
     },
-    checkboxFilters() {
+    'menu.checkboxFilters': function () {
       this.updateCollegesList();
     },
-    statesFilters() {
+    'menu.statesFilters': function () {
       this.updateCollegesList();
     },
-    rangeFilters() {
+    'menu.rangeFilters': function () {
       this.updateCollegesList();
     },
   },

@@ -26,12 +26,7 @@
             v-show="activeNavButton === 'Colleges'"
             :colleges="favouriteColleges"
             :favourites.sync="favouriteColleges"
-            :activeSortButton="contentCollegesFavourite.activeSortButton"
-            :prevSortButton="contentCollegesFavourite.prevSortButton"
-            :checkboxFilters="contentCollegesFavourite.checkboxFilters"
-            :statesFilters="contentCollegesFavourite.statesFilters"
-            :rangeFilters="contentCollegesFavourite.rangeFilters"
-            :restore="contentCollegesFavourite.restore"
+            :menu="filterMenus.contentCollegesFavourite"
           />
           <!-- A list of visited colleges -->
           <content-colleges-list
@@ -39,22 +34,14 @@
             v-show="activeNavButton === 'Visited'"
             :colleges="visitedColleges"
             :favourites.sync="favouriteColleges"
-            :activeSortButton="contentCollegesVisited.activeSortButton"
-            :prevSortButton="contentCollegesVisited.prevSortButton"
-            :checkboxFilters="contentCollegesVisited.checkboxFilters"
-            :statesFilters="contentCollegesVisited.statesFilters"
-            :rangeFilters="contentCollegesVisited.rangeFilters"
-            :restore="contentCollegesVisited.restore"
+            :menu="filterMenus.contentCollegesVisited"
           />
           <!-- A map with colleges -->
           <content-map
             ref="map"
             v-show="activeNavButton === 'Map'"
             :colleges="favouriteColleges"
-            :checkboxFilters="contentMap.checkboxFilters"
-            :statesFilters="contentMap.statesFilters"
-            :rangeFilters="contentMap.rangeFilters"
-            :restore="contentMap.restore"
+            :menu="filterMenus.contentMap"
           />
         </v-container>
       </v-content>
@@ -181,29 +168,31 @@ export default {
       mobileMenu: false,
       fab: false,
       fabClose: false,
-      contentCollegesFavourite: {
-        activeSortButton: '',
-        prevSortButton: '',
-        checkboxFilters: '',
-        statesFilters: '',
-        rangeFilters: '',
-        restore: false,
-      },
-      contentCollegesVisited: {
-        activeSortButton: '',
-        prevSortButton: '',
-        checkboxFilters: '',
-        statesFilters: '',
-        rangeFilters: '',
-        restore: false,
-      },
-      contentMap: {
-        activeSortButton: '',
-        prevSortButton: '',
-        checkboxFilters: '',
-        statesFilters: '',
-        rangeFilters: '',
-        restore: false,
+      filterMenus: {
+        contentCollegesFavourite: {
+          activeSortButton: '',
+          prevSortButton: '',
+          checkboxFilters: '',
+          statesFilters: '',
+          rangeFilters: '',
+          restore: false,
+        },
+        contentCollegesVisited: {
+          activeSortButton: '',
+          prevSortButton: '',
+          checkboxFilters: '',
+          statesFilters: '',
+          rangeFilters: '',
+          restore: false,
+        },
+        contentMap: {
+          activeSortButton: '',
+          prevSortButton: '',
+          checkboxFilters: '',
+          statesFilters: '',
+          rangeFilters: '',
+          restore: false,
+        },
       },
     };
   },
@@ -212,7 +201,7 @@ export default {
       this.activeNavButton = val;
     },
     changeSortButton(event) {
-      const menu = this[event.menu];
+      const menu = this.filterMenus[event.menu];
       if (menu.activeSortButton && menu.prevSortButton) {
         this.$set(menu, 'prevSortButton', '');
         this.$set(menu, 'activeSortButton', '');
@@ -223,12 +212,12 @@ export default {
       this.$set(menu, 'activeSortButton', event.value);
     },
     updateFiltersValues(event) {
-      const menu = this[event.menu];
+      const menu = this.filterMenus[event.menu];
       this.$set(menu, 'restore', false);
       this.$set(menu, event.filters, event.value);
     },
-    clearFilters(page) {
-      this[page] = Object.assign({}, this[page], {
+    clearFilters(menu) {
+      this.filterMenus[menu] = Object.assign({}, this.filterMenus[menu], {
         activeSortButton: '',
         prevSortButton: '',
         checkboxFilters: '',

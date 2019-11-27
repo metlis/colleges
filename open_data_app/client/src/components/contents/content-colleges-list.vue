@@ -44,7 +44,7 @@
             <div
                class="text--primary"
                :class="$style.chip"
-               v-if="activeSortButton && collegeSortValueExists(college)"
+               v-if="menu.activeSortButton && collegeSortValueExists(college)"
             >
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
@@ -53,28 +53,28 @@
                     color="grey lighten-3"
                   >
                     <v-icon size="1rem">
-                      {{activeSortButton.icon}}
+                      {{menu.activeSortButton.icon}}
                     </v-icon>
-                    <template v-if="activeSortButton.name === 'admission_rate'
-                    || activeSortButton.name === 'federal_loan'">
+                    <template v-if="menu.activeSortButton.name === 'admission_rate'
+                    || menu.activeSortButton.name === 'federal_loan'">
                       <span class="pl-1">
-                        {{Math.round(college[activeSortButton.name] * 100)}}%
+                        {{Math.round(college[menu.activeSortButton.name] * 100)}}%
                       </span>
                     </template>
-                    <template v-else-if="activeSortButton.name === 'undergrad_students'">
+                    <template v-else-if="menu.activeSortButton.name === 'undergrad_students'">
                       <span class="pl-1">
-                        {{addCommas(college[activeSortButton.name])}}
+                        {{addCommas(college[menu.activeSortButton.name])}}
                       </span>
                     </template>
                     <template v-else>
                       <span class="pl-1">
-                        {{addCommas(Math.round(college[activeSortButton.name]))}}$
+                        {{addCommas(Math.round(college[menu.activeSortButton.name]))}}$
                       </span>
                     </template>
                   </v-chip>
                 </template>
                 <span>
-                  {{activeSortButton.tooltip}}
+                  {{menu.activeSortButton.tooltip}}
                 </span>
               </v-tooltip>
             </div>
@@ -138,8 +138,8 @@
             </div>
             <!-- State filter values -->
             <div
-               v-for="filter in statesFilters"
-               v-if="statesFilters && college.state__name === filter"
+               v-for="filter in menu.statesFilters"
+               v-if="menu.statesFilters && college.state__name === filter"
                :key="filter"
                :class="$style.chip"
                class="text--primary">
@@ -223,8 +223,7 @@ import {
 
 export default {
   name: 'content-colleges-list',
-  props: ['colleges', 'activeSortButton', 'prevSortButton', 'checkboxFilters', 'statesFilters',
-    'rangeFilters', 'restore', 'favourites'],
+  props: ['colleges', 'favourites', 'menu', 'restore'],
   data() {
     return {
       selectedColleges: this.colleges,
@@ -263,9 +262,9 @@ export default {
   methods: {
     getCollegesList() {
       return selectColleges(this.colleges, {
-        checkboxFilters: this.checkboxFilters,
-        statesFilters: this.statesFilters,
-        rangeFilters: this.rangeFilters,
+        checkboxFilters: this.menu.checkboxFilters,
+        statesFilters: this.menu.statesFilters,
+        rangeFilters: this.menu.rangeFilters,
       });
     },
     toggleFavourite(id) {
@@ -312,12 +311,12 @@ export default {
     sortColleges() {
       if (!this.selectedColleges) this.updateFilteredCollegesList();
       // set isReverseSort variable to true on the same button click
-      if (this.prevSortButton.name === this.activeSortButton.name) {
+      if (this.menu.prevSortButton.name === this.menu.activeSortButton.name) {
         this.isReverseSort = !this.isReverseSort;
       } else {
         this.isReverseSort = false;
       }
-      switch (this.activeSortButton.name) {
+      switch (this.menu.activeSortButton.name) {
       case 'name':
         sortСollegesAlphabetically(this.selectedColleges, this.isReverseSort);
         break;
@@ -327,7 +326,7 @@ export default {
       case 'federal_loan':
       case 'admission_rate':
       case 'undergrad_students':
-        sortByNumValue(this.selectedColleges, this.activeSortButton.name, this.isReverseSort);
+        sortByNumValue(this.selectedColleges, this.menu.activeSortButton.name, this.isReverseSort);
         break;
       default:
         break;
@@ -338,13 +337,13 @@ export default {
     },
     sortByCost() {
       addUnifiedPriceParam(this.selectedColleges);
-      sortByNumValue(this.selectedColleges, this.activeSortButton.name, this.isReverseSort);
+      sortByNumValue(this.selectedColleges, this.menu.activeSortButton.name, this.isReverseSort);
     },
     updateFilteredCollegesList() {
       this.selectedColleges = this.getCollegesList();
     },
     collegeSortValueExists(college) {
-      const sortButton = this.activeSortButton;
+      const sortButton = this.menu.activeSortButton;
       return college[sortButton.name] !== ''
              && college[sortButton.name] !== null
              && sortButton.name !== 'name';
@@ -352,7 +351,7 @@ export default {
     collegeFilterValueExists(filter, college) {
       return college[filter.name] !== ''
              && college[filter.name] !== null
-             && filter.name !== this.activeSortButton.name;
+             && filter.name !== this.menu.activeSortButton.name;
     },
     isFavourite(id) {
       if (!this.favouriteColleges) return false;
@@ -363,13 +362,13 @@ export default {
     filtersApplied() {
       const rangeFilters = [];
       const checkboxFilters = [];
-      if (this.rangeFilters) {
-        Object.values(this.rangeFilters).forEach((filter) => {
+      if (this.menu.rangeFilters) {
+        Object.values(this.menu.rangeFilters).forEach((filter) => {
           if (filter.min || filter.max) rangeFilters.push(filter);
         });
       }
-      if (this.checkboxFilters) {
-        Object.values(this.checkboxFilters).forEach((filter) => {
+      if (this.menu.checkboxFilters) {
+        Object.values(this.menu.checkboxFilters).forEach((filter) => {
           if (filter.value) checkboxFilters.push(filter);
         });
       }
@@ -377,6 +376,10 @@ export default {
     },
   },
   watch: {
+    colleges() {
+      this.updateFilteredCollegesList();
+      this.sortColleges();
+    },
     restore(val) {
       if (val) {
         this.isReverseSort = false;
@@ -384,24 +387,21 @@ export default {
         sortСollegesAlphabetically(this.selectedColleges, this.isReverseSort);
       }
     },
-    activeSortButton() {
+    'menu.activeSortButton': function () {
       this.sortColleges();
     },
-    prevSortButton() {
+    'menu.prevSortButton': function () {
       this.sortColleges();
     },
-    checkboxFilters() {
+    // FIXME: this prop is not reactive for some reason
+    'menu.checkboxFilters': function () {
       this.updateFilteredCollegesList();
     },
-    statesFilters() {
+    'menu.statesFilters': function () {
       this.updateFilteredCollegesList();
     },
-    rangeFilters() {
+    'menu.rangeFilters': function () {
       this.updateFilteredCollegesList();
-    },
-    colleges() {
-      this.updateFilteredCollegesList();
-      this.sortColleges();
     },
   },
 };
