@@ -7,7 +7,7 @@ from htmlmin.decorators import not_minified_response
 
 
 @not_minified_response
-def get_labels(request):
+def request_map_labels(request):
     params = request.GET
 
     if 'text' in params:

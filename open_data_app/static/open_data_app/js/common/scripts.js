@@ -44,7 +44,7 @@ function initFilterMap(center, zoom) {
 }
 
 function getMapLabels(url) {
-    axios.get('/api/get_labels/?' + url)
+    axios.get('/api/request_map_labels/?' + url)
         .then(function (response) {
             if (response.data.data) {
                 var mapLabels = response.data.data;
