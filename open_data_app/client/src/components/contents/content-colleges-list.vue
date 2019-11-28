@@ -393,7 +393,6 @@ export default {
     'menu.prevSortButton': function () {
       this.sortColleges();
     },
-    // FIXME: this prop is not reactive for some reason
     'menu.checkboxFilters': function () {
       this.updateFilteredCollegesList();
     },

@@ -214,6 +214,8 @@ export default {
     updateFiltersValues(event) {
       const menu = this.filterMenus[event.menu];
       this.$set(menu, 'restore', false);
+      // for some reason, checkbox filters are not reactive without deleting the hole object
+      this.$set(menu, event.filters, '');
       this.$set(menu, event.filters, event.value);
     },
     clearFilters(menu) {
