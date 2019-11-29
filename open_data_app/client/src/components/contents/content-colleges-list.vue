@@ -271,13 +271,12 @@ export default {
       fetch(`/api/toggle_favourite/?college_id=${id}`)
         .then(response => response.text())
         .then((data) => {
-          const favBadge = document.getElementById('favourite-badge');
           if (data === 'Removed') {
             this.favouriteColleges.forEach((col, index, obj) => {
               if (col.id === id) {
                 obj.splice(index, 1);
                 // updating the menu badge
-                favBadge.innerText = String(Number(favBadge.innerText) - 1);
+                this.decrementFavBadgeCounter();
               }
             });
           } else if (data === 'Added') {
@@ -285,7 +284,7 @@ export default {
             if (college) {
               this.favouriteColleges.push(college);
               // update the menu badge
-              favBadge.innerText = String(Number(favBadge.innerText) + 1);
+              this.incrementFavBadgeCounter();
             }
           }
           // update the list of favourite colleges in the parent component
@@ -356,6 +355,14 @@ export default {
     isFavourite(id) {
       if (!this.favouriteColleges) return false;
       return this.favouriteColleges.some(college => college.id === id);
+    },
+    incrementFavBadgeCounter() {
+      const counter = document.getElementById('favourite-badge');
+      counter.innerText = +counter.innerText + 1;
+    },
+    decrementFavBadgeCounter() {
+      const counter = document.getElementById('favourite-badge');
+      counter.innerText -= 1;
     },
   },
   computed: {
