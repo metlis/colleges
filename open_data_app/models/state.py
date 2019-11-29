@@ -25,7 +25,7 @@ class State(models.Model):
         return url
 
     @classmethod
-    def save_state_slugs(cls):
+    def save_as_slug(cls):
         states = cls.objects.all()
 
         with transaction.atomic():

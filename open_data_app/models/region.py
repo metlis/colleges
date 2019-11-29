@@ -12,7 +12,7 @@ class Region(models.Model):
     def __str__(self):
         return self.name
 
-    def get_region_data(self):
+    def get_parsed_names(self):
         region_re = re.search('(.*?)\s\((.*?)\)', self.name)
 
         try:
@@ -40,7 +40,7 @@ class Region(models.Model):
         return url
 
     @classmethod
-    def save_region_slugs(cls):
+    def save_as_slug(cls):
         regions = cls.objects.all()
 
         with transaction.atomic():

@@ -81,7 +81,7 @@ def filter_values(request, param_name, param_value):
         is_multiple = College.check_result_is_multiple(colleges)
 
         # sorting colleges
-        colleges = College.sort_colleges(request, colleges)
+        colleges = College.sort(request, colleges)
 
         # sort parameters
         sort_params, active_sort_param_name = handle_sort_param(request)

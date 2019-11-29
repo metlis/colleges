@@ -172,8 +172,8 @@ class College(models.Model):
 
                         links = []
                         i = row.index('"') + 1
-                        inext = row.index('"', i)
-                        links.append(row[i:inext])
+                        i_next = row.index('"', i)
+                        links.append(row[i:i_next])
 
                         row = row.split('"')
 
@@ -686,7 +686,7 @@ class College(models.Model):
         }
 
     @staticmethod
-    def sort_colleges(request, colleges):
+    def sort(request, colleges):
         try:
             sort = request.GET['sort']
             if sort:

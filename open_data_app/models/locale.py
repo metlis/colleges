@@ -12,7 +12,7 @@ class Locale(models.Model):
         return self.description
 
     @classmethod
-    def save_locale_slugs(cls):
+    def save_as_slug(cls):
         locales = cls.objects.all()
 
         with transaction.atomic():

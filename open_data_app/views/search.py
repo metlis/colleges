@@ -47,7 +47,7 @@ def search(request):
             canonical = reverse('college_app:search')
 
             # sorting colleges
-            colleges = College.sort_colleges(request, colleges)
+            colleges = College.sort(request, colleges)
 
             # sort parameters
             sort_params, active_sort_param_name = handle_sort_param(request)

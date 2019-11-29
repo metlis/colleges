@@ -11,7 +11,7 @@ class Level(models.Model):
         return self.description
 
     @classmethod
-    def save_level_slugs(cls):
+    def save_as_slug(cls):
         levels = cls.objects.all()
 
         with transaction.atomic():

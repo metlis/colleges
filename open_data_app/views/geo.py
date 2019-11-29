@@ -20,7 +20,7 @@ def get_geo(request, geo_name, geo_slug):
     try:
         if geo_name == 'region':
             geo_obj = Region.objects.get(slug=geo_slug)
-            region_name, slug, region_states = geo_obj.get_region_data()
+            region_name, slug, region_states = geo_obj.get_parsed_names()
             colleges = College.objects.filter(region=geo_obj.id).order_by('name')
             filters = College.get_filters(colleges)
         else:
@@ -34,7 +34,7 @@ def get_geo(request, geo_name, geo_slug):
     aggregate_data = College.get_aggregate_data(colleges)
 
     # sorting colleges
-    colleges = College.sort_colleges(request, colleges)
+    colleges = College.sort(request, colleges)
 
     # sort parameters
     sort_params, active_sort_param_name, active_sort_param_val = handle_sort_param(request, is_geo_view=True)
@@ -178,7 +178,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
 
     if colleges.count() > 0:
         if geo_name == 'region':
-            seo_name, region_slug, region_states = geo_obj.get_region_data()
+            seo_name, region_slug, region_states = geo_obj.get_parsed_names()
         else:
             seo_name = geo_obj.name
 
@@ -186,7 +186,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
         param_text_value, param_page_link = College.get_param_text_val(geo_name, geo_obj.id, param_name, param_value)
 
         # sorting colleges
-        colleges = College.sort_colleges(request, colleges)
+        colleges = College.sort(request, colleges)
 
         # sort parameters
         sort_params, active_sort_param_name = handle_sort_param(request)

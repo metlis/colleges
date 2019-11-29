@@ -11,7 +11,7 @@ class Religion(models.Model):
         return self.name
 
     @classmethod
-    def save_religion_slugs(cls):
+    def save_as_slug(cls):
         religions = cls.objects.all()
 
         with transaction.atomic():

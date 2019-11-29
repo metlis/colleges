@@ -11,10 +11,10 @@ class Carnegie(models.Model):
         return self.description
 
     @classmethod
-    def save_carnegie_slugs(cls):
-        carnegies = cls.objects.all()
+    def save_as_slug(cls):
+        carnegie_options = cls.objects.all()
 
         with transaction.atomic():
-            for carnegie in carnegies:
+            for carnegie in carnegie_options:
                 carnegie.slug = slugify(carnegie.description)
                 carnegie.save()

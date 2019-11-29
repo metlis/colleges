@@ -11,7 +11,7 @@ class Ownership(models.Model):
         return self.description
 
     @classmethod
-    def save_ownership_slugs(cls):
+    def save_as_slug(cls):
         ownerships = cls.objects.all()
 
         with transaction.atomic():

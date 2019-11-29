@@ -11,7 +11,7 @@ class Degree(models.Model):
         return self.description
 
     @classmethod
-    def save_degree_slugs(cls):
+    def save_as_slug(cls):
         degrees = cls.objects.all()
 
         with transaction.atomic():
