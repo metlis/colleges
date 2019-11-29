@@ -122,7 +122,7 @@ function initCollegeMap(college) {
 }
 
 function modifyFavourites(el, collegeId) {
-    axios.get('/api/modify_favourites/?college_id=' + collegeId)
+    axios.get('/api/toggle_favourite/?college_id=' + collegeId)
         .then(function (response) {
             var favBadge = document.getElementById('favourite-badge');
             if (response.data && response.data == 'Added') {
