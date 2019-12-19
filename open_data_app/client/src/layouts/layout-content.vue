@@ -43,6 +43,13 @@
             :colleges="favouriteColleges"
             :menu="filterMenus.contentMap"
           />
+          <!-- A map with colleges -->
+          <content-compare
+            ref="compare"
+            v-show="activeNavButton === 'Compare'"
+            :colleges="favouriteColleges"
+            :menu="filterMenus.contentCompare"
+          />
         </v-container>
       </v-content>
     </v-col>
@@ -54,7 +61,7 @@
       md="2"
     >
       <!--  Right Sort/Filter Menu for Favourite Colleges  -->
-      <menu-filter-colleges-list
+      <menu-filter-and-sort
         v-show="activeNavButton === 'Colleges'"
         :colleges="favouriteColleges"
         name="contentCollegesFavourite"
@@ -65,7 +72,7 @@
         @restore="clearFilters('contentCollegesFavourite')"
       />
       <!--  Right Sort/Filter Menu for Visited Colleges  -->
-      <menu-filter-colleges-list
+      <menu-filter-and-sort
         v-show="activeNavButton === 'Visited'"
         :colleges="visitedColleges"
         name="contentCollegesVisited"
@@ -76,7 +83,7 @@
         @restore="clearFilters('contentCollegesVisited')"
       />
       <!--  Right Filter Menu for Map  -->
-      <menu-filter-map
+      <menu-filter
         v-show="activeNavButton === 'Map'"
         :colleges="favouriteColleges"
         name="contentMap"
@@ -84,6 +91,17 @@
         @statesFilterChanged="updateFiltersValues($event)"
         @rangeFilterChanged="updateFiltersValues($event)"
         @restore="clearFilters('contentMap')"
+      />
+      <!--  Right Filter Menu for Compare  -->
+      <menu-filter-and-sort
+        v-show="activeNavButton === 'Compare'"
+        :colleges="favouriteColleges"
+        name="contentCompare"
+        @sortClick="changeSortButton($event)"
+        @checkboxFilterChanged="updateFiltersValues($event)"
+        @statesFilterChanged="updateFiltersValues($event)"
+        @rangeFilterChanged="updateFiltersValues($event)"
+        @restore="clearFilters('contentCompare')"
       />
     </v-col>
     <!--  Mobile button for the menus  -->
@@ -141,19 +159,21 @@
 <script>
 import goTo from 'vuetify/es5/services/goto';
 import MenuNavigation from '../components/menus/menu-navigation.vue';
-import MenuFilterCollegesList from '../components/menus/menu-filter-colleges-list.vue';
-import MenuFilterMap from '../components/menus/menu-filter-map.vue';
+import MenuFilterAndSort from '../components/menus/menu-filter-and-sort.vue';
+import MenuFilter from '../components/menus/menu-filter.vue';
 import ContentCollegesList from '../components/contents/content-colleges-list.vue';
 import ContentMap from '../components/contents/content-map.vue';
+import ContentCompare from '../components/contents/content-compare.vue';
 
 export default {
   name: 'content-layout',
   components: {
     MenuNavigation,
-    MenuFilterCollegesList,
-    MenuFilterMap,
+    MenuFilterAndSort,
+    MenuFilter,
     ContentCollegesList,
     ContentMap,
+    ContentCompare,
   },
   props: ['favourites', 'visited'],
   data() {
@@ -186,6 +206,14 @@ export default {
           restore: false,
         },
         contentMap: {
+          activeSortButton: '',
+          prevSortButton: '',
+          checkboxFilters: '',
+          statesFilters: '',
+          rangeFilters: '',
+          restore: false,
+        },
+        contentCompare: {
           activeSortButton: '',
           prevSortButton: '',
           checkboxFilters: '',
