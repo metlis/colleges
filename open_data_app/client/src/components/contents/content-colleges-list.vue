@@ -169,9 +169,7 @@
               mdi-heart
             </v-icon>
           </v-btn>
-          <v-btn outlined text @click="openCollegePage(college.id, college.slug)">
-            Page
-          </v-btn>
+          <v-icon @click="openCollegePage(college.id, college.slug)">mdi-link-variant</v-icon>
           <div class="flex-grow-1"></div>
           <v-btn
             icon

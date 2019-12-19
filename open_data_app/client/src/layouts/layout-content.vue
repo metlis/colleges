@@ -23,7 +23,7 @@
           <!-- A list of favourite colleges -->
           <content-colleges-list
             ref="colleges-favourite"
-            v-show="activeNavButton === 'Colleges'"
+            v-show="activeNavButton === 'Favourite'"
             :colleges="favouriteColleges"
             :favourites.sync="favouriteColleges"
             :menu="filterMenus.contentCollegesFavourite"
@@ -62,7 +62,7 @@
     >
       <!--  Right Sort/Filter Menu for Favourite Colleges  -->
       <menu-filter-and-sort
-        v-show="activeNavButton === 'Colleges'"
+        v-show="activeNavButton === 'Favourite'"
         :colleges="favouriteColleges"
         name="contentCollegesFavourite"
         @sortClick="changeSortButton($event)"
@@ -180,7 +180,7 @@ export default {
     return {
       favouriteColleges: this.favourites,
       visitedColleges: this.visited,
-      activeNavButton: 'Colleges',
+      activeNavButton: 'Favourite',
       classes: {
         navigationMenu: 'd-none d-md-block',
         filterMenu: 'd-none d-md-block',
