@@ -8,7 +8,7 @@ import { selectColleges, addCommas } from '../../utils/helpers';
 
 export default {
   name: 'content-map',
-  props: ['colleges', 'menu', 'restore'],
+  props: ['colleges', 'menu'],
   data() {
     return {
       google: '',
@@ -88,14 +88,14 @@ export default {
     }
   },
   watch: {
-    restore(val) {
+    colleges() {
+      this.updateCollegesList();
+    },
+    'menu.restore': function (val) {
       if (val) {
         this.selectedColleges = this.colleges;
         this.updateCollegesList();
       }
-    },
-    colleges() {
-      this.updateCollegesList();
     },
     'menu.checkboxFilters': function () {
       this.updateCollegesList();

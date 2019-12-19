@@ -223,7 +223,7 @@ import {
 
 export default {
   name: 'content-colleges-list',
-  props: ['colleges', 'favourites', 'menu', 'restore'],
+  props: ['colleges', 'favourites', 'menu'],
   data() {
     return {
       selectedColleges: this.colleges,
@@ -387,7 +387,7 @@ export default {
       this.updateFilteredCollegesList();
       this.sortColleges();
     },
-    restore(val) {
+    'menu.restore': function (val) {
       if (val) {
         this.isReverseSort = false;
         this.selectedColleges = this.colleges;
