@@ -218,7 +218,12 @@
 
 <script>
 import {
-  selectColleges, addUnifiedPriceParam, sortByNumValue, addCommas, sortСollegesAlphabetically,
+  selectColleges,
+  addCommas,
+  addUnifiedPriceParam,
+  sortByNumValue,
+  sortСollegesAlphabetically,
+  sortColleges,
 } from '../../utils/helpers';
 
 export default {
@@ -308,28 +313,7 @@ export default {
       }
     },
     sortColleges() {
-      if (!this.selectedColleges) this.updateFilteredCollegesList();
-      // set isReverseSort variable to true on the same button click
-      if (this.menu.prevSortButton.name === this.menu.activeSortButton.name) {
-        this.isReverseSort = !this.isReverseSort;
-      } else {
-        this.isReverseSort = false;
-      }
-      switch (this.menu.activeSortButton.name) {
-      case 'name':
-        sortСollegesAlphabetically(this.selectedColleges, this.isReverseSort);
-        break;
-      case 'average_price':
-        this.sortByCost();
-        break;
-      case 'federal_loan':
-      case 'admission_rate':
-      case 'undergrad_students':
-        sortByNumValue(this.selectedColleges, this.menu.activeSortButton.name, this.isReverseSort);
-        break;
-      default:
-        break;
-      }
+      sortColleges(this);
     },
     addCommas(num) {
       return addCommas(num);

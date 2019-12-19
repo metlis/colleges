@@ -106,3 +106,31 @@ export const sortСollegesAlphabetically = (colleges = [], reverseSort = false) 
     return 0;
   });
 };
+
+export const sortColleges = (component) => {
+  if (!component.selectedColleges) component.updateFilteredCollegesList();
+  // set isReverseSort variable to true on the same button click
+  if (component.menu.prevSortButton.name === component.menu.activeSortButton.name) {
+    // eslint-disable-next-line no-param-reassign
+    component.isReverseSort = !component.isReverseSort;
+  } else {
+    // eslint-disable-next-line no-param-reassign
+    component.isReverseSort = false;
+  }
+  switch (component.menu.activeSortButton.name) {
+  case 'name':
+    sortСollegesAlphabetically(component.selectedColleges, component.isReverseSort);
+    break;
+  case 'average_price':
+    component.sortByCost();
+    break;
+  case 'federal_loan':
+  case 'admission_rate':
+  case 'undergrad_students':
+    sortByNumValue(component.selectedColleges, component.menu.activeSortButton.name,
+      component.isReverseSort);
+    break;
+  default:
+    break;
+  }
+};
