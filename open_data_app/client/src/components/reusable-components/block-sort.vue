@@ -18,43 +18,14 @@
 </template>
 
 <script>
+import { sortNames } from '../../utils/dictionaries';
+
 export default {
   name: 'block-sort',
   props: ['restore'],
   data() {
     return {
-      sortNames: {
-        name: {
-          icon: 'mdi-alphabetical',
-          title: 'Name',
-          tooltip: 'Name',
-          name: 'name',
-        },
-        cost: {
-          icon: 'mdi-cash',
-          title: 'Cost',
-          tooltip: 'Average cost $',
-          name: 'average_price',
-        },
-        loan: {
-          icon: 'mdi-bank',
-          title: 'Loan',
-          tooltip: 'Federal loan recipients %',
-          name: 'federal_loan',
-        },
-        admission: {
-          icon: 'mdi-certificate',
-          title: 'Admission',
-          tooltip: 'Admission rate %',
-          name: 'admission_rate',
-        },
-        undergraduates: {
-          icon: 'mdi-account-multiple',
-          title: 'Undergraduates',
-          tooltip: 'Number of undergraduate students',
-          name: 'undergrad_students',
-        },
-      },
+      sortNames: sortNames(),
       toggleSort: false,
     };
   },
