@@ -18,9 +18,11 @@ def request_similar_colleges(request):
 
         filtered_colleges = tuple()
 
-        local_colleges = College.objects.filter(state=college.state).values(*college_fields)
+        local_colleges = College.objects.filter(state=college.state).exclude(id__in=favourite_colleges_ids).values(
+            *college_fields)
         if len(local_colleges) < 10:
-            local_colleges = College.objects.filter(region=college.region).values(*college_fields)
+            local_colleges = College.objects.filter(region=college.region).exclude(
+                id__in=favourite_colleges_ids).values(*college_fields)
 
         if college.carnegie:
             same_carnegie_colleges = local_colleges.filter(carnegie=college.carnegie)
@@ -43,10 +45,18 @@ def request_similar_colleges(request):
 
             if college.completion_rate_four_year_pooled:
                 similar_completion_colleges = local_colleges.filter(completion_rate_four_year_pooled__range=(
-                college.completion_rate_four_year_pooled * 0.8, college.completion_rate_four_year_pooled * 1.2))
+                    college.completion_rate_four_year_pooled * 0.8, college.completion_rate_four_year_pooled * 1.2))
                 filtered_colleges += tuple(similar_completion_colleges[0:3])
 
         similar_colleges += filtered_colleges
+
+    if len(list(similar_colleges)) > 0:
+        dictionary = {}
+        for college in similar_colleges:
+            if not college['id'] in dictionary:
+                dictionary[college['id']] = college
+
+        similar_colleges = [dictionary[key] for key in dictionary]
 
     response = HttpResponse(
         json.dumps(

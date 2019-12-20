@@ -9,6 +9,7 @@
         <v-list-item
           v-for="(icon, name) in iconsNames"
           :key="name"
+          :ref="icon"
           @click="$emit('navigationClick', icon)"
           link
         >
@@ -29,18 +30,28 @@
 <script>
 export default {
   name: 'menu-left',
+  props: ['initial'],
   data() {
     return {
       iconsNames: {
         'mdi-star': 'Favourite',
         'mdi-google-maps': 'Map',
         'mdi-file-search': 'Visited',
+        'mdi-eye-plus': 'Recommended',
         'mdi-compare': 'Compare',
         // 'mdi-history': 'Analyze history',
-        // 'mdi-eye-plus': 'Similar colleges',
       },
       activeItem: 0,
     };
+  },
+  mounted() {
+    // programmatically set initial active item. the first item is active by default
+    try {
+      this.$refs[this.initial][0].isActive = true;
+      if (this.initial !== 'Favourite') this.$refs.Favourite[0].isActive = false;
+    } catch (e) {
+      console.error(e);
+    }
   },
 };
 </script>

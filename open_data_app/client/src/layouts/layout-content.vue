@@ -8,7 +8,11 @@
       sm="12"
       md="2"
     >
-      <menu-navigation @navigationClick="changeNavButton" />
+      <menu-navigation
+        ref="nav"
+        :initial="activeNavButton"
+        @navigationClick="updateNavButton"
+      />
     </v-col>
     <!--  Content Area  -->
     <v-col
@@ -38,6 +42,15 @@
             :favourites.sync="favouriteColleges"
             :menu="filterMenus.contentCollegesVisited"
             header="Visited colleges"
+          />
+          <!-- A list of recommended colleges -->
+          <content-colleges-list
+            ref="colleges-recommended"
+            v-show="activeNavButton === 'Recommended'"
+            :colleges="recommendedColleges"
+            :favourites.sync="favouriteColleges"
+            :menu="filterMenus.contentCollegesRecommended"
+            header="Recommended colleges"
           />
           <!-- A map with colleges -->
           <content-map
@@ -86,6 +99,17 @@
         @statesFilterChanged="updateFiltersValues($event)"
         @rangeFilterChanged="updateFiltersValues($event)"
         @restore="clearFilters('contentCollegesVisited')"
+      />
+      <!--  Right Sort/Filter Menu for Recommended Colleges  -->
+      <menu-filter-and-sort
+        v-show="activeNavButton === 'Recommended'"
+        :colleges="recommendedColleges"
+        name="contentCollegesRecommended"
+        @sortClick="changeSortButton($event)"
+        @checkboxFilterChanged="updateFiltersValues($event)"
+        @statesFilterChanged="updateFiltersValues($event)"
+        @rangeFilterChanged="updateFiltersValues($event)"
+        @restore="clearFilters('contentCollegesRecommended')"
       />
       <!--  Right Filter Menu for Map  -->
       <menu-filter
@@ -180,12 +204,13 @@ export default {
     ContentMap,
     ContentCompare,
   },
-  props: ['favourites', 'visited'],
+  props: ['favourites', 'visited', 'recommended', 'page'],
   data() {
     return {
       favouriteColleges: this.favourites,
       visitedColleges: this.visited,
-      activeNavButton: 'Favourite',
+      recommendedColleges: this.recommended,
+      activeNavButton: this.page,
       classes: {
         navigationMenu: 'd-none d-md-block',
         filterMenu: 'd-none d-md-block',
@@ -203,6 +228,14 @@ export default {
           restore: false,
         },
         contentCollegesVisited: {
+          activeSortButton: '',
+          prevSortButton: '',
+          checkboxFilters: '',
+          statesFilters: '',
+          rangeFilters: '',
+          restore: false,
+        },
+        contentCollegesRecommended: {
           activeSortButton: '',
           prevSortButton: '',
           checkboxFilters: '',
@@ -230,7 +263,7 @@ export default {
     };
   },
   methods: {
-    changeNavButton(val) {
+    updateNavButton(val) {
       this.activeNavButton = val;
     },
     changeSortButton(event) {
@@ -281,11 +314,16 @@ export default {
     },
   },
   watch: {
-    activeNavButton() {
+    activeNavButton(val) {
+      if (val === 'Recommended' && this.recommendedColleges.length === 0) {
+        this.$emit('fetchRecommendedColleges');
+      }
+      // scroll to the top of the page
       goTo(this.$refs.content);
     },
   },
   mounted() {
+    // scroll to the top of the page
     goTo(this.$refs.content);
   },
 };

@@ -4,6 +4,9 @@
       v-if="hasColleges && !isFetching"
       :favourites="favouriteColleges"
       :visited="visitedColleges"
+      :recommended="recommendedColleges"
+      :page="activePage"
+      @fetchRecommendedColleges="fetchRecommendedColleges"
     />
     <layout-empty v-if="!hasColleges && !isFetching" />
     <layout-progress v-if="isFetching" />
@@ -22,7 +25,39 @@ export default {
       isFetching: true,
       favouriteColleges: [],
       visitedColleges: [],
+      recommendedColleges: [],
+      activePage: 'Favourite',
     };
+  },
+  methods: {
+    fetchRecommendedColleges() {
+      this.isFetching = true;
+      fetch('/api/request_similar_colleges/')
+        .then(response => response.json())
+        .then((data) => {
+          this.recommendedColleges = data.data;
+        }).catch((err) => {
+          console.error(err);
+        })
+        .finally(() => {
+          this.isFetching = false;
+          this.activePage = 'Recommended';
+        });
+    },
+    fetchUserColleges() {
+      fetch('/api/request_user_colleges/')
+        .then(response => response.json())
+        .then((data) => {
+          const colleges = data.data;
+          this.favouriteColleges = colleges.favourite;
+          this.visitedColleges = colleges.visited;
+        }).catch((err) => {
+          console.error(err);
+        })
+        .finally(() => {
+          this.isFetching = false;
+        });
+    },
   },
   computed: {
     hasColleges() {
@@ -30,18 +65,7 @@ export default {
     },
   },
   created() {
-    fetch('/api/request_user_colleges/')
-      .then(response => response.json())
-      .then((data) => {
-        const colleges = data.data;
-        this.favouriteColleges = colleges.favourite;
-        this.visitedColleges = colleges.visited;
-      }).catch((err) => {
-        console.error(err);
-      })
-      .finally(() => {
-        this.isFetching = false;
-      });
+    this.fetchUserColleges();
   },
 };
 </script>
