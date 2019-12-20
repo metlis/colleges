@@ -1,8 +1,10 @@
 <template>
   <v-row dense>
+    <!--  Header  -->
     <v-col cols="12">
       <h3>{{header}}</h3>
     </v-col>
+    <!--  Map  -->
     <v-col cols="12">
       <div ref="map" :class="$style.map"></div>
     </v-col>

@@ -3,6 +3,10 @@
     :class="$style.content"
     dense
   >
+    <!--  Header  -->
+    <v-col cols="12">
+      <h3>{{header}}</h3>
+    </v-col>
     <!-- A message for no results   -->
     <v-col
       cols="12"
@@ -16,9 +20,6 @@
         There are no colleges that match these filters.
         You can start your search <a href="/main/">here</a>
       </v-alert>
-    </v-col>
-    <v-col cols="12">
-      <h3>{{header}}</h3>
     </v-col>
     <!--  Result content  -->
     <v-col

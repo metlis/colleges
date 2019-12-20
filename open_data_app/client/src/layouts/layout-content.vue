@@ -17,6 +17,7 @@
       xs="12"
       sm="12"
       md="8"
+      ref="content"
     >
       <v-content>
         <v-container fluid class="pa-0">
@@ -278,6 +279,14 @@ export default {
       this.fab = false;
       this.fabClose = false;
     },
+  },
+  watch: {
+    activeNavButton() {
+      goTo(this.$refs.content);
+    },
+  },
+  mounted() {
+    goTo(this.$refs.content);
   },
 };
 </script>
