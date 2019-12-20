@@ -6,7 +6,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-cash',
       name: 'average_price',
       title: 'Cost $',
-      color: '#FFAB91',
+      color: '#CFD8DC',
     },
     payments: {
       min: '',
@@ -14,7 +14,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-credit-card-outline',
       name: 'monthly_payments',
       title: 'Monthly payments $',
-      color: '#DCE775',
+      color: '#CFD8DC',
     },
     debt: {
       min: '',
@@ -22,7 +22,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-sack-percent',
       name: 'debt_completed_median',
       title: 'Debt after completion $',
-      color: '#AED581',
+      color: '#CFD8DC',
     },
     earnings: {
       min: '',
@@ -30,7 +30,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-currency-usd',
       name: 'median_earnings',
       title: 'Earnings after attending $',
-      color: '#80CBC4',
+      color: '#CFD8DC',
     },
   },
   Aid: {
@@ -40,7 +40,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-cash-100',
       name: 'pell_grand',
       title: 'Pell grant recipients %',
-      color: '#FFAB91',
+      color: '#CFD8DC',
     },
     loan: {
       min: '',
@@ -48,7 +48,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-bank',
       name: 'federal_loan',
       title: 'Federal loan recipients %',
-      color: '#DCE775',
+      color: '#CFD8DC',
     },
   },
   Study: {
@@ -58,7 +58,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-certificate',
       name: 'admission_rate',
       title: 'Admission rate %',
-      color: '#AED581',
+      color: '#CFD8DC',
     },
     completion: {
       min: '',
@@ -66,7 +66,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-school',
       name: 'completion_rate_four_year_pooled',
       title: 'Completion rate %',
-      color: '#80CBC4',
+      color: '#CFD8DC',
     },
     retention: {
       min: '',
@@ -74,7 +74,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-account-heart',
       name: 'retention_rate_four_year_pooled',
       title: 'Retention rate %',
-      color: '#FFAB91',
+      color: '#CFD8DC',
     },
   },
   Tests: {
@@ -84,7 +84,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-grease-pencil',
       name: 'act_cumulative',
       title: 'ACT cumulative',
-      color: '#DCE775',
+      color: '#CFD8DC',
     },
     sat: {
       min: '',
@@ -92,7 +92,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-lead-pencil',
       name: 'sat_average',
       title: 'SAT average',
-      color: '#AED581',
+      color: '#CFD8DC',
     },
   },
   Students: {
@@ -102,7 +102,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-account-multiple',
       name: 'undergrad_students',
       title: 'Number of undergraduates',
-      color: '#80CBC4',
+      color: '#CFD8DC',
     },
     fullTime: {
       min: '',
@@ -110,7 +110,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-account-clock',
       name: 'students_part_time',
       title: 'Full-time students %',
-      color: '#FFAB91',
+      color: '#CFD8DC',
     },
     female: {
       min: '',
@@ -118,7 +118,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-human-female',
       name: 'students_female',
       title: 'Female students %',
-      color: '#DCE775',
+      color: '#CFD8DC',
     },
     male: {
       min: '',
@@ -126,7 +126,7 @@ export const rangeFilters = () => ({
       icon: 'mdi-human-male',
       name: 'students_female',
       title: 'Male students %',
-      color: '#AED581',
+      color: '#CFD8DC',
     },
   },
 });

@@ -11,7 +11,7 @@
     </v-alert>
     <!--  Checkbox list  -->
     <div v-if="!showComparison">
-      <div v-if="collegesToComparisonIds.length > 0">
+      <div v-if="collegesToComparisonIds.length > 0" ref="checkbox">
         <p>
           <v-chip
             v-for="c in collegesToComparisonIds"
@@ -41,7 +41,7 @@
         :class="$style.buttonContainer"
       >
         <v-btn
-          @click="showComparison = true"
+          @click="displayComparison"
           depressed
           medium
         >
@@ -51,22 +51,34 @@
     </div>
     <!--  Comparison content  -->
     <div v-if="showComparison">
-      <div :class="$style.overview">
-        <h1>Overview</h1>
+      <div :class="$style.overview" ref="overview">
+        <h1>Top values disctribution</h1>
         <div
           v-for="(params, id) in collegesWinners"
           :key="id"
         >
-          <span :class="$style.collegeOverview">{{getCollegeName(+id)}}</span>
+          <span :class="$style.collegeOverview">{{getCollegeName(+id)}}: </span>
           <span :class="$style.starsOverview">
-            <v-icon
-              v-for="c in params"
-              :key="params.title"
-              color="amber lighten-1"
+            <v-chip
+              v-for="p in params"
+              :key="p.title"
+              :class="$style.chip"
+              @click="scrollTo(p.title)"
+              class="ma-1"
+              small
             >
-              mdi-star
-            </v-icon>
+              {{p.title}}
+            </v-chip>
           </span>
+        </div>
+        <div :class="$style.close">
+          <v-btn
+            @click="hideComparison"
+            depressed
+            small
+          >
+            Back
+          </v-btn>
         </div>
       </div>
       <hr :class="$style.divider">
@@ -79,6 +91,7 @@
         <v-card
           v-for="param in section"
           :key="param.title"
+          :ref="param.title"
           :class="$style.paramCard"
         >
           <v-card-title>
@@ -105,11 +118,11 @@
       </div>
       <div :class="$style.close">
         <v-btn
-          @click="showComparison = false"
+          @click="hideComparison"
           depressed
           medium
         >
-          Close
+          Back
         </v-btn>
       </div>
     </div>
@@ -117,6 +130,7 @@
 </template>
 
 <script>
+import goTo from 'vuetify/es5/services/goto';
 import { rangeFilters } from '../../utils/dictionaries';
 import {
   addUnifiedPriceParam,
@@ -207,6 +221,16 @@ export default {
       }
       return false;
     },
+    scrollTo(ref) {
+      goTo(this.$refs[ref][0]);
+    },
+    hideComparison() {
+      this.collegesWinners = '';
+      this.showComparison = false;
+    },
+    displayComparison() {
+      this.showComparison = true;
+    },
   },
   computed: {
     showCompareButton() {
@@ -226,6 +250,7 @@ export default {
     },
     'menu.restore': function (val) {
       if (val) {
+        this.hideComparison();
         this.isReverseSort = false;
         this.selectedColleges = this.colleges;
         sortСollegesAlphabetically(this.selectedColleges, this.isReverseSort);
@@ -238,12 +263,15 @@ export default {
       this.sortColleges();
     },
     'menu.checkboxFilters': function () {
+      this.hideComparison();
       this.updateFilteredCollegesList();
     },
     'menu.statesFilters': function () {
+      this.hideComparison();
       this.updateFilteredCollegesList();
     },
     'menu.rangeFilters': function () {
+      this.hideComparison();
       this.updateFilteredCollegesList();
     },
     selectedColleges(val) {
@@ -251,6 +279,15 @@ export default {
       const selectedCollegesIds = val.map(col => col.id);
       this.collegesToComparisonIds = this.collegesToComparisonIds
         .filter(c => selectedCollegesIds.includes(c));
+    },
+    showComparison(val) {
+      setTimeout(() => {
+        if (val) {
+          goTo(this.$refs.overview);
+        } else {
+          goTo(this.$refs.checkbox);
+        }
+      }, 0);
     },
   },
 };
@@ -262,7 +299,7 @@ export default {
       margin-bottom 0px !important
   .buttonContainer
     display flex
-    justify-content center
+    justify-content flex-end
     margin-top 20px
     width 100%
   .paramCard
@@ -272,7 +309,7 @@ export default {
   .bar
     border-radius 3px
     height 25px
-    margin-bottom 10px
+    margin-bottom 5px
     padding 2px 0px 0px 10px
     display flex
     justify-content space-between
@@ -280,7 +317,7 @@ export default {
     padding 0px 10px 0px 5px
   .close
     display flex
-    justify-content center
+    justify-content flex-end
   .overview
     margin-bottom 25px
     div
@@ -289,4 +326,6 @@ export default {
     padding-right 5px
   .starsOverview
     padding-top 0px
+  .chip
+    cursor pointer
 </style>
