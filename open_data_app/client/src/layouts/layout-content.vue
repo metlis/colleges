@@ -27,6 +27,7 @@
             :colleges="favouriteColleges"
             :favourites.sync="favouriteColleges"
             :menu="filterMenus.contentCollegesFavourite"
+            header="Favourite colleges"
           />
           <!-- A list of visited colleges -->
           <content-colleges-list
@@ -35,6 +36,7 @@
             :colleges="visitedColleges"
             :favourites.sync="favouriteColleges"
             :menu="filterMenus.contentCollegesVisited"
+            header="Visited colleges"
           />
           <!-- A map with colleges -->
           <content-map
@@ -42,6 +44,7 @@
             v-show="activeNavButton === 'Map'"
             :colleges="favouriteColleges"
             :menu="filterMenus.contentMap"
+            header="Favourite colleges on the map"
           />
           <!-- A map with colleges -->
           <content-compare
@@ -49,6 +52,7 @@
             v-show="activeNavButton === 'Compare'"
             :colleges="favouriteColleges"
             :menu="filterMenus.contentCompare"
+            header="Comparison of colleges"
           />
         </v-container>
       </v-content>

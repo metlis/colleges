@@ -1,5 +1,12 @@
 <template>
-  <div ref="map" :class="$style.map"></div>
+  <v-row dense>
+    <v-col cols="12">
+      <h3>{{header}}</h3>
+    </v-col>
+    <v-col cols="12">
+      <div ref="map" :class="$style.map"></div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -8,7 +15,7 @@ import { selectColleges, addCommas } from '../../utils/helpers';
 
 export default {
   name: 'content-map',
-  props: ['colleges', 'menu'],
+  props: ['colleges', 'menu', 'header'],
   data() {
     return {
       google: '',

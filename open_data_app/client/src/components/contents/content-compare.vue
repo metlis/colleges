@@ -1,132 +1,139 @@
 <template>
-  <v-container fluid>
+  <v-row dense>
+    <v-col cols="12">
+      <h3>{{header}}</h3>
+    </v-col>
     <!--  Empty set message  -->
-    <v-alert
-      type="info"
-      border="left"
-      color="#FFAB91"
-      v-if="selectedColleges.length === 0"
-    >
-      Nothing to compare
-    </v-alert>
-    <!--  Checkbox list  -->
-    <div v-if="!showComparison">
-      <div v-if="collegesToComparisonIds.length > 0" ref="checkbox">
-        <p>
-          <v-chip
-            v-for="c in collegesToComparisonIds"
-            :key="c"
-            @click:close="removeCollegeFromComparison(c)"
-            class="ma-2"
-            close
-          >
-            {{getCollegeName(c)}}
-          </v-chip>
-        </p>
-      </div>
-      <div>
-        <v-checkbox
-          v-for="c in selectedColleges"
-          :label="c.name"
-          :value="c.id"
-          :key="c.id"
-          :class="$style.college"
-          v-model="collegesToComparisonIds"
-          color="blue-grey darken-3"
-          hide-details
-        />
-      </div>
-      <div
-        v-if="showCompareButton"
-        :class="$style.buttonContainer"
+    <v-col cols="12" v-if="selectedColleges.length === 0">
+      <v-alert
+        type="info"
+        border="left"
+        color="#FFAB91"
       >
-        <v-btn
-          @click="displayComparison"
-          depressed
-          medium
-        >
-          Compare
-        </v-btn>
-      </div>
-    </div>
-    <!--  Comparison content  -->
-    <div v-if="showComparison">
-      <div :class="$style.overview" ref="overview">
-        <h1>Top values disctribution</h1>
-        <div
-          v-for="(params, id) in collegesWinners"
-          :key="id"
-        >
-          <span :class="$style.collegeOverview">{{getCollegeName(+id)}}: </span>
-          <span :class="$style.starsOverview">
+        Nothing to compare
+      </v-alert>
+    </v-col>
+    <!--  Content  -->
+    <v-col cols="12">
+      <!--  Checkbox list  -->
+      <div v-if="!showComparison">
+        <div v-if="collegesToComparisonIds.length > 0" ref="checkbox">
+          <p>
             <v-chip
-              v-for="p in params"
-              :key="p.title"
-              :class="$style.chip"
-              @click="scrollTo(p.title)"
-              class="ma-1"
+              v-for="c in collegesToComparisonIds"
+              :key="c"
+              @click:close="removeCollegeFromComparison(c)"
+              class="ma-2"
+              close
+            >
+              {{getCollegeName(c)}}
+            </v-chip>
+          </p>
+        </div>
+        <div>
+          <v-checkbox
+            v-for="c in selectedColleges"
+            :label="c.name"
+            :value="c.id"
+            :key="c.id"
+            :class="$style.college"
+            v-model="collegesToComparisonIds"
+            color="blue-grey darken-3"
+            hide-details
+          />
+        </div>
+        <div
+          v-if="showCompareButton"
+          :class="$style.buttonContainer"
+        >
+          <v-btn
+            @click="displayComparison"
+            depressed
+            medium
+          >
+            Compare
+          </v-btn>
+        </div>
+      </div>
+      <!--  Comparison content  -->
+      <div v-if="showComparison">
+        <div :class="$style.overview" ref="overview">
+          <h1>Top values disctribution</h1>
+          <div
+            v-for="(params, id) in collegesWinners"
+            :key="id"
+          >
+            <span :class="$style.collegeOverview">{{getCollegeName(+id)}}: </span>
+            <span :class="$style.starsOverview">
+              <v-chip
+                v-for="p in params"
+                :key="p.title"
+                :class="$style.chip"
+                @click="scrollTo(p.title)"
+                class="ma-1"
+                small
+              >
+                {{p.title}}
+              </v-chip>
+            </span>
+          </div>
+          <div :class="$style.close">
+            <v-btn
+              @click="hideComparison"
+              depressed
               small
             >
-              {{p.title}}
-            </v-chip>
-          </span>
+              Back
+            </v-btn>
+          </div>
+        </div>
+        <hr :class="$style.divider">
+        <div
+          v-for="(section, name) in comparisonParams"
+          :key="name"
+          :class="$style.section"
+        >
+          <h1>{{name}}</h1>
+          <v-card
+            v-for="param in section"
+            :key="param.title"
+            :ref="param.title"
+            :class="$style.paramCard"
+          >
+            <v-card-title>
+              {{param.title}}
+            </v-card-title>
+            <v-card-text>
+              <div
+                v-for="c in collegesToComparison"
+                :key="c.id"
+                :class="$style.bar"
+                :style="getBarStyles(c, param)"
+              >
+                {{formatValue(c, param) === null ? 'No data' : formatValue(c, param)}}
+                <span
+                  :class="$style.collegeBarName"
+                  v-if="calculateBarWidth(c, param) === 100"
+                >
+                  {{c.name}}
+                </span>
+              </div>
+            </v-card-text>
+          </v-card>
+          <hr :class="$style.divider">
         </div>
         <div :class="$style.close">
           <v-btn
             @click="hideComparison"
             depressed
-            small
+            medium
           >
             Back
           </v-btn>
         </div>
       </div>
-      <hr :class="$style.divider">
-      <div
-        v-for="(section, name) in comparisonParams"
-        :key="name"
-        :class="$style.section"
-      >
-        <h1>{{name}}</h1>
-        <v-card
-          v-for="param in section"
-          :key="param.title"
-          :ref="param.title"
-          :class="$style.paramCard"
-        >
-          <v-card-title>
-            {{param.title}}
-          </v-card-title>
-          <v-card-text>
-            <div
-              v-for="c in collegesToComparison"
-              :key="c.id"
-              :class="$style.bar"
-              :style="getBarStyles(c, param)"
-            >
-              {{formatValue(c, param) === null ? 'No data' : formatValue(c, param)}}
-              <span
-                :class="$style.collegeBarName"
-                v-if="calculateBarWidth(c, param) === 100"
-              >
-                {{c.name}}
-              </span>
-            </div>
-          </v-card-text>
-        </v-card>
-        <hr :class="$style.divider">
-      </div>
-      <div :class="$style.close">
-        <v-btn
-          @click="hideComparison"
-          depressed
-          medium
-        >
-          Back
-        </v-btn>
-      </div>
-    </div>
-  </v-container>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -143,7 +150,7 @@ import {
 
 export default {
   name: 'content-compare',
-  props: ['colleges', 'menu'],
+  props: ['colleges', 'menu', 'header'],
   data() {
     return {
       selectedColleges: this.colleges,

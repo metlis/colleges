@@ -17,6 +17,9 @@
         You can start your search <a href="/main/">here</a>
       </v-alert>
     </v-col>
+    <v-col cols="12">
+      <h3>{{header}}</h3>
+    </v-col>
     <!--  Result content  -->
     <v-col
       cols="12"
@@ -226,7 +229,7 @@ import {
 
 export default {
   name: 'content-colleges-list',
-  props: ['colleges', 'favourites', 'menu'],
+  props: ['colleges', 'favourites', 'menu', 'header'],
   data() {
     return {
       selectedColleges: this.colleges,
