@@ -16,77 +16,14 @@
     </v-col>
     <!--  Content  -->
     <v-col cols="12">
-      <div v-if="!showComparison">
-        <!--   Chips     -->
-        <div
-          v-if="collegesToComparisonIds.length > 0"
-          ref="checkbox"
-        >
-          <p>
-            <v-chip
-              v-for="c in collegesToComparisonIds"
-              :key="c"
-              @click:close="removeCollegeFromComparison(c)"
-              class="ma-2"
-              close
-            >
-              {{getCollegeName(c)}}
-            </v-chip>
-          </p>
-        </div>
-        <!--   Selection buttons     -->
-        <div :class="$style.buttons">
-          <v-btn
-            v-if="collegesToComparisonIds.length !== selectedColleges.length"
-            @click="selectAllColleges"
-            depressed
-            small
-          >
-            Select all
-          </v-btn>
-          <v-btn
-            v-if="collegesToComparisonIds.length > 1"
-            @click="displayComparison"
-            depressed
-            small
-          >
-            Compare
-          </v-btn>
-          <v-btn
-            v-if="collegesToComparisonIds.length > 0"
-            @click="collegesToComparisonIds = []"
-            depressed
-            small
-          >
-            Clear
-          </v-btn>
-        </div>
-        <!--  Checkbox list  -->
-        <div>
-          <v-checkbox
-            v-for="c in selectedColleges"
-            :label="c.name"
-            :value="c.id"
-            :key="c.id"
-            :class="$style.college"
-            v-model="collegesToComparisonIds"
-            color="blue-grey darken-3"
-            hide-details
-          />
-        </div>
-        <div
-          v-if="showCompareButton"
-          :class="$style.buttonContainer"
-        >
-          <v-btn
-            @click="displayComparison"
-            depressed
-            medium
-          >
-            Compare
-          </v-btn>
-        </div>
-      </div>
+      <!--  Checkbox list    -->
+      <checkbox-list
+        v-if="!showComparison"
+        :collegesData="selectedColleges"
+        :selectedIds.sync="collegesToComparisonIds"
+        @action="displayComparison"
+        actionButton="Compare"
+      />
       <!--  Comparison content  -->
       <div v-if="showComparison">
         <div :class="$style.overview" ref="overview">
@@ -179,6 +116,7 @@
 
 <script>
 import goTo from 'vuetify/es5/services/goto';
+import CheckboxList from '../reusable-components/checkbox-list.vue';
 import { rangeFilters } from '../../utils/dictionaries';
 import {
   addUnifiedPriceParam,
@@ -192,11 +130,12 @@ import {
 export default {
   name: 'content-compare',
   props: ['colleges', 'menu', 'header'],
+  components: { CheckboxList },
   data() {
     return {
       selectedColleges: this.colleges,
-      isReverseSort: false,
       collegesToComparisonIds: [],
+      isReverseSort: false,
       showComparison: false,
       comparisonParams: rangeFilters(),
       collegesWinners: '',
@@ -219,9 +158,6 @@ export default {
     },
     updateFilteredCollegesList() {
       this.selectedColleges = this.getCollegesList();
-    },
-    removeCollegeFromComparison(id) {
-      this.collegesToComparisonIds = this.collegesToComparisonIds.filter(c => c !== id);
     },
     getCollegeName(id) {
       const college = this.selectedColleges.find(c => c.id === id);
@@ -278,12 +214,6 @@ export default {
     },
     displayComparison() {
       this.showComparison = true;
-    },
-    selectAllColleges() {
-      this.collegesToComparisonIds = [];
-      this.selectedColleges.forEach((c) => {
-        this.collegesToComparisonIds.push(c.id);
-      });
     },
   },
   computed: {
@@ -354,14 +284,6 @@ export default {
 </script>
 
 <style lang="stylus" module>
-  .college
-    label
-      margin-bottom 0px !important
-  .buttonContainer
-    display flex
-    justify-content flex-end
-    margin-top 20px
-    width 100%
   .paramCard
     margin-bottom 30px
   .divider
@@ -388,9 +310,4 @@ export default {
     padding-top 0px
   .chip
     cursor pointer
-  .buttons
-    display flex
-    justify-content flex-end
-    button
-      margin-right 5px !important
 </style>
