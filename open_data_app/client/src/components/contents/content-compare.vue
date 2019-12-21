@@ -16,9 +16,12 @@
     </v-col>
     <!--  Content  -->
     <v-col cols="12">
-      <!--  Checkbox list  -->
       <div v-if="!showComparison">
-        <div v-if="collegesToComparisonIds.length > 0" ref="checkbox">
+        <!--   Chips     -->
+        <div
+          v-if="collegesToComparisonIds.length > 0"
+          ref="checkbox"
+        >
           <p>
             <v-chip
               v-for="c in collegesToComparisonIds"
@@ -31,6 +34,26 @@
             </v-chip>
           </p>
         </div>
+        <!--   Selection buttons     -->
+        <div :class="$style.buttons">
+          <v-btn
+            v-if="collegesToComparisonIds.length !== selectedColleges.length"
+            @click="selectAllColleges"
+            depressed
+            small
+          >
+            Select all
+          </v-btn>
+          <v-btn
+            v-if="collegesToComparisonIds.length > 0"
+            @click="collegesToComparisonIds = []"
+            depressed
+            small
+          >
+            Clear
+          </v-btn>
+        </div>
+        <!--  Checkbox list  -->
         <div>
           <v-checkbox
             v-for="c in selectedColleges"
@@ -111,7 +134,16 @@
                 :class="$style.bar"
                 :style="getBarStyles(c, param)"
               >
-                {{formatValue(c, param) === null ? 'No data' : formatValue(c, param)}}
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <span v-on="on">
+                      {{formatValue(c, param) === null ? 'No data' : formatValue(c, param)}}
+                    </span>
+                  </template>
+                  <span>
+                    {{c.name}}
+                  </span>
+                </v-tooltip>
                 <span
                   :class="$style.collegeBarName"
                   v-if="calculateBarWidth(c, param) === 100"
@@ -194,9 +226,9 @@ export default {
       // percent data
       if (title.indexOf('%') > -1) {
         if (title === 'Male students %' || title === 'Full-time students %') {
-          return Math.round((1 - college[name]) * 100);
+          return ((1 - college[name]) * 100).toPrecision(3);
         }
-        return Math.round(college[name] * 100);
+        return (college[name] * 100).toPrecision(3);
       }
       // integers
       return addCommas(Math.round(college[name]));
@@ -239,6 +271,12 @@ export default {
     displayComparison() {
       this.showComparison = true;
     },
+    selectAllColleges() {
+      this.collegesToComparisonIds = [];
+      this.selectedColleges.forEach((c) => {
+        this.collegesToComparisonIds.push(c.id);
+      });
+    },
   },
   computed: {
     showCompareButton() {
@@ -255,6 +293,7 @@ export default {
     colleges() {
       this.updateFilteredCollegesList();
       this.sortColleges();
+      this.hideComparison();
     },
     'menu.restore': function (val) {
       if (val) {
@@ -265,9 +304,11 @@ export default {
       }
     },
     'menu.activeSortButton': function () {
+      this.hideComparison();
       this.sortColleges();
     },
     'menu.prevSortButton': function () {
+      this.hideComparison();
       this.sortColleges();
     },
     'menu.checkboxFilters': function () {
@@ -297,6 +338,9 @@ export default {
         }
       }, 0);
     },
+  },
+  mounted() {
+    addUnifiedPriceParam(this.selectedColleges);
   },
 };
 </script>
@@ -336,4 +380,9 @@ export default {
     padding-top 0px
   .chip
     cursor pointer
+  .buttons
+    display flex
+    justify-content flex-end
+    button
+      margin-right 5px !important
 </style>
