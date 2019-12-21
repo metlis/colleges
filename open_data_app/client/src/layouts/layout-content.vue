@@ -63,13 +63,21 @@
             :menu="filterMenus.contentMap"
             header="Favourite colleges on the map"
           />
-          <!-- A map with colleges -->
+          <!-- Comparison of colleges -->
           <content-compare
             ref="compare"
             v-show="activeNavButton === 'Compare'"
             :colleges="favouriteColleges"
             :menu="filterMenus.contentCompare"
             header="Comparison of colleges"
+          />
+          <!-- History of colleges -->
+          <content-history
+            ref="history"
+            v-show="activeNavButton === 'History'"
+            :colleges="favouriteColleges"
+            :menu="filterMenus.contentHistory"
+            header="Historic data"
           />
         </v-container>
       </v-content>
@@ -135,6 +143,17 @@
         @rangeFilterChanged="updateFiltersValues($event)"
         @restore="clearFilters('contentCompare')"
       />
+      <!--  Right Filter Menu for History  -->
+      <menu-filter-and-sort
+        v-show="activeNavButton === 'History'"
+        :colleges="favouriteColleges"
+        name="contentHistory"
+        @sortClick="changeSortButton($event)"
+        @checkboxFilterChanged="updateFiltersValues($event)"
+        @statesFilterChanged="updateFiltersValues($event)"
+        @rangeFilterChanged="updateFiltersValues($event)"
+        @restore="clearFilters('contentHistory')"
+      />
     </v-col>
     <!--  Mobile button for the menus  -->
     <v-speed-dial
@@ -196,6 +215,7 @@ import MenuFilter from '../components/menus/menu-filter.vue';
 import ContentCollegesList from '../components/contents/content-colleges-list.vue';
 import ContentMap from '../components/contents/content-map.vue';
 import ContentCompare from '../components/contents/content-compare.vue';
+import ContentHistory from '../components/contents/content-history.vue';
 
 export default {
   name: 'content-layout',
@@ -206,6 +226,7 @@ export default {
     ContentCollegesList,
     ContentMap,
     ContentCompare,
+    ContentHistory,
   },
   props: ['favourites', 'visited', 'recommended', 'page'],
   data() {
@@ -255,6 +276,14 @@ export default {
           restore: false,
         },
         contentCompare: {
+          activeSortButton: '',
+          prevSortButton: '',
+          checkboxFilters: '',
+          statesFilters: '',
+          rangeFilters: '',
+          restore: false,
+        },
+        contentHistory: {
           activeSortButton: '',
           prevSortButton: '',
           checkboxFilters: '',

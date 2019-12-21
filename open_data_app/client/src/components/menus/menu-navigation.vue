@@ -39,7 +39,7 @@ export default {
         'mdi-file-search': 'Visited',
         'mdi-eye-plus': 'Recommended',
         'mdi-compare': 'Compare',
-        // 'mdi-history': 'Analyze history',
+        'mdi-history': 'History',
       },
       activeItem: 0,
     };

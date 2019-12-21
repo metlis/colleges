@@ -28,7 +28,7 @@
         Select all
       </v-btn>
       <v-btn
-        v-if="collegesToComparisonIds.length > 1"
+        v-if="collegesToComparisonIds.length >= minItems"
         @click="commitAction"
         depressed
         small
@@ -58,7 +58,7 @@
       />
     </div>
     <div
-      v-if="showActionButton"
+      v-if="collegesToComparisonIds.length >= minItems"
       :class="$style.buttonContainer"
     >
       <v-btn
@@ -75,7 +75,7 @@
 <script>
 export default {
   name: 'checkbox-list',
-  props: ['collegesData', 'selectedIds', 'actionButton'],
+  props: ['collegesData', 'selectedIds', 'actionButton', 'minItems'],
   data() {
     return {
       collegesToComparisonIds: this.selectedIds,
@@ -97,13 +97,14 @@ export default {
         this.collegesToComparisonIds.push(c.id);
       });
     },
-    showActionButton() {
-      if (this.collegesToComparisonIds.length < 2) return false;
-      return true;
-    },
     commitAction() {
       this.$emit('update:selectedIds', this.collegesToComparisonIds);
       this.$emit('action');
+    },
+  },
+  watch: {
+    collegesData(val) {
+      this.colleges = val;
     },
   },
 };

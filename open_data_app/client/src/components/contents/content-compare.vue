@@ -21,6 +21,7 @@
         v-if="!showComparison"
         :collegesData="selectedColleges"
         :selectedIds.sync="collegesToComparisonIds"
+        minItems="2"
         @action="displayComparison"
         actionButton="Compare"
       />
@@ -217,10 +218,6 @@ export default {
     },
   },
   computed: {
-    showCompareButton() {
-      if (this.collegesToComparisonIds.length < 2) return false;
-      return true;
-    },
     collegesToComparison() {
       const collegesToComparison = this.selectedColleges
         .filter(c => this.collegesToComparisonIds.find(id => id === c.id));
