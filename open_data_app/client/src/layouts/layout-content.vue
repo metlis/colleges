@@ -32,6 +32,7 @@
             :colleges="favouriteColleges"
             :favourites.sync="favouriteColleges"
             :menu="filterMenus.contentCollegesFavourite"
+            limit="12"
             header="Favourite colleges"
           />
           <!-- A list of visited colleges -->
@@ -41,6 +42,7 @@
             :colleges="visitedColleges"
             :favourites.sync="favouriteColleges"
             :menu="filterMenus.contentCollegesVisited"
+            limit="12"
             header="Visited colleges"
           />
           <!-- A list of recommended colleges -->
@@ -50,6 +52,7 @@
             :colleges="recommendedColleges"
             :favourites.sync="favouriteColleges"
             :menu="filterMenus.contentCollegesRecommended"
+            limit="12"
             header="Recommended colleges"
           />
           <!-- A map with colleges -->

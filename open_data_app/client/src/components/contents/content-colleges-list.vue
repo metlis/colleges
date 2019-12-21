@@ -28,7 +28,7 @@
       sm="12"
       md="4"
       v-if="selectedColleges.length > 0"
-      v-for="college in selectedColleges"
+      v-for="college in collegesRenderList"
       :key="college.id"
       class="pr-0"
     >
@@ -215,6 +215,20 @@
         </v-expand-transition>
       </v-card>
     </v-col>
+    <v-col
+      cols="12"
+    >
+      <div :class="$style.expand">
+        <v-btn
+          v-if="isShowButtonVisible"
+          @click="incrementCollegesToDisplay"
+          depressed
+          medium
+        >
+          Show more
+        </v-btn>
+      </div>
+    </v-col>
   </v-row>
 </template>
 
@@ -230,13 +244,14 @@ import {
 
 export default {
   name: 'content-colleges-list',
-  props: ['colleges', 'favourites', 'menu', 'header'],
+  props: ['colleges', 'favourites', 'menu', 'header', 'limit'],
   data() {
     return {
       selectedColleges: this.colleges,
       favouriteColleges: this.favourites,
       cardsExpanded: {},
       isReverseSort: false,
+      collegesToDisplay: this.limit,
       items: {
         location: {
           icon: 'mdi-map-marker',
@@ -350,6 +365,9 @@ export default {
       const counter = document.getElementById('favourite-badge');
       counter.innerText -= 1;
     },
+    incrementCollegesToDisplay() {
+      this.collegesToDisplay = Number(this.collegesToDisplay) + 12;
+    },
   },
   computed: {
     filtersApplied() {
@@ -366,6 +384,13 @@ export default {
         });
       }
       return { rangeFilters, checkboxFilters };
+    },
+    collegesRenderList() {
+      if (!this.limit) return this.selectedColleges;
+      return this.selectedColleges.slice(0, this.collegesToDisplay);
+    },
+    isShowButtonVisible() {
+      return this.limit && this.collegesRenderList.length < this.selectedColleges.length;
     },
   },
   watch: {
@@ -413,4 +438,7 @@ export default {
   .content
     min-height 120vh
     align-content flex-start
+  .expand
+    display flex
+    justify-content center
 </style>
