@@ -25,6 +25,21 @@
         @action="displayHistory"
         actionButton="View"
       />
+      <!--   History content   -->
+      <div v-if="showHistory">
+        <!--   Progress     -->
+        <div
+          v-if="isFetching"
+          :class="$style.progress"
+        >
+          <v-progress-circular
+            :size="50"
+            color="#CFD8DC"
+            indeterminate />
+        </div>
+        <!--   Charts     -->
+        <div v-if="!isFetching"></div>
+      </div>
     </v-col>
   </v-row>
 </template>
@@ -38,6 +53,7 @@ import {
   sortColleges,
   sortСollegesAlphabetically,
 } from '../../utils/helpers';
+import { rangeFilters } from '../../utils/dictionaries';
 
 export default {
   name: 'content-history',
@@ -49,6 +65,9 @@ export default {
       collegesToComparisonIds: [],
       isReverseSort: false,
       showHistory: false,
+      isFetching: false,
+      collegeParams: rangeFilters(),
+      collegesApiData: [],
     };
   },
   methods: {
@@ -74,6 +93,63 @@ export default {
     },
     displayHistory() {
       this.showHistory = true;
+      this.fetchCollegesHistory();
+    },
+    fetchCollegesHistory() {
+      this.isFetching = true;
+      const urls = this.createApiCallUrls();
+      Promise.all(
+        urls.map(url => fetch(url)),
+      ).then((response) => {
+        response.forEach((r) => {
+          const respObj = r.json();
+          respObj.then((data) => {
+            this.collegesApiData.push(data.results);
+          });
+        });
+      }).catch((err) => {
+        console.error(err);
+      })
+        .finally(() => {
+          this.isFetching = false;
+        });
+    },
+    createApiCallUrls() {
+      // constructing id url parameter
+      const ids = this.collegesToComparisonIds.join(',');
+      const idParamString = `id=${ids}`;
+      // constructing fields url parameter for each api method
+      const fieldsParamStrings = [];
+      Object.values(this.collegeParams).forEach((section) => {
+        Object.values(section).forEach((param) => {
+          const apiName = param.api;
+          if (apiName) {
+            if (typeof apiName === 'object') {
+              apiName.forEach((name) => {
+                fieldsParamStrings.push(this.createUrlParamFields(name));
+              });
+            } else {
+              fieldsParamStrings.push(this.createUrlParamFields(apiName));
+            }
+          }
+        });
+      });
+      const queryUrls = fieldsParamStrings.map(str => `${this.credentials.api_url}?${idParamString}&fields=${str}&api_key=${this.credentials.api_key}`);
+      return queryUrls;
+    },
+    createUrlParamFields(apiName) {
+      // the first and the last years which contain data
+      let currentYear = 1996;
+      const endYear = 2017;
+      // resulting query string
+      let queryString = '';
+      while (currentYear <= endYear) {
+        queryString += `,${currentYear}.${apiName}`;
+        currentYear += 1;
+      }
+      // delete trailing comma
+      queryString = queryString.slice(1);
+      return queryString;
     },
   },
   computed: {
@@ -125,12 +201,12 @@ export default {
     },
   },
   mounted() {
-    console.log(this.credentials);
     addUnifiedPriceParam(this.selectedColleges);
   },
 };
 </script>
 
-<style scoped>
-
+<style lang="stylus" module>
+  .progress
+    text-align center
 </style>

@@ -2,12 +2,12 @@
   <v-content>
     <v-container fluid>
       <v-row
-        style="height: 80vh"
         align="center"
         justify="center"
+        :class="$style.content"
       >
         <v-col cols="12">
-          <div style="text-align: center">
+          <div :class="$style.progress">
             <v-progress-circular
               :size="50"
               color="#CFD8DC"
@@ -25,6 +25,9 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style lang="stylus" module>
+  .content
+    height 80vh
+  .progress
+    text-align center
 </style>
