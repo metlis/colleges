@@ -112,7 +112,7 @@ export const rangeFilters = () => ({
       max: '',
       icon: 'mdi-account-multiple',
       name: 'undergrad_students',
-      api: 'student.enrollment.all',
+      api: 'student.size',
       title: 'Number of undergraduates',
       color: '#CFD8DC',
     },

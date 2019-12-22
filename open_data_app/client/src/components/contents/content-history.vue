@@ -1,7 +1,7 @@
 <template>
   <v-row dense>
     <!--  Header  -->
-    <v-col cols="12">
+    <v-col cols="12" v-if="!isFetching">
       <h3>{{header}}</h3>
     </v-col>
     <!--  Empty set message  -->
@@ -37,8 +37,51 @@
             color="#CFD8DC"
             indeterminate />
         </div>
-        <!--   Charts     -->
-        <div v-if="!isFetching"></div>
+        <!--   Charts content   -->
+        <div v-if="!isFetching">
+          <div :class="$style.close">
+            <v-btn
+              @click="hideHistory"
+              depressed
+              small
+            >
+              Back
+            </v-btn>
+          </div>
+          <v-divider />
+          <div
+            v-for="(section, name) in collegeParams"
+            :key="name"
+          >
+            <h1>{{name}}</h1>
+            <div
+              v-for="param in section"
+              v-if="param.api"
+              :key="param.title"
+              :ref="param.title"
+            >
+              <v-card>
+                <v-card-title>{{param.title}}</v-card-title>
+                <v-card-text>
+                  <chart
+                    :chartData="getChartData(param.title)"
+                  />
+                </v-card-text>
+              </v-card>
+              <br>
+            </div>
+            <v-divider />
+          </div>
+          <div :class="$style.close">
+            <v-btn
+              @click="hideHistory"
+              depressed
+              medium
+            >
+              Back
+            </v-btn>
+          </div>
+        </div>
       </div>
     </v-col>
   </v-row>
@@ -46,6 +89,8 @@
 
 <script>
 import CheckboxList from '../reusable-components/checkbox-list.vue';
+import Chart from '../reusable-components/chart.vue';
+
 import {
   addUnifiedPriceParam,
   selectColleges,
@@ -58,7 +103,7 @@ import { rangeFilters } from '../../utils/dictionaries';
 export default {
   name: 'content-history',
   props: ['colleges', 'menu', 'header', 'credentials'],
-  components: { CheckboxList },
+  components: { Chart, CheckboxList },
   data() {
     return {
       selectedColleges: this.colleges,
@@ -68,6 +113,10 @@ export default {
       isFetching: false,
       collegeParams: rangeFilters(),
       collegesApiData: [],
+      paramCallsTitlesInSequence: [],
+      chartColors: ['#90A4AE', '#A1887F', '#FF8A65', '#FFB74D', '#FFD54F', '#AFB42B', '#7CB342', '#43A047',
+        '#4DB6AC', '#4DD0E1', '#4FC3F7', '#42A5F5', '#5C6BC0', '#7E57C2', '#CE93D8', '#F48FB1', '#EF9A9A',
+        '#616161', '#FF9E80', '#6D4C41'],
     };
   },
   methods: {
@@ -93,6 +142,8 @@ export default {
     },
     displayHistory() {
       this.showHistory = true;
+      this.collegesApiData = [];
+      this.paramCallsTitlesInSequence = [];
       this.fetchCollegesHistory();
     },
     fetchCollegesHistory() {
@@ -126,9 +177,13 @@ export default {
           if (apiName) {
             if (typeof apiName === 'object') {
               apiName.forEach((name) => {
+                // store the order of params names to iterate over results later
+                this.paramCallsTitlesInSequence.push(param.title);
                 fieldsParamStrings.push(this.createUrlParamFields(name));
               });
             } else {
+              // store the order of params names to iterate over results later
+              this.paramCallsTitlesInSequence.push(param.title);
               fieldsParamStrings.push(this.createUrlParamFields(apiName));
             }
           }
@@ -150,6 +205,83 @@ export default {
       // delete trailing comma
       queryString = queryString.slice(1);
       return queryString;
+    },
+    getChartData(paramName) {
+      const dataIndex = this.paramCallsTitlesInSequence.indexOf(paramName);
+      if (dataIndex === -1) return '';
+      let paramData = [];
+      // cost param's name depends on whether a college is private or public,
+      // so we need a unified data about the cost of study
+      if (paramName.indexOf('Cost') > -1) {
+        paramData = this.createUnifiedCostDataset(paramName);
+      } else {
+        paramData = this.collegesApiData[dataIndex];
+      }
+      let labels;
+      const datasets = [];
+      paramData.forEach((data, index) => {
+        // creating dictionary where the key is a year
+        const normalizedDict = {};
+        Object.keys(data).forEach((key) => {
+          const year = parseInt(key, 10);
+          let collegeData;
+          if (data[key] === null) {
+            collegeData = null;
+          } else {
+            // convert percent data
+            // eslint-disable-next-line no-lonely-if
+            if (paramName.indexOf('%') > -1) {
+              // convert part-time data into full-time
+              if (paramName === 'Full-time students %') {
+                collegeData = ((1 - data[key]) * 100).toPrecision(3);
+              } else {
+                collegeData = (data[key] * 100).toPrecision(3);
+              }
+            } else {
+              collegeData = Math.round(data[key]);
+            }
+          }
+          normalizedDict[year] = collegeData;
+        });
+        if (!labels) labels = Object.keys(normalizedDict).sort((a, b) => a - b);
+        const color = this.chartColors[index] ? this.chartColors[index] : '#B0BEC5';
+        const dataset = {
+          data: [],
+          // the consequence of colleges ids and the consequence of colleges data is the same
+          label: this.getCollegeName(this.collegesToComparisonIds[index]),
+          fill: false,
+          backgroundColor: color,
+          borderColor: color,
+        };
+        labels.forEach((l) => {
+          dataset.data.push(normalizedDict[l]);
+        });
+        datasets.push(dataset);
+      });
+      return { labels, datasets };
+    },
+    createUnifiedCostDataset(paramName) {
+      const firstSetIndex = this.paramCallsTitlesInSequence.indexOf(paramName);
+      const firstSet = this.collegesApiData[firstSetIndex];
+      const secondSetIndex = this.paramCallsTitlesInSequence.lastIndexOf(paramName);
+      const secondSet = this.collegesApiData[secondSetIndex];
+      const resultSet = [];
+      if (firstSet) {
+        // if all values of a dataset are null, get data from another dataset
+        firstSet.forEach((data, i) => {
+          if (Object.values(data).every(val => val === null)) {
+            resultSet.push(secondSet[i]);
+          } else {
+            resultSet.push(data);
+          }
+        });
+      }
+      return resultSet;
+    },
+    getCollegeName(id) {
+      const college = this.selectedColleges.find(c => c.id === id);
+      if (college) return college.name;
+      return '';
     },
   },
   computed: {
@@ -208,5 +340,11 @@ export default {
 
 <style lang="stylus" module>
   .progress
-    text-align center
+    height 80vh
+    display flex
+    align-items center
+    justify-content center
+  .close
+    display flex
+    justify-content flex-end
 </style>
