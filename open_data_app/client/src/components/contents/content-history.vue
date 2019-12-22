@@ -41,7 +41,7 @@ import {
 
 export default {
   name: 'content-history',
-  props: ['colleges', 'menu', 'header'],
+  props: ['colleges', 'menu', 'header', 'credentials'],
   components: { CheckboxList },
   data() {
     return {
@@ -125,6 +125,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.credentials);
     addUnifiedPriceParam(this.selectedColleges);
   },
 };

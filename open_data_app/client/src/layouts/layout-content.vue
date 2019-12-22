@@ -77,6 +77,7 @@
             v-show="activeNavButton === 'History'"
             :colleges="favouriteColleges"
             :menu="filterMenus.contentHistory"
+            :credentials="credentials"
             header="Historic data"
           />
         </v-container>
@@ -228,13 +229,14 @@ export default {
     ContentCompare,
     ContentHistory,
   },
-  props: ['favourites', 'visited', 'recommended', 'page'],
+  props: ['favourites', 'visited', 'recommended', 'page', 'credentials'],
   data() {
     return {
       favouriteColleges: this.favourites,
       visitedColleges: this.visited,
       recommendedColleges: this.recommended,
       activeNavButton: this.page,
+      scorecardApiCredentials: '',
       classes: {
         navigationMenu: 'd-none d-md-block',
         filterMenu: 'd-none d-md-block',
@@ -347,8 +349,14 @@ export default {
   },
   watch: {
     activeNavButton(val) {
+      // fetch recommended colleges when the page with recommended colleges
+      // is opened for the first time
       if (val === 'Recommended' && this.recommendedColleges.length === 0) {
         this.$emit('fetchRecommendedColleges');
+      }
+      // fetch scorecard api credentials when the page with history is opened for the first time
+      if (val === 'History' && !this.scorecardApiCredentials) {
+        this.$emit('fetchScorecardApiCredentials');
       }
       // scroll to the top of the page
       goTo(this.$refs.content);

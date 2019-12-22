@@ -6,7 +6,9 @@
       :visited="visitedColleges"
       :recommended="recommendedColleges"
       :page="activePage"
+      :credentials="scorecardApiCredentials"
       @fetchRecommendedColleges="fetchRecommendedColleges"
+      @fetchScorecardApiCredentials="fetchScorecardApiCredentials"
     />
     <layout-empty v-if="!hasColleges && !isFetching" />
     <layout-progress v-if="isFetching" />
@@ -27,6 +29,7 @@ export default {
       visitedColleges: [],
       recommendedColleges: [],
       activePage: 'Favourite',
+      scorecardApiCredentials: '',
     };
   },
   methods: {
@@ -56,6 +59,20 @@ export default {
         })
         .finally(() => {
           this.isFetching = false;
+        });
+    },
+    fetchScorecardApiCredentials() {
+      this.isFetching = true;
+      fetch('/api/request_scorecard_api_credentials/')
+        .then(response => response.json())
+        .then((data) => {
+          this.scorecardApiCredentials = data.data;
+        }).catch((err) => {
+          console.error(err);
+        })
+        .finally(() => {
+          this.isFetching = false;
+          this.activePage = 'History';
         });
     },
   },
