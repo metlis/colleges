@@ -263,11 +263,8 @@ export default {
       this.hideComparison();
       this.updateFilteredCollegesList();
     },
-    selectedColleges(val) {
-      if (!val) this.collegesToComparisonIds = [];
-      const selectedCollegesIds = val.map(col => col.id);
-      this.collegesToComparisonIds = this.collegesToComparisonIds
-        .filter(c => selectedCollegesIds.includes(c));
+    selectedColleges() {
+      this.collegesToComparisonIds = [];
     },
     showComparison(val) {
       setTimeout(() => {

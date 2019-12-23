@@ -104,6 +104,13 @@ export default {
   },
   watch: {
     collegesData(val) {
+      if (val.length === this.colleges.length) {
+        const newCollegesIds = val.map(c => c.id).sort((a, b) => a - b);
+        const oldCollegesIds = this.colleges.map(c => c.id).sort((a, b) => a - b);
+        const arraysAreEqual = newCollegesIds.every((id, index) => id === oldCollegesIds[index]);
+        if (!arraysAreEqual) this.collegesToComparisonIds = [];
+      } else this.collegesToComparisonIds = [];
+      this.$emit('update:selectedIds', this.collegesToComparisonIds);
       this.colleges = val;
     },
   },
