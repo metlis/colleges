@@ -17,18 +17,22 @@
     <!--  Content  -->
     <v-col cols="12">
       <!--  Checkbox list    -->
-      <checkbox-list
-        v-if="!showComparison"
-        :collegesData="selectedColleges"
-        :selectedIds.sync="collegesToComparisonIds"
-        minItems="2"
-        @action="displayComparison"
-        actionButton="Compare"
-        ref="checkbox"
-      />
+      <v-card v-if="!showComparison">
+        <v-card-text>
+          <checkbox-list
+            :collegesData="selectedColleges"
+            :selectedIds.sync="collegesToComparisonIds"
+            minItems="2"
+            @action="displayComparison"
+            actionButton="Compare"
+            ref="checkbox"
+          />
+        </v-card-text>
+      </v-card>
       <!--  Comparison content  -->
       <div v-if="showComparison">
         <div :class="$style.overview" ref="overview">
+          <v-divider />
           <h1>Top values disctribution</h1>
           <div
             v-for="(params, id) in collegesWinners"
@@ -58,7 +62,7 @@
             </v-btn>
           </div>
         </div>
-        <hr :class="$style.divider">
+        <v-divider />
         <div
           v-for="(section, name) in comparisonParams"
           :key="name"
@@ -180,7 +184,7 @@ export default {
       return addCommas(Math.round(college[name]));
     },
     getBarStyles(college, param) {
-      if (this.formatValue(college, param) === null) return 'backgroundColor: #EEEEEE';
+      if (this.formatValue(college, param) === null) return 'backgroundColor: #f4f5f7';
       const percent = this.calculateBarWidth(college, param);
       const fontWeight = this.isWinnerCollege(college, param, percent) ? 800 : 400;
       return `backgroundColor: ${param.color}; width: ${percent}%; fontWeight: ${fontWeight}`;
@@ -284,8 +288,6 @@ export default {
 <style lang="stylus" module>
   .paramCard
     margin-bottom 30px
-  .divider
-    margin-bottom 20px
   .bar
     border-radius 3px
     height 25px

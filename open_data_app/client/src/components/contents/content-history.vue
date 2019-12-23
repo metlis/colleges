@@ -20,14 +20,17 @@
     <!--  Content  -->
     <v-col cols="12">
       <!--  Checkbox list    -->
-      <checkbox-list
-        v-if="!showHistory"
-        :collegesData="selectedColleges"
-        :selectedIds.sync="collegesToComparisonIds"
-        :minItems="1"
-        @action="displayHistory"
-        actionButton="View"
-      />
+      <v-card v-if="!showHistory">
+        <v-card-text>
+          <checkbox-list
+            :collegesData="selectedColleges"
+            :selectedIds.sync="collegesToComparisonIds"
+            :minItems="1"
+            @action="displayHistory"
+            actionButton="View"
+          />
+        </v-card-text>
+      </v-card>
       <!--   History content   -->
       <div v-if="showHistory">
         <!--   Progress     -->

@@ -69,7 +69,7 @@
             v-show="activeNavButton === 'Compare'"
             :colleges="favouriteColleges"
             :menu="filterMenus.contentCompare"
-            header="Comparison of colleges"
+            header="Comparison of favourite colleges"
           />
           <!-- History of colleges -->
           <content-history
@@ -78,7 +78,7 @@
             :colleges="favouriteColleges"
             :menu="filterMenus.contentHistory"
             :credentials="credentials"
-            header="Historic data"
+            header="Historic data of favourite colleges"
           />
         </v-container>
       </v-content>
