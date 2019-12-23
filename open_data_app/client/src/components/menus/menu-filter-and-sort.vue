@@ -25,7 +25,7 @@
       />
       <br>
       <!--  Reset button  -->
-      <button-reset @reset="restoreInitialCollegesList" />
+      <button-reset @reset="restoreInitialState" />
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -47,7 +47,7 @@ export default {
     };
   },
   methods: {
-    restoreInitialCollegesList() {
+    restoreInitialState() {
       this.toggleSort = true;
       this.toggleFilter = true;
       this.$emit('restore');

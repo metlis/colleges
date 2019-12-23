@@ -171,7 +171,7 @@
         <v-btn
           v-model="fab"
           fab
-          color="blue darken-2"
+          color="blue-grey lighten-2"
         >
           <v-icon v-if="fab">mdi-close</v-icon>
           <v-icon v-else >mdi-tools</v-icon>
@@ -181,7 +181,7 @@
         fab
         dark
         small
-        color="green"
+        color="yellow darken-2"
       >
         <v-icon @click="showMenu('filterMenu')">mdi-pencil</v-icon>
       </v-btn>
@@ -189,7 +189,7 @@
         fab
         dark
         small
-        color="indigo"
+        color="blue lighten-1"
       >
         <v-icon @click="showMenu('navigationMenu')">mdi-menu</v-icon>
       </v-btn>
@@ -201,7 +201,7 @@
       fixed
       bottom
       right
-      color="red"
+      color="red lighten-2"
     >
       <v-icon @click="hideMenu">mdi-close</v-icon>
     </v-btn>
@@ -299,6 +299,10 @@ export default {
   methods: {
     updateNavButton(val) {
       this.activeNavButton = val;
+      // hide mobile menu on navigation click
+      if (this.mobileMenu) {
+        this.hideMenu();
+      }
     },
     changeSortButton(event) {
       const menu = this.filterMenus[event.menu];
@@ -334,7 +338,9 @@ export default {
         this.classes[menu] = 'd-block';
         this.mobileMenu = true;
         this.fabClose = true;
-        goTo(this.$refs.top);
+        setTimeout(() => {
+          goTo(this.$refs.top);
+        });
       } else {
         this.hideMenu();
       }

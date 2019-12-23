@@ -1,5 +1,9 @@
 <template>
-  <v-expansion-panels accordion class="mx-0 px-0">
+  <v-expansion-panels
+    accordion
+    class="mx-0 px-0"
+    v-model="panels"
+  >
     <v-list-item-group
       style="width: 100%;"
       class="mr-2 ml-0"
@@ -143,6 +147,7 @@ export default {
       rangeFilters: rangeFilters(),
       statesSelected: [],
       toggleFilter: false,
+      panels: [],
     };
   },
   methods: {
@@ -188,6 +193,7 @@ export default {
       };
     },
     clearFilters() {
+      this.panels = [];
       this.statesSelected = [];
       Object.keys(this.checkboxFilters).forEach((key) => {
         this.checkboxFilters[key].value = false;
