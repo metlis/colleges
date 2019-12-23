@@ -1,7 +1,10 @@
 <template>
-  <v-row dense>
+  <v-row dense ref="top">
     <!--  Header  -->
-    <v-col cols="12" v-if="!isFetching">
+    <v-col
+      cols="12"
+      v-if="!isFetching"
+    >
       <h3>{{header}}</h3>
     </v-col>
     <!--  Empty set message  -->
@@ -88,6 +91,7 @@
 </template>
 
 <script>
+import goTo from 'vuetify/es5/services/goto';
 import CheckboxList from '../reusable-components/checkbox-list.vue';
 import Chart from '../reusable-components/chart.vue';
 
@@ -137,6 +141,9 @@ export default {
     },
     hideHistory() {
       this.showHistory = false;
+      setTimeout(() => {
+        goTo(this.$refs.top);
+      });
     },
     displayHistory() {
       this.showHistory = true;
@@ -352,6 +359,11 @@ export default {
             param.apiResponse = '';
           }
         });
+      });
+    },
+    isFetching() {
+      setTimeout(() => {
+        goTo(this.$refs.top);
       });
     },
   },

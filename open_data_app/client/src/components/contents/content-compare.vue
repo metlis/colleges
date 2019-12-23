@@ -24,6 +24,7 @@
         minItems="2"
         @action="displayComparison"
         actionButton="Compare"
+        ref="checkbox"
       />
       <!--  Comparison content  -->
       <div v-if="showComparison">
