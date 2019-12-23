@@ -37,7 +37,7 @@
       </v-btn>
       <v-btn
         v-if="collegesToComparisonIds.length > 0"
-        @click="collegesToComparisonIds = []"
+        @click="clearSelected"
         depressed
         small
       >
@@ -100,6 +100,10 @@ export default {
     commitAction() {
       this.$emit('update:selectedIds', this.collegesToComparisonIds);
       this.$emit('action');
+    },
+    clearSelected() {
+      this.collegesToComparisonIds = [];
+      this.$emit('clear');
     },
   },
   watch: {

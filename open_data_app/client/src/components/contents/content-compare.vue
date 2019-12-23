@@ -24,6 +24,7 @@
             :selectedIds.sync="collegesToComparisonIds"
             minItems="2"
             @action="displayComparison"
+            @clear="scrollAfterClear"
             actionButton="Compare"
             ref="checkbox"
           />
@@ -220,6 +221,9 @@ export default {
     },
     displayComparison() {
       this.showComparison = true;
+    },
+    scrollAfterClear() {
+      goTo(this.$refs.checkbox);
     },
   },
   computed: {
