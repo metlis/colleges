@@ -56,7 +56,7 @@
             <h1>{{name}}</h1>
             <div
               v-for="param in section"
-              v-if="param.api"
+              v-if="param.apiResponse"
               :key="param.title"
               :ref="param.title"
             >
@@ -64,7 +64,7 @@
                 <v-card-title>{{param.title}}</v-card-title>
                 <v-card-text>
                   <chart
-                    :chartData="getChartData(param.title)"
+                    :chartData="getChartData(param.apiResponse, param.title)"
                   />
                 </v-card-text>
               </v-card>
@@ -112,8 +112,6 @@ export default {
       showHistory: false,
       isFetching: false,
       collegeParams: rangeFilters(),
-      collegesApiData: [],
-      paramCallsTitlesInSequence: [],
       chartColors: ['#90A4AE', '#A1887F', '#FF8A65', '#FFB74D', '#FFD54F', '#AFB42B', '#7CB342', '#43A047',
         '#4DB6AC', '#4DD0E1', '#4FC3F7', '#42A5F5', '#5C6BC0', '#7E57C2', '#CE93D8', '#F48FB1', '#EF9A9A',
         '#616161', '#FF9E80', '#6D4C41'],
@@ -142,8 +140,6 @@ export default {
     },
     displayHistory() {
       this.showHistory = true;
-      this.collegesApiData = [];
-      this.paramCallsTitlesInSequence = [];
       this.fetchCollegesHistory();
     },
     fetchCollegesHistory() {
@@ -155,7 +151,27 @@ export default {
         response.forEach((r) => {
           const respObj = r.json();
           respObj.then((data) => {
-            this.collegesApiData.push(data.results);
+            try {
+              // getting param's api method name
+              const apiCallMethodName = Object.keys(data.results[0])[0];
+              const paramApiMethodName = apiCallMethodName.replace(/^[0-9]+\.(.*)/, '$1');
+              // saving api response
+              Object.values(this.collegeParams).forEach((section) => {
+                Object.values(section).forEach((param) => {
+                  if (typeof param.apiMethod === 'object' && param.apiMethod.some(m => m === paramApiMethodName)) {
+                    // delete old data
+                    // eslint-disable-next-line no-param-reassign
+                    if (param.apiResponse.length === 2) param.apiResponse = [];
+                    param.apiResponse.push(data.results);
+                  } else if (param.apiMethod === paramApiMethodName) {
+                    // eslint-disable-next-line no-param-reassign
+                    param.apiResponse = data.results;
+                  }
+                });
+              });
+            } catch (e) {
+              console.error(e);
+            }
           });
         });
       }).catch((err) => {
@@ -173,17 +189,13 @@ export default {
       const fieldsParamStrings = [];
       Object.values(this.collegeParams).forEach((section) => {
         Object.values(section).forEach((param) => {
-          const apiName = param.api;
+          const apiName = param.apiMethod;
           if (apiName) {
             if (typeof apiName === 'object') {
               apiName.forEach((name) => {
-                // store the order of params names to iterate over results later
-                this.paramCallsTitlesInSequence.push(param.title);
                 fieldsParamStrings.push(this.createUrlParamFields(name));
               });
             } else {
-              // store the order of params names to iterate over results later
-              this.paramCallsTitlesInSequence.push(param.title);
               fieldsParamStrings.push(this.createUrlParamFields(apiName));
             }
           }
@@ -206,17 +218,17 @@ export default {
       queryString = queryString.slice(1);
       return queryString;
     },
-    getChartData(paramName) {
-      const dataIndex = this.paramCallsTitlesInSequence.indexOf(paramName);
-      if (dataIndex === -1) return '';
+    getChartData(apiResponse, paramTitle) {
       let paramData = [];
       // cost param's name depends on whether a college is private or public,
       // so we need a unified data about the cost of study
-      if (paramName.indexOf('Cost') > -1) {
-        paramData = this.createUnifiedCostDataset(paramName);
+      if (paramTitle.indexOf('Cost') > -1) {
+        paramData = this.createUnifiedCostDataset(apiResponse);
       } else {
-        paramData = this.collegesApiData[dataIndex];
+        paramData = apiResponse;
       }
+      if (!paramData) return '';
+      // formatting data for chart props
       let labels;
       const datasets = [];
       paramData.forEach((data, index) => {
@@ -230,9 +242,9 @@ export default {
           } else {
             // convert percent data
             // eslint-disable-next-line no-lonely-if
-            if (paramName.indexOf('%') > -1) {
+            if (paramTitle.indexOf('%') > -1) {
               // convert part-time data into full-time
-              if (paramName === 'Full-time students %') {
+              if (paramTitle === 'Full-time students %') {
                 collegeData = ((1 - data[key]) * 100).toPrecision(3);
               } else {
                 collegeData = (data[key] * 100).toPrecision(3);
@@ -260,11 +272,9 @@ export default {
       });
       return { labels, datasets };
     },
-    createUnifiedCostDataset(paramName) {
-      const firstSetIndex = this.paramCallsTitlesInSequence.indexOf(paramName);
-      const firstSet = this.collegesApiData[firstSetIndex];
-      const secondSetIndex = this.paramCallsTitlesInSequence.lastIndexOf(paramName);
-      const secondSet = this.collegesApiData[secondSetIndex];
+    createUnifiedCostDataset(apiResponse) {
+      const firstSet = apiResponse[0];
+      const secondSet = apiResponse[1];
       const resultSet = [];
       if (firstSet) {
         // if all values of a dataset are null, get data from another dataset
@@ -330,6 +340,19 @@ export default {
       const selectedCollegesIds = val.map(col => col.id);
       this.collegesToComparisonIds = this.collegesToComparisonIds
         .filter(c => selectedCollegesIds.includes(c));
+    },
+    collegesToComparisonIds(val) {
+      Object.values(this.collegeParams).forEach((section) => {
+        Object.values(section).forEach((param) => {
+          if (param.apiMethod && typeof param.apiMethod === 'object') {
+            // eslint-disable-next-line no-param-reassign
+            param.apiResponse = [];
+          } else {
+            // eslint-disable-next-line no-param-reassign
+            param.apiResponse = '';
+          }
+        });
+      });
     },
   },
   mounted() {
