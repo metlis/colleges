@@ -238,6 +238,7 @@ export default {
       this.updateFilteredCollegesList();
       this.sortColleges();
       this.hideComparison();
+      addUnifiedPriceParam(this.selectedColleges);
     },
     'menu.restore': function (val) {
       if (val) {
