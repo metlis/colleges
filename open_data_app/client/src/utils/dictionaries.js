@@ -185,12 +185,12 @@ export const checkboxFilters = () => ({
   black: {
     value: false,
     name: 'predom_black',
-    title: 'Black',
+    title: 'Pred. black',
   },
   hispanic: {
     value: false,
     name: 'hispanic',
-    title: 'Hispanic',
+    title: 'Pred. hispanic',
   },
 });
 
