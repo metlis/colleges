@@ -144,6 +144,8 @@ export default {
     },
     hideHistory() {
       this.showHistory = false;
+    },
+    scrollTop() {
       setTimeout(() => {
         goTo(this.$refs.top);
       });
@@ -320,6 +322,7 @@ export default {
     'menu.restore': function (val) {
       if (val) {
         this.hideHistory();
+        this.scrollTop();
         this.isReverseSort = false;
         this.selectedColleges = this.colleges;
         sortСollegesAlphabetically(this.selectedColleges, this.isReverseSort);
