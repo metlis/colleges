@@ -17,7 +17,7 @@
     <!--  Content  -->
     <v-col cols="12">
       <!--  Checkbox list    -->
-      <v-card v-if="!showComparison">
+      <v-card v-if="!showComparison && selectedColleges.length > 0">
         <v-card-text>
           <checkbox-list
             :collegesData="selectedColleges"

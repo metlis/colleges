@@ -20,7 +20,7 @@
     <!--  Content  -->
     <v-col cols="12">
       <!--  Checkbox list    -->
-      <v-card v-if="!showHistory">
+      <v-card v-if="!showHistory && selectedColleges.length > 0">
         <v-card-text>
           <checkbox-list
             :collegesData="selectedColleges"
