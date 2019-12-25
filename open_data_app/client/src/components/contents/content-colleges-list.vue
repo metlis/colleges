@@ -99,7 +99,12 @@
                     <v-icon size="1rem">
                       {{filter.icon}}
                     </v-icon>
-                    <template v-if="filter.title.indexOf('%') > -1">
+                    <template v-if="checkReversedParams(filter)">
+                      <span class="pl-1">
+                        {{100 - Math.round(college[filter.name] * 100)}}%
+                      </span>
+                    </template>
+                    <template v-else-if="filter.title.indexOf('%') > -1">
                       <span class="pl-1">
                         {{Math.round(college[filter.name] * 100)}}%
                       </span>
@@ -367,6 +372,9 @@ export default {
     },
     incrementCollegesToDisplay() {
       this.collegesToDisplay = Number(this.collegesToDisplay) + 12;
+    },
+    checkReversedParams(filter) {
+      return filter.title.indexOf('Full-time') > -1 || filter.title.indexOf('Male') > -1;
     },
   },
   computed: {
