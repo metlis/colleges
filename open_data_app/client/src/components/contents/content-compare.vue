@@ -14,6 +14,16 @@
         Nothing to compare
       </v-alert>
     </v-col>
+    <!--  Not enough colleges message  -->
+    <v-col cols="12" v-if="selectedColleges.length === 1">
+      <v-alert
+        type="info"
+        border="left"
+        color="#FFAB91"
+      >
+        At least two colleges needed for comparison
+      </v-alert>
+    </v-col>
     <!--  Content  -->
     <v-col cols="12">
       <!--  Checkbox list    -->

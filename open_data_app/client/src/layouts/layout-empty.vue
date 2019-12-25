@@ -8,7 +8,7 @@
             border="left"
             color="#FFAB91"
           >
-            Add some colleges to favourites
+            Add some colleges to favourites. You can start your search <a href="/main/">here</a>
           </v-alert>
         </v-col>
       </v-row>
@@ -22,6 +22,8 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style scoped  lang="stylus">
+  a
+    color white !important
+    font-weight bold
 </style>

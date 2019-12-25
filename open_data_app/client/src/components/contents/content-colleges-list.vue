@@ -17,8 +17,8 @@
         border="left"
         color="#FFAB91"
       >
-        There are no colleges that match these filters.
-        You can start your search <a href="/main/">here</a>
+        There are no colleges to display.
+        You can start your search <a href="/main/" :class="$style.link">here</a>
       </v-alert>
     </v-col>
     <!--  Result content  -->
@@ -449,4 +449,7 @@ export default {
   .expand
     display flex
     justify-content center
+  .link
+    color white !important
+    font-weight bold
 </style>
