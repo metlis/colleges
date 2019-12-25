@@ -35,11 +35,11 @@ export default {
     return {
       iconsNames: {
         'mdi-star': 'Favourite',
+        'mdi-compare': 'Compare',
         'mdi-google-maps': 'Map',
+        'mdi-history': 'History',
         'mdi-file-search': 'Visited',
         'mdi-eye-plus': 'Recommended',
-        'mdi-compare': 'Compare',
-        'mdi-history': 'History',
       },
       activeItem: 0,
     };
