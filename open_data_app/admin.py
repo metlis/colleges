@@ -5,6 +5,7 @@ from open_data_app.models.state import State
 from open_data_app.models.dictionary import Dictionary
 from open_data_app.models.rating import Rating
 from open_data_app.models.filter import Filter
+from open_data_app.models.template import Template
 
 
 class CollegeAdmin(admin.ModelAdmin):
@@ -34,9 +35,14 @@ class RatingAdmin(admin.ModelAdmin):
     filter_horizontal = ('filters',)
 
 
+class TemplateAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
 admin.site.register(College, CollegeAdmin)
 admin.site.register(Region, RegionAdmin)
 admin.site.register(State, StateAdmin)
 admin.site.register(Dictionary, DictionaryAdmin)
 admin.site.register(Rating, RatingAdmin)
 admin.site.register(Filter, FilterAdmin)
+admin.site.register(Template, TemplateAdmin)

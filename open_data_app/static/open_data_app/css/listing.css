@@ -391,6 +391,13 @@ i {
 .top-info {
   padding-top: 0px;
 }
+.no-data {
+  display: inline-block;
+  margin: 6px;
+}
+.aggregate-content {
+  text-align: center;
+}
 @media (max-width: 767.98px) {
   .sort {
     margin-bottom: 15px;

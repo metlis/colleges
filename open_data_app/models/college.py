@@ -638,51 +638,52 @@ class College(models.Model):
 
     @staticmethod
     def get_aggregate_data(colleges):
-        average_tuition = colleges.aggregate(Avg('in_state_tuition'))
-
         max_tuition = colleges.aggregate(Max('in_state_tuition'))
         max_tuition_colleges = colleges.filter(in_state_tuition=max_tuition['in_state_tuition__max'])
-
         min_tuition = colleges.aggregate(Min('in_state_tuition'))
         min_tuition_colleges = colleges.filter(in_state_tuition=min_tuition['in_state_tuition__min'])
 
-        average_payments = colleges.aggregate(Avg('monthly_payments'))
-
         max_payments = colleges.aggregate(Max('monthly_payments'))
         max_payments_colleges = colleges.filter(monthly_payments=max_payments['monthly_payments__max'])
-
         min_payments = colleges.aggregate(Min('monthly_payments'))
         min_payments_colleges = colleges.filter(monthly_payments=min_payments['monthly_payments__min'])
 
-        average_earnings = colleges.aggregate(Avg('median_earnings'))
-
         max_earnings = colleges.aggregate(Max('median_earnings'))
         max_earnings_colleges = colleges.filter(median_earnings=max_earnings['median_earnings__max'])
-
         min_earnings = colleges.aggregate(Min('median_earnings'))
         min_earnings_colleges = colleges.filter(median_earnings=min_earnings['median_earnings__min'])
 
-        max_undergrad = colleges.aggregate(Max('undergrad_students'))
         max_admission_rate = colleges.aggregate(Max('admission_rate'))
+        max_admission_rate_colleges = colleges.filter(admission_rate=max_admission_rate['admission_rate__max'])
+        min_admission_rate = colleges.aggregate(Min('admission_rate'))
+        min_admission_rate_colleges = colleges.filter(admission_rate=min_admission_rate['admission_rate__min'])
+
+        max_completion_rate = colleges.aggregate(Max('completion_rate_four_year_pooled'))
+        max_completion_rate_colleges = colleges.filter(completion_rate_four_year_pooled=max_completion_rate['completion_rate_four_year_pooled__max'])
+        min_completion_rate = colleges.aggregate(Min('completion_rate_four_year_pooled'))
+        min_completion_rate_colleges = colleges.filter(completion_rate_four_year_pooled=min_completion_rate['completion_rate_four_year_pooled__min'])
 
         return {
-            'average_tuition': average_tuition['in_state_tuition__avg'],
             'max_tuition': max_tuition['in_state_tuition__max'],
             'max_tuition_colleges': max_tuition_colleges,
             'min_tuition': min_tuition['in_state_tuition__min'],
             'min_tuition_colleges': min_tuition_colleges,
-            'average_payments': average_payments['monthly_payments__avg'],
             'max_payments': max_payments['monthly_payments__max'],
             'max_payments_colleges': max_payments_colleges,
             'min_payments': min_payments['monthly_payments__min'],
             'min_payments_colleges': min_payments_colleges,
-            'average_earnings': average_earnings['median_earnings__avg'],
             'max_earnings': max_earnings['median_earnings__max'],
             'max_earnings_colleges': max_earnings_colleges,
             'min_earnings': min_earnings['median_earnings__min'],
             'min_earnings_colleges': min_earnings_colleges,
-            'max_undergrad': max_undergrad['undergrad_students__max'],
+            'max_completion_rate': max_completion_rate['completion_rate_four_year_pooled__max'],
+            'max_completion_rate_colleges': max_completion_rate_colleges,
+            'min_completion_rate': min_completion_rate['completion_rate_four_year_pooled__min'],
+            'min_completion_rate_colleges': min_completion_rate_colleges,
             'max_admission_rate': max_admission_rate['admission_rate__max'],
+            'max_admission_rate_colleges': max_admission_rate_colleges,
+            'min_admission_rate': min_admission_rate['admission_rate__min'],
+            'min_admission_rate_colleges': min_admission_rate_colleges,
         }
 
     @staticmethod

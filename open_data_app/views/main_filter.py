@@ -7,6 +7,7 @@ from open_data_app.utils.pagination_handler import create_paginator
 from open_data_app.utils.params_handler import filter_by_params
 from open_data_app.utils.seo import Seo
 from open_data_app.utils.sort_param_handler import get_sort_params
+from open_data_app.utils.text_generators import generate_text_main_filter_all
 from settings import *
 
 
@@ -111,9 +112,13 @@ def main_filter(request):
         # pagination
         colleges = create_paginator(request, colleges)
 
+        # text with aggregate information
+        aggregate_text = generate_text_main_filter_all()
+
         context = {'colleges': colleges,
                    'is_multiple': is_multiple,
                    'version': STATIC_VERSION,
+                   'aggregate_text': aggregate_text,
                    # seo
                    'seo_title': seo_title,
                    'seo_description': seo_description,

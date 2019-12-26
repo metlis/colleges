@@ -370,6 +370,19 @@
                     {% endif %}
                     {# google map end #}
 
+                    {# aggregate text #}
+                    {% if aggregate_text and colleges.number == 1 %}
+                        <div class="col-sm-12">
+                            {% autoescape off %}
+                                {% for key, value in aggregate_text.items %}
+                                    <h3>{{ key }}</h3>
+                                    <p>{{ value }}</p>
+                                {% endfor %}
+                            {% endautoescape %}
+                        </div>
+                    {% endif %}
+                    {# aggregatetext end  #}
+
                     <div class="col-sm-12 col-md-9">
                         <p class="colleges-count pt-2"><span class="meta-text">Colleges found:</span>
                             <span class="badge badge-light">
@@ -414,26 +427,16 @@
                             <div class="card">
                                 <div class="row card-body aggregate">
                                     <div class="col-md-2 aggr-meta">
-                                        <p>Average</p>
                                         <p>Max</p>
                                         <p>Min</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-3">
+                                    <div class="col-sm-12 col-md-2">
                                         <h4>Tuition <i class="fas fa-info-circle" data-toggle="tooltip"
                                                        data-placement="top"
                                                        title="In-state tuition and fees (2019 College Scorecard data)"></i>
                                         </h4>
                                         <div>
-                                            <p>
-                                                {% if average_tuition != None %}
-                                                    {{ average_tuition|floatformat:"0"|intcomma }}$
-                                                {% else %}
-                                                    No data
-                                                {% endif %}
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p>
+                                            <div class="aggregate-content">
                                                 {% if max_tuition != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#maxTuition" aria-expanded="false"
@@ -441,21 +444,21 @@
                                                         {{ max_tuition|floatformat:"0"|intcomma }}$
                                                     </button>
                                                 {% else %}
-                                                    <span>No data</span>
+                                                    <span class="no-data">No data</span>
                                                 {% endif %}
-                                            </p>
+                                            </div>
                                         </div>
                                         {% if max_tuition != None %}
                                             <div id="maxTuition" class="collapse">
                                                 {% for college in max_tuition_colleges %}
-                                                    <p>
+                                                    <div class="aggregate-content">
                                                         <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
-                                                    </p>
+                                                    </div><br>
                                                 {% endfor %}
                                             </div>
                                         {% endif %}
                                         <div>
-                                            <p>
+                                            <div class="aggregate-content">
                                                 {% if min_tuition != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#minTuition" aria-expanded="false"
@@ -463,36 +466,27 @@
                                                         {{ min_tuition|floatformat:"0"|intcomma }}$
                                                     </button>
                                                 {% else %}
-                                                    <span>No data</span>
+                                                    <span class="no-data">No data</span>
                                                 {% endif %}
-                                            </p>
+                                            </div>
                                         </div>
                                         {% if min_tuition != None %}
                                             <div id="minTuition" class="collapse">
                                                 {% for college in min_tuition_colleges %}
-                                                    <p>
+                                                    <div class="aggregate-content">
                                                         <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
-                                                    </p>
+                                                    </div><br>
                                                 {% endfor %}
                                             </div>
                                         {% endif %}
                                     </div>
-                                    <div class="col-md-3">
-                                        <h4>Monthly payments <i class="fas fa-info-circle" data-toggle="tooltip"
+                                    <div class="col-md-2">
+                                        <h4>Payments <i class="fas fa-info-circle" data-toggle="tooltip"
                                                                 data-placement="top"
                                                                 title="Median loan debt of completers in monthly payments (2019 College Scorecard data)"></i>
                                         </h4>
                                         <div>
-                                            <p>
-                                                {% if average_payments != None %}
-                                                    {{ average_payments|floatformat:"0"|intcomma }}$
-                                                {% else %}
-                                                    No data
-                                                {% endif %}
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p>
+                                            <div class="aggregate-content">
                                                 {% if max_payments != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#maxPayments" aria-expanded="false"
@@ -500,21 +494,21 @@
                                                         {{ max_payments|floatformat:"0"|intcomma }}$
                                                     </button>
                                                 {% else %}
-                                                    <span>No data</span>
+                                                    <span class="no-data">No data</span>
                                                 {% endif %}
-                                            </p>
+                                            </div>
                                         </div>
                                         {% if max_payments != None %}
                                             <div id="maxPayments" class="collapse">
                                                 {% for college in max_payments_colleges %}
-                                                    <p>
+                                                    <div class="aggregate-content">
                                                         <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
-                                                    </p>
+                                                    </div><br>
                                                 {% endfor %}
                                             </div>
                                         {% endif %}
                                         <div>
-                                            <p>
+                                            <div class="aggregate-content">
                                                 {% if min_payments != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#minPayments" aria-expanded="false"
@@ -522,57 +516,48 @@
                                                         {{ min_payments|floatformat:"0"|intcomma }}$
                                                     </button>
                                                 {% else %}
-                                                    <span>No data</span>
+                                                    <span class="no-data">No data</span>
                                                 {% endif %}
-                                            </p>
+                                            </div>
                                         </div>
                                         {% if min_payments != None %}
                                             <div id="minPayments" class="collapse">
                                                 {% for college in min_payments_colleges %}
-                                                    <p>
+                                                    <div class="aggregate-content">
                                                         <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
-                                                    </p>
+                                                    </div><br>
                                                 {% endfor %}
                                             </div>
                                         {% endif %}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <h4>Earnings <i class="fas fa-info-circle" data-toggle="tooltip"
                                                         data-placement="top"
                                                         title="Median earnings of students working and not enrolled 10 years after entry (2019 College Scorecard data)"></i>
                                         </h4>
                                         <div>
-                                            <p>
-                                                {% if average_earnings != None %}
-                                                    {{ average_earnings|floatformat:"0"|intcomma }}$
-                                                {% else %}
-                                                    No data
-                                                {% endif %}
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p>
+                                            <div class="aggregate-content">
                                                 {% if max_earnings != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#maxEarnings" aria-expanded="false"
                                                             aria-controls="maxEarnings">{{ max_earnings|floatformat:"0"|intcomma }}$
                                                     </button>
                                                 {% else %}
-                                                    <span>No data</span>
+                                                    <span class="no-data">No data</span>
                                                 {% endif %}
-                                            </p>
+                                            </div>
                                         </div>
                                         {% if max_earnings != None %}
                                             <div id="maxEarnings" class="collapse">
                                                 {% for college in max_earnings_colleges %}
-                                                    <p>
+                                                    <div class="aggregate-content">
                                                         <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
-                                                    </p>
+                                                    </div><br>
                                                 {% endfor %}
                                             </div>
                                         {% endif %}
                                         <div>
-                                            <p>
+                                            <div class="aggregate-content">
                                                 {% if min_earnings != None %}
                                                     <button class="btn btn-link" type="button" data-toggle="collapse"
                                                             data-target="#minEarnings" aria-expanded="false"
@@ -580,16 +565,114 @@
                                                         {{ min_earnings|floatformat:"0"|intcomma }}$
                                                     </button>
                                                 {% else %}
-                                                    <span>No data</span>
+                                                    <span class="no-data">No data</span>
                                                 {% endif %}
-                                            </p>
+                                            </div>
                                         </div>
                                         {% if min_earnings != None %}
                                             <div id="minEarnings" class="collapse">
                                                 {% for college in min_earnings_colleges %}
-                                                    <p>
+                                                    <div class="aggregate-content">
                                                         <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
-                                                    </p>
+                                                    </div><br>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h4>Admission <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="The ratio of the number of students who are admitted to the number of total applicants (2019 College Scorecard data)"></i>
+                                        </h4>
+                                        <div>
+                                            <div class="aggregate-content">
+                                                {% if max_admission_rate != None %}
+                                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                            data-target="#maxAdmission" aria-expanded="false"
+                                                            aria-controls="maxAdmission">{{ max_admission_rate|mul:100|floatformat:"1" }}%
+                                                    </button>
+                                                {% else %}
+                                                    <span class="no-data">No data</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% if max_admission_rate != None %}
+                                            <div id="maxAdmission" class="collapse">
+                                                {% for college in max_admission_rate_colleges %}
+                                                    <div class="aggregate-content">
+                                                        <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
+                                                    </div><br>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <div class="aggregate-content">
+                                                {% if min_admission_rate != None %}
+                                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                            data-target="#minAdmission" aria-expanded="false"
+                                                            aria-controls="minAdmission">
+                                                        {{ min_admission_rate|mul:100|floatformat:"1" }}%
+                                                    </button>
+                                                {% else %}
+                                                    <span class="no-data">No data</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% if min_admission_rate != None %}
+                                            <div id="minAdmission" class="collapse">
+                                                {% for college in min_admission_rate_colleges %}
+                                                    <div class="aggregate-content">
+                                                        <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
+                                                    </div><br>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h4>Completion <i class="fas fa-info-circle" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="Completion rate for first-time, full-time students at four-year institutions (2019 College Scorecard data)"></i>
+                                        </h4>
+                                        <div>
+                                            <div class="aggregate-content">
+                                                {% if max_completion_rate != None %}
+                                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                            data-target="#maxCompletion" aria-expanded="false"
+                                                            aria-controls="maxCompletion">{{ max_completion_rate|mul:100|floatformat:"1" }}%
+                                                    </button>
+                                                {% else %}
+                                                    <span class="no-data">No data</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% if max_completion_rate != None %}
+                                            <div id="maxCompletion" class="collapse">
+                                                {% for college in max_completion_rate_colleges %}
+                                                    <div class="aggregate-content">
+                                                        <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
+                                                    </div><br>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <div class="aggregate-content">
+                                                {% if min_completion_rate != None %}
+                                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                            data-target="#minCompletion" aria-expanded="false"
+                                                            aria-controls="minCompletion">
+                                                        {{ min_completion_rate|mul:100|floatformat:"1" }}%
+                                                    </button>
+                                                {% else %}
+                                                    <span class="no-data">No data</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% if min_completion_rate != None %}
+                                            <div id="minCompletion" class="collapse">
+                                                {% for college in min_completion_rate_colleges %}
+                                                    <div class="aggregate-content">
+                                                        <a href="{% url 'college_app:college' college.id college.slug %}">{{ college.name }}</a>
+                                                    </div><br>
                                                 {% endfor %}
                                             </div>
                                         {% endif %}

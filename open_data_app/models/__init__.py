@@ -8,3 +8,4 @@ from open_data_app.models.region import Region
 from open_data_app.models.religion import Religion
 from open_data_app.models.state import State
 from open_data_app.models.dictionary import Dictionary
+from open_data_app.models.template import Template
