@@ -7,12 +7,12 @@ from django.http import Http404
 
 from open_data_app.models import State, Region
 from open_data_app.models import College
-from open_data_app.utils.pagination_handler import handle_pagination
-from open_data_app.utils.params_handler import handle_params
-from open_data_app.utils.sort_param_handler import handle_sort_param
+from open_data_app.utils.pagination_handler import create_paginator
+from open_data_app.utils.params_handler import filter_by_params
+from open_data_app.utils.sort_param_handler import get_sort_params
 from open_data_app.utils.params_modifier import modify_param
-from open_data_app.utils.old_url_redirect_handler import handle_old_url_redirect
-from open_data_app.utils.geo_redirect_handler import handle_geo_redirect
+from open_data_app.utils.old_url_redirect_handler import make_old_url_redirect
+from open_data_app.utils.geo_redirect_handler import make_geo_redirect
 from open_data_app.utils.seo import Seo
 
 
@@ -37,7 +37,7 @@ def get_geo(request, geo_name, geo_slug):
     colleges = College.sort(request, colleges)
 
     # sort parameters
-    sort_params, active_sort_param_name, active_sort_param_val = handle_sort_param(request, is_geo_view=True)
+    sort_params, active_sort_param_name, active_sort_param_val = get_sort_params(request, is_geo_view=True)
     # sort param to insert into pagination url
     noindex = False
     if active_sort_param_val:
@@ -52,7 +52,7 @@ def get_geo(request, geo_name, geo_slug):
     is_multiple = College.check_result_is_multiple(colleges)
 
     # pagination
-    colleges = handle_pagination(request, colleges)
+    colleges = create_paginator(request, colleges)
 
     # canonical link
     canonical = reverse('college_app:geo', kwargs={'geo_name': geo_name,
@@ -146,7 +146,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
 
     # redirecting urls with integers as parameter's values where parameter is a foreign key
     if param_value_is_int:
-        redirect = handle_old_url_redirect(param_name, param_value, geo_slug, geo_name)
+        redirect = make_old_url_redirect(param_name, param_value, geo_slug, geo_name)
         if redirect:
             return redirect
 
@@ -163,7 +163,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
     # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
     # dictionary of applied filters and their values
     try:
-        colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, geo_name, geo_obj.id)
+        colleges, req_str, noindex, filters_vals, params_dict = filter_by_params(request, colleges, geo_name, geo_obj.id)
     except ValueError:
         raise Http404()
 
@@ -189,7 +189,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
         colleges = College.sort(request, colleges)
 
         # sort parameters
-        sort_params, active_sort_param_name = handle_sort_param(request)
+        sort_params, active_sort_param_name = get_sort_params(request)
 
         # define seo data before rendering
         seo_template = param_name
@@ -219,7 +219,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
         filters = College.get_filters(colleges)
 
         # pagination
-        colleges = handle_pagination(request, colleges)
+        colleges = create_paginator(request, colleges)
 
         # string for an api call
         api_call = '{}={}&{}={}&{}'.format(geo_name, geo_obj.id, param_name, param_value, req_str)
@@ -289,4 +289,4 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
 
 
 def get_geo_redirect(request, geo_name, geo_id, geo_slug, param_name='', param_value=''):
-    return handle_geo_redirect(geo_name, geo_id, geo_slug, param_name, param_value)
+    return make_geo_redirect(geo_name, geo_id, geo_slug, param_name, param_value)

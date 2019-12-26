@@ -4,10 +4,10 @@ from django.core.exceptions import FieldError, ObjectDoesNotExist
 from django.http import Http404
 
 from open_data_app.models import College, Dictionary
-from open_data_app.utils.pagination_handler import handle_pagination
-from open_data_app.utils.params_handler import handle_params
+from open_data_app.utils.pagination_handler import create_paginator
+from open_data_app.utils.params_handler import filter_by_params
 from open_data_app.utils.seo import Seo
-from open_data_app.utils.sort_param_handler import handle_sort_param
+from open_data_app.utils.sort_param_handler import get_sort_params
 from settings import *
 
 
@@ -33,7 +33,7 @@ def filter_no_values(request, param_name):
     try:
         # colleges filtered by secondary filters, request string for rendering links, readable values of applied filters and
         # dictionary of applied filters and their values
-        colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, colleges, '', '')
+        colleges, req_str, noindex, filters_vals, params_dict = filter_by_params(request, colleges, '', '')
     except ValueError:
         raise Http404()
 
@@ -65,7 +65,7 @@ def filter_no_values(request, param_name):
         colleges = College.sort(request, colleges)
 
         # sort parameters
-        sort_params, active_sort_param_name = handle_sort_param(request)
+        sort_params, active_sort_param_name = get_sort_params(request)
 
         # check if result is multiple
         is_multiple = College.check_result_is_multiple(colleges)
@@ -74,7 +74,7 @@ def filter_no_values(request, param_name):
         filters = College.get_filters(colleges, excluded_filters=[init_param])
 
         # pagination
-        colleges = handle_pagination(request, colleges)
+        colleges = create_paginator(request, colleges)
 
         # a url for pagination first page
         base_url = reverse('college_app:filter_no_values', kwargs={'param_name': param_name,

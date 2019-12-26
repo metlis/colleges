@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
 
-def handle_geo_redirect(geo_name, geo_id, slug, param_name='', param_value=''):
+def make_geo_redirect(geo_name, geo_id, slug, param_name='', param_value=''):
     try:
         if geo_name == 'region':
             region = Region.objects.get(id=geo_id)

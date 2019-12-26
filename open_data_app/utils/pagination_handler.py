@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 
 
-def handle_pagination(request, colleges):
+def create_paginator(request, colleges):
     if request.GET.get('page'):
         page = request.GET.get('page')
     else:

@@ -3,10 +3,10 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from open_data_app.models import College
-from open_data_app.utils.pagination_handler import handle_pagination
-from open_data_app.utils.params_handler import handle_params
+from open_data_app.utils.pagination_handler import create_paginator
+from open_data_app.utils.params_handler import filter_by_params
 from open_data_app.utils.seo import Seo
-from open_data_app.utils.sort_param_handler import handle_sort_param
+from open_data_app.utils.sort_param_handler import get_sort_params
 from settings import *
 
 
@@ -31,7 +31,7 @@ def main_filter(request):
         # filtered colleges, request string for rendering links, readable values of applied filters and
         # dictionary of applied filters and their values
         try:
-            colleges, req_str, noindex, filters_vals, params_dict = handle_params(request, '', '', '', main_filter=True)
+            colleges, req_str, noindex, filters_vals, params_dict = filter_by_params(request, '', '', '', main_filter=True)
         except ValueError:
             raise Http404()
 
@@ -43,7 +43,7 @@ def main_filter(request):
             colleges = College.sort(request, colleges)
 
             # sort parameters
-            sort_params, active_sort_param_name = handle_sort_param(request)
+            sort_params, active_sort_param_name = get_sort_params(request)
 
             # check if result is multiple
             is_multiple = College.check_result_is_multiple(colleges)
@@ -52,7 +52,7 @@ def main_filter(request):
             filters = College.get_filters(colleges)
 
             # pagination
-            colleges = handle_pagination(request, colleges)
+            colleges = create_paginator(request, colleges)
 
             context = {'colleges': colleges,
                        'is_multiple': is_multiple,
@@ -96,7 +96,7 @@ def main_filter(request):
         aggregate_data = College.get_aggregate_data(colleges)
 
         # sort parameters
-        sort_params, active_sort_param_name = handle_sort_param(request)
+        sort_params, active_sort_param_name = get_sort_params(request)
 
         # define seo data before rendering
         seo_title = Seo.generate_title('main', '', '')
@@ -109,7 +109,7 @@ def main_filter(request):
         filters = College.get_filters(colleges)
 
         # pagination
-        colleges = handle_pagination(request, colleges)
+        colleges = create_paginator(request, colleges)
 
         context = {'colleges': colleges,
                    'is_multiple': is_multiple,

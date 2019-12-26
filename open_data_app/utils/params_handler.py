@@ -5,7 +5,7 @@ from django.db.models import Q
 from open_data_app.models import College
 
 
-def handle_params(request, colleges, entity, entity_id, main_filter=False, api_call=False):
+def filter_by_params(request, colleges, entity, entity_id, main_filter=False, api_call=False):
 
     params = request.GET.copy()
 

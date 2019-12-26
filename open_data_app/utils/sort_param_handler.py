@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 
 
-def handle_sort_param(request, is_geo_view=False):
+def get_sort_params(request, is_geo_view=False):
     try:
         sort_params = Dictionary.objects.get(name='sort_params').content
     except ObjectDoesNotExist:
