@@ -11,6 +11,7 @@ from open_data_app.views.no_val_parameter import filter_no_values
 from open_data_app.views.favourite import show_favourite
 from open_data_app.views.cookie_policy import cookie_policy
 from open_data_app.views.disclaimer import disclaimer
+from open_data_app.views.rating import create_rating
 from open_data_app.utils.sitemap import CollegesSitemap, StatesSitemap, RegionsSitemap, DisciplinesSitemap, \
     FilterParamsSitemap, StateFilterParamsSitemap, RegionFilterParamsSitemap, CitiesSitemap
 from django.contrib.sitemaps.views import sitemap
@@ -43,6 +44,8 @@ urlpatterns = [
 
     path(r'param/<param_name>/', filter_no_values, name='filter_no_values'),
     path(r'param/<param_name>/<param_value>/', filter_values, name='filter_values'),
+
+    path(r'rating/<rating_url>/', create_rating, name='create_rating'),
 
     path(r'main/', main_filter, name='main_filter'),
 

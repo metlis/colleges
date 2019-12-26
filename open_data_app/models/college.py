@@ -771,3 +771,9 @@ class College(models.Model):
             return True
 
         return False
+
+    @staticmethod
+    def create_api_call_string_from_ids(colleges):
+        colleges_ids_str = [str(c.id) for c in colleges]
+        api_call = 'rating_ids={}'.format(','.join(colleges_ids_str))
+        return api_call
