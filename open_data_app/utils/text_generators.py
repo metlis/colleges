@@ -1,79 +1,133 @@
 from django.db.models import Avg
-from open_data_app.models import College, Template
+from open_data_app.models import College, Template, Region, State
 
 
 def _format_int(val):
+    if not val:
+        val = 0
     rounded_value = round(val)
     formatted_value = '{:,}'.format(rounded_value)
     return formatted_value
 
 
 def _format_percent(val):
+    if not val:
+        val = 0
     formatted_value = round(val * 100)
     return formatted_value
 
 
-def generate_text_main_filter_all():
+def generate_text_main_and_geo_filters(region_id='', state_id=''):
+    colleges = College.objects.all()
+
+    # region data
+    if region_id:
+        region = Region.objects.get(id=region_id)
+        region_name, region_slug, region_states = region.get_parsed_names()
+        colleges = colleges.filter(region=region)
+
+    # state data
+    if state_id:
+        state = State.objects.get(id=state_id)
+        state_name = state.name
+        colleges = colleges.filter(state=state)
+
+    #  general
+    colleges_count = colleges.count()
+    colleges_public_count = colleges.filter(ownership=1).count()
+    colleges_private_non_profit = colleges.filter(ownership=2).count()
+    colleges_private_for_profit = colleges.filter(ownership=3).count()
+
     # tuition
-    public_fees_in_state = College.objects.filter(ownership=1).aggregate(Avg('in_state_tuition'))[
-        'in_state_tuition__avg']
-    public_fees_out_state = College.objects.filter(ownership=1).aggregate(Avg('out_state_tuition'))[
-        'out_state_tuition__avg']
-    private_fees_non_profit = College.objects.filter(ownership=2).aggregate(Avg('in_state_tuition'))[
-        'in_state_tuition__avg']
-    private_fees_for_profit = College.objects.filter(ownership=3).aggregate(Avg('in_state_tuition'))[
-        'in_state_tuition__avg']
+    p = 'in_state_tuition'
+    p_avg = 'in_state_tuition__avg'
+    public_fees_in_state = colleges.filter(ownership=1).aggregate(Avg(p))[p_avg]
+    public_fees_out_state = colleges.filter(ownership=1).aggregate(Avg('out_state_tuition'))['out_state_tuition__avg']
+    private_fees_non_profit = colleges.filter(ownership=2).aggregate(Avg(p))[p_avg]
+    private_fees_for_profit = colleges.filter(ownership=3).aggregate(Avg(p))[p_avg]
 
     # monthly payments
-    public_monthly_payments = College.objects.filter(ownership=1).aggregate(Avg('monthly_payments'))[
-        'monthly_payments__avg']
-    private_monthly_payments_non_profit = College.objects.filter(ownership=2).aggregate(Avg('monthly_payments'))[
-        'monthly_payments__avg']
-    private_monthly_payments_for_profit = College.objects.filter(ownership=3).aggregate(Avg('monthly_payments'))[
-        'monthly_payments__avg']
+    p = 'monthly_payments'
+    p_avg = 'monthly_payments__avg'
+    public_monthly_payments = colleges.filter(ownership=1).aggregate(Avg(p))[p_avg]
+    private_monthly_payments_non_profit = colleges.filter(ownership=2).aggregate(Avg(p))[p_avg]
+    private_monthly_payments_for_profit = colleges.filter(ownership=3).aggregate(Avg(p))[p_avg]
 
     # earnings
-    public_earnings = College.objects.filter(ownership=1).aggregate(Avg('median_earnings'))[
-        'median_earnings__avg']
-    private_earnings_non_profit = College.objects.filter(ownership=2).aggregate(Avg('median_earnings'))[
-        'median_earnings__avg']
-    private_earnings_for_profit = College.objects.filter(ownership=3).aggregate(Avg('median_earnings'))[
-        'median_earnings__avg']
+    p = 'median_earnings'
+    p_avg = 'median_earnings__avg'
+    public_earnings = colleges.filter(ownership=1).aggregate(Avg(p))[p_avg]
+    private_earnings_non_profit = colleges.filter(ownership=2).aggregate(Avg(p))[p_avg]
+    private_earnings_for_profit = colleges.filter(ownership=3).aggregate(Avg(p))[p_avg]
 
     # admission
-    admission_public = College.objects.filter(ownership=1).aggregate(Avg('admission_rate'))['admission_rate__avg']
-    admission_non_profit = College.objects.filter(ownership=2).aggregate(Avg('admission_rate'))['admission_rate__avg']
-    admission_for_profit = College.objects.filter(ownership=3).aggregate(Avg('admission_rate'))['admission_rate__avg']
+    p = 'admission_rate'
+    p_avg = 'admission_rate__avg'
+    admission_public = colleges.filter(ownership=1).aggregate(Avg(p))[p_avg]
+    admission_non_profit = colleges.filter(ownership=2).aggregate(Avg(p))[p_avg]
+    admission_for_profit = colleges.filter(ownership=3).aggregate(Avg(p))[p_avg]
 
     # completion
-    completion_public = College.objects.filter(ownership=1).aggregate(Avg('completion_rate_four_year_pooled'))[
-        'completion_rate_four_year_pooled__avg']
-    completion_non_profit = College.objects.filter(ownership=2).aggregate(Avg('completion_rate_four_year_pooled'))[
-        'completion_rate_four_year_pooled__avg']
-    completion_for_profit = College.objects.filter(ownership=3).aggregate(Avg('completion_rate_four_year_pooled'))[
-        'completion_rate_four_year_pooled__avg']
+    p = 'completion_rate_four_year_pooled'
+    p_avg = 'completion_rate_four_year_pooled__avg'
+    completion_public = colleges.filter(ownership=1).aggregate(Avg(p))[p_avg]
+    completion_non_profit = colleges.filter(ownership=2).aggregate(Avg(p))[p_avg]
+    completion_for_profit = colleges.filter(ownership=3).aggregate(Avg(p))[p_avg]
 
     template = Template.objects.get(name='main_filter_all').content
     text_paragraphs = {}
 
     for p in template:
-        if p == 'College tuition':
+        # general paragraphs for region and state pages
+        if p == 'Regional colleges' and region_id:
+            text_paragraphs[p] = template[p].format(_format_int(colleges_count),
+                                                    region_name,
+                                                    _format_int(colleges_public_count),
+                                                    _format_int(colleges_private_non_profit),
+                                                    _format_int(colleges_private_for_profit))
+        if p == 'State colleges' and state_id:
+            text_paragraphs[p] = template[p].format(_format_int(colleges_count),
+                                                    state_name,
+                                                    _format_int(colleges_public_count),
+                                                    _format_int(colleges_private_non_profit),
+                                                    _format_int(colleges_private_for_profit))
+
+        if p == 'College tuition in the USA' and not region_id and not state_id:
             text_paragraphs[p] = template[p].format(_format_int(public_fees_in_state),
                                                     _format_int(public_fees_out_state),
                                                     _format_int(private_fees_non_profit),
                                                     _format_int(private_fees_for_profit))
+
+        # tuition paragraphs
+        if p == 'College tuition in the region' and region_id:
+            text_paragraphs[p] = template[p].format(region_name,
+                                                    _format_int(public_fees_in_state),
+                                                    _format_int(public_fees_out_state),
+                                                    _format_int(private_fees_non_profit),
+                                                    _format_int(private_fees_for_profit))
+
+        if p == 'College tuition in the state' and state_id:
+            text_paragraphs[p] = template[p].format(state_name,
+                                                    _format_int(public_fees_in_state),
+                                                    _format_int(public_fees_out_state),
+                                                    _format_int(private_fees_non_profit),
+                                                    _format_int(private_fees_for_profit))
+        # monthly payments paragraph
         if p == 'Monthly payments':
             text_paragraphs[p] = template[p].format(_format_int(public_monthly_payments),
                                                     _format_int(private_monthly_payments_non_profit),
                                                     _format_int(private_monthly_payments_for_profit))
-        if p == 'Earnings':
+        # earnings paragraph
+        if p == 'Earnings after completion':
             text_paragraphs[p] = template[p].format(_format_int(public_earnings),
                                                     _format_int(private_earnings_non_profit),
                                                     _format_int(private_earnings_for_profit))
+        # admission rate paragraph
         elif p == 'Admission rate':
             text_paragraphs[p] = template[p].format(_format_percent(admission_public),
                                                     _format_percent(admission_non_profit),
                                                     _format_percent(admission_for_profit))
+        # completion rate paragraph
         elif p == 'Completion rate':
             text_paragraphs[p] = template[p].format(_format_percent(completion_public),
                                                     _format_percent(completion_non_profit),
