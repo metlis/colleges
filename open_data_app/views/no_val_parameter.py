@@ -8,6 +8,7 @@ from open_data_app.utils.pagination_handler import create_paginator
 from open_data_app.utils.params_handler import filter_by_params
 from open_data_app.utils.seo import Seo
 from open_data_app.utils.sort_param_handler import get_sort_params
+from open_data_app.utils.text_generators import generate_filter_text
 from settings import *
 
 
@@ -61,6 +62,12 @@ def filter_no_values(request, param_name):
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
+        # text with aggregate information for pages without get parameters
+        aggregate_text = ''
+        params = request.GET
+        if len(params) == 0 and colleges.count() > 1:
+            aggregate_text = generate_filter_text('', '', colleges)
+
         # sorting colleges
         colleges = College.sort(request, colleges)
 
@@ -85,6 +92,7 @@ def filter_no_values(request, param_name):
         context = {'colleges': colleges,
                    'is_multiple': is_multiple,
                    'version': STATIC_VERSION,
+                   'aggregate_text': aggregate_text,
                    # seo
                    'seo_title': seo_title,
                    'seo_description': seo_description,

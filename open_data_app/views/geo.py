@@ -225,7 +225,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
         # text with aggregate information for pages without get parameters
         aggregate_text = ''
         params = request.GET
-        if len(params) == 0:
+        if len(params) == 0 and colleges.count() > 1:
             aggregate_text = generate_filter_text('', '', colleges)
 
         # check if result is multiple
