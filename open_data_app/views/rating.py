@@ -9,6 +9,7 @@ from settings import *
 
 from open_data_app.utils.pagination_handler import create_paginator
 from open_data_app.utils.sort_param_handler import get_sort_params
+from open_data_app.utils.get_aggregate_filter_text_from_colleges import get_aggregate_filter_text_from_colleges
 
 
 def create_rating(request, rating_url):
@@ -146,6 +147,9 @@ def create_rating(request, rating_url):
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
+        # text with aggregate information for pages without get parameters
+        aggregate_text = get_aggregate_filter_text_from_colleges(request, colleges)
+
         # api
         api_call = College.create_api_call_string_from_ids(colleges)
 
@@ -164,6 +168,7 @@ def create_rating(request, rating_url):
         context = {'colleges': colleges,
                    'is_multiple': is_multiple,
                    'version': STATIC_VERSION,
+                   'aggregate_text': aggregate_text,
                    # seo
                    'seo_title': seo_title,
                    'seo_description': seo_description,
