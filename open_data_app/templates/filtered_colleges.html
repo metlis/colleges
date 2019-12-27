@@ -383,44 +383,6 @@
                     {% endif %}
                     {# aggregatetext end  #}
 
-                    <div class="col-sm-12 col-md-9">
-                        <p class="colleges-count pt-2"><span class="meta-text">Colleges found:</span>
-                            <span class="badge badge-light">
-                                {% if colleges.paginator %}
-                                    {{ colleges.paginator.count }}
-                                {% elif colleges.count %}
-                                    {{ colleges.count }}
-                                {% else %}
-                                    0
-                                {% endif %}
-                            </span>
-                        </p>
-                    </div>
-
-                    {# sort list start #}
-                    {% if is_multiple %}
-                        <div class="col-sm-12 col-md-3">
-                            <div class="dropdown">
-                                <div class="dropdown-toggle sort pt-2" data-toggle="dropdown" aria-haspopup="true"
-                                     aria-expanded="false">
-                                    {% if active_sort_param_name %}
-                                        <span>{{ active_sort_param_name }}</span>
-                                    {% else %}
-                                        <span>Sort</span>
-                                        <i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
-                                    {% endif %}
-                                </div>
-                                <div class="dropdown-menu">
-                                    {% for key, val in sort_params.items %}
-                                        <a class="dropdown-item"
-                                           onclick="addParam('sort={{ key }}')">{{ val }}</a>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {# sort list end #}
-
                     {# aggregate data start #}
                     {% if is_multiple %}
                         <div class="col-sm-12 college-container">
@@ -682,6 +644,46 @@
                         </div>
                     {% endif %}
                     {# aggregate data end #}
+
+                    {# colleges found number #}
+                    <div class="col-sm-12 col-md-9">
+                        <p class="colleges-count pt-2"><span class="meta-text">Colleges found:</span>
+                            <span class="badge badge-light">
+                                {% if colleges.paginator %}
+                                    {{ colleges.paginator.count }}
+                                {% elif colleges.count %}
+                                    {{ colleges.count }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </span>
+                        </p>
+                    </div>
+                    {# colleges found number end #}
+
+                    {# sort list start #}
+                    {% if is_multiple %}
+                        <div class="col-sm-12 col-md-3">
+                            <div class="dropdown">
+                                <div class="dropdown-toggle sort pt-2" data-toggle="dropdown" aria-haspopup="true"
+                                     aria-expanded="false">
+                                    {% if active_sort_param_name %}
+                                        <span>{{ active_sort_param_name }}</span>
+                                    {% else %}
+                                        <span>Sort</span>
+                                        <i class="v-icon mdi mdi-chevron-down theme--light rotate"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="dropdown-menu">
+                                    {% for key, val in sort_params.items %}
+                                        <a class="dropdown-item"
+                                           onclick="addParam('sort={{ key }}')">{{ val }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {# sort list end #}
 
                     {# colleges list start #}
                     {% for college in colleges %}
