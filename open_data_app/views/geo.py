@@ -14,6 +14,7 @@ from open_data_app.utils.params_modifier import modify_param
 from open_data_app.utils.old_url_redirect_handler import make_old_url_redirect
 from open_data_app.utils.geo_redirect_handler import make_geo_redirect
 from open_data_app.utils.text_generators import generate_filter_text
+from open_data_app.utils.get_aggregate_filter_text_from_colleges import get_aggregate_filter_text_from_colleges
 from open_data_app.utils.seo import Seo
 
 
@@ -223,10 +224,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
         aggregate_data = College.get_aggregate_data(colleges)
 
         # text with aggregate information for pages without get parameters
-        aggregate_text = ''
-        params = request.GET
-        if len(params) == 0 and colleges.count() > 1:
-            aggregate_text = generate_filter_text('', '', colleges)
+        aggregate_text = get_aggregate_filter_text_from_colleges(request, colleges)
 
         # check if result is multiple
         is_multiple = College.check_result_is_multiple(colleges)
