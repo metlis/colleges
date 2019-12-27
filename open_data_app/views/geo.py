@@ -195,10 +195,16 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
         seo_template = param_name
         seo_title = Seo.generate_title(seo_template, param_text_value, seo_name)
         seo_description = Seo.generate_description(seo_template, param_text_value, seo_name)
+        # if parameter is a city, create canonical address pointing at the city view
         if param_name == 'city_slug':
             canonical = reverse('college_app:filter_values', kwargs={'param_name': param_name,
                                                                      'param_value': slugify(param_value),
                                                                      })
+        # if parameter is a state, create canonical address pointing at the state view
+        elif param_name == 'state':
+            canonical = reverse('college_app:geo', kwargs={'geo_name': param_name,
+                                                           'geo_slug': slugify(param_value),
+                                                           })
         else:
             canonical = reverse('college_app:geo_param', kwargs={'geo_name': geo_name,
                                                                  'geo_slug': geo_slug,
