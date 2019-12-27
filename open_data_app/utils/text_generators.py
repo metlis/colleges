@@ -87,19 +87,26 @@ def generate_filter_text(region_id='', state_id='', filtered_colleges=''):
     text_paragraphs = {}
 
     for p in template:
-        # general paragraphs for region and state pages
-        if p == 'Regional colleges' and region_id:
+        # general paragraph for the USA
+        if p == 'US colleges distribution by ownership' and not region_id and not state_id and not filtered_colleges:
             text_paragraphs[p] = template[p].format(_format_int(colleges_count),
-                                                    region_name,
                                                     _format_int(colleges_public_count),
                                                     _format_int(colleges_private_non_profit),
                                                     _format_int(colleges_private_for_profit))
-        if p == 'State colleges' and state_id:
-            text_paragraphs[p] = template[p].format(_format_int(colleges_count),
-                                                    state_name,
-                                                    _format_int(colleges_public_count),
-                                                    _format_int(colleges_private_non_profit),
-                                                    _format_int(colleges_private_for_profit))
+        # general paragraph for region pages
+        if p == 'Colleges in {} region' and region_id:
+            text_paragraphs[p.format(region_name)] = template[p].format(_format_int(colleges_count),
+                                                                        region_name,
+                                                                        _format_int(colleges_public_count),
+                                                                        _format_int(colleges_private_non_profit),
+                                                                        _format_int(colleges_private_for_profit))
+        # general paragraph for state pages
+        if p == 'State colleges in {}' and state_id:
+            text_paragraphs[p.format(state_name)] = template[p].format(_format_int(colleges_count),
+                                                                       state_name,
+                                                                       _format_int(colleges_public_count),
+                                                                       _format_int(colleges_private_non_profit),
+                                                                       _format_int(colleges_private_for_profit))
 
         if p == 'College tuition in the USA' and not region_id and not state_id and not filtered_colleges:
             text_paragraphs[p] = template[p].format(_format_amount(public_fees_in_state),
