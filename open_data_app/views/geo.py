@@ -13,7 +13,7 @@ from open_data_app.utils.sort_param_handler import get_sort_params
 from open_data_app.utils.params_modifier import modify_param
 from open_data_app.utils.old_url_redirect_handler import make_old_url_redirect
 from open_data_app.utils.geo_redirect_handler import make_geo_redirect
-from open_data_app.utils.text_generators import generate_text_main_and_geo_filters
+from open_data_app.utils.text_generators import generate_filter_text
 from open_data_app.utils.seo import Seo
 
 
@@ -24,12 +24,12 @@ def get_geo(request, geo_name, geo_slug):
             region_name, slug, region_states = geo_obj.get_parsed_names()
             colleges = College.objects.filter(region=geo_obj.id).order_by('name')
             filters = College.get_filters(colleges)
-            aggregate_text = generate_text_main_and_geo_filters(geo_obj.id)
+            aggregate_text = generate_filter_text(geo_obj.id)
         else:
             geo_obj = State.objects.get(slug=geo_slug)
             colleges = College.objects.filter(state=geo_obj.id).order_by('name')
             filters = College.get_filters(colleges, excluded_filters=['state'])
-            aggregate_text = generate_text_main_and_geo_filters(None, geo_obj.id)
+            aggregate_text = generate_filter_text('', geo_obj.id)
     except ObjectDoesNotExist:
         raise Http404()
 
@@ -222,6 +222,12 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
         # aggregate data
         aggregate_data = College.get_aggregate_data(colleges)
 
+        # text with aggregate information for pages without get parameters
+        aggregate_text = ''
+        params = request.GET
+        if len(params) == 0:
+            aggregate_text = generate_filter_text('', '', colleges)
+
         # check if result is multiple
         is_multiple = College.check_result_is_multiple(colleges)
 
@@ -238,6 +244,7 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
                    'colleges': colleges,
                    'is_multiple': is_multiple,
                    'version': STATIC_VERSION,
+                   'aggregate_text': aggregate_text,
                    # seo
                    'seo_title': seo_title,
                    'seo_description': seo_description,

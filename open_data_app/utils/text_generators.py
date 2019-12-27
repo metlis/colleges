@@ -3,22 +3,31 @@ from open_data_app.models import College, Template, Region, State
 
 
 def _format_int(val):
-    if not val:
-        val = 0
+    if val is None:
+        return 'not known'
     rounded_value = round(val)
-    formatted_value = '{:,}'.format(rounded_value)
-    return formatted_value
+    return '{:,}'.format(rounded_value)
+
+
+def _format_amount(val):
+    if val is None:
+        return 'not known'
+    rounded_value = round(val)
+    return '{:,}$'.format(rounded_value)
 
 
 def _format_percent(val):
-    if not val:
-        val = 0
-    formatted_value = round(val * 100)
-    return formatted_value
+    if val is None:
+        return 'not known'
+    rounded_value = round(val * 100)
+    return '{}%'.format(rounded_value)
 
 
-def generate_text_main_and_geo_filters(region_id='', state_id=''):
-    colleges = College.objects.all()
+def generate_filter_text(region_id='', state_id='', filtered_colleges=''):
+    if filtered_colleges:
+        colleges = filtered_colleges
+    else:
+        colleges = College.objects.all()
 
     # region data
     if region_id:
@@ -92,36 +101,42 @@ def generate_text_main_and_geo_filters(region_id='', state_id=''):
                                                     _format_int(colleges_private_non_profit),
                                                     _format_int(colleges_private_for_profit))
 
-        if p == 'College tuition in the USA' and not region_id and not state_id:
-            text_paragraphs[p] = template[p].format(_format_int(public_fees_in_state),
-                                                    _format_int(public_fees_out_state),
-                                                    _format_int(private_fees_non_profit),
-                                                    _format_int(private_fees_for_profit))
+        if p == 'College tuition in the USA' and not region_id and not state_id and not filtered_colleges:
+            text_paragraphs[p] = template[p].format(_format_amount(public_fees_in_state),
+                                                    _format_amount(public_fees_out_state),
+                                                    _format_amount(private_fees_non_profit),
+                                                    _format_amount(private_fees_for_profit))
 
         # tuition paragraphs
+        if p == 'College tuition' and filtered_colleges:
+            text_paragraphs[p] = template[p].format(_format_amount(public_fees_in_state),
+                                                    _format_amount(public_fees_out_state),
+                                                    _format_amount(private_fees_non_profit),
+                                                    _format_amount(private_fees_for_profit))
+
         if p == 'College tuition in the region' and region_id:
             text_paragraphs[p] = template[p].format(region_name,
-                                                    _format_int(public_fees_in_state),
-                                                    _format_int(public_fees_out_state),
-                                                    _format_int(private_fees_non_profit),
-                                                    _format_int(private_fees_for_profit))
+                                                    _format_amount(public_fees_in_state),
+                                                    _format_amount(public_fees_out_state),
+                                                    _format_amount(private_fees_non_profit),
+                                                    _format_amount(private_fees_for_profit))
 
         if p == 'College tuition in the state' and state_id:
             text_paragraphs[p] = template[p].format(state_name,
-                                                    _format_int(public_fees_in_state),
-                                                    _format_int(public_fees_out_state),
-                                                    _format_int(private_fees_non_profit),
-                                                    _format_int(private_fees_for_profit))
+                                                    _format_amount(public_fees_in_state),
+                                                    _format_amount(public_fees_out_state),
+                                                    _format_amount(private_fees_non_profit),
+                                                    _format_amount(private_fees_for_profit))
         # monthly payments paragraph
         if p == 'Monthly payments':
-            text_paragraphs[p] = template[p].format(_format_int(public_monthly_payments),
-                                                    _format_int(private_monthly_payments_non_profit),
-                                                    _format_int(private_monthly_payments_for_profit))
+            text_paragraphs[p] = template[p].format(_format_amount(public_monthly_payments),
+                                                    _format_amount(private_monthly_payments_non_profit),
+                                                    _format_amount(private_monthly_payments_for_profit))
         # earnings paragraph
         if p == 'Earnings after completion':
-            text_paragraphs[p] = template[p].format(_format_int(public_earnings),
-                                                    _format_int(private_earnings_non_profit),
-                                                    _format_int(private_earnings_for_profit))
+            text_paragraphs[p] = template[p].format(_format_amount(public_earnings),
+                                                    _format_amount(private_earnings_non_profit),
+                                                    _format_amount(private_earnings_for_profit))
         # admission rate paragraph
         elif p == 'Admission rate':
             text_paragraphs[p] = template[p].format(_format_percent(admission_public),
