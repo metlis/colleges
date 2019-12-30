@@ -31,7 +31,7 @@ class FilterAdmin(admin.ModelAdmin):
 
 
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'url',)
     filter_horizontal = ('filters',)
 
 
