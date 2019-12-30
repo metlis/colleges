@@ -1,3 +1,5 @@
+@import 'variables.styl'
+
 html
   position relative
   min-height 100%
@@ -127,6 +129,14 @@ button:focus
   padding 0px !important
   .favourite-button
     padding 0px !important
+  .nav-link-text
+    padding-right 15px
 
 .agreement
   background-color $blue-dark !important
+
+@media (max-width 768px)
+  .nav-link
+    .nav-link-text
+      display inline-block
+      margin-bottom 10px

@@ -141,8 +141,17 @@ button:focus {
 .nav-link .favourite-button {
   padding: 0px !important;
 }
+.nav-link .nav-link-text {
+  padding-right: 15px;
+}
 .agreement {
   background-color: #37474f !important;
+}
+@media (max-width: 768px) {
+  .nav-link .nav-link-text {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
 }
 .checkbox label:after {
   content: '';

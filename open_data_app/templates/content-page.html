@@ -1,0 +1,56 @@
+{% extends "index.html" %}
+
+{% load static %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block description %}
+    <meta name="description" content="{{ seo_description }}">
+    <meta property="og:description" content="{{ seo_description }}">
+    <meta name="twitter:description" content="{{ seo_description }}">
+{% endblock %}
+
+{% block title %}
+    <title>{{ seo_title }}</title>
+    <meta property="og:title" content="{{ seo_title }}">
+    <meta name="twitter:title" content="{{ seo_title }}">
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ request.path }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {#    Header    #}
+        {% if name %}
+            <div class="row">
+                <div class="col-sm-12" style="text-align: center">
+                    <h1>{{ name }}</h1>
+                </div>
+            </div>
+        {% endif %}
+        {#    Top text    #}
+        {% if top %}
+            <div class="row">
+                <div class="col-sm-12">
+                    {% autoescape off %}
+                        {{ top }}
+                    {% endautoescape %}
+                </div>
+            </div>
+        {% endif %}
+        {#    Bottom text    #}
+        {% if bottom %}
+            <div class="row">
+                <div class="col-sm-12">
+                    {% autoescape off %}
+                        {{ bottom }}
+                    {% endautoescape %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
