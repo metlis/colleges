@@ -49,7 +49,11 @@ def create_rating(request, rating_url):
             colleges = colleges.filter(level=f.level)
 
         if f.order:
-            colleges = colleges.order_by(f.order)
+            order_field_name = f.order
+            if f.order.startswith('-'):
+                order_field_name = f.order[1:]
+            is_null_param = '{}__isnull'.format(order_field_name)
+            colleges = colleges.filter(**{is_null_param: False}).order_by(f.order)
 
         if f.items_quantity:
             sliced_colleges_ids = [c.id for c in colleges[0:f.items_quantity]]
