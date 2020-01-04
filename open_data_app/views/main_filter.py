@@ -70,7 +70,9 @@ def main_filter(request):
                        'state_filter': True,
                        # api
                        'api_call': req_str + '&main_filter=1',
-                       'maps_key': GOOGLE_MAPS_API,
+                       'gmaps_key': GOOGLE_MAPS_API,
+                       'ymaps_key': YANDEX_MAPS_API,
+                       'map_api_vendor': MAP_API_VENDOR,
                        'favourite_colleges': favourite_colleges,
                        'cookie_agreement': cookie_agreement,
                        # sort parameters
@@ -126,7 +128,9 @@ def main_filter(request):
                    'base_url': base_url,
                    'noindex': False,
                    # api
-                   'maps_key': GOOGLE_MAPS_API,
+                   'gmaps_key': GOOGLE_MAPS_API,
+                   'ymaps_key': YANDEX_MAPS_API,
+                   'map_api_vendor': MAP_API_VENDOR,
                    'api_call': 'main_filter=1',
                    'favourite_colleges': favourite_colleges,
                    'cookie_agreement': cookie_agreement,

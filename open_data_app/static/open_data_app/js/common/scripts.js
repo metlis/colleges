@@ -31,7 +31,7 @@ function updateURLParameter(url, param, paramVal) {
     window.location.href = url.replace(/(.*)(page\=\d+&)(.*)/, '$1$3');
 }
 
-function initFilterMap(center, zoom) {
+function initFilterGMap(center, zoom) {
     var mapCenter = center || {
         lat: 39.589931,
         lng: -95.009003
@@ -43,7 +43,29 @@ function initFilterMap(center, zoom) {
     });
 }
 
-function getMapLabels(url) {
+function initFilterYMap(center, zoom) {
+    var mapCenter = center || [
+        39.589931,
+        -95.009003
+    ];
+    var mapZoom = zoom || 3;
+    window.map = new ymaps.Map('map', {
+        center: mapCenter,
+        zoom: mapZoom,
+    });
+}
+
+function createLabelText(label) {
+    var text = '<h3>' + label[4] + '</h3>' +
+               '<p><span class="icon-container"><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top"></i></span>: <a href="' + '/institution/' + label[2] + '/' + label[3] + '/' + '">College page</a></p>' +
+               '<p><span class="icon-container"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[5] + ', ' + label[6] + '</p>' +
+               '<p><span class="icon-container"><i class="fas fa-city" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[8] + '</p>' +
+               '<p><span class="icon-container"><i class="fas fa-user-graduate" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[7] + '</p>' +
+               '<p><span class="icon-container"><i class="fas fa-home" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[9] + '</p>';
+    return text;
+}
+
+function getGMapLabels(url) {
     axios.get('/api/request_map_labels/?' + url)
         .then(function (response) {
             if (response.data.data) {
@@ -55,21 +77,16 @@ function getMapLabels(url) {
                     return;
                 // center on a single label
                 } else if (mapLabels.length == 1) {
-                    initFilterMap({
+                    initFilterGMap({
                         lat: Number(mapLabels[0][0]),
                         lng: Number(mapLabels[0][1])
                     }, 6)
                 } else {
-                    initFilterMap();
+                    initFilterGMap();
                 }
                 var markers = mapLabels.map(function (label, i) {
                     var contentString = '<div class="mapInfo">' +
-                        '<h4>' + label[4] + '</h4>' +
-                        '<p><span class="icon-container"><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top"></i></span>: <a href="' + '/institution/' + label[2] + '/' + label[3] + '/' + '">College page</a></p>' +
-                        '<p><span class="icon-container"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[5] + ', ' + label[6] + '</p>' +
-                        '<p><span class="icon-container"><i class="fas fa-city" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[8] + '</p>' +
-                        '<p><span class="icon-container"><i class="fas fa-user-graduate" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[7] + '</p>' +
-                        '<p><span class="icon-container"><i class="fas fa-home" data-toggle="tooltip" data-placement="top"></i></span>: ' + label[9] + '</p>' +
+                        createLabelText(label) +
                         '</div>';
                     var infowindow = new google.maps.InfoWindow({
                         content: contentString
@@ -91,12 +108,54 @@ function getMapLabels(url) {
             }
         })
         .catch(function (error) {
-            initFilterMap();
+            initFilterGMap();
             console.log(error);
         })
 }
 
-function initCollegeMap(college) {
+function getYMapLabels(url) {
+    axios.get('/api/request_map_labels/?' + url)
+        .then(function (response) {
+            if (response.data.data) {
+                var mapLabels = response.data.data;
+                var mapContainer = document.getElementById('map');
+                // hide an empty map
+                if (mapLabels.length == 0) {
+                    mapContainer.style.display = 'none';
+                    return;
+                // center on a single label
+                } else if (mapLabels.length == 1) {
+                    initFilterYMap([
+                        Number(mapLabels[0][0]),
+                        Number(mapLabels[0][1])
+                    ], 6)
+                } else {
+                    initFilterYMap();
+                }
+                var clusterer = new ymaps.Clusterer({
+                    preset: 'islands#invertedBlueClusterIcons',
+                    clusterHideIconOnBalloonOpen: false,
+                    geoObjectHideIconOnBalloonOpen: false
+                });
+                var geoObjects = mapLabels.map(function(label) {
+                    var point = [Number(label[0]), Number(label[1])];
+                    var pointData = {
+                        balloonContentBody: createLabelText(label),
+                        clusterCaption: '<strong>' + label[4] + '</strong>'
+                    };
+                    return new ymaps.Placemark(point, pointData);
+                });
+                clusterer.add(geoObjects);
+                map.geoObjects.add(clusterer);
+            }
+        })
+        .catch(function (error) {
+            initFilterGMap();
+            console.log(error);
+        })
+}
+
+function initCollegeGMap(college) {
     var map, maker, title = '';
 
     if (college.city && college.state && college.zip) {
@@ -118,6 +177,28 @@ function initCollegeMap(college) {
         map: map,
         title: title
     });
+
+}
+
+function initCollegeYmap(lat, long, city, state, zip) {
+    var map, maker, title = '';
+
+    map = new ymaps.Map('map', {
+        center: [lat, long],
+        zoom: 8,
+    });
+
+    maker = new ymaps.GeoObject({
+        geometry: {
+            type: 'Point',
+            coordinates: [lat, long],
+        },
+        properties: {
+            balloonContent: city + ', ' + state + ', ' + zip,
+        }
+    });
+
+    map.geoObjects.add(maker);
 
 }
 

@@ -1082,16 +1082,31 @@
 {% block scripts %}
     {{ block.super }}
     <script>
-        function initMap() {
-            initCollegeMap({
-                latitude: {{ college.latitude }},
-                longitude: {{ college.longitude }},
-                city: "{{ college.city }}",
-                state: "{{ college.state }}",
-                zip: "{{ college.zip }}"
-            });
-        }
+          function initGMap() {
+              initCollegeGMap({
+                  latitude: {{ college.latitude }},
+                  longitude: {{ college.longitude }},
+                  city: "{{ college.city }}",
+                  state: "{{ college.state }}",
+                  zip: "{{ college.zip }}"
+              });
+          }
+          function initYMap(){
+              initCollegeYmap(
+                  {{ college.latitude }},
+                  {{ college.longitude }},
+                  "{{ college.city }}",
+                  "{{ college.state }}",
+                  "{{ college.zip }}",
+              )
+          }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap"
-            async defer></script>
+    {% if gmaps_key and map_api_vendor == 'Google' %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ gmaps_key }}&callback=initGMap"
+                defer></script>
+    {% endif %}
+    {% if ymaps_key and map_api_vendor == 'Yandex' %}
+        <script src="https://api-maps.yandex.ru/2.1/?apikey={{ ymaps_key }}&lang=en_US&onload=initYMap"
+                defer>
+    {% endif %}
 {% endblock %}

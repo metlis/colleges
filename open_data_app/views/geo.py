@@ -90,7 +90,9 @@ def get_geo(request, geo_name, geo_slug):
                'canonical': canonical,
                'noindex': noindex,
                # api
-               'maps_key': GOOGLE_MAPS_API,
+               'gmaps_key': GOOGLE_MAPS_API,
+               'ymaps_key': YANDEX_MAPS_API,
+               'map_api_vendor': MAP_API_VENDOR,
                'api_call': api_call,
                'favourite_colleges': favourite_colleges,
                # sort parameters
@@ -266,7 +268,9 @@ def get_geo_param(request, geo_name, geo_slug, param_name, param_value):
                    'params': req_str,
                     # api
                    'api_call': api_call,
-                   'maps_key': GOOGLE_MAPS_API,
+                   'gmaps_key': GOOGLE_MAPS_API,
+                   'ymaps_key': YANDEX_MAPS_API,
+                   'map_api_vendor': MAP_API_VENDOR,
                    'favourite_colleges': favourite_colleges,
                    'cookie_agreement': cookie_agreement,
                    }

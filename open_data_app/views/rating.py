@@ -127,7 +127,9 @@ def create_rating(request, rating_url):
                        'filters_vals': filters_vals,
                        # api
                        'api_call': api_call,
-                       'maps_key': GOOGLE_MAPS_API,
+                       'gmaps_key': GOOGLE_MAPS_API,
+                       'ymaps_key': YANDEX_MAPS_API,
+                       'map_api_vendor': MAP_API_VENDOR,
                        'favourite_colleges': favourite_colleges,
                        'cookie_agreement': cookie_agreement,
                        # sort parameters
@@ -182,7 +184,9 @@ def create_rating(request, rating_url):
                    'base_url': base_url,
                    'noindex': False,
                    # api
-                   'maps_key': GOOGLE_MAPS_API,
+                   'gmaps_key': GOOGLE_MAPS_API,
+                   'ymaps_key': YANDEX_MAPS_API,
+                   'map_api_vendor': MAP_API_VENDOR,
                    'api_call': api_call,
                    'favourite_colleges': favourite_colleges,
                    'cookie_agreement': cookie_agreement,

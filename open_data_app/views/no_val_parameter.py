@@ -109,7 +109,9 @@ def filter_no_values(request, param_name):
                    'active_sort_param_name': active_sort_param_name,
                    # api
                    'api_call': api_call,
-                   'maps_key': GOOGLE_MAPS_API,
+                   'gmaps_key': GOOGLE_MAPS_API,
+                   'ymaps_key': YANDEX_MAPS_API,
+                   'map_api_vendor': MAP_API_VENDOR,
                    'favourite_colleges': favourite_colleges,
                    'cookie_agreement': cookie_agreement,
                    }

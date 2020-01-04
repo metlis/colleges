@@ -2,9 +2,10 @@
 
 const fetchApiKey = async () => {
   await fetch('/api/request_map_api_key/')
-    .then(response => response.text())
+    .then(response => response.json())
     .then((data) => {
-      API_KEY = data;
+      API_KEY = data.key;
+      VENDOR = data.vendor;
     })
     .catch((err) => {
       console.error(err);
@@ -12,11 +13,12 @@ const fetchApiKey = async () => {
 };
 
 let API_KEY = '';
-const CALLBACK_NAME = 'gmapsCallback';
+let VENDOR = '';
+const CALLBACK_NAME = 'mapsCallback';
 
 fetchApiKey();
 
-let initialized = !!window.google;
+let initialized = !!window[VENDOR];
 let resolveInitPromise;
 let rejectInitPromise;
 // This promise handles the initialization
@@ -36,7 +38,7 @@ export default function init() {
   // The callback function is called by
   // the Google Maps script if it is
   // successfully loaded.
-  window[CALLBACK_NAME] = () => resolveInitPromise(window.google);
+  window[CALLBACK_NAME] = () => resolveInitPromise(window[VENDOR]);
 
   // We inject a new script tag into
   // the `<head>` of our HTML to load
@@ -44,8 +46,12 @@ export default function init() {
   const script = document.createElement('script');
   script.async = true;
   script.defer = true;
-  script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=${CALLBACK_NAME}`;
   script.onerror = rejectInitPromise;
+  if (VENDOR === 'google') {
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=${CALLBACK_NAME}`;
+  } else {
+    script.src = `https://api-maps.yandex.ru/2.1/?apikey=${API_KEY}&lang=en_US&onload=${CALLBACK_NAME}`;
+  }
   document.querySelector('head').appendChild(script);
 
   return initPromise;

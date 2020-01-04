@@ -6,13 +6,13 @@
     </v-col>
     <!--  Map  -->
     <v-col cols="12">
-      <div ref="map" :class="$style.map"></div>
+      <div ref="map" id="map" :class="$style.map"></div>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import gmapsInit from '../../utils/gmaps';
+import init from '../../utils/mapsInit';
 import { selectColleges, addCommas } from '../../utils/helpers';
 
 export default {
@@ -20,11 +20,14 @@ export default {
   props: ['colleges', 'menu', 'header'],
   data() {
     return {
-      google: '',
+      vendor: '',
       key: '',
       markers: '',
       map: '',
       selectedColleges: this.colleges,
+      lat: 39.589931,
+      lng: -95.009003,
+      zoom: 3,
     };
   },
   methods: {
@@ -36,22 +39,17 @@ export default {
       });
     },
     createGmapMarkers() {
-      const { google } = this;
+      const { vendor } = this;
       this.markers = this.selectedColleges.map((college) => {
         const contentString = `
             <div class="mapInfo">
-            <h4>${college.name}</h4>
-            <p><span class="icon-container"><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top"></i></span>: <a href="/institution/${college.id}/${college.slug}">College page</a></p>
-            <p><span class="icon-container"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top"></i></span>: ${college.city}, ${college.state__name}</p>
-            <p><span class="icon-container"><i class="fas fa-city" data-toggle="tooltip" data-placement="top"></i></span>: ${college.locale__description}</p>
-            <p><span class="icon-container"><i class="fas fa-user-graduate" data-toggle="tooltip" data-placement="top"></i></span>: ${addCommas(college.undergrad_students)}</p>
-            <p><span class="icon-container"><i class="fas fa-home" data-toggle="tooltip" data-placement="top"></i></span>: ${college.ownership__description}</p>
+            ${this.createLabelText(college)}
             </div>
         `;
-        const infoWindow = new google.maps.InfoWindow({
+        const infoWindow = new vendor.maps.InfoWindow({
           content: contentString,
         });
-        const marker = new google.maps.Marker({
+        const marker = new vendor.maps.Marker({
           position: {
             lat: Number(college.latitude),
             lng: Number(college.longitude),
@@ -59,21 +57,57 @@ export default {
           title: `${college.name}\n${college.city}, ${college.state__name}`,
           map: this.map,
         });
-        google.maps.event.addListener(marker, 'click', () => {
+        vendor.maps.event.addListener(marker, 'click', () => {
           infoWindow.open(this.map, marker);
         });
         return marker;
       });
+    },
+    createYmapMarkers() {
+      const { vendor } = this;
+      const clusterer = new vendor.Clusterer({
+        preset: 'islands#invertedBlueClusterIcons',
+        clusterHideIconOnBalloonOpen: false,
+        geoObjectHideIconOnBalloonOpen: false,
+      });
+      this.markers = this.selectedColleges.map((college) => {
+        const point = [Number(college.latitude), Number(college.longitude)];
+        const pointData = {
+          balloonContentBody: this.createLabelText(college),
+          clusterCaption: `<strong>${college.name}</strong>`,
+        };
+        return new vendor.Placemark(point, pointData);
+      });
+      clusterer.add(this.markers);
+      this.map.geoObjects.add(clusterer);
     },
     deleteGmapMarkers() {
       this.markers.forEach((marker) => {
         marker.setMap(null);
       });
     },
+    deleteYmapMarkers() {
+      this.map.geoObjects.removeAll();
+    },
+    createLabelText(college) {
+      return `<h3>${college.name}</h3>
+      <p><span class="icon-container"><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top"></i></span>: <a href="/institution/${college.id}/${college.slug}">College page</a></p>
+      <p><span class="icon-container"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top"></i></span>: ${college.city}, ${college.state__name}</p>
+      <p><span class="icon-container"><i class="fas fa-city" data-toggle="tooltip" data-placement="top"></i></span>: ${college.locale__description}</p>
+      <p><span class="icon-container"><i class="fas fa-user-graduate" data-toggle="tooltip" data-placement="top"></i></span>: ${addCommas(college.undergrad_students)}</p>
+      <p><span class="icon-container"><i class="fas fa-home" data-toggle="tooltip" data-placement="top"></i></span>: ${college.ownership__description}</p>`;
+    },
     updateCollegesList() {
       this.selectedColleges = this.getCollegesList();
-      this.deleteGmapMarkers();
-      this.createGmapMarkers();
+      // update google map
+      if (this.vendor.maps) {
+        this.deleteGmapMarkers();
+        this.createGmapMarkers();
+      // update yandex map
+      } else {
+        this.deleteYmapMarkers();
+        this.createYmapMarkers();
+      }
     },
     addCommas(num) {
       return addCommas(num);
@@ -81,17 +115,28 @@ export default {
   },
   async mounted() {
     try {
-      this.google = await gmapsInit();
-      const { google } = this;
-      const mapCenter = {
-        lat: 39.589931,
-        lng: -95.009003,
-      };
-      this.map = new google.maps.Map(this.$refs.map, {
-        center: mapCenter,
-        zoom: 3,
-      });
-      this.createGmapMarkers();
+      this.vendor = await init();
+      const { vendor } = this;
+      // google map
+      if (vendor.maps) {
+        const mapCenter = {
+          lat: this.lat,
+          lng: this.lng,
+        };
+        this.map = new vendor.maps.Map(this.$refs.map, {
+          center: mapCenter,
+          zoom: this.zoom,
+        });
+        this.createGmapMarkers();
+      // yandex map
+      } else {
+        const mapCenter = [this.lat, this.lng];
+        this.map = new vendor.Map('map', {
+          center: mapCenter,
+          zoom: this.zoom,
+        });
+        this.createYmapMarkers();
+      }
     } catch (error) {
       console.error(error);
     }

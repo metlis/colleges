@@ -865,11 +865,20 @@
     {% if not error %}
         <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
         <script>
-            function initMap() {
-               getMapLabels("{{ api_call|safe }}");
+            function initGMap() {
+               getGMapLabels("{{ api_call|safe }}");
+            }
+            function initYMap() {
+               getYMapLabels("{{ api_call|safe }}");
             }
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap"
-                async defer></script>
+        {% if gmaps_key and map_api_vendor == 'Google' %}
+            <script src="https://maps.googleapis.com/maps/api/js?key={{ gmaps_key }}&callback=initGMap"
+                    defer></script>
+        {% endif %}
+        {% if ymaps_key and map_api_vendor == 'Yandex' %}
+            <script src="https://api-maps.yandex.ru/2.1/?apikey={{ ymaps_key }}&lang=en_US&onload=initYMap"
+                    defer>
+        {% endif %}
     {% endif %}
 {% endblock %}

@@ -86,7 +86,9 @@ def search(request):
                        'params': req_str,
                        # api
                        'api_call': api_call,
-                       'maps_key': GOOGLE_MAPS_API,
+                       'gmaps_key': GOOGLE_MAPS_API,
+                       'ymaps_key': YANDEX_MAPS_API,
+                       'map_api_vendor': MAP_API_VENDOR,
                        'favourite_colleges': favourite_colleges,
                        # sort parameters
                        'sort_params': sort_params,
