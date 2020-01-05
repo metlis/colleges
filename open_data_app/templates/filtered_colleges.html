@@ -372,7 +372,7 @@
 
                     {# aggregate text #}
                     {% if aggregate_text and colleges.number == 1 %}
-                        <div class="col-sm-12">
+                        <div class="col-sm-12 aggregate-text">
                             {% autoescape off %}
                                 {% for key, value in aggregate_text.items %}
                                     <h3>{{ key }}</h3>
