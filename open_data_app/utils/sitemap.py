@@ -9,6 +9,8 @@ from open_data_app.models.college import College
 from open_data_app.models.state import State
 from open_data_app.models.region import Region
 from open_data_app.models.dictionary import Dictionary
+from open_data_app.models.rating import Rating
+from open_data_app.models.page import Page
 
 PARAMS = {
     'ownership__slug': Ownership.objects.all().values('slug'),
@@ -28,6 +30,8 @@ COLLEGES = College.objects.all()
 REGIONS = Region.objects.all()
 STATES = State.objects.all()
 CITIES = College.objects.values('city_slug').distinct()
+RATINGS = Rating.objects.all().values('url')
+PAGES = Page.objects.all().exclude(rating__isnull=False).values('url')
 
 
 class CollegesSitemap(Sitemap):
@@ -75,8 +79,8 @@ class CitiesSitemap(Sitemap):
         return reverse('college_app:filter_values', kwargs={
             'param_name': 'city_slug',
             'param_value': item,
-        }
-                       )
+        })
+
 
 class DisciplinesSitemap(Sitemap):
     protocol = 'https'
@@ -94,8 +98,7 @@ class DisciplinesSitemap(Sitemap):
     def location(self, item):
         return reverse('college_app:filter_no_values', kwargs={
             'param_name': item,
-        }
-                       )
+        })
 
 
 class FilterParamsSitemap(Sitemap):
@@ -105,8 +108,7 @@ class FilterParamsSitemap(Sitemap):
         return reverse('college_app:filter_values', kwargs={
             'param_name': item['param_name'],
             'param_value': item['param_value'],
-        }
-                       )
+        })
 
     def items(self):
         param_values = []
@@ -156,8 +158,7 @@ class StateFilterParamsSitemap(Sitemap):
             'param_value': item['param_value'],
             'geo_slug': item['state_slug'],
             'geo_name': 'state',
-        }
-                       )
+        })
 
 
 class RegionFilterParamsSitemap(Sitemap):
@@ -197,5 +198,34 @@ class RegionFilterParamsSitemap(Sitemap):
             'param_value': item['param_value'],
             'geo_slug': item['region_slug'],
             'geo_name': 'region',
-        }
-                       )
+        })
+
+
+class RatingsSitemap(Sitemap):
+    protocol = 'https'
+
+    def items(self):
+        urls = []
+
+        for rating in RATINGS:
+            urls.append(rating['url'])
+
+        return urls
+
+    def location(self, item):
+        return reverse('college_app:create_rating', kwargs={'rating_url': item,})
+
+
+class PagesSitemap(Sitemap):
+    protocol = 'https'
+
+    def items(self):
+        urls = []
+
+        for page in PAGES:
+            urls.append(page['url'])
+
+        return urls
+
+    def location(self, item):
+        return reverse('college_app:show_content_page', kwargs={'page_url': item,})

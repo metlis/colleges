@@ -14,21 +14,24 @@ from open_data_app.views.disclaimer import disclaimer
 from open_data_app.views.rating import create_rating
 from open_data_app.views.content_page import show_content_page
 from open_data_app.utils.sitemap import CollegesSitemap, StatesSitemap, RegionsSitemap, DisciplinesSitemap, \
-    FilterParamsSitemap, StateFilterParamsSitemap, RegionFilterParamsSitemap, CitiesSitemap
+    FilterParamsSitemap, StateFilterParamsSitemap, RegionFilterParamsSitemap, CitiesSitemap, RatingsSitemap, \
+    PagesSitemap
 from django.contrib.sitemaps.views import sitemap
 
 app_name = 'college_app'
 
-# sitemaps = {
-#     'regions': RegionsSitemap,
-#     'regions_params': RegionFilterParamsSitemap,
-#     'states': StatesSitemap,
-#     'states_params': StateFilterParamsSitemap,
-#     'disciplines': DisciplinesSitemap,
-#     'filters': FilterParamsSitemap,
-#     'cities': CitiesSitemap,
-#     'colleges': CollegesSitemap,
-# }
+sitemaps = {
+    'regions': RegionsSitemap,
+    'regions_params': RegionFilterParamsSitemap,
+    'states': StatesSitemap,
+    'states_params': StateFilterParamsSitemap,
+    'disciplines': DisciplinesSitemap,
+    'filters': FilterParamsSitemap,
+    'cities': CitiesSitemap,
+    'colleges': CollegesSitemap,
+    'ratings': RatingsSitemap,
+    'pages': PagesSitemap,
+}
 
 handler404 = 'open_data_app.views.page_not_found'
 urlpatterns = [
