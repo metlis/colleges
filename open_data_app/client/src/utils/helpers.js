@@ -13,29 +13,30 @@ export const getCollegesStatesNames = (colleges = []) => {
 };
 
 // Applies filters to the list of colleges
-export const selectColleges = (colleges = [], filters = {}) => {
-  if (Object.keys(filters).length > 0) {
+export const selectColleges = (colleges = [], menu = {}) => {
+  if (Object.keys(menu).length > 0) {
+    const { checkboxFilters, statesFilters, rangeFilters } = menu;
     const selectedColleges = colleges.filter((college) => {
       let isSelected = true;
       // apply checkbox filter
-      if (filters.checkboxFilters) {
-        Object.values(filters.checkboxFilters).forEach((filter) => {
+      if (checkboxFilters) {
+        Object.values(checkboxFilters).forEach((filter) => {
           if (filter.value && college[filter.name] === 0) isSelected = false;
         });
       }
       // apply state filter
-      if (filters.statesFilters && filters.statesFilters.length > 0
-         && !filters.statesFilters.some(state => state === college.state__name)) {
+      if (statesFilters && statesFilters.length > 0
+         && !statesFilters.some(state => state === college.state__name)) {
         isSelected = false;
       }
       // apply range filter
-      if (filters.rangeFilters) {
+      if (rangeFilters) {
         // to filter colleges by price parameter we need to add a new parameter which will
         // contain either average_net_price_private or average_net_price_public value
         if (!Object.prototype.hasOwnProperty.call(college, 'average_price')) {
           addUnifiedPriceParam(colleges);
         }
-        Object.values(filters.rangeFilters).forEach((filter) => {
+        Object.values(rangeFilters).forEach((filter) => {
           if ((+filter.min && !college[filter.name])
               || (+filter.min && college[filter.name] < +filter.min)) {
             isSelected = false;

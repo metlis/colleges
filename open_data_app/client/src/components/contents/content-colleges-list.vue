@@ -293,11 +293,7 @@ export default {
   },
   methods: {
     getCollegesList() {
-      return selectColleges(this.colleges, {
-        checkboxFilters: this.menu.checkboxFilters,
-        statesFilters: this.menu.statesFilters,
-        rangeFilters: this.menu.rangeFilters,
-      });
+      return selectColleges(this.colleges, this.menu);
     },
     toggleFavourite(id) {
       fetch(`/api/toggle_favourite/?college_id=${id}`)
