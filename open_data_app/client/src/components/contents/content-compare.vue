@@ -5,7 +5,10 @@
       <h3>{{header}}</h3>
     </v-col>
     <!--  Empty set message  -->
-    <v-col cols="12" v-if="selectedColleges.length === 0">
+    <v-col
+      cols="12"
+      v-if="selectedColleges.length === 0"
+    >
       <v-alert
         type="info"
         border="left"
@@ -15,7 +18,10 @@
       </v-alert>
     </v-col>
     <!--  Not enough colleges message  -->
-    <v-col cols="12" v-if="selectedColleges.length === 1">
+    <v-col
+      cols="12"
+      v-if="selectedColleges.length === 1"
+    >
       <v-alert
         type="info"
         border="left"
@@ -27,7 +33,7 @@
     <!--  Content  -->
     <v-col cols="12">
       <!--  Checkbox list    -->
-      <v-card v-if="!showComparison && selectedColleges.length > 0">
+      <v-card v-if="isCheckboxListVisible">
         <v-card-text>
           <checkbox-list
             :collegesData="selectedColleges"
@@ -42,8 +48,12 @@
       </v-card>
       <!--  Comparison content  -->
       <div v-if="showComparison">
-        <div :class="$style.overview" ref="overview">
+        <div
+          :class="$style.overview"
+          ref="overview"
+        >
           <v-divider />
+          <!-- Values distribution content -->
           <h1>Top values disctribution</h1>
           <div
             v-for="(params, id) in collegesWinners"
@@ -74,6 +84,7 @@
           </div>
         </div>
         <v-divider />
+        <!-- Cards with bars -->
         <div
           v-for="(section, name) in comparisonParams"
           :key="name"
@@ -90,6 +101,7 @@
               {{param.title}}
             </v-card-title>
             <v-card-text>
+              <!-- Bars -->
               <div
                 v-for="c in collegesToComparison"
                 :key="c.id"
@@ -99,7 +111,7 @@
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <span v-on="on">
-                      {{formatValue(c, param) === null ? 'No data' : formatValue(c, param)}}
+                      {{getBarContent(c, param)}}
                     </span>
                   </template>
                   <span>
@@ -115,8 +127,9 @@
               </div>
             </v-card-text>
           </v-card>
-          <hr :class="$style.divider">
+          <v-divider />
         </div>
+        <!-- Close button -->
         <div :class="$style.close">
           <v-btn
             @click="hideComparison"
@@ -156,6 +169,9 @@ export default {
       showComparison: false,
       comparisonParams: rangeFilters(),
       collegesWinners: '',
+      defaultBarStyle: {
+        backgroundColor: '#f4f5f7',
+      },
     };
   },
   methods: {
@@ -186,7 +202,7 @@ export default {
       if (college[name] === undefined || college[name] === null) return null;
       // percent data
       if (title.indexOf('%') > -1) {
-        if (title === 'Male students %' || title === 'Full-time students %') {
+        if (title.indexOf('Male') > -1 || title.indexOf('Full-time') > -1) {
           return ((1 - college[name]) * 100).toPrecision(3);
         }
         return (college[name] * 100).toPrecision(3);
@@ -195,17 +211,21 @@ export default {
       return addCommas(Math.round(college[name]));
     },
     getBarStyles(college, param) {
-      if (this.formatValue(college, param) === null) return 'backgroundColor: #f4f5f7';
+      if (this.formatValue(college, param) === null) return this.defaultBarStyle;
       const percent = this.calculateBarWidth(college, param);
       const fontWeight = this.isWinnerCollege(college, param, percent) ? 800 : 400;
-      return `backgroundColor: ${param.color}; width: ${percent}%; fontWeight: ${fontWeight}`;
+      return {
+        backgroundColor: param.color,
+        width: `${percent}%`,
+        fontWeight,
+      };
     },
     calculateBarWidth(college, param) {
       let value = college[param.name];
       if (!value) return 0;
       const values = this.collegesToComparison.map(c => c[param.name]);
       let maxValue = Math.max.apply(null, values);
-      if (param.title === 'Male students %' || param.title === 'Full-time students %') {
+      if (param.title.indexOf('Male') > -1 || param.title.indexOf('Full-time') > -1) {
         maxValue = 1 - Math.min.apply(null, values);
         value = 1 - value;
       }
@@ -235,12 +255,18 @@ export default {
     scrollAfterClear() {
       goTo(this.$refs.checkbox);
     },
+    getBarContent(college, param) {
+      return this.formatValue(college, param) === null ? 'No data' : this.formatValue(college, param);
+    },
   },
   computed: {
     collegesToComparison() {
       const collegesToComparison = this.selectedColleges
         .filter(c => this.collegesToComparisonIds.find(id => id === c.id));
       return collegesToComparison;
+    },
+    isCheckboxListVisible() {
+      return !this.showComparison && this.selectedColleges.length > 0;
     },
   },
   watch: {
@@ -282,13 +308,13 @@ export default {
       this.collegesToComparisonIds = [];
     },
     showComparison(val) {
-      setTimeout(() => {
+      this.$nextTick(() => {
         if (val) {
           goTo(this.$refs.overview);
         } else {
           goTo(this.$refs.checkbox);
         }
-      }, 0);
+      });
     },
   },
   mounted() {
