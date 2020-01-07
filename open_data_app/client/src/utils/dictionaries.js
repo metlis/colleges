@@ -201,28 +201,56 @@ export const sortNames = () => ({
     tooltip: 'Name',
     name: 'name',
   },
-  cost: {
-    icon: 'mdi-cash',
-    title: 'Cost',
-    tooltip: 'Average cost $',
-    name: 'average_price',
-  },
-  loan: {
-    icon: 'mdi-bank',
-    title: 'Loan',
-    tooltip: 'Federal loan recipients %',
-    name: 'federal_loan',
-  },
-  admission: {
-    icon: 'mdi-certificate',
-    title: 'Admission',
-    tooltip: 'Admission rate %',
-    name: 'admission_rate',
-  },
   undergraduates: {
     icon: 'mdi-account-multiple',
     title: 'Undergraduates',
     tooltip: 'Number of undergraduate students',
     name: 'undergrad_students',
+  },
+  admission: {
+    icon: 'mdi-certificate',
+    title: 'Admission %',
+    tooltip: 'Admission rate %',
+    name: 'admission_rate',
+  },
+  cost: {
+    icon: 'mdi-cash',
+    title: 'Cost $',
+    tooltip: 'Average cost $',
+    name: 'average_price',
+  },
+  loan: {
+    icon: 'mdi-bank',
+    title: 'Loan %',
+    tooltip: 'Federal loan recipients %',
+    name: 'federal_loan',
+  },
+});
+
+export const collegeInfoItems = () => ({
+  location: {
+    icon: 'mdi-map-marker',
+    title: 'Location',
+    props: ['city', 'state__name'],
+  },
+  locale: {
+    icon: 'mdi-city',
+    title: 'Locale',
+    props: ['locale__description'],
+  },
+  carnegie: {
+    icon: 'mdi-book-search',
+    title: 'Carnegie classification',
+    props: ['carnegie__description'],
+  },
+  religion: {
+    icon: 'mdi-church',
+    title: 'Religious affiliation',
+    props: ['religion__name'],
+  },
+  ownership: {
+    icon: 'mdi-briefcase',
+    title: 'Ownership',
+    props: ['ownership__description'],
   },
 });

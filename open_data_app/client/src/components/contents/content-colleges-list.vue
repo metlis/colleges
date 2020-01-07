@@ -22,24 +22,25 @@
       </v-alert>
     </v-col>
     <!--  Result content  -->
-    <v-col
-      cols="12"
-      xs="12"
-      sm="12"
-      md="4"
-      v-if="selectedColleges.length > 0"
-      v-for="college in collegesRenderList"
-      :key="college.id"
-      class="pr-0"
-    >
+    <template v-if="selectedColleges.length > 0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="12"
+        md="4"
+        class="pr-0"
+        v-for="college in collegesRenderList"
+        :key="college.id"
+      >
+      <!-- College's card -->
       <v-card>
-        <v-card-title style="word-break: normal !important">
+        <v-card-title :class="$style.title">
           {{college.name}}
         </v-card-title>
         <v-card-text>
           <span
             @click="openCollegeUrl(college.url)"
-            style="cursor: pointer"
+            :class="$style.url"
           >
             {{college.url}}
           </span>
@@ -48,7 +49,7 @@
             <div
                class="text--primary"
                :class="$style.chip"
-               v-if="menu.activeSortButton && collegeSortValueExists(college)"
+               v-if="isSortValueVisible(college)"
             >
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
@@ -59,36 +60,40 @@
                     <v-icon size="1rem">
                       {{menu.activeSortButton.icon}}
                     </v-icon>
-                    <template v-if="menu.activeSortButton.name === 'admission_rate'
-                    || menu.activeSortButton.name === 'federal_loan'">
+                    <!-- Percent sort value badge -->
+                    <template v-if="isPercentSortValueBadge">
                       <span class="pl-1">
-                        {{Math.round(college[menu.activeSortButton.name] * 100)}}%
+                        {{getSortPercentValue(college)}}%
                       </span>
                     </template>
-                    <template v-else-if="menu.activeSortButton.name === 'undergrad_students'">
+                    <!-- Money amount sort value badge -->
+                    <template v-else-if="isMoneyAmountSortValueBadge">
                       <span class="pl-1">
-                        {{addCommas(college[menu.activeSortButton.name])}}
+                        {{getSortMoneyAmountValue(college)}}$
                       </span>
                     </template>
+                    <!-- A raw number value badge -->
                     <template v-else>
                       <span class="pl-1">
-                        {{addCommas(Math.round(college[menu.activeSortButton.name]))}}$
+                        {{getSortRawNumberValueString(college)}}
                       </span>
                     </template>
                   </v-chip>
                 </template>
+                <!-- Tooltip text -->
                 <span>
                   {{menu.activeSortButton.tooltip}}
                 </span>
               </v-tooltip>
             </div>
             <!-- Range filter values -->
-            <div
-               v-for="filter in filtersApplied.rangeFilters"
-               v-if="filtersApplied && collegeFilterValueExists(filter, college)"
+            <template v-for="filter in filtersApplied.rangeFilters">
+              <div
+               v-if="collegeFilterValueExists(filter, college)"
                :key="filter.title"
                :class="$style.chip"
-               class="text--primary">
+               class="text--primary"
+              >
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                   <v-chip
@@ -99,37 +104,47 @@
                     <v-icon size="1rem">
                       {{filter.icon}}
                     </v-icon>
-                    <template v-if="checkReversedParams(filter)">
+                    <!-- Filter's reversed-percent value badge -->
+                    <template v-if="filterReversedParamValueExists(filter)">
                       <span class="pl-1">
-                        {{100 - Math.round(college[filter.name] * 100)}}%
+                        {{getFilterReversedParamValue(college, filter)}}%
                       </span>
                     </template>
-                    <template v-else-if="filter.title.indexOf('%') > -1">
+                    <!-- Filter's percent value badge -->
+                    <template v-else-if="filterPercentParamValueExists(filter)">
                       <span class="pl-1">
-                        {{Math.round(college[filter.name] * 100)}}%
+                        {{getFilterPercentParamValue(college, filter)}}%
                       </span>
                     </template>
+                    <!-- Filter's money-amount value badge -->
+                    <template v-else-if="filterMoneyAmountParamValueExists(filter)">
+                      <span class="pl-1">
+                        {{getFilterRawDataParamValue(college, filter)}}$
+                      </span>
+                    </template>
+                    <!-- Filter's raw-number value badge -->
                     <template v-else>
                       <span class="pl-1">
-                        {{addCommas(Math.floor(college[filter.name]))}}
+                        {{getFilterRawDataParamValue(college, filter)}}
                       </span>
-                      <span v-if="filter.title.indexOf('$') > -1">$</span>
                     </template>
                   </v-chip>
                 </template>
+                <!-- Tooltip text -->
                 <span>
-                    {{filter.title}}
+                  {{filter.title}}
                 </span>
               </v-tooltip>
             </div>
+            </template>
             <!-- Checkbox filter values -->
-            <div
-               v-for="filter in filtersApplied.checkboxFilters"
-               v-if="filtersApplied && collegeFilterValueExists(filter, college)"
+            <template v-for="filter in filtersApplied.checkboxFilters">
+              <div
+               v-if="collegeFilterValueExists(filter, college)"
                :key="filter.title"
                :class="$style.chip"
                class="d-inline"
-            >
+              >
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                   <v-chip
@@ -141,14 +156,15 @@
                   </v-chip>
                 </template>
                 <span>
-                    {{filter.title}}
+                  {{filter.title}}
                 </span>
               </v-tooltip>
-            </div>
+              </div>
+            </template>
             <!-- State filter values -->
-            <div
-               v-for="filter in menu.statesFilters"
-               v-if="menu.statesFilters && college.state__name === filter"
+            <template v-for="filter in menu.statesFilters">
+              <div
+               v-if="getFilterStateValue(college, filter)"
                :key="filter"
                :class="$style.chip"
                class="text--primary">
@@ -162,67 +178,80 @@
                     {{filter}}
                   </v-chip>
                 </template>
+                <!-- Tooltip text -->
                 <span>
-                    State
+                  State
                 </span>
               </v-tooltip>
-            </div>
+              </div>
+            </template>
           </div>
         </v-card-text>
+        <!-- Action icons -->
         <v-card-actions>
           <v-btn icon>
             <v-icon
-              :color="isFavourite(college.id) ? 'amber' : 'grey'"
+              :color="getCollegeColor(college.id)"
               @click="toggleFavourite(college.id)"
             >
               mdi-heart
             </v-icon>
           </v-btn>
-          <v-icon @click="openCollegePage(college.id, college.slug)">mdi-link-variant</v-icon>
+          <v-icon @click="openCollegePage(college.id, college.slug)">
+            mdi-link-variant
+          </v-icon>
           <div class="flex-grow-1"></div>
           <v-btn
             icon
             @click="toggleChevron(college.id)"
           >
             <v-icon>
-              {{ cardsExpanded[college.id] ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+              {{getChevron(college.id)}}
             </v-icon>
           </v-btn>
         </v-card-actions>
+        <!-- Expanded college info -->
         <v-expand-transition>
           <div v-show="cardsExpanded[college.id]">
             <v-card-text>
               <v-divider />
-              <div
-                v-for="(item, name) in items"
-                v-if="college[item.props[0]]"
-                :key="name"
-              >
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <span
-                      :class="$style.container"
-                      v-on="on"
-                    >
-                      <v-icon>{{item.icon}}
-                    </v-icon></span>
-                  </template>
-                  <span>{{item.title}}</span>
-                </v-tooltip>
-                <span :class="$style.description"> {{college[item.props[0]]}}
-                  <template v-if="college[item.props[1]]">
-                    , {{college[item.props[1]]}}
-                  </template>
-                </span><br>
-              </div>
+              <template v-for="(item, name) in items">
+                <div
+                  v-if="college[item.props[0]]"
+                  :key="name"
+                >
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <span
+                        :class="$style.container"
+                        v-on="on"
+                      >
+                        <v-icon>
+                          {{item.icon}}
+                        </v-icon>
+                      </span>
+                    </template>
+                    <span>
+                      {{item.title}}
+                    </span>
+                  </v-tooltip>
+                  <span :class="$style.description">
+                    {{college[item.props[0]]}}
+                    <template v-if="college[item.props[1]]">
+                      , {{college[item.props[1]]}}
+                    </template>
+                  </span>
+                  <br>
+                </div>
+              </template>
             </v-card-text>
           </div>
         </v-expand-transition>
       </v-card>
     </v-col>
-    <v-col
-      cols="12"
-    >
+    </template>
+    <!-- Show more button -->
+    <v-col cols="12">
       <div :class="$style.expand">
         <v-btn
           v-if="isShowButtonVisible"
@@ -246,6 +275,7 @@ import {
   sortСollegesAlphabetically,
   sortColleges,
 } from '../../utils/helpers';
+import { collegeInfoItems } from '../../utils/dictionaries';
 
 export default {
   name: 'content-colleges-list',
@@ -257,33 +287,8 @@ export default {
       cardsExpanded: {},
       isReverseSort: false,
       collegesToDisplay: this.limit,
-      items: {
-        location: {
-          icon: 'mdi-map-marker',
-          title: 'Location',
-          props: ['city', 'state__name'],
-        },
-        locale: {
-          icon: 'mdi-city',
-          title: 'Locale',
-          props: ['locale__description'],
-        },
-        carnegie: {
-          icon: 'mdi-book-search',
-          title: 'Carnegie classification',
-          props: ['carnegie__description'],
-        },
-        religion: {
-          icon: 'mdi-church',
-          title: 'Religious affiliation',
-          props: ['religion__name'],
-        },
-        ownership: {
-          icon: 'mdi-briefcase',
-          title: 'Ownership',
-          props: ['ownership__description'],
-        },
-      },
+      items: collegeInfoItems(),
+      collegesSectionLength: 12,
     };
   },
   methods: {
@@ -371,10 +376,48 @@ export default {
       counter.innerText -= 1;
     },
     incrementCollegesToDisplay() {
-      this.collegesToDisplay = Number(this.collegesToDisplay) + 12;
+      this.collegesToDisplay = Number(this.collegesToDisplay) + this.collegesSectionLength;
     },
-    checkReversedParams(filter) {
+    getCollegeColor(id) {
+      return this.isFavourite(id) ? 'amber' : 'grey';
+    },
+    getChevron(id) {
+      return this.cardsExpanded[id] ? 'mdi-chevron-up' : 'mdi-chevron-down';
+    },
+    // filter values methods
+    filterReversedParamValueExists(filter) {
       return filter.title.indexOf('Full-time') > -1 || filter.title.indexOf('Male') > -1;
+    },
+    filterPercentParamValueExists(filter) {
+      return filter.title.indexOf('%') > -1;
+    },
+    filterMoneyAmountParamValueExists(filter) {
+      return filter.title.indexOf('$') > -1;
+    },
+    getFilterReversedParamValue(college, filter) {
+      return 100 - Math.round(college[filter.name] * 100);
+    },
+    getFilterPercentParamValue(college, filter) {
+      return Math.round(college[filter.name] * 100);
+    },
+    getFilterRawDataParamValue(college, filter) {
+      return addCommas(Math.floor(college[filter.name]));
+    },
+    getFilterStateValue(college, filter) {
+      return this.menu.statesFilters && college.state__name === filter;
+    },
+    // sort values methods
+    isSortValueVisible(college) {
+      return this.menu.activeSortButton && this.collegeSortValueExists(college);
+    },
+    getSortPercentValue(college) {
+      return Math.round(college[this.menu.activeSortButton.name] * 100);
+    },
+    getSortRawNumberValueString(college) {
+      return addCommas(college[this.menu.activeSortButton.name]);
+    },
+    getSortMoneyAmountValue(college) {
+      return addCommas(Math.round(college[this.menu.activeSortButton.name]));
     },
   },
   computed: {
@@ -399,6 +442,12 @@ export default {
     },
     isShowButtonVisible() {
       return this.limit && this.collegesRenderList.length < this.selectedColleges.length;
+    },
+    isPercentSortValueBadge() {
+      return this.menu.activeSortButton.title.indexOf('%') > -1;
+    },
+    isMoneyAmountSortValueBadge() {
+      return this.menu.activeSortButton.title.indexOf('$') > -1;
     },
   },
   watch: {
@@ -452,4 +501,8 @@ export default {
   .link
     color white !important
     font-weight bold
+  .title
+    word-break normal !important
+  .url
+    cursor pointer
 </style>
