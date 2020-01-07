@@ -6,7 +6,11 @@
     </v-col>
     <!--  Map  -->
     <v-col cols="12">
-      <div ref="map" id="map" :class="$style.map"></div>
+      <div
+        :class="$style.map"
+        ref="map"
+        id="map"
+      />
     </v-col>
   </v-row>
 </template>
@@ -38,58 +42,7 @@ export default {
         rangeFilters: this.menu.rangeFilters,
       });
     },
-    createGmapMarkers() {
-      const { vendor } = this;
-      this.markers = this.selectedColleges.map((college) => {
-        const contentString = `
-            <div class="mapInfo">
-            ${this.createLabelText(college)}
-            </div>
-        `;
-        const infoWindow = new vendor.maps.InfoWindow({
-          content: contentString,
-        });
-        const marker = new vendor.maps.Marker({
-          position: {
-            lat: Number(college.latitude),
-            lng: Number(college.longitude),
-          },
-          title: `${college.name}\n${college.city}, ${college.state__name}`,
-          map: this.map,
-        });
-        vendor.maps.event.addListener(marker, 'click', () => {
-          infoWindow.open(this.map, marker);
-        });
-        return marker;
-      });
-    },
-    createYmapMarkers() {
-      const { vendor } = this;
-      const clusterer = new vendor.Clusterer({
-        preset: 'islands#invertedBlueClusterIcons',
-        clusterHideIconOnBalloonOpen: false,
-        geoObjectHideIconOnBalloonOpen: false,
-      });
-      this.markers = this.selectedColleges.map((college) => {
-        const point = [Number(college.latitude), Number(college.longitude)];
-        const pointData = {
-          balloonContentBody: this.createLabelText(college),
-          clusterCaption: `<strong>${college.name}</strong>`,
-        };
-        return new vendor.Placemark(point, pointData);
-      });
-      clusterer.add(this.markers);
-      this.map.geoObjects.add(clusterer);
-    },
-    deleteGmapMarkers() {
-      this.markers.forEach((marker) => {
-        marker.setMap(null);
-      });
-    },
-    deleteYmapMarkers() {
-      this.map.geoObjects.removeAll();
-    },
-    createLabelText(college) {
+    createMarkerText(college) {
       return `<h3>${college.name}</h3>
       <p><span class="icon-container"><i class="fab fa-internet-explorer" data-toggle="tooltip" data-placement="top"></i></span>: <a href="/institution/${college.id}/${college.slug}">College page</a></p>
       <p><span class="icon-container"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="top"></i></span>: ${college.city}, ${college.state__name}</p>
@@ -111,6 +64,59 @@ export default {
     },
     addCommas(num) {
       return addCommas(num);
+    },
+    // google maps methods
+    createGmapMarkers() {
+      const { vendor } = this;
+      this.markers = this.selectedColleges.map((college) => {
+        const contentString = `
+            <div class="mapInfo">
+            ${this.createMarkerText(college)}
+            </div>
+        `;
+        const infoWindow = new vendor.maps.InfoWindow({
+          content: contentString,
+        });
+        const marker = new vendor.maps.Marker({
+          position: {
+            lat: Number(college.latitude),
+            lng: Number(college.longitude),
+          },
+          title: `${college.name}\n${college.city}, ${college.state__name}`,
+          map: this.map,
+        });
+        vendor.maps.event.addListener(marker, 'click', () => {
+          infoWindow.open(this.map, marker);
+        });
+        return marker;
+      });
+    },
+    deleteGmapMarkers() {
+      this.markers.forEach((marker) => {
+        marker.setMap(null);
+      });
+    },
+    // yandex maps methods
+    createYmapMarkers() {
+      const { vendor } = this;
+      const clusterer = new vendor.Clusterer({
+        preset: 'islands#invertedBlueClusterIcons',
+        clusterHideIconOnBalloonOpen: false,
+        geoObjectHideIconOnBalloonOpen: false,
+      });
+      this.markers = this.selectedColleges.map((college) => {
+        const point = [Number(college.latitude), Number(college.longitude)];
+        const pointData = {
+          balloonContentBody: this.createMarkerText(college),
+          clusterCaption: `<strong>${college.name}</strong>`,
+        };
+        return new vendor.Placemark(point, pointData);
+      });
+      clusterer.add(this.markers);
+      this.map.geoObjects.add(clusterer);
+    },
+    deleteYmapMarkers() {
+      this.map.geoObjects.removeAll();
     },
   },
   async mounted() {
