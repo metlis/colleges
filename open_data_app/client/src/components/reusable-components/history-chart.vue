@@ -3,7 +3,7 @@ import { Line } from 'vue-chartjs';
 
 export default {
   extends: Line,
-  name: 'chart',
+  name: 'history-chart',
   props: ['chartData'],
   data() {
     return {

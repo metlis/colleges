@@ -8,7 +8,10 @@
       <h3>{{header}}</h3>
     </v-col>
     <!--  Empty set message  -->
-    <v-col cols="12" v-if="selectedColleges.length === 0">
+    <v-col
+      v-if="selectedColleges.length === 0"
+      cols="12"
+    >
       <v-alert
         type="info"
         border="left"
@@ -20,7 +23,7 @@
     <!--  Content  -->
     <v-col cols="12">
       <!--  Checkbox list    -->
-      <v-card v-if="!showHistory && selectedColleges.length > 0">
+      <v-card v-if="isCheckboxListVisible">
         <v-card-text>
           <checkbox-list
             :collegesData="selectedColleges"
@@ -55,13 +58,14 @@
             </v-btn>
           </div>
           <v-divider />
+          <!-- Cards with charts -->
           <div
             v-for="(section, name) in collegeParams"
             :key="name"
           >
             <h1>{{name}}</h1>
-            <div
-              v-for="param in section"
+            <template v-for="param in section">
+              <div
               v-if="param.apiResponse"
               :key="param.title"
               :ref="param.title"
@@ -69,15 +73,17 @@
               <v-card>
                 <v-card-title>{{param.title}}</v-card-title>
                 <v-card-text>
-                  <chart
+                  <history-chart
                     :chartData="getChartData(param.apiResponse, param.title)"
                   />
                 </v-card-text>
               </v-card>
               <br>
             </div>
+            </template>
             <v-divider />
           </div>
+          <!-- Close button -->
           <div :class="$style.close">
             <v-btn
               @click="hideHistory"
@@ -96,7 +102,7 @@
 <script>
 import goTo from 'vuetify/es5/services/goto';
 import CheckboxList from '../reusable-components/checkbox-list.vue';
-import Chart from '../reusable-components/chart.vue';
+import HistoryChart from '../reusable-components/history-chart.vue';
 
 import {
   addUnifiedPriceParam,
@@ -110,7 +116,7 @@ import { rangeFilters } from '../../utils/dictionaries';
 export default {
   name: 'content-history',
   props: ['colleges', 'menu', 'header', 'credentials'],
-  components: { Chart, CheckboxList },
+  components: { HistoryChart, CheckboxList },
   data() {
     return {
       selectedColleges: this.colleges,
@@ -119,9 +125,14 @@ export default {
       showHistory: false,
       isFetching: false,
       collegeParams: rangeFilters(),
+      years: {
+        first: 1996,
+        last: 2017,
+      },
       chartColors: ['#90A4AE', '#A1887F', '#FF8A65', '#FFB74D', '#FFD54F', '#AFB42B', '#7CB342', '#43A047',
         '#4DB6AC', '#4DD0E1', '#4FC3F7', '#42A5F5', '#5C6BC0', '#7E57C2', '#CE93D8', '#F48FB1', '#EF9A9A',
         '#616161', '#FF9E80', '#6D4C41'],
+      defaultChartColor: '#B0BEC5',
     };
   },
   methods: {
@@ -146,7 +157,7 @@ export default {
       this.showHistory = false;
     },
     scrollTop() {
-      setTimeout(() => {
+      this.$nextTick(() => {
         goTo(this.$refs.top);
       });
     },
@@ -218,8 +229,8 @@ export default {
     },
     createUrlParamFields(apiName) {
       // the first and the last years which contain data
-      let currentYear = 1996;
-      const endYear = 2017;
+      let currentYear = this.years.first;
+      const endYear = this.years.last;
       // resulting query string
       let queryString = '';
       while (currentYear <= endYear) {
@@ -256,7 +267,7 @@ export default {
             // eslint-disable-next-line no-lonely-if
             if (paramTitle.indexOf('%') > -1) {
               // convert part-time data into full-time
-              if (paramTitle === 'Full-time students %') {
+              if (paramTitle.indexOf('Full-time') > -1) {
                 collegeData = ((1 - data[key]) * 100).toPrecision(3);
               } else {
                 collegeData = (data[key] * 100).toPrecision(3);
@@ -268,7 +279,7 @@ export default {
           normalizedDict[year] = collegeData;
         });
         if (!labels) labels = Object.keys(normalizedDict).sort((a, b) => a - b);
-        const color = this.chartColors[index] ? this.chartColors[index] : '#B0BEC5';
+        const color = this.chartColors[index] ? this.chartColors[index] : this.defaultChartColor;
         const dataset = {
           data: [],
           // the consequence of colleges ids and the consequence of colleges data is the same
@@ -311,6 +322,9 @@ export default {
       const collegesToComparison = this.selectedColleges
         .filter(c => this.collegesToComparisonIds.find(id => id === c.id));
       return collegesToComparison;
+    },
+    isCheckboxListVisible() {
+      return !this.showHistory && this.selectedColleges.length > 0;
     },
   },
   watch: {
@@ -365,7 +379,7 @@ export default {
       });
     },
     isFetching() {
-      setTimeout(() => {
+      this.$nextTick(() => {
         goTo(this.$refs.top);
       });
     },
