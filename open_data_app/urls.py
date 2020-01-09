@@ -28,7 +28,7 @@ sitemaps = {
     'disciplines': DisciplinesSitemap,
     'filters': FilterParamsSitemap,
     'cities': CitiesSitemap,
-    'colleges': CollegesSitemap,
+    # 'colleges': CollegesSitemap,
     'ratings': RatingsSitemap,
     'pages': PagesSitemap,
 }
