@@ -35,7 +35,7 @@
             flat
             color="blue-grey darken-4"
             item-color="blue-grey darken-4"
-          ></v-select>
+          />
         </v-list-item-action>
       </v-list-item>
         </v-expansion-panel-content>
@@ -44,8 +44,8 @@
       <v-expansion-panel
         v-for="(value, key) in rangeFilters"
         :key="key"
-        class="mt-0"
         :class="$style.panel"
+        class="mt-0"
       >
         <v-expansion-panel-header class="px-3">
           {{key}}
@@ -85,7 +85,7 @@
                   type="number"
                   min="0"
                   color="blue-grey darken-4"
-                ></v-text-field>
+                />
                 <div class="mr-1">-</div>
                 <v-text-field
                   v-model="filter.max"
@@ -95,7 +95,7 @@
                   type="number"
                   min="0"
                   color="blue-grey darken-4"
-                ></v-text-field>
+                />
               </v-list-item-action>
             </v-list-item>
           </template>
@@ -121,11 +121,13 @@
               @change="$emit('checkboxFilterChanged', checkboxFilters)"
               v-model="filter.value"
               color="blue-grey darken-4"
-            ></v-checkbox>
+            />
           </v-list-item-action>
           <v-list-item-content
             @click="emitCheckboxEvent(key)">
-            <v-list-item-title>{{filter.title}}</v-list-item-title>
+            <v-list-item-title>
+              {{filter.title}}
+            </v-list-item-title>
           </v-list-item-content>
         </template>
       </v-list-item>
