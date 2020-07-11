@@ -1,0 +1,267 @@
+@import 'variables.styl'
+@import 'layout.styl'
+@import 'mixins.styl'
+
+h1
+  margin-top 15px
+  margin-bottom 15px
+
+i
+  color $blue-dark
+
+.btn-link
+  font-weight 300 !important
+
+.college-container
+  margin-bottom 15px
+
+.admission
+.completion
+  text-align center
+  .c100
+    float none
+    margin 0px auto 0px auto
+
+.fa-info-circle
+  font-size 13px
+
+.progress
+  height 30px
+  margin-bottom 10px
+.progress:hover
+    font-weight 400
+
+.progress-bar
+  color $black
+  background-color $blue-bar
+
+.card
+  border 1px solid $blue
+  box-shadow 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)
+
+.card-header
+  border-bottom 1px solid $blue
+  background-color $blue
+  position relative
+  p
+    margin-bottom 0px
+
+.card-favourite
+  border 1px solid $blue
+  border-radius 0.25rem
+  box-shadow 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)
+  .card-header
+    border-bottom 1px solid $blue
+    background-color $gold
+
+.list-group
+  z-index 9999
+
+.list-group-item
+  display inline-block
+  cursor pointer
+  padding 0px
+  border none
+  border-bottom 2px solid #f3eeee
+  font-size 15px
+  :hover
+    background-color $blue
+    .dropdown-item
+      background-color white !important
+  :active
+    background-color $blue
+
+.dropdown-menu
+  .dropdown-item:hover
+    background-color $blue !important
+
+.dropright .dropdown-toggle::after
+  border none
+
+.dropdown-toggle::after
+  border none
+
+.dropdown-menu
+  width 100%
+  max-height 300px
+  overflow-y auto
+  margin-top 0px
+  margin-bottom 0px
+  padding-top 0px
+  padding-bottom 0px
+  border 1px solid $blue
+  font-size 15px
+  a
+    white-space normal
+    cursor pointer
+
+.list-group-item
+  .dropdown-menu
+    width 120%
+
+.show
+  scroll-custom()
+
+.dropdown-toggle
+  width 100%
+  height 40px
+  background-color white
+  z-index 9999 !important
+
+.item-name
+  position relative
+  top 8px
+  padding-left 10px
+
+.item-name:hover
+  background-color transparent !important
+
+.reset-button
+  width 100%
+  margin-bottom 15px
+
+.filters-applied
+  margin-bottom 10px
+
+.colleges-count
+  margin-bottom 0px
+  font-size 1rem
+
+.meta-text
+  font-size .75rem
+
+.sort
+  width 100%
+  border 1px solid $blue
+  border-radius 3px
+  padding 5px
+  font-size 15px
+  .rotate
+    float right
+
+.breadcrumb
+  background-color white
+  padding 0px
+  margin-bottom 15px
+
+.bar-no-data
+  padding-left 5px
+
+.aggr-label
+  display inline-block
+  width 120px !important
+
+.aggregate
+  h4
+    text-align center
+    margin-bottom 20px
+  div
+    p
+      text-align center
+      max-height 24px
+      button
+        padding 0px
+        border 0px
+
+.dropdown-item
+  border-bottom 1px solid $blue
+  min-height 40px
+  padding-top 8px
+  white-space word-break
+  overflow hidden
+  text-overflow ellipsis
+  font-weight 300 !important
+
+.dropdown-item:active
+  background-color $blue
+
+.badge
+  white-space normal
+
+#map
+  width 100%
+  height 300px
+
+.aggr-meta
+  margin-top 39px
+
+.pagination-phrase
+  display inline-block
+  width 100%
+  text-align center
+  margin-bottom 10px
+  font-size 15px
+
+.pagination
+  a
+    color $blue-dark
+  a:hover
+    color $blue-dark
+
+.icon
+  cursor pointer
+
+.search
+  border 1px solid $blue
+
+.card-header > .favourite-button
+  font-size 20px
+  display inline-block
+  position absolute
+  top 12px
+  right 12px
+
+.badge-link
+  text-decoration none !important
+
+.mapInfo
+  p
+    margin-bottom 5px
+
+.icon-container
+  display inline-block
+  width 20px
+  float left
+
+.btn-outline-secondary
+  border-color $blue
+
+.btn-outline-secondary:hover
+  color white !important
+  background-color $blue-dark !important
+
+.top-info
+  padding-top 0px
+
+.no-data
+  display: inline-block;
+  margin: 6px;
+
+.aggregate-content
+  text-align center
+
+.aggregate-text
+  font-size 15px
+
+@media (max-width: 767.98px)
+  .sort
+    margin-bottom 15px
+  .list-group-item
+    .dropdown-menu
+      width 100% !important
+      left 0px !important
+      top 40px !important
+      transform translate3d(0px, 0px, 0px) !important
+  #list-menu
+    margin-bottom 15px
+  .aggr-meta
+    margin-bottom 10px
+    margin-top 10px
+  .hor-bars-block
+    margin-top 15px
+
+@media (min-width 768px)
+  .list-group
+    position sticky
+    position -webkit-sticky
+    top 20px
