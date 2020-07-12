@@ -127,7 +127,7 @@ SITE_ID = 1
 
 SESSION_COOKIE_AGE = 31536000
 
-STATIC_VERSION = '1.0.5'
+STATIC_VERSION = '1.0.6'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
