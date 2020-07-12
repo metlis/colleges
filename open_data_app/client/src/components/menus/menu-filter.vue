@@ -3,6 +3,7 @@
     right
     dense
     absolute
+    permanent
     :class="$style.filterMenu"
     width="100%"
   >

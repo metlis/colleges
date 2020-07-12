@@ -1,6 +1,7 @@
 <template>
   <v-navigation-drawer
     dense
+    permanent
     :class="$style.navigationMenu"
     width="100%"
   >
